@@ -45,6 +45,19 @@
 "#chariti": {
 	bottom: "20dp"
 },
+"#alertmessage": {
+	width: Titanium.UI.FILL,
+	height: Ti.UI.SIZE,
+	width: "300dp"
+	
+},
+"#message": {
+	color: 'darkgray',
+	font: {
+		fontWeight: 'bold',
+		fontSize: 18
+	}
+},
 "#loginform": {
 	height: Ti.UI.SIZE
 },
@@ -56,7 +69,8 @@
 	hintText: 'username',
 	keyboardType: Titanium.UI.KEYBOARD_DEFAULT,
 	returnKeyType: Titanium.UI.RETURNKEY_DEFAULT,
-	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
+	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE
 },
 "#passwordfield": {
 	color: '#336699',

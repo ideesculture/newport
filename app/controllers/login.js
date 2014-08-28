@@ -2,18 +2,20 @@ var APP = require("core");
 var UTIL = require("utilities");
 var DATE = require("alloy/moment");
 var HTTP = require("http");
-var MODEL = require("models/ca-connexion")();
+var MODEL = require("models/ca-login")();
 
 var CONFIG = arguments[0];
 
 $.init = function() {
 	APP.log("debug", "settings.init");
+	APP.log("debug", APP.Settings);
+	
+	if (APP.logged == true) {
+		
+	}
 	
 	MODEL.init(CONFIG.index);
 	
-	CONFIG.url = "http://fakerest.site.192.168.20.10.xip.io/login_ok.txt";
-	APP.log("debug", APP.settings);
-
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
 
 	if(APP.Settings.useSlideMenu) {
@@ -35,6 +37,7 @@ $.init = function() {
 $.retrieveData = function(_force, _callback) {
 	MODEL.fetch({
 		url: CONFIG.url,
+		authString: APP.authString,
 		cache: 0,
 		callback: function() {
 			$.handleData(MODEL.isConnected());
@@ -46,7 +49,7 @@ $.retrieveData = function(_force, _callback) {
 		error: function() {
 			APP.closeLoading();
 			var dialog = Ti.UI.createAlertDialog({
-			    message: 'The server cannot be reached. Please retry.',
+			    message: 'Connexion failed. Please retry.',
 			    ok: 'OK',
 			    title: 'Error'
 			  }).show();
@@ -65,14 +68,50 @@ $.handleData = function(_data) {
 	APP.log("debug", "login.handleData");
 	APP.log("debug",_data);
 	
+	// If we are here, we are logged in
 	APP.closeLoading();
+	$.message.text = "You are connected.";
+	$.loginfield.hide();
+	$.passwordfield.hide();
+	APP.log("debug", $.loginbutton);
+	$.loginbutton.title = "Logout";
+	APP.logged = true;
 };
 
 
 // Event listeners
 $.loginbutton.addEventListener("click", function(_event) {
-	APP.openLoading();
-	$.retrieveData();
+	//$.loginfield.value = "admin";
+	//$.passwordfield.value = "smf2013";
+	APP.log("debug","fields");
+	APP.log("debug",$.loginfield);
+	
+	if(APP.logged != true) {
+		// Login form : password & login are defined
+		if($.loginfield.value && $.passwordfield.value) {
+			APP.openLoading();
+			CONFIG.url = APP.Settings.CollectiveAccess.urlForLogin;
+			APP.authString = 'Basic ' +Titanium.Utils.base64encode($.loginfield.value+':'+$.passwordfield.value);
+			$.retrieveData();
+			//$.loginfield.value + ":" + $.passwordfield.value + "@" + 	
+		} else {
+			var dialog = Ti.UI.createAlertDialog({
+		    	message: 'Please fill username & password',
+			    ok: 'OK',
+			    title: 'Error'
+			  }).show();
+		}
+	} else {
+		// Already logged in : logout action, reset form
+		$.message.text = "";
+		$.loginfield.value = "";	
+		$.passwordfield.value = "";
+		APP.logged = false;
+		$.loginfield.show();
+		$.passwordfield.show();
+		$.loginfield.focus();
+		$.loginbutton.title = "Login";
+	}
 });
 
 // Kick off the init

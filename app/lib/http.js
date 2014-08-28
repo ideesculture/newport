@@ -90,7 +90,11 @@ exports.request = function(_params) {
 		xhr.open(_params.type, _params.url, _params.async);
 
 		if(_params.headers) {
+			console.log("debug", "HTTP.request");
+			console.log("debug", _params.headers);
+			console.log("debug", _params.headers.length);
 			for(var i = 0, j = _params.headers.length; i < j; i++) {
+				console.log("debug", _params.headers[i].name+" "+_params.headers[i].value);
 				xhr.setRequestHeader(_params.headers[i].name, _params.headers[i].value);
 			}
 		}

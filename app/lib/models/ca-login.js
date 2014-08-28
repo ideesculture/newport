@@ -50,6 +50,7 @@ function Model() {
 
 			HTTP.request({
 				timeout: 10000,
+				headers: [{name: 'Authorization', value: _params.authString}],
 				type: "GET",
 				format: "JSON",
 				url: _params.url,

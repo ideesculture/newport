@@ -5,6 +5,9 @@
 		<ScrollView id="container">
 			<Label id="loginheader" text="login" />
 			<ImageView id="image" image="/images/cadre-plus-ipad.png" />
+			<View id="alertmessage">
+				<Label id="message" />
+			</View>
 			<View id="loginform">
 				<TextField id="loginfield"/>
 				<TextField id="passwordfield"/>
