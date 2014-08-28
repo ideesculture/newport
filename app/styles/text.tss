@@ -18,15 +18,66 @@
 	},
 	color: "#000"
 },
-"#text": {
+
+"#foldersView": {
 	top: "10dp",
 	left: "15dp",
 	right: "15dp",
 	bottom: "15dp",
+	height: "120dp",
+	font: {
+		fontSize: "14dp",
+		fontFamily: "HelveticaNeue"
+	},
+},
+
+"#foldersTop": {
+	layout: "horizontal",
+},
+
+"#foldersTitle": {
 	height: Ti.UI.SIZE,
 	font: {
 		fontSize: "14dp",
 		fontFamily: "HelveticaNeue"
 	},
 	color: "#000"
+},
+
+"#foldersButtons": {
+	right: "15dp",
+	layout: "horizontal",
+	font: {
+		fontSize: "14dp",
+		fontFamily: "HelveticaNeue"
+	},
+},
+
+"#folderItems": {
+	contentWidth: "auto",
+	contentHeight: "auto",
+	layout: "horizontal"
+},
+
+"#foldersItem": {
+	contentWidth: "auto",
+	contentHeight: "auto",
+	layout: "vertical"
+},
+"#foldersItemName": {
+	contentWidth: "auto",
+	contentHeight: "auto",
+	font: {
+		fontSize: "14dp",
+		fontFamily: "HelveticaNeue"
+	},
+},
+"#foldersItemRight": {
+	contentWidth: "auto",
+	contentHeight: "auto",
+	layout: "vertical",
+	font: {
+		fontSize: "14dp",
+		fontFamily: "HelveticaNeue"
+	},
 }

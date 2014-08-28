@@ -1,11 +1,34 @@
 <Alloy>
-	<View id="Wrapper" name="Text">
-		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" image="data/logo.png" />
+    <View id="Wrapper" name="Text">
+    	<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" image="data/logo.png" />
+    	
+    	<View id="container">
+			<Label id="heading" text="Home" />
+	    		
+	  		
+	  		<View id="foldersView">
+	  			<View id="foldersTop">
+  					<Label id="foldersTitle" text="Folders" />
+  					
+	  				<View id="foldersButtons">
+	  					<Label text="Gris" />
+	  					<Label text="List" />
+	  				</View>
+	  			</View>
+	  			
+	    		<ScrollView id="folderItems">
+	    			<View id="foldersItem">
+	    				<Label id="foldersItemName" text="Item" />
+	    				
+	    				<View id="foldersItemRight">
+	    					<Label text="(2)" />
+	    					<Label text="folder" />
+	    				</View>
+	    			</View>
+				</ScrollView>
+			</View>
+		</View>
 		
-		<ScrollView id="container">
-			<Label id="heading" />
-			
-			<Label id="text" />
-		</ScrollView>
-	</View>
+    	
+    </View>
 </Alloy>
