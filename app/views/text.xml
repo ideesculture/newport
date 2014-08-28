@@ -3,30 +3,57 @@
     	<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" image="data/logo.png" />
     	
     	<View id="container">
-			<Label id="heading" text="Home" />
+			<Label id="heading" text="Home >" />
 	    		
 	  		
 	  		<View id="foldersView">
 	  			<View id="foldersTop">
-  					<Label id="foldersTitle" text="Folders" />
+	  				<View id="foldersTitle">
+  						<Label class="label" text="Folders" />
+					</View>
   					
 	  				<View id="foldersButtons">
-	  					<Label text="Gris" />
-	  					<Label text="List" />
+	  					<Button id="topGridButton"></Button>
+	  					<Button id="topListButton"></Button>
 	  				</View>
 	  			</View>
 	  			
 	    		<ScrollView id="folderItems">
-	    			<View id="foldersItem">
-	    				<Label id="foldersItemName" text="Item" />
+	    			<View class="foldersItem">
+	    				<Label class="label foldersItemName" text="Item" />
 	    				
-	    				<View id="foldersItemRight">
-	    					<Label text="(2)" />
-	    					<Label text="folder" />
+	    				<View class="foldersItemRight">
+	    					<Label class="label foldersItemCount" text="(2)" />
+	    					<ImageView class="folderIcon" image="/images/folder_icon.png"></ImageView>
+	    				</View>
+	    			</View>
+	    			<View class="foldersItem">
+	    				<Label class="label foldersItemName" text="Item" />
+	    				
+	    				<View class="foldersItemRight">
+	    					<Label class="label foldersItemCount" text="(34)" />
+	    					<ImageView class="folderIcon" image="/images/folder_icon.png"></ImageView>
+	    				</View>
+	    			</View>
+	    			<View class="foldersItem">
+	    				<Label class="label foldersItemName" text="Item" />
+	    				
+	    				<View class="foldersItemRight">
+	    					<Label class="label foldersItemCount" text="(5)" />
+	    					<ImageView class="folderIcon" image="/images/folder_icon.png"></ImageView>
 	    				</View>
 	    			</View>
 				</ScrollView>
 			</View>
+			
+			<View id="table">
+				<View class="cell"></View>
+				<View class="cell"></View>
+				<View class="cell"></View>
+				<View class="cell"></View>
+				<View class="cell"></View>
+				<View class="cell"></View>
+	        </View>
 		</View>
 		
     	

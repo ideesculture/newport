@@ -12,6 +12,7 @@
 	left: "15dp",
 	right: "15dp",
 	height: Ti.UI.SIZE,
+	width: Ti.UI.FILL,
 	font: {
 		fontSize: "18dp",
 		fontFamily: "HelveticaNeue-Light"
@@ -24,19 +25,21 @@
 	left: "15dp",
 	right: "15dp",
 	bottom: "15dp",
-	height: "120dp",
-	font: {
-		fontSize: "14dp",
-		fontFamily: "HelveticaNeue"
-	},
+	height: Ti.UI.SIZE,
+	width: Ti.UI.FILL,
+	layout: "vertical"
 },
 
 "#foldersTop": {
-	layout: "horizontal",
+	layout: "absolute",
+	width: Ti.UI.FILL,
+	height: "40dp"
 },
 
 "#foldersTitle": {
-	height: Ti.UI.SIZE,
+	width: Ti.UI.SIZE,
+	left: "10dp",
+	top: "0dp",
 	font: {
 		fontSize: "14dp",
 		fontFamily: "HelveticaNeue"
@@ -45,39 +48,91 @@
 },
 
 "#foldersButtons": {
-	right: "15dp",
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	right: "0dp",
+	top: "0dp",
 	layout: "horizontal",
 	font: {
 		fontSize: "14dp",
 		fontFamily: "HelveticaNeue"
-	},
+	}
+},
+
+"#topGridButton": {
+	title: "Grid",
+	whitchObj: "buttonGrid",
+	font: {
+		fontSize: "11dp",
+		fontFamily: "HelveticaNeue"
+	}
+},
+
+"#topListButton": {
+	title: "List",
+	whitchObj: "buttonList",
+	font: {
+		fontSize: "11dp",
+		fontFamily: "HelveticaNeue"
+	}
 },
 
 "#folderItems": {
-	contentWidth: "auto",
-	contentHeight: "auto",
-	layout: "horizontal"
-},
-
-"#foldersItem": {
-	contentWidth: "auto",
-	contentHeight: "auto",
+	height: "120dp",
+	width: Ti.UI.FILL,
 	layout: "vertical"
 },
-"#foldersItemName": {
-	contentWidth: "auto",
-	contentHeight: "auto",
-	font: {
-		fontSize: "14dp",
-		fontFamily: "HelveticaNeue"
-	},
+
+".foldersItem": {
+	height: "40dp",
+	borderColor: "#000",
+	borderWidth: "1dp",
+	width: Ti.UI.FILL,
+	layout: "absolute",
 },
-"#foldersItemRight": {
-	contentWidth: "auto",
-	contentHeight: "auto",
-	layout: "vertical",
+
+".foldersItemName": {
+	width: "100dp",
+	left: "10dp"
+},
+
+".foldersItemRight": {
+	layout: "horizontal",
+	right: "10dp",
+	width: Ti.UI.SIZE,
+	font: {
+		fontSize: "14dp",
+		fontFamily: "HelveticaNeue"
+	}
+},
+
+".foldersItemCount":{
+	width: "30dp",
+	left: "0dp"
+}
+
+".folderIcon":{
+	width: "20dp"
+},
+
+".label": {
 	font: {
 		fontSize: "14dp",
 		fontFamily: "HelveticaNeue"
 	},
+	color: "#000",
+	height: Ti.UI.FILL
+},
+
+"#table":{
+	backgroundColor: "yellow",
+	layout: "horizontal"
+}
+
+".cell":{
+	width: "300dp",
+	height: "300dp",
+	backgroundColor: "red",
+	left: "10dp",
+	bottom: "10dp"
 }
