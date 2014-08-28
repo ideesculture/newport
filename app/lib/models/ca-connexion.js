@@ -1,7 +1,7 @@
 /**
  * Facebook post model
  * 
- * @class Models.facebook
+ * @class Models.ca-connexion
  * @uses core
  * @uses http
  * @uses utilities
@@ -70,13 +70,18 @@ function Model() {
 	 */
 	this.handleData = function(_data, _url, _callback) {
 		APP.log("debug", "CA_CONNEXION.handleData");
-
-		if(_data.entries && _data.entries.length > 0) {
-			var db = Ti.Database.open("Newport");
+			APP.log("trace", JSON.stringify(_data));
+			APP.log("trace", _data);
+			APP.log("trace", _data.ok);
+		if(_data.ok == true) {
+			APP.log("debug", "connected");
+			/*var db = Ti.Database.open("Newport");
 
 			db.execute("DELETE FROM ca_connexion_" + TID + ";");
 			db.execute("BEGIN TRANSACTION;");
-
+			APP.log("debug","MODEL.handleData");
+			APP.log("debug",_data);*/
+/*
 			for(var i = 0, x = _data.entries.length; i < x; i++) {
 				var article = _data.entries[i];
 
@@ -95,6 +100,7 @@ function Model() {
 			db.execute("INSERT OR REPLACE INTO updates (url, time) VALUES(" + UTIL.escapeString(_url) + ", " + new Date().getTime() + ");");
 			db.execute("END TRANSACTION;");
 			db.close();
+*/
 		}
 
 		if(_callback) {
@@ -107,24 +113,7 @@ function Model() {
 	 */
 	this.getAllArticles = function() {
 		APP.log("debug", "CA_CONNEXION.getAllArticles(" + TID + ")");
-
-		var db = Ti.Database.open("Newport");
-		var data = db.execute("SELECT id, title, date FROM ca_connexion_" + TID + " ORDER BY id ASC LIMIT 25;");
 		var temp = [];
-
-		while(data.isValidRow()) {
-			temp.push({
-				id: data.fieldByName("id"),
-				title: data.fieldByName("title"),
-				date: data.fieldByName("date")
-			});
-
-			data.next();
-		}
-
-		data.close();
-		db.close();
-
 		return temp;
 	};
 
@@ -134,26 +123,7 @@ function Model() {
 	 */
 	this.getArticle = function(_id) {
 		APP.log("debug", "CA_CONNEXION.getArticle");
-
-		var db = Ti.Database.open("Newport");
-		var data = db.execute("SELECT * FROM ca_connexion_" + TID + " WHERE id = " + UTIL.cleanEscapeString(_id) + ";");
-		var temp;
-
-		while(data.isValidRow()) {
-			temp = {
-				id: data.fieldByName("id"),
-				title: data.fieldByName("title"),
-				date: data.fieldByName("date"),
-				description: data.fieldByName("description"),
-				link: data.fieldByName("link")
-			};
-
-			data.next();
-		}
-
-		data.close();
-		db.close();
-
+		var temp = [];
 		return temp;
 	};
 
@@ -163,28 +133,9 @@ function Model() {
 	 */
 	this.getNextArticle = function(_id) {
 		APP.log("debug", "CA_CONNEXION.getNextArticle");
-
-		var db = Ti.Database.open("Newport");
-		var data = db.execute("SELECT id FROM ca_connexion_" + TID + " WHERE id > " + UTIL.cleanEscapeString(_id) + " ORDER BY id ASC LIMIT 1;");
-
-		if(data.rowCount == 0) {
-			data = db.execute("SELECT id FROM ca_connexion_" + TID + " ORDER BY id ASC LIMIT 1;");
-		}
-
-		var temp;
-
-		while(data.isValidRow()) {
-			temp = {
-				id: data.fieldByName("id")
-			};
-
-			data.next();
-		}
-
-		data.close();
-		db.close();
-
+		var temp = [];
 		return temp;
+
 	};
 
 	/**
@@ -193,28 +144,17 @@ function Model() {
 	 */
 	this.getPreviousArticle = function(_id) {
 		APP.log("debug", "CA_CONNEXION.getPreviousArticle");
-
-		var db = Ti.Database.open("Newport");
-		var data = db.execute("SELECT id FROM ca_connexion_" + TID + " WHERE id < " + UTIL.cleanEscapeString(_id) + " ORDER BY id DESC LIMIT 1;");
-
-		if(data.rowCount == 0) {
-			data = db.execute("SELECT id FROM ca_connexion_" + TID + " ORDER BY id DESC LIMIT 1;");
-		}
-
-		var temp;
-
-		while(data.isValidRow()) {
-			temp = {
-				id: data.fieldByName("id")
-			};
-
-			data.next();
-		}
-
-		data.close();
-		db.close();
-
+		var temp = [];
 		return temp;
+
+	};
+	
+	/**
+	 * Return if the user is logged in or not
+	 * @param ???
+	 */
+	this.isConnected = function() {
+		return true;
 	};
 }
 
