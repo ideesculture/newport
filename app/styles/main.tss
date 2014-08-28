@@ -125,14 +125,31 @@
 },
 
 "#table":{
-	backgroundColor: "yellow",
-	layout: "horizontal"
-}
+	layout: "horizontal",
+	contentWidth: "100%",
+	contentHeight:'auto',
+	showVerticalScrollIndicator:true
+},
 
 ".cell":{
-	width: "300dp",
-	height: "300dp",
-	backgroundColor: "red",
-	left: "10dp",
-	bottom: "10dp"
+	width: "227dp",
+	height: "260dp",
+	backgroundColor: "lightgray",
+	top: "10dp",
+	bottom: "10dp",
+	left: "20dp",
+	layout: "vertical"
+},
+".cellimage":{
+	backgroundColor:"red"
+},
+".objectName":{
+	backgroundColor:"blue",
+	width:Ti.UI.FILL
+},
+".objectSmallInfo":{
+	backgroundColor:"green"
+},
+".objectInfoIcon":{
+	backgroundColor:"rose"
 }

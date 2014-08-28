@@ -46,14 +46,57 @@
 				</ScrollView>
 			</View>
 			
-			<View id="table">
-				<View class="cell"></View>
-				<View class="cell"></View>
-				<View class="cell"></View>
-				<View class="cell"></View>
-				<View class="cell"></View>
-				<View class="cell"></View>
-	        </View>
+			<ScrollView id="table">
+				<View class="cell">
+					<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+					<Label class="objectName" text="Object 1" />
+					<Label class="objectSmallInfo" text="Item" />
+					<Label class="objectInfoIcon" text="i" />
+				</View>
+				<View class="cell">
+					<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+					<Label class="objectName" text="Object 1" />
+					<Label class="objectSmallInfo" text="Item" />
+					<Label class="objectInfoIcon" text="i" />
+				</View>
+				<View class="cell">
+					<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+					<Label class="objectName" text="Object 1" />
+					<Label class="objectSmallInfo" text="Item" />
+					<Label class="objectInfoIcon" text="i" />
+				</View>
+				<View class="cell">
+					<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+					<Label class="objectName" text="Object 1" />
+					<Label class="objectSmallInfo" text="Item" />
+					<Label class="objectInfoIcon" text="i" />
+				</View>
+				<View class="cell">
+					<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+					<Label class="objectName" text="Object 1" />
+					<Label class="objectSmallInfo" text="Item" />
+					<Label class="objectInfoIcon" text="i" />
+				</View>
+				<View class="cell">
+					<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+					<Label class="objectName" text="Object 1" />
+					<Label class="objectSmallInfo" text="Item" />
+					<Label class="objectInfoIcon" text="i" />
+				</View>
+				<View class="cell">
+					<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+					<Label class="objectName" text="Object 1" />
+					<Label class="objectSmallInfo" text="Item" />
+					<Label class="objectInfoIcon" text="i" />
+				</View>
+				<View class="cell">
+					<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+					<Label class="objectName" text="Object 1" />
+					<Label class="objectSmallInfo" text="Item" />
+					<Label class="objectInfoIcon" text="i" />
+				</View>
+
+	        </ScrollView>
 		</View>
 		
     	
