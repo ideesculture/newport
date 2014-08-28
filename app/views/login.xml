@@ -1,0 +1,15 @@
+<Alloy>
+	<View id="Wrapper" name="Settings">
+		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" image="data/logo.png" />
+		
+		<ScrollView id="container">
+			<Label id="loginheader" text="login" />
+			<ImageView id="image" image="/images/cadre-plus-ipad.png" />
+			<View id="loginform">
+				<TextField id="loginfield"/>
+				<TextField id="passwordfield"/>
+				<Button id="loginbutton"/>
+			</View>
+		</ScrollView>
+	</View>
+</Alloy>

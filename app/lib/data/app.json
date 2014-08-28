@@ -29,9 +29,15 @@
 	"tabs": [
 		{
 			"menuHeader": "My Tabs",
+			"title": "Login",
+			"type": "login",
+			"image": "settings",
+			"tabletSupport": false
+		},
+		{
 			"title": "Text",
 			"heading": "Open Source Mobile Framework for Charities",
-			"text": "This is the end.",
+			"text": "Let's go.",
 			"type": "text",
 			"image": "chariti",
 			"tabletSupport": false
