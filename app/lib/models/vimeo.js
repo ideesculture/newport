@@ -22,7 +22,7 @@ function Model() {
 
 		TID = _id;
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 
 		db.execute("CREATE TABLE IF NOT EXISTS vimeo_" + TID + " (id TEXT PRIMARY KEY, title TEXT, description TEXT, date TEXT, link TEXT);");
 
@@ -72,7 +72,7 @@ function Model() {
 		APP.log("debug", "VIMEO.handleData");
 
 		if(_data.length > 0) {
-			var db = Ti.Database.open("ChariTi");
+			var db = Ti.Database.open("Newport");
 
 			db.execute("DELETE FROM vimeo_" + TID + ";");
 			db.execute("BEGIN TRANSACTION;");
@@ -105,7 +105,7 @@ function Model() {
 	this.getVideos = function() {
 		APP.log("debug", "VIMEO.getVideos");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT id, title, date, link FROM vimeo_" + TID + " ORDER BY date DESC;");
 		var temp = [];
 

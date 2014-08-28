@@ -22,7 +22,7 @@ function Model() {
 
 		TID = _id;
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 
 		db.execute("CREATE TABLE IF NOT EXISTS event_" + TID + " (id TEXT PRIMARY KEY, title TEXT, date_start TEXT, date_end TEXT, location TEXT, description TEXT);");
 
@@ -72,7 +72,7 @@ function Model() {
 		APP.log("debug", "EVENT.handleData");
 
 		if(_data.data.length > 0) {
-			var db = Ti.Database.open("ChariTi");
+			var db = Ti.Database.open("Newport");
 
 			db.execute("DELETE FROM event_" + TID + ";");
 			db.execute("BEGIN TRANSACTION;");
@@ -118,7 +118,7 @@ function Model() {
 	this.getAllEvents = function() {
 		APP.log("debug", "EVENT.getAllEvents");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT id, title, date_start FROM event_" + TID + " ORDER BY date_start ASC;");
 		var temp = [];
 
@@ -145,7 +145,7 @@ function Model() {
 	this.getEvent = function(_id) {
 		APP.log("debug", "EVENT.getEvent");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT * FROM event_" + TID + " WHERE id = " + UTIL.cleanEscapeString(_id) + ";");
 		var temp;
 
@@ -175,7 +175,7 @@ function Model() {
 	this.getNextEvent = function(_date) {
 		APP.log("debug", "EVENT.getNextEvent");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT id FROM event_" + TID + " WHERE date_start > " + UTIL.cleanEscapeString(_date) + " ORDER BY date_start ASC LIMIT 1;");
 
 		if(data.rowCount == 0) {
@@ -205,7 +205,7 @@ function Model() {
 	this.getPreviousEvent = function(_date) {
 		APP.log("debug", "EVENT.getPreviousEvent");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT id FROM event_" + TID + " WHERE date_start < " + UTIL.cleanEscapeString(_date) + " ORDER BY date_start DESC LIMIT 1;");
 
 		if(data.rowCount == 0) {

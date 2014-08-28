@@ -24,7 +24,7 @@ function Model() {
 
 		TID = _id;
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 
 		db.execute("CREATE TABLE IF NOT EXISTS youtube_" + TID + " (id TEXT PRIMARY KEY, title TEXT, description TEXT, date TEXT, views TEXT, link TEXT, image TEXT);");
 
@@ -94,7 +94,7 @@ function Model() {
 		APP.log("debug", "YOUTUBE.handleData");
 
 		if(_data.feed.entry.length > 0) {
-			var db = Ti.Database.open("ChariTi");
+			var db = Ti.Database.open("Newport");
 
 			db.execute("DELETE FROM youtube_" + TID + ";");
 			db.execute("BEGIN TRANSACTION;");
@@ -129,7 +129,7 @@ function Model() {
 	this.getVideos = function() {
 		APP.log("debug", "YOUTUBE.getVideos");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT id, title, date, link FROM youtube_" + TID + " ORDER BY date DESC;");
 		var temp = [];
 

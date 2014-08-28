@@ -22,7 +22,7 @@ function Model() {
 
 		TID = _id;
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 
 		db.execute("CREATE TABLE IF NOT EXISTS podcast_" + TID + " (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, date TEXT, image TEXT, url TEXT);");
 
@@ -75,7 +75,7 @@ function Model() {
 		var nodes = xml.documentElement.getElementsByTagName("item");
 
 		if(nodes.length > 0) {
-			var db = Ti.Database.open("ChariTi");
+			var db = Ti.Database.open("Newport");
 
 			db.execute("DELETE FROM podcast_" + TID + ";");
 			db.execute("BEGIN TRANSACTION;");
@@ -114,7 +114,7 @@ function Model() {
 	this.getAllPodcasts = function() {
 		APP.log("debug", "PODCAST.getAllPodcasts");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT id, title, date FROM podcast_" + TID + " ORDER BY id ASC LIMIT 25;");
 		var temp = [];
 
@@ -141,7 +141,7 @@ function Model() {
 	this.getPodcast = function(_id) {
 		APP.log("debug", "PODCAST.getPodcast");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT * FROM podcast_" + TID + " WHERE id = " + UTIL.cleanEscapeString(_id) + ";");
 		var temp;
 
@@ -218,7 +218,7 @@ function Model() {
 	this.getNextPodcast = function(_id) {
 		APP.log("debug", "PODCAST.getNextPodcast");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT id FROM podcast_" + TID + " WHERE id > " + UTIL.cleanEscapeString(_id) + " ORDER BY id ASC LIMIT 1;");
 
 		if(data.rowCount == 0) {
@@ -248,7 +248,7 @@ function Model() {
 	this.getPreviousPodcast = function(_id) {
 		APP.log("debug", "PODCAST.getPreviousPodcast");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT id FROM podcast_" + TID + " WHERE id < " + UTIL.cleanEscapeString(_id) + " ORDER BY id DESC LIMIT 1;");
 
 		if(data.rowCount == 0) {

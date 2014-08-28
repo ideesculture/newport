@@ -21,11 +21,30 @@ $.init = function() {
 $.loginbutton.addEventListener("click", function(_event) {
 	APP.log("debug", $.loginfield);
 
-	var dialog = Ti.UI.createAlertDialog({
-		message: $.loginfield.value + "/" + $.loginfield.value,
-		ok: 'Okay',
-		title: 'Button'
-	}).show();
+	var fnSuccess = function(_data, _url) {
+		APP.log("debug", "fnSuccess");
+		Ti.UI.createAlertDialog({
+			message: $.loginfield.value + "/" + $.loginfield.value,
+			ok: 'Okay',
+			title: 'Button'
+		}).show();
+	};
+	var fnError = function() {
+		APP.log("debug", "fnError");
+		Ti.UI.createAlertDialog({
+			message: "y'a pas bon :-(",
+			ok: 'Close',
+			title: 'Button'
+		}).show();
+	};
+	HTTP.request({
+		timeout: 2000,
+		type: "GET",
+		format: "JSON",
+		url: "http://fakerest.site.192.168.20.10.xip.io/login_ok.txt",
+		success: fnSuccess,
+		failure: fnError
+	});
 });
 
 // Kick off the init

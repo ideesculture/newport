@@ -299,7 +299,7 @@ var APP = {
 	setupDatabase: function() {
 		Ti.API.debug("APP.setupDatabase");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 
 		db.execute("CREATE TABLE IF NOT EXISTS updates (url TEXT PRIMARY KEY, time TEXT);");
 		db.execute("CREATE TABLE IF NOT EXISTS log (time INTEGER, type TEXT, message TEXT);");
@@ -326,7 +326,7 @@ var APP = {
 	dropDatabase: function() {
 		Ti.API.debug("APP.dropDatabase");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		db.remove();
 	},
 	/**
@@ -991,7 +991,7 @@ var APP = {
 				break;
 		}
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 
 		var time = new Date().getTime();
 		var type = UTIL.escapeString(_severity);
@@ -1004,7 +1004,7 @@ var APP = {
 	 * Sends the log files via e-mail dialog
 	 */
 	logSend: function() {
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT * FROM log WHERE message != \"\" ORDER BY time DESC;");
 
 		var log = "\n\n=====\n\n" + APP.ID + " " + APP.VERSION + " (" + APP.CVERSION + ")\n" + APP.Device.os + " " + APP.Device.version + " (" + APP.Device.name + ") " + Ti.Platform.locale + "\n\n";

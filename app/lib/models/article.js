@@ -22,7 +22,7 @@ function Model() {
 
 		TID = _id;
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 
 		db.execute("CREATE TABLE IF NOT EXISTS article_" + TID + " (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, date TEXT, description TEXT, link TEXT, image TEXT);");
 
@@ -75,7 +75,7 @@ function Model() {
 		var nodes = xml.documentElement.getElementsByTagName("item");
 
 		if(nodes.length > 0) {
-			var db = Ti.Database.open("ChariTi");
+			var db = Ti.Database.open("Newport");
 
 			db.execute("DELETE FROM article_" + TID + ";");
 			db.execute("BEGIN TRANSACTION;");
@@ -111,7 +111,7 @@ function Model() {
 	this.getAllArticles = function() {
 		APP.log("debug", "ARTICLE.getAllArticles");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT id, title, date FROM article_" + TID + " ORDER BY id ASC LIMIT 25;");
 		var temp = [];
 
@@ -138,7 +138,7 @@ function Model() {
 	this.getArticle = function(_id) {
 		APP.log("debug", "ARTICLE.getArticle");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT * FROM article_" + TID + " WHERE id = " + UTIL.cleanEscapeString(_id) + ";");
 		var temp;
 
@@ -172,7 +172,7 @@ function Model() {
 	this.getNextArticle = function(_id) {
 		APP.log("debug", "ARTICLE.getNextArticle");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT id FROM article_" + TID + " WHERE id > " + UTIL.cleanEscapeString(_id) + " ORDER BY id ASC LIMIT 1;");
 
 		if(data.rowCount === 0) {
@@ -202,7 +202,7 @@ function Model() {
 	this.getPreviousArticle = function(_id) {
 		APP.log("debug", "ARTICLE.getPreviousArticle");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT id FROM article_" + TID + " WHERE id < " + UTIL.cleanEscapeString(_id) + " ORDER BY id DESC LIMIT 1;");
 
 		if(data.rowCount === 0) {
