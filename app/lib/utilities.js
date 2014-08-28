@@ -10,7 +10,7 @@
  * @param {Number} _time The time, in minutes, to consider 'warm' in the cache
  */
 exports.isStale = function(_url, _time) {
-	var db = Ti.Database.open("ChariTi");
+	var db = Ti.Database.open("Newport");
 	var time = new Date().getTime();
 	var cacheTime = typeof _time !== "undefined" ? _time : 5;
 	var freshTime = time - (cacheTime * 60 * 1000);
@@ -41,7 +41,7 @@ exports.isStale = function(_url, _time) {
  * @param {String} _url The URL of the file we're checking
  */
 exports.lastUpdate = function(_url) {
-	var db = Ti.Database.open("ChariTi");
+	var db = Ti.Database.open("Newport");
 	var lastUpdate = 0;
 
 	var data = db.execute("SELECT time FROM updates WHERE url = " + exports.escapeString(_url) + " ORDER BY time DESC LIMIT 1;");

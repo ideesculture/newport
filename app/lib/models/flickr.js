@@ -23,7 +23,7 @@ function Model() {
 
 		TID = _id;
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 
 		db.execute("CREATE TABLE IF NOT EXISTS flickr_sets_" + TID + " (id TEXT PRIMARY KEY, title TEXT, date_create TEXT, date_update TEXT, description TEXT, photo_count TEXT);");
 		db.execute("CREATE TABLE IF NOT EXISTS flickr_photos_" + TID + " (id TEXT PRIMARY KEY, set_id TEXT, indx TEXT, title TEXT, url_m TEXT, url_sq TEXT);");
@@ -137,7 +137,7 @@ function Model() {
 		APP.log("debug", "FLICKR.handleSets");
 
 		if(_data.photosets.photoset.length > 0) {
-			var db = Ti.Database.open("ChariTi");
+			var db = Ti.Database.open("Newport");
 
 			db.execute("DELETE FROM flickr_sets_" + TID + ";");
 			db.execute("DELETE FROM flickr_photos_" + TID + ";");
@@ -202,7 +202,7 @@ function Model() {
 		APP.log("debug", "FLICKR.handleSet");
 
 		if(_data.photoset.photo.length > 0) {
-			var db = Ti.Database.open("ChariTi");
+			var db = Ti.Database.open("Newport");
 
 			db.execute("BEGIN TRANSACTION;");
 
@@ -236,7 +236,7 @@ function Model() {
 	this.getSets = function() {
 		APP.log("debug", "FLICKR.getSets");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT id, title, photo_count FROM flickr_sets_" + TID + " ORDER BY date_update DESC;");
 		var temp = [];
 
@@ -263,7 +263,7 @@ function Model() {
 	this.getSet = function(_id) {
 		APP.log("debug", "FLICKR.getSet");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT * FROM flickr_photos_" + TID + " WHERE set_id = " + UTIL.cleanEscapeString(_id) + ";");
 		var temp = [];
 
@@ -293,7 +293,7 @@ function Model() {
 	this.getPhoto = function(_id, _index, _setid) {
 		APP.log("debug", "FLICKR.getPhoto");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = null;
 		var temp = null;
 

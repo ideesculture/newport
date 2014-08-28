@@ -22,7 +22,7 @@ function Model() {
 
 		TID = _id;
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 
 		db.execute("CREATE TABLE IF NOT EXISTS facebook_" + TID + " (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, date TEXT, description TEXT, link TEXT);");
 
@@ -72,7 +72,7 @@ function Model() {
 		APP.log("debug", "FACEBOOK.handleData");
 
 		if(_data.entries && _data.entries.length > 0) {
-			var db = Ti.Database.open("ChariTi");
+			var db = Ti.Database.open("Newport");
 
 			db.execute("DELETE FROM facebook_" + TID + ";");
 			db.execute("BEGIN TRANSACTION;");
@@ -108,7 +108,7 @@ function Model() {
 	this.getAllArticles = function() {
 		APP.log("debug", "FACEBOOK.getAllArticles(" + TID + ")");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT id, title, date FROM facebook_" + TID + " ORDER BY id ASC LIMIT 25;");
 		var temp = [];
 
@@ -135,7 +135,7 @@ function Model() {
 	this.getArticle = function(_id) {
 		APP.log("debug", "FACEBOOK.getArticle");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT * FROM facebook_" + TID + " WHERE id = " + UTIL.cleanEscapeString(_id) + ";");
 		var temp;
 
@@ -164,7 +164,7 @@ function Model() {
 	this.getNextArticle = function(_id) {
 		APP.log("debug", "FACEBOOK.getNextArticle");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT id FROM facebook_" + TID + " WHERE id > " + UTIL.cleanEscapeString(_id) + " ORDER BY id ASC LIMIT 1;");
 
 		if(data.rowCount == 0) {
@@ -194,7 +194,7 @@ function Model() {
 	this.getPreviousArticle = function(_id) {
 		APP.log("debug", "FACEBOOK.getPreviousArticle");
 
-		var db = Ti.Database.open("ChariTi");
+		var db = Ti.Database.open("Newport");
 		var data = db.execute("SELECT id FROM facebook_" + TID + " WHERE id < " + UTIL.cleanEscapeString(_id) + " ORDER BY id DESC LIMIT 1;");
 
 		if(data.rowCount == 0) {
