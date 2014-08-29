@@ -82,6 +82,9 @@
 	width: Ti.UI.FILL,
 	layout: "absolute",
 },
+".foldersItemName": {
+	left: "10dp"
+},
 ".foldersItemRight": {
 	layout: "horizontal",
 	right: "10dp",

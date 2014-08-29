@@ -20,7 +20,8 @@
 		},
 		"useSlideMenu": true,
 		"CollectiveAccess": {
-			"urlForLogin": "http://musee14.idcultu.re/gestion/service.php/find/ca_objects?q=zzzzzzzz"
+			"urlForLogin": "http://musee14.idcultu.re/gestion/service.php/find/ca_objects?q=zzzzzzzz",
+			"urlForModel": "http://192.168.20.11:81/modele_simplifie.json"
 		}
 	},
 	"manifest": [
@@ -41,9 +42,10 @@
 			"image": "home_icon",
 			"tabletSupport": false
 		},
+		
 		{
 			"title": "New",
-			"type": "login",
+			"type": "main_edit",
 			"image": "new_icon",
 			"tabletSupport": false
 		},
@@ -62,6 +64,15 @@
 		
 	],
 	"examples": [
+		
+		{
+			"title": "Deploy",
+			"heading": "Deploy",
+			"type": "deployParent",
+			"image": "home_icon",
+			"tabletSupport": false
+		},
+		
 		{
 			"title": "Map",
 			"points": [

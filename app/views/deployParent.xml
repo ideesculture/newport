@@ -1,0 +1,18 @@
+<Alloy>
+    <View id="index" class="container" height="Titanium.UI.FILL" width="Titanium.UI.FILL">
+ 
+        <View class="header" top="0" left="0" width="Titanium.UI.FILL" height="100" backgroundColor="#ff0000">
+            <!-- Header elements here (fixed position and size) -->
+        </View>
+ 
+        <!-- Begin variable size child views -->
+        <Require id="child1" src="childView" text="This is a test" top="100" />
+        <Require id="child2" src="childView" text="This is a test #2. This is a test #2. This is a test #2. This is a test #2. This is a test #2. This is a test #2. This is a test #2. This is a test #2." top="100" />
+        <!-- End variable size child views -->
+ 
+        <View id="footer" class="footer" top="100" left="0" width="Titanium.UI.FILL" height="Titanium.UI.FILL" backgroundColor="green">
+            <!-- Footer elements here (Fixed size. Position needs to be determined based upon size of child views above ) -->
+        </View>
+ 
+    </View>
+</Alloy>

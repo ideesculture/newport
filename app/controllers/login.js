@@ -75,7 +75,9 @@ $.handleData = function(_data) {
 	$.passwordfield.hide();
 	APP.log("debug", $.loginbutton);
 	$.loginbutton.title = "Logout";
-	APP.logged = true;
+	APP.ca_logged = true;
+	APP.ca_login = $.loginfield.value;
+	APP.ca_password = $.passwordfield.value;
 };
 
 
@@ -86,7 +88,7 @@ $.loginbutton.addEventListener("click", function(_event) {
 	APP.log("debug","fields");
 	APP.log("debug",$.loginfield);
 	
-	if(APP.logged != true) {
+	if(APP.ca_logged != true) {
 		// Login form : password & login are defined
 		if($.loginfield.value && $.passwordfield.value) {
 			APP.openLoading();

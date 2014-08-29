@@ -7,6 +7,5 @@
 "#Nodes": {
 	top: "0dp",
 	backgroundColor: "#000",
-	separatorColor: "#000",
-	separatorStyle: Ti.UI.iPhone.TableViewSeparatorStyle.SINGLE_LINE
+	separatorStyle:Ti.UI.iPhone.TableViewSeparatorStyle.NONE
 }
