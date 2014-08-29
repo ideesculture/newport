@@ -420,13 +420,14 @@ var APP = {
 
 		if(APP.Settings.useSlideMenu) {
 			// Add the Settings tab
+			/*
 			nodes.push({
 				id: "settings",
 				title: "Settings",
 				image: "/icons/white/settings.png",
 				menuHeader: hasMenuHeaders ? "Application" : null
 			});
-
+			*/
 			APP.buildMenu(nodes);
 		} else {
 			APP.buildTabs(nodes);
@@ -919,7 +920,7 @@ var APP = {
 		APP.SlideMenu.Wrapper.left = "0dp";
 		APP.SlideMenu.Wrapper.setAccessibilityHidden(false);
 		APP.GlobalWrapper.animate({
-			left: "200dp",
+			left: "80dp",
 			duration: 250,
 			curve: Ti.UI.ANIMATION_CURVE_EASE_IN_OUT
 		});

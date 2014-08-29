@@ -29,17 +29,34 @@
 	],
 	"tabs": [
 		{
-			"menuHeader": "My Tabs",
 			"title": "Login",
 			"type": "login",
-			"image": "settings",
+			"image": "museum_mode",
 			"tabletSupport": false
 		},
 		{
 			"title": "Main",
 			"heading": "Main screen",
 			"type": "main",
-			"image": "chariti",
+			"image": "home_icon",
+			"tabletSupport": false
+		},
+		{
+			"title": "New",
+			"type": "login",
+			"image": "new_icon",
+			"tabletSupport": false
+		},
+		{
+			"title": "Search",
+			"type": "login",
+			"image": "search_icon",
+			"tabletSupport": false
+		},
+		{
+			"title": "Storage locations",
+			"type": "login",
+			"image": "storage_location_icon",
 			"tabletSupport": false
 		}
 		

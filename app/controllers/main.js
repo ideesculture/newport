@@ -29,3 +29,5 @@ if(APP.Settings.useSlideMenu) {
 		APP.openSettings();
 	});
 }
+
+$.NavigationBar.text = "Archivio Teatro Regio";

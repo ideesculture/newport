@@ -2,9 +2,9 @@
 	layout: "vertical"
 },
 "#container": {
-	top: "0dp",
-	backgroundColor: "#EEE",
-	rowHeight: "48dp",
-	separatorColor: "#DDD",
+	top: "40dp",
+	backgroundColor: "#000",
+	rowHeight: "96dp",
+	separatorColor: "#000",
 	scrollsToTop: true
 }

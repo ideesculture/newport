@@ -1,5 +1,4 @@
 <Alloy>
 	<TableViewRow id="Wrapper">
-		<Label id="title" />
 	</TableViewRow>
 </Alloy>

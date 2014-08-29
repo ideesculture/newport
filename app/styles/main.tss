@@ -19,24 +19,21 @@
 	},
 	color: "#000"
 },
-
 "#foldersView": {
 	top: "10dp",
-	left: "15dp",
-	right: "15dp",
-	bottom: "15dp",
+	left: "10dp",
+	right: "10dp",
+	bottom: "10dp",
 	height: Ti.UI.SIZE,
 	width: Ti.UI.FILL,
 	layout: "vertical"
 },
-
-"#foldersTop": {
+".foldersTop": {
 	layout: "absolute",
 	width: Ti.UI.FILL,
 	height: "40dp"
 },
-
-"#foldersTitle": {
+".foldersTitle": {
 	width: Ti.UI.SIZE,
 	left: "10dp",
 	top: "0dp",
@@ -46,8 +43,7 @@
 	},
 	color: "#000"
 },
-
-"#foldersButtons": {
+".foldersButtons": {
 	width: Ti.UI.SIZE,
 	height: Ti.UI.SIZE,
 	right: "0dp",
@@ -58,8 +54,7 @@
 		fontFamily: "HelveticaNeue"
 	}
 },
-
-"#topGridButton": {
+".topGridButton": {
 	title: "Grid",
 	whitchObj: "buttonGrid",
 	font: {
@@ -67,8 +62,7 @@
 		fontFamily: "HelveticaNeue"
 	}
 },
-
-"#topListButton": {
+".topListButton": {
 	title: "List",
 	whitchObj: "buttonList",
 	font: {
@@ -76,13 +70,11 @@
 		fontFamily: "HelveticaNeue"
 	}
 },
-
-"#folderItems": {
+".folderItems": {
 	height: "120dp",
 	width: Ti.UI.FILL,
 	layout: "vertical"
 },
-
 ".foldersItem": {
 	height: "40dp",
 	borderColor: "#000",
@@ -90,12 +82,6 @@
 	width: Ti.UI.FILL,
 	layout: "absolute",
 },
-
-".foldersItemName": {
-	width: "100dp",
-	left: "10dp"
-},
-
 ".foldersItemRight": {
 	layout: "horizontal",
 	right: "10dp",
@@ -105,16 +91,9 @@
 		fontFamily: "HelveticaNeue"
 	}
 },
-
-".foldersItemCount":{
-	width: "30dp",
-	left: "0dp"
-}
-
 ".folderIcon":{
 	width: "20dp"
 },
-
 ".label": {
 	font: {
 		fontSize: "14dp",
@@ -123,14 +102,16 @@
 	color: "#000",
 	height: Ti.UI.FILL
 },
-
 "#table":{
 	layout: "horizontal",
+	top: "10dp",
+	left: "10dp",
+	right: "10dp",
+	bottom: "10dp",
 	contentWidth: "100%",
 	contentHeight:'auto',
 	showVerticalScrollIndicator:true
 },
-
 ".cell":{
 	width: "227dp",
 	height: "260dp",
@@ -141,15 +122,41 @@
 	layout: "vertical"
 },
 ".cellimage":{
-	backgroundColor:"red"
+	backgroundColor: "#dddddd",
+	top:"5dp",
+	left:"5dp",
+	right:"5dp"
 },
 ".objectName":{
-	backgroundColor:"blue",
+	left:"10dp",
+	top:"10dp",
 	width:Ti.UI.FILL
 },
-".objectSmallInfo":{
-	backgroundColor:"green"
+".objectRow2": {
+	height: "40dp",
+	width: Ti.UI.FILL,
+	layout: "absolute",
+	left:"10dp"
 },
-".objectInfoIcon":{
-	backgroundColor:"rose"
+".objectInfo":{
+	left:"0"
+},
+".objectRow2Right":{
+	backgroundColor:"black",
+	borderRadius:"10dp",
+	height:"20dp",
+	width:"20dp",
+	right: "10dp",
+	font: {
+		fontSize: "14dp",
+		fontFamily: "HelveticaNeue"
+	},
+	textAlign : 'center'
+},
+".infoIcon":{
+	color:"white",
+	text:"i",
+	width:Ti.UI.FILL
 }
+
+

@@ -35,41 +35,26 @@ $.init = function(_params) {
 
 		var tab = Ti.UI.createTableViewRow({
 			id: _params.nodes[i].id,
-			height: "47dp",
-			backgroundcolor: "#111",
-			backgroundSelectedColor: "#222",
-			selectedBackgroundColor: "#222"
-		});
-
-		var label = Ti.UI.createLabel({
-			text: _params.nodes[i].title,
-			top: "0dp",
-			left: "47dp",
-			right: "13dp",
-			height: "46dp",
-			font: {
-				fontSize: "16dp",
-				fontFamily: "HelveticaNeue-Light"
-			},
-			color: "#FFF",
-			touchEnabled: false
+			height: "60dp",
+			backgroundcolor: "#000",
+			backgroundSelectedColor: "#327B9F",
+			selectedBackgroundColor: "#327B9F"
 		});
 
 		if(_params.nodes[i].image) {
 			var icon = Ti.UI.createImageView({
 				image: _params.nodes[i].image,
-				width: "21dp",
-				height: "21dp",
-				top: "13dp",
-				left: "13dp",
+				width: "80dp",
+				height: "60dp",
+				top: "0dp",
+				left: "0dp",
 				touchEnabled: false,
-				preventDefaultImage: true
+				preventDefaultImage: true,
+				backgroundColor: "lightgray"
 			});
 
 			tab.add(icon);
 		}
-
-		tab.add(label);
 
 		if(sections.length > 0) {
 			sections[currentSection].add(tab);

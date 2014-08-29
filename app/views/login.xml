@@ -1,6 +1,6 @@
 <Alloy>
 	<View id="Wrapper" name="Settings">
-		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" image="data/logo.png" />
+		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
 		
 		<ScrollView id="container">
 			<Label id="loginheader" text="login" />

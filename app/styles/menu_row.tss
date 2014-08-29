@@ -6,7 +6,7 @@
 	top: "10dp",
 	left: "10dp",
 	right: "10dp",
-	height: "28dp",
+	height: "74dp",
 	font: {
 		fontSize: "18dp",
 		fontWeight: "normal"
