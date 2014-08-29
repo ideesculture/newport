@@ -1,0 +1,162 @@
+"#Wrapper": {
+	layout: "vertical"
+},
+"#container": {
+	top: "0dp",
+	backgroundColor: "#FFF",
+	layout: "vertical",
+	showVerticalScrollIndicator: true
+},
+"#heading": {
+	top: "15dp",
+	left: "15dp",
+	right: "15dp",
+	height: Ti.UI.SIZE,
+	width: Ti.UI.FILL,
+	font: {
+		fontSize: "18dp",
+		fontFamily: "HelveticaNeue-Light"
+	},
+	color: "#000"
+},
+"#foldersView": {
+	top: "10dp",
+	left: "10dp",
+	right: "10dp",
+	bottom: "10dp",
+	height: Ti.UI.SIZE,
+	width: Ti.UI.FILL,
+	layout: "vertical"
+},
+".foldersTop": {
+	layout: "absolute",
+	width: Ti.UI.FILL,
+	height: "40dp"
+},
+".foldersTitle": {
+	width: Ti.UI.SIZE,
+	left: "10dp",
+	top: "0dp",
+	font: {
+		fontSize: "14dp",
+		fontFamily: "HelveticaNeue"
+	},
+	color: "#000"
+},
+".foldersButtons": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	right: "0dp",
+	top: "0dp",
+	layout: "horizontal",
+	font: {
+		fontSize: "14dp",
+		fontFamily: "HelveticaNeue"
+	}
+},
+".topGridButton": {
+	title: "Grid",
+	whitchObj: "buttonGrid",
+	font: {
+		fontSize: "11dp",
+		fontFamily: "HelveticaNeue"
+	}
+},
+".topListButton": {
+	title: "List",
+	whitchObj: "buttonList",
+	font: {
+		fontSize: "11dp",
+		fontFamily: "HelveticaNeue"
+	}
+},
+".folderItems": {
+	height: "120dp",
+	width: Ti.UI.FILL,
+	layout: "vertical"
+},
+".foldersItem": {
+	height: "40dp",
+	borderColor: "#000",
+	borderWidth: "1dp",
+	width: Ti.UI.FILL,
+	layout: "absolute",
+},
+".foldersItemRight": {
+	layout: "horizontal",
+	right: "10dp",
+	width: Ti.UI.SIZE,
+	font: {
+		fontSize: "14dp",
+		fontFamily: "HelveticaNeue"
+	}
+},
+".folderIcon":{
+	width: "20dp"
+},
+".label": {
+	font: {
+		fontSize: "14dp",
+		fontFamily: "HelveticaNeue"
+	},
+	color: "#000",
+	height: Ti.UI.FILL
+},
+"#table":{
+	layout: "horizontal",
+	top: "10dp",
+	left: "10dp",
+	right: "10dp",
+	bottom: "10dp",
+	contentWidth: "100%",
+	contentHeight:'auto',
+	showVerticalScrollIndicator:true
+},
+".cell":{
+	width: "227dp",
+	height: "260dp",
+	backgroundColor: "lightgray",
+	top: "10dp",
+	bottom: "10dp",
+	left: "20dp",
+	layout: "vertical"
+},
+".cellimage":{
+	backgroundColor: "#dddddd",
+	top:"5dp",
+	left:"5dp",
+	right:"5dp"
+},
+".objectName":{
+	left:"10dp",
+	top:"10dp",
+	width:Ti.UI.FILL
+},
+".objectRow2": {
+	height: "40dp",
+	width: Ti.UI.FILL,
+	layout: "absolute",
+	left:"10dp"
+},
+".objectInfo":{
+	left:"0"
+},
+".objectRow2Right":{
+	backgroundColor:"black",
+	borderRadius:"10dp",
+	height:"20dp",
+	width:"20dp",
+	right: "10dp",
+	font: {
+		fontSize: "14dp",
+		fontFamily: "HelveticaNeue"
+	},
+	textAlign : 'center'
+},
+".infoIcon":{
+	color:"white",
+	text:"i",
+	width:Ti.UI.FILL
+}
+
+

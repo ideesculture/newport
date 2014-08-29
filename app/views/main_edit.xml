@@ -1,0 +1,155 @@
+<Alloy>
+    <View id="Wrapper" name="Text">
+		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
+    	
+    	<View id="container">
+			<Label id="heading" text="Home >" />
+	  		
+	  		<View id="foldersView">
+	  			<View class="foldersTop">
+	  				<View class="foldersTitle">
+  						<Label class="label" text="Folders" />
+					</View>
+  					
+	  				<View class="foldersButtons">
+	  					<Button class="topGridButton"></Button>
+	  					<Button class="topListButton"></Button>
+	  				</View>
+	  			</View>
+	  			
+	    		<ScrollView class="folderItems">
+	    			<View class="foldersItem">
+	    				<Label class="label foldersItemName" text="Item" />
+	    				
+	    				<View class="foldersItemRight">
+	    					<Label class="label foldersItemCount" text="(2)" />
+	    					<ImageView class="folderIcon" image="/images/folder_icon.png"></ImageView>
+	    				</View>
+	    			</View>
+	    			<View class="foldersItem">
+	    				<Label class="label foldersItemName" text="Item" />
+	    				
+	    				<View class="foldersItemRight">
+	    					<Label class="label foldersItemCount" text="(34)" />
+	    					<ImageView class="folderIcon" image="/images/folder_icon.png"></ImageView>
+	    				</View>
+	    			</View>
+	    			<View class="foldersItem">
+	    				<Label class="label foldersItemName" text="Item" />
+	    				
+	    				<View class="foldersItemRight">
+	    					<Label class="label foldersItemCount" text="(5)" />
+	    					<ImageView class="folderIcon" image="/images/folder_icon.png"></ImageView>
+	    				</View>
+	    			</View>
+				</ScrollView>
+			</View>
+			
+			<ScrollView id="table">
+	  			<View class="foldersTop">
+	  				<View class="foldersTitle">
+  						<Label class="label" text="Objects" />
+					</View>
+  					
+	  				<View class="foldersButtons">
+	  					<Button class="topGridButton"></Button>
+	  					<Button class="topListButton"></Button>
+	  				</View>
+	  			</View>
+
+				<View class="cell">
+					<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+					<Label class="objectName" text="Object 1" />
+	    			<View class="objectRow2">
+	    				<Label class="objectInfo" text="Item" />
+	    				
+	    				<View class="objectRow2Right">
+	    					<Label class="infoIcon" text="i" />
+	    				</View>
+	    			</View>
+				</View>
+				<View class="cell">
+					<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+					<Label class="objectName" text="Object 1" />
+	    			<View class="objectRow2">
+	    				<Label class="objectInfo" text="Item" />
+	    				
+	    				<View class="objectRow2Right">
+	    					<Label class="infoIcon" text="i" />
+	    				</View>
+	    			</View>
+				</View>
+				<View class="cell">
+					<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+					<Label class="objectName" text="Object 1" />
+	    			<View class="objectRow2">
+	    				<Label class="objectInfo" text="Item" />
+	    				
+	    				<View class="objectRow2Right">
+	    					<Label class="infoIcon" text="i" />
+	    				</View>
+	    			</View>
+				</View>
+				<View class="cell">
+					<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+					<Label class="objectName" text="Object 1" />
+	    			<View class="objectRow2">
+	    				<Label class="objectInfo" text="Item" />
+	    				
+	    				<View class="objectRow2Right">
+	    					<Label class="infoIcon" text="i" />
+	    				</View>
+	    			</View>
+				</View>
+				<View class="cell">
+					<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+					<Label class="objectName" text="Object 1" />
+	    			<View class="objectRow2">
+	    				<Label class="objectInfo" text="Item" />
+	    				
+	    				<View class="objectRow2Right">
+	    					<Label class="infoIcon" text="i" />
+	    				</View>
+	    			</View>
+				</View>
+				<View class="cell">
+					<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+					<Label class="objectName" text="Object 1" />
+	    			<View class="objectRow2">
+	    				<Label class="objectInfo" text="Item" />
+	    				
+	    				<View class="objectRow2Right">
+	    					<Label class="infoIcon" text="i" />
+	    				</View>
+	    			</View>
+				</View>
+				<View class="cell">
+					<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+					<Label class="objectName" text="Object 1" />
+	    			<View class="objectRow2">
+	    				<Label class="objectInfo" text="Item" />
+	    				
+	    				<View class="objectRow2Right">
+	    					<Label class="infoIcon" text="i" />
+	    				</View>
+	    			</View>
+				</View>
+				<View class="cell">
+					<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+					<Label class="objectName" text="Object 1" />
+	    			<View class="objectRow2">
+	    				<Label class="objectInfo" text="Item" />
+	    				
+	    				<View class="objectRow2Right">
+	    					<Label class="infoIcon" text="i" />
+	    				</View>
+	    			</View>
+				</View>
+
+
+	        </ScrollView>
+		</View>
+		
+    	
+    </View>
+</Alloy>
