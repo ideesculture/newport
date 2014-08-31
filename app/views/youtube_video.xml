@@ -1,7 +1,0 @@
-<Alloy>
-	<View id="Wrapper" name="Youtube Video">
-		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" />
-		
-		<WebView id="container" />
-	</View>
-</Alloy>

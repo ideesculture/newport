@@ -1,13 +1,13 @@
 {
-	"id": "ChariTi.001",
-	"version": "1.2",
-	"minimumVersion": "1.2",
+	"id": "Newport.1.0",
+	"version": "1.0",
+	"minimumVersion": "1.0",
 	"configurationUrl": "",
 	"legal": {
 		"copyright": "Copyright ‌2014 idéesculture et contributeurs"
 	},
 	"settings": {
-		"share": "Check out this great ChariTi content",
+		"share": "Share some content",
 		"notifications": {
 			"enabled": false,
 			"provider": "UA",
@@ -15,18 +15,17 @@
 			"secret": "s-RDQejhRwmx-j4DCaXPMw"
 		},
 		"colors": {
-			"primary": "#327B9F",
-			"secondary": "#569BBE"
+			"primary": "#2f8dc4",
+			"secondary": "#4faff2"
 		},
 		"useSlideMenu": true,
 		"CollectiveAccess": {
 			"urlForLogin": "http://musee14.idcultu.re/gestion/service.php/find/ca_objects?q=zzzzzzzz",
-			"urlForModel": "http://192.168.20.11:81/modele_simplifie.json"
+			"urlForModel": "http://192.168.0.27:81/modele_simplifie.json"
 		}
 	},
 	"manifest": [
-		"http://chariti.mobi/app/logo.png",
-		"http://chariti.mobi/app/logo@2x.png"
+		"", ""
 	],
 	"tabs": [
 		{
@@ -62,75 +61,5 @@
 			"tabletSupport": false
 		}
 		
-	],
-	"examples": [
-		
-		{
-			"title": "Deploy",
-			"heading": "Deploy",
-			"type": "deployParent",
-			"image": "home_icon",
-			"tabletSupport": false
-		},
-		
-		{
-			"title": "Map",
-			"points": [
-				{
-					"latitude": "28.24560022171899",
-					"longitude": "-80.72571516036987",
-					"pinColor": "RED",
-					"title": "Place A",
-					"subTitle": "This is a subtitle"
-				},
-				{
-					"latitude": "28.24704626421908",
-					"longitude": "-80.73882579803467",
-					"pinColor": "GREEN",
-					"title": "Place B",
-					"subTitle": "This is another subtitle"
-				},
-				{
-					"latitude": "28.228406881099808",
-					"longitude": "-80.73399782180786",
-					"pinColor": "PURPLE",
-					"title": "Place C",
-					"subTitle": ""
-				}
-			],
-			"type": "map",
-			"image": "map",
-			"tabletSupport": false
-		},
-		{
-			"title": "News",
-			"feed": "http://developer.appcelerator.com/blog/feed",
-			"type": "article",
-			"image": "news",
-			"cache": 120,
-			"tabletSupport": true
-		},
-		{
-			"title": "PDF",
-			"url": "http://www.appcelerator.com.s3.amazonaws.com/pdf/casestudy_nbc.pdf",
-			"type": "pdf",
-			"image": "book",
-			"tabletSupport": false
-		},
-		{
-			"title": "YouTube",
-			"username": "appcelerator",
-			"type": "youtube",
-			"image": "video2",
-			"cache": 1440,
-			"tabletSupport": true
-		},
-		{
-			"title": "Web",
-			"url": "https://github.com/mcongrove/ChariTi",
-			"type": "web",
-			"image": "home",
-			"tabletSupport": false
-		}
 	]
 }

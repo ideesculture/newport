@@ -1,7 +1,0 @@
-<Alloy>
-	<View id="Wrapper" name="Flickr Album" type="PARENT">
-		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" />
-		
-		<ScrollView id="container" />
-	</View>
-</Alloy>
