@@ -60,6 +60,7 @@
 },
 ".bundleItemContainer": {
 	width: Ti.UI.FILL,
+	height:Ti.UI.SIZE,
 	height:"120dp",
 	layout: "vertical"
 },
@@ -72,7 +73,11 @@
 	layout: "absolute",
 },
 ".bundleItemName": {
-	left: "10dp"
+	left: "10dp",
+	color: '#000',
+	width:"auto",
+	height:"auto",
+	textAlign: 'center'	
 },
 ".bundleItemRight": {
 	layout: "horizontal",

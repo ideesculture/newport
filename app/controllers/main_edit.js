@@ -90,18 +90,29 @@ $.retrieveData = function(_force, _callback) {
  */
 $.handleData = function(_data) {
 	APP.log("debug", "login.handleData");
-	APP.log("debug",_data);
+	//APP.log("debug",_data);
 	
 	APP.log("debug",APP.ca_modele_prop);
 	APP.log("debug",APP.ca_modele_values.elements);
-	
+	var rows=[];
 	var i = 1;
 	for(var element in APP.ca_modele_values.elements) {
 		if(i<10) {
-			$.renderMetadataBox(element,APP.ca_modele_values.elements[element]);	
+			var row = Alloy.createController("edit_metadata_row", {
+				element:element,
+				content:APP.ca_modele_values.elements[element]
+			}).getView();
+			rows.push(row);
 		}	
 		i++;
 	};
+	$.bundles.setOpacity(0);
+	$.bundles.setData(rows);
+	for(var x=0; x<rows.length; x++) {
+		$.bundles.add(rows[x]);
+	}
+	$.bundles.setOpacity(1);
+
 	APP.closeLoading();
 };
 

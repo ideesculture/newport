@@ -72,17 +72,17 @@ function Model() {
 	 */
 	this.handleData = function(_data, _url, _callback) {
 		APP.log("debug", "CA_MODEL.handleData");
-			APP.log("trace", JSON.stringify(_data));
-			APP.log("trace", _data);
-			APP.log("trace", _data.ok);
+		//APP.log("trace", JSON.stringify(_data));
+		//APP.log("trace", _data);
+		APP.log("trace", _data.ok);
 		if(_data.ok == true) {
 			APP.log("debug", "connected");
 			var db = Ti.Database.open("Newport");
 			APP.log("debug", table);
 			//db.execute("DELETE FROM ca_model_" + table + ";");
 			db.execute("BEGIN TRANSACTION;");
-			APP.log("debug","MODEL.handleData");
-			APP.log("debug",_data);
+			//APP.log("debug",_data);
+			APP.log("debug","HERE");
 			APP.ca_modele_prop = new Array();
 			APP.ca_modele_values = {};
 			var _data2;
@@ -94,6 +94,7 @@ function Model() {
 		        if(prop != "ok") {
 		        	for (var prop2 in _data2) {
 		        		APP.ca_modele_prop.push(prop2);
+		        		APP.log("debug","HERE2");
 		        		APP.ca_modele_values[prop2] = _data2[prop2];
 	        		} 
 		        }
