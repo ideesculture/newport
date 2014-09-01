@@ -3,9 +3,18 @@
 },
 "#container": {
 	top: "0dp",
+	backgroundColor:"lightgray",
+	layout: "horizontal"
+},
+"#mainview": {
 	backgroundColor: "#FFF",
 	layout: "vertical",
-	showVerticalScrollIndicator: true
+	showVerticalScrollIndicator: true,
+	width:Ti.UI.FILL	
+},
+"#rightbar":{
+	 width:"100dp",
+	 backgroundColor:"green"
 },
 "#heading": {
 	top: "15dp",
