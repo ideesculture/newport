@@ -1,7 +1,7 @@
 /**
  * The slide menu widget
  * 
- * @class Widgets.com.mcongrove.slideMenu
+ * @class Widgets.com.ideesculture.newportSlideMenu
  */
 var sections = [];
 var nodes = [];
@@ -18,6 +18,7 @@ var color;
 $.init = function(_params) {
 	sections = [];
 	nodes = [];
+	downNodes = [];
 	color = typeof _params.color !== "undefined" ? _params.color : null;
 
 	// Creates a TableViewSection for each tab with a menuHeader property
@@ -55,6 +56,7 @@ $.init = function(_params) {
 
 			tab.add(icon);
 		}
+		Ti.API.info(_params.nodes[i]);
 
 		if(sections.length > 0) {
 			sections[currentSection].add(tab);
@@ -69,7 +71,14 @@ $.init = function(_params) {
 				$.Nodes.appendSection(sections[currentSection]);
 			}
 		} else {
-			nodes.push(tab);
+			if(_params.nodes[i].downTab) {
+				Ti.API.info("down tab");
+				downNodes.push(tab);
+			} else {
+				Ti.API.info("up tab");
+				nodes.push(tab);
+			}
+			
 		}
 	}
 
@@ -77,9 +86,15 @@ $.init = function(_params) {
 		$.Nodes.setData(nodes);
 	}
 
+	if(downNodes.length > 0) {
+		$.DownNodes.setData(downNodes);
+	}
+
 	// We have to remove before adding to make sure we're not duplicating
 	$.Nodes.removeEventListener("click", handleClick);
 	$.Nodes.addEventListener("click", handleClick);
+	$.DownNodes.removeEventListener("click", handleClick);
+	$.DownNodes.addEventListener("click", handleClick);
 };
 
 /**

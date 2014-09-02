@@ -13,8 +13,8 @@
 						</View>
 	  					
 		  				<View class="foldersButtons">
-		  					<Button class="topGridButton"></Button>
-		  					<Button class="topListButton"></Button>
+		  					<Require type="widget" src="ti.ux.iconfont" icon="fa-th-large" left="12" size="36" color="#aaa" class="faIcon"/>
+		  					<Require type="widget" src="ti.ux.iconfont" icon="fa-align-justify" left="12" size="36" color="#000" class="faIcon"/>
 		  				</View>
 		  			</View>
 		  			
@@ -24,7 +24,7 @@
 		    				
 		    				<View class="foldersItemRight">
 		    					<Label class="label foldersItemCount" text="(2)" />
-		    					<ImageView class="folderIcon" image="/images/folder_icon.png"></ImageView>
+			  					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="0" size="20" color="#000" class="folderIcon"/>
 		    				</View>
 		    			</View>
 		    			<View class="foldersItem">
@@ -32,7 +32,7 @@
 		    				
 		    				<View class="foldersItemRight">
 		    					<Label class="label foldersItemCount" text="(34)" />
-		    					<ImageView class="folderIcon" image="/images/folder_icon.png"></ImageView>
+			  					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="0" size="20" color="#000" class="folderIcon"/>
 		    				</View>
 		    			</View>
 		    			<View class="foldersItem">
@@ -40,7 +40,7 @@
 		    				
 		    				<View class="foldersItemRight">
 		    					<Label class="label foldersItemCount" text="(5)" />
-		    					<ImageView class="folderIcon" image="/images/folder_icon.png"></ImageView>
+			  					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="0" size="20" color="#000" class="folderIcon"/>
 		    				</View>
 		    			</View>
 					</ScrollView>
@@ -53,13 +53,13 @@
 						</View>
 	  					
 		  				<View class="foldersButtons">
-		  					<Button class="topGridButton"></Button>
-		  					<Button class="topListButton"></Button>
+		  					<Require type="widget" src="ti.ux.iconfont" icon="fa-th-large" left="12" size="36" color="#000" class="faIcon"/>
+		  					<Require type="widget" src="ti.ux.iconfont" icon="fa-align-justify" left="12" size="36" color="#aaa" class="faIcon"/>
 		  				</View>
 		  			</View>
 	
 					<View class="cell">
-						<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+						<ImageView id="firstImage" class="cellimage" image="/newport/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
@@ -70,7 +70,7 @@
 		    			</View>
 					</View>
 					<View class="cell">
-						<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+						<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
@@ -81,7 +81,7 @@
 		    			</View>
 					</View>
 					<View class="cell">
-						<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+						<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
@@ -92,7 +92,7 @@
 		    			</View>
 					</View>
 					<View class="cell">
-						<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+						<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
@@ -103,7 +103,7 @@
 		    			</View>
 					</View>
 					<View class="cell">
-						<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+						<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
@@ -114,7 +114,7 @@
 		    			</View>
 					</View>
 					<View class="cell">
-						<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+						<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
@@ -125,7 +125,7 @@
 		    			</View>
 					</View>
 					<View class="cell">
-						<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+						<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
@@ -136,7 +136,7 @@
 		    			</View>
 					</View>
 					<View class="cell">
-						<ImageView class="cellimage" image="/images/cadre-plus-ipad.png" />
+						<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
@@ -152,7 +152,114 @@
 			</View>
 			
 	    	<View id="rightbar">
-	    		
+	    		<View id="rightbarContainer">
+					<Label text="Last Modified" id="rightbarTitle"></Label>
+					<Label text="Tuesday 22, July" class="rightbarDate"></Label>
+		    		<View class="itemTreeTable">
+		    			<View class="itemTreeRow itemTreeFolder">
+		    				<View class="itemTreeRowLeft">
+		    					<Label text="Item" class="itemTreeLabel"></Label>
+		    				</View>
+		    				<View class="itemTreeRowRight">
+		    					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="24" size="20" color="#000" class="faIcon"/>
+		    				</View>
+		    			</View>
+		    			<View class="itemTreeRow itemTreeFolder">
+		    				<View class="itemTreeRowLeft">
+		    					<Label text="Item" class="itemTreeLabel"></Label>
+		    				</View>
+		    				<View class="itemTreeRowRight">
+		    					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="24" size="20" color="#000" class="faIcon"/>
+		    				</View>
+		    			</View>
+		    			<View class="itemTreeRow itemTreeFolder">
+		    				<View class="itemTreeRowLeft">
+		    					<Label text="Item" class="itemTreeLabel"></Label>
+		    				</View>
+		    				<View class="itemTreeRowRight">
+		    					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="24" size="20" color="#000" class="faIcon"/>
+		    				</View>
+		    			</View>
+		    			<View class="itemTreeRow itemTreeLeaf">
+		    				<View class="itemTreeRowLeft">
+		    					<Label text="Item" class="itemTreeLabel"></Label>
+		    				</View>
+		    				<View class="itemTreeRowRight">
+		    					<Require type="widget" src="ti.ux.iconfont" icon="fa-file-o" left="24" size="20" color="#000" class="faIcon"/>
+		    				</View>
+		    			</View>
+		    		</View>
+					<Label text="Tuesday 22, July" class="rightbarDate"></Label>
+		    		<View class="itemTreeTable">
+		    			<View class="itemTreeRow itemTreeFolder">
+		    				<View class="itemTreeRowLeft">
+		    					<Label text="Item" class="itemTreeLabel"></Label>
+		    				</View>
+		    				<View class="itemTreeRowRight">
+		    					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="24" size="20" color="#000" class="faIcon"/>
+		    				</View>
+		    			</View>
+		    			<View class="itemTreeRow itemTreeFolder">
+		    				<View class="itemTreeRowLeft">
+		    					<Label text="Item" class="itemTreeLabel"></Label>
+		    				</View>
+		    				<View class="itemTreeRowRight">
+		    					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="24" size="20" color="#000" class="faIcon"/>
+		    				</View>
+		    			</View>
+		    			<View class="itemTreeRow itemTreeFolder">
+		    				<View class="itemTreeRowLeft">
+		    					<Label text="Item" class="itemTreeLabel"></Label>
+		    				</View>
+		    				<View class="itemTreeRowRight">
+		    					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="24" size="20" color="#000" class="faIcon"/>
+		    				</View>
+		    			</View>
+		    			<View class="itemTreeRow itemTreeLeaf">
+		    				<View class="itemTreeRowLeft">
+		    					<Label text="Item" class="itemTreeLabel"></Label>
+		    				</View>
+		    				<View class="itemTreeRowRight">
+		    					<Require type="widget" src="ti.ux.iconfont" icon="fa-file-o" left="24" size="20" color="#000" class="faIcon"/>
+		    				</View>
+		    			</View>
+		    		</View>
+		    		<Label text="Tuesday 22, July" class="rightbarDate"></Label>
+		    		<View class="itemTreeTable">
+		    			<View class="itemTreeRow itemTreeFolder">
+		    				<View class="itemTreeRowLeft">
+		    					<Label text="Item" class="itemTreeLabel"></Label>
+		    				</View>
+		    				<View class="itemTreeRowRight">
+		    					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="24" size="20" color="#000" class="faIcon"/>
+		    				</View>
+		    			</View>
+		    			<View class="itemTreeRow itemTreeFolder">
+		    				<View class="itemTreeRowLeft">
+		    					<Label text="Item" class="itemTreeLabel"></Label>
+		    				</View>
+		    				<View class="itemTreeRowRight">
+		    					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="24" size="20" color="#000" class="faIcon"/>
+		    				</View>
+		    			</View>
+		    			<View class="itemTreeRow itemTreeFolder">
+		    				<View class="itemTreeRowLeft">
+		    					<Label text="Item" class="itemTreeLabel"></Label>
+		    				</View>
+		    				<View class="itemTreeRowRight">
+		    					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="24" size="20" color="#000" class="faIcon"/>
+		    				</View>
+		    			</View>
+		    			<View class="itemTreeRow itemTreeLeaf">
+		    				<View class="itemTreeRowLeft">
+		    					<Label text="Item" class="itemTreeLabel"></Label>
+		    				</View>
+		    				<View class="itemTreeRowRight">
+		    					<Require type="widget" src="ti.ux.iconfont" icon="fa-file-o" left="24" size="20" color="#000" class="faIcon"/>
+		    				</View>
+		    			</View>
+		    		</View>
+		    	</View>
 	    	</View>
     	</View>
     </View>

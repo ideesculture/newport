@@ -410,7 +410,8 @@ var APP = {
 				title: APP.Nodes[i].title,
 				image: UTIL.fileExists(imageFolder + APP.Nodes[i].image + ".png") ? imageFolder + APP.Nodes[i].image + ".png" : null,
 				controller: APP.Nodes[i].type.toLowerCase(),
-				menuHeader: APP.Nodes[i].menuHeader
+				menuHeader: APP.Nodes[i].menuHeader,
+				downTab: APP.Nodes[i].downTab
 			});
 
 			if(APP.Settings.useSlideMenu && APP.Nodes[i].menuHeader) {

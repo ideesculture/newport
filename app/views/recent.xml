@@ -1,5 +1,4 @@
 <Alloy>
 	<View id="Wrapper">
-		<TableView id="Nodes" />
 	</View>
 </Alloy>

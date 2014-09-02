@@ -1,6 +1,6 @@
 <Alloy>
 	<Window id="MainWindow">
-		<Require type="widget" src="com.mcongrove.slideMenu" id="SlideMenu" />
+		<Require type="widget" src="com.ideesculture.newportSlideMenu" id="SlideMenu" />
 		
 		<View id="GlobalWrapper">
 			<View id="ContentWrapper" />

@@ -29,36 +29,40 @@
 	],
 	"tabs": [
 		{
-			"title": "Login",
-			"type": "login",
-			"image": "museum_mode",
-			"tabletSupport": false
-		},
-		{
 			"title": "Main",
 			"heading": "Main screen",
 			"type": "main",
 			"image": "home_icon",
-			"tabletSupport": false
+			"tabletSupport": false,
+			"downTab" : false
 		},
-		
 		{
 			"title": "New",
 			"type": "main_edit",
 			"image": "new_icon",
-			"tabletSupport": false
+			"tabletSupport": false,
+			"downTab" : false
 		},
 		{
 			"title": "Search",
 			"type": "login",
 			"image": "search_icon",
-			"tabletSupport": false
+			"tabletSupport": false,
+			"downTab" : false
 		},
 		{
 			"title": "Storage locations",
 			"type": "login",
 			"image": "storage_location_icon",
-			"tabletSupport": false
+			"tabletSupport": false,
+			"downTab" : false
+		},
+		{
+			"title": "Login",
+			"type": "login",
+			"image": "museum_mode",
+			"tabletSupport": false,
+			"downTab" : true
 		}
 		
 	]

@@ -1,0 +1,17 @@
+"#Wrapper": {
+	width: "80dp",
+	top: "0dp",
+	left: "-80dp",
+	backgroundColor: "#000"
+},
+"#Nodes": {
+	top: "0dp",
+	backgroundColor: "#000",
+	separatorStyle:Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
+	height:"650dp"
+},
+"#DownNodes": {
+	bottom: "20dp",
+	height:Ti.UI.SIZE,
+	separatorStyle:Ti.UI.iPhone.TableViewSeparatorStyle.NONE	
+}
