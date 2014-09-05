@@ -1,10 +1,14 @@
-".bundleItemContainer": {
+"#bundleItemContainer": {
+	top:"0dp",
 	width: Ti.UI.FILL,
-	height:Ti.UI.SIZE,
-	height:"120dp",
-	layout: "vertical"
+	layout: "vertical",
+	height:Ti.UI.SIZE
 },
-".bundleItem": {
+"#bundleItemForm": {
+	top:"0dp",
+	height:Ti.UI.SIZE
+},
+"#bundleItem": {
 	top:"0dp",
 	height:"40dp",
 	borderColor: "#000",
@@ -12,14 +16,14 @@
 	width: Ti.UI.FILL,
 	layout: "absolute",
 },
-".bundleItemName": {
+"#bundleItemName": {
+	top:"0dp",
 	left: "10dp",
 	color: '#000',
 	width:"auto",
-	height:"auto",
-	textAlign: 'center'	
+	height:"auto"	
 },
-".bundleItemRight": {
+"#bundleItemRight": {
 	layout: "horizontal",
 	right: "10dp",
 	width: Ti.UI.SIZE,
@@ -35,8 +39,34 @@
 	borderColor: "black",
 	borderWidth: "1dp"
 },
-".bundleItemForm": {
+"#bundleItemElements": {
 	top:"40dp",
-	height:"60dp",
-	bottom:"10dp"
+	height:"1dp",
+	backgroundColor:"#dddddd"
+},
+"#loginform":{
+	layout:"vertical"
+},
+".textfield": {
+	color: '#336699',
+	width: "300dp",
+	height: "40dp",
+	hintText: 'username',
+	keyboardType: Titanium.UI.KEYBOARD_DEFAULT,
+	returnKeyType: Titanium.UI.RETURNKEY_DEFAULT,
+	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE
+},
+"#savebutton": {
+	title: 'Login',
+	width: "90dp",
+	backgroundColor: "darkgray",
+	color: "white",
+	height: "35dp",
+	borderRadius: "1dp",
+	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+	font: {
+		fontWeight: 'bold',
+		fontSize: 14
+	}
 }

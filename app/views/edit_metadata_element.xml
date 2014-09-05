@@ -1,0 +1,7 @@
+<Alloy>
+	<View id="loginform">
+		<TextField id="loginfield"/>
+		<TextField id="passwordfield"/>
+		<Button id="loginbutton"/>
+	</View>
+</Alloy>

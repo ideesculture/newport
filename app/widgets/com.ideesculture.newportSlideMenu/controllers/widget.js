@@ -6,40 +6,27 @@
 var sections = [];
 var nodes = [];
 var color;
+var selected;
 
 /**
  * Initializes the slide menu
  * @param {Object} _params
  * @param {Array} _params.nodes The nodes (menu items) to show in the side menu as defined by the JSON configuration file
- * @param {Object} _params.color The colors for the menu
- * @param {String} _params.color.headingBackground The background color for menu headers
- * @param {String} _params.color.headingText The text color for menu headers
+ * @param {Object} _params.color The background color for menu icons
  */
 $.init = function(_params) {
-	sections = [];
 	nodes = [];
 	downNodes = [];
-	color = typeof _params.color !== "undefined" ? _params.color : null;
-
-	// Creates a TableViewSection for each tab with a menuHeader property
-	buildSections(_params.nodes);
-
-	if(sections.length > 0) {
-		var currentSection = -1;
-	}
+	color = typeof _params.color !== "undefined" ? _params.color : "#327B9F";
 
 	for(var i = 0; i < _params.nodes.length; i++) {
-		// Iterates through the created sections
-		if(_params.nodes[i].menuHeader) {
-			currentSection++;
-		}
 
 		var tab = Ti.UI.createTableViewRow({
 			id: _params.nodes[i].id,
 			height: "60dp",
-			backgroundcolor: "#000",
-			backgroundSelectedColor: "#327B9F",
-			selectedBackgroundColor: "#327B9F"
+			backgroundcolor: "yellow",
+			backgroundSelectedColor: color,
+			selectedBackgroundColor: color
 		});
 
 		if(_params.nodes[i].image) {
@@ -51,35 +38,19 @@ $.init = function(_params) {
 				left: "0dp",
 				touchEnabled: false,
 				preventDefaultImage: true,
-				backgroundColor: "lightgray"
+				backgroundColor: "darkgray"
 			});
 
 			tab.add(icon);
 		}
-		Ti.API.info(_params.nodes[i]);
 
-		if(sections.length > 0) {
-			sections[currentSection].add(tab);
-
-			// If the last tab has been created and added to a section or
-			// the next tab is a new header, append the current section to the TableView
-			if(i + 1 !== _params.nodes.length) {
-				if(_params.nodes[i + 1].menuHeader) {
-					$.Nodes.appendSection(sections[currentSection]);
-				}
-			} else {
-				$.Nodes.appendSection(sections[currentSection]);
-			}
+		// depending on downTab true or false, node goes up or down in the slideMenu
+		if(_params.nodes[i].downTab) {
+			downNodes.push(tab);
 		} else {
-			if(_params.nodes[i].downTab) {
-				Ti.API.info("down tab");
-				downNodes.push(tab);
-			} else {
-				Ti.API.info("up tab");
-				nodes.push(tab);
-			}
-			
+			nodes.push(tab);
 		}
+		
 	}
 
 	if(nodes.length > 0) {
@@ -93,8 +64,8 @@ $.init = function(_params) {
 	// We have to remove before adding to make sure we're not duplicating
 	$.Nodes.removeEventListener("click", handleClick);
 	$.Nodes.addEventListener("click", handleClick);
-	$.DownNodes.removeEventListener("click", handleClick);
-	$.DownNodes.addEventListener("click", handleClick);
+	$.DownNodes.removeEventListener("click", handleDownClick);
+	$.DownNodes.addEventListener("click", handleDownClick);
 };
 
 /**
@@ -108,43 +79,12 @@ function handleClick(_event) {
 };
 
 /**
- * Builds out the table sections
- * @param {Object} _nodes The tab items to show in the side menu
- * @private
+ * Handles a click event on the nodes container
+ * @param {Object} _event The event
  */
-function buildSections(_nodes) {
-	for(var i = 0; i < _nodes.length; i++) {
-		// Assigns special menuHeader styling
-		if(_nodes[i].menuHeader) {
-			var header = Ti.UI.createView({
-				top: "0dp",
-				height: "20dp",
-				width: Ti.UI.FILL,
-				backgroundColor: color.headingBackground
-			});
-
-			var headerText = Ti.UI.createLabel({
-				text: _nodes[i].menuHeader,
-				top: "2dp",
-				left: "13dp",
-				font: {
-					fontSize: "12dp",
-					fontWeight: "HelveticaNeue-Light"
-				},
-				color: color.headingText,
-				touchEnabled: false,
-				verticalAlignment: Titanium.UI.TEXT_VERTICAL_ALIGNMENT_CENTER,
-				isHeader: true
-			});
-
-			header.add(headerText);
-
-			var section = Ti.UI.createTableViewSection({
-				headerView: header
-			});
-
-			sections.push(section);
-		}
+function handleDownClick(_event) {
+	if(typeof _event.index !== "undefined") {
+		$.setDownIndex(_event.index);
 	}
 };
 
@@ -154,6 +94,15 @@ function buildSections(_nodes) {
 $.clear = function() {
 	$.Nodes.setData([]);
 	$.Nodes.removeAllChildren();
+};
+
+/**
+ * Sets the indexed item as active
+ * @param {Object} _index The index of the item to show as active
+ */
+$.setDownIndex = function(_index) {
+	$.DownNodes.selectRow(_index);
+	$.selected = _index;
 };
 
 /**

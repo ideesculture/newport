@@ -4,7 +4,7 @@
 	"minimumVersion": "1.0",
 	"configurationUrl": "",
 	"legal": {
-		"copyright": "Copyright ‌2014 idéesculture et contributeurs"
+		"copyright": "Copyright ‌2014 idéesculture & contributors"
 	},
 	"settings": {
 		"share": "Share some content",
@@ -20,8 +20,8 @@
 		},
 		"useSlideMenu": true,
 		"CollectiveAccess": {
-			"urlForLogin": "http://musee14.idcultu.re/gestion/service.php/find/ca_objects?q=zzzzzzzz",
-			"urlForModel": "http://192.168.0.27:81/modele_simplifie.json"
+			"urlForLogin": "http://192.168.0.27/service.php/find/ca_objects?q=zzzzzzzz",
+			"urlForModel": "http://192.168.0.27/ws_ca_modele_simplifie.json"
 		}
 	},
 	"manifest": [
@@ -29,17 +29,16 @@
 	],
 	"tabs": [
 		{
-			"title": "Main",
-			"heading": "Main screen",
-			"type": "main",
-			"image": "home_icon",
+			"title": "New",
+			"type": "edit",
+			"image": "new_icon",
 			"tabletSupport": false,
 			"downTab" : false
 		},
 		{
-			"title": "New",
-			"type": "main_edit",
-			"image": "new_icon",
+			"title": "Main",
+			"type": "main",
+			"image": "home_icon",
 			"tabletSupport": false,
 			"downTab" : false
 		},

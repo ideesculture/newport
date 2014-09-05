@@ -464,10 +464,7 @@ var APP = {
 
 		APP.SlideMenu.init({
 			nodes: _nodes,
-			color: {
-				headingBackground: APP.Settings.colors.primary,
-				headingText: APP.Settings.colors.theme == "dark" ? "#FFF" : "#000"
-			}
+			color: APP.Settings.colors.primary
 		});
 
 		// Remove the TabGroup

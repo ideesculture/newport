@@ -59,6 +59,7 @@ $.init = function() {
  * @param {Object} _callback The function to run on data retrieval
  */
 $.retrieveData = function(_force, _callback) {
+	APP.log("debug","edit.retrieveData");
 	MODEL.fetch({
 		url: CONFIG.url,
 		authString: APP.authString,
@@ -95,6 +96,7 @@ $.handleData = function(_data) {
 	APP.log("debug",APP.ca_modele_prop);
 	APP.log("debug",APP.ca_modele_values.elements);
 	var rows=[];
+	var totalHeight = 0;
 	var i = 1;
 	for(var element in APP.ca_modele_values.elements) {
 		if(i<10) {
@@ -102,6 +104,7 @@ $.handleData = function(_data) {
 				element:element,
 				content:APP.ca_modele_values.elements[element]
 			}).getView();
+			totalHeight += row.getHeigh();
 			rows.push(row);
 		}	
 		i++;

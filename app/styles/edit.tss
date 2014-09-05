@@ -57,49 +57,4 @@
 ".bundleItems": {
 	width: Ti.UI.FILL,
 	layout: "vertical"
-},
-".bundleItemContainer": {
-	width: Ti.UI.FILL,
-	height:Ti.UI.SIZE,
-	height:"120dp",
-	layout: "vertical"
-},
-".bundleItem": {
-	top:"0dp",
-	height:"40dp",
-	borderColor: "#000",
-	borderWidth: "1dp",
-	width: Ti.UI.FILL,
-	layout: "absolute",
-},
-".bundleItemName": {
-	left: "10dp",
-	color: '#000',
-	width:"auto",
-	height:"auto",
-	textAlign: 'center'	
-},
-".bundleItemRight": {
-	layout: "horizontal",
-	right: "10dp",
-	width: Ti.UI.SIZE,
-	font: {
-		fontSize: "14dp",
-		fontFamily: "HelveticaNeue"
-	}
-},
-".downArrowIcon":{
-	top:"10dp",
-	width: "20dp",
-	height: "20dp",
-	borderColor: "black",
-	borderWidth: "1dp"
-},
-".bundleItemForm": {
-	top:"40dp",
-	height:"60dp",
-	bottom:"10dp"
-},
-"#bundles":{
-	height:Ti.UI.FILL
 }

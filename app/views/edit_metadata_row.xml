@@ -1,12 +1,18 @@
 <Alloy>
-	<View class="bundleItemContainer">
-		<View class="bundleItemForm">
-			<View class="bundleItem" id="bundleItem">
-				<Label id="bundleItemName" class="bundleItemName" text="Item" />
-				<View class="bundleItemRight">
+	<View id="bundleItemContainer">
+		<View id="bundleItemForm">
+			<View id="bundleItem">
+				<Label id="bundleItemName" text="Item" />
+				<View id="bundleItemRight">
 					<ImageView class="downArrowIcon" image="/icons/black/ca_arrow_down.png"></ImageView>
 				</View>
 			</View>
+    		<View id="bundleItemElements">
+				<View id="loginform">
+					<TextField class="textfield"/>
+					<Button id="savebutton"/>
+				</View>
+			</View>			
 		</View>
 	</View>
 </Alloy>

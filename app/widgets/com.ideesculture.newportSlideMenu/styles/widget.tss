@@ -7,11 +7,13 @@
 "#Nodes": {
 	top: "0dp",
 	backgroundColor: "#000",
-	separatorStyle:Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
+	separatorStyle:Ti.UI.iPhone.TableViewSeparatorStyle.SINGLE_LINE,
+	separatorColor: '#000', 
 	height:"650dp"
 },
 "#DownNodes": {
 	bottom: "20dp",
+	separatorColor: '#000', 
 	height:Ti.UI.SIZE,
-	separatorStyle:Ti.UI.iPhone.TableViewSeparatorStyle.NONE	
+	separatorStyle:Ti.UI.iPhone.TableViewSeparatorStyle.SINGLE_LINE	
 }
