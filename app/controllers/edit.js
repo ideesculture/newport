@@ -23,6 +23,8 @@ $.init = function() {
 	
 	$.heading.color = APP.Settings.colors.hsb.primary.b > 70 ? "#000" : APP.Settings.colors.primary;
 	
+	Alloy.Globals.fieldsColor = APP.Settings.colors.secondary;
+	
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
 	
 	APP.openLoading();
@@ -99,7 +101,7 @@ $.handleData = function(_data) {
 	var totalHeight = 0;
 	var i = 1;
 	for(var element in APP.ca_modele_values.elements) {
-		if(i<10) {
+		if(i<50) {
 			var row = Alloy.createController("edit_metadata_bundle", {
 				element:element,
 				content:APP.ca_modele_values.elements[element]
