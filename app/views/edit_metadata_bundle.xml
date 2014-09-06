@@ -8,10 +8,7 @@
 				</View>
 			</View>
     		<View id="bundleItemElements">
-				<View id="loginform">
-					<TextField class="textfield"/>
-					<Button id="savebutton"/>
-				</View>
+    			<!-- Here come the fields -->
 			</View>			
 		</View>
 	</View>

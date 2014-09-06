@@ -1,15 +1,11 @@
 var APP = require("core");
 var CONFIG = arguments[0] || {};
-APP.log("debug",CONFIG);
 
 $.bundleItemName.text = CONFIG.content.name;
 $.bundleItemName.bak = {height : 0};
 
 // by default the panel bundleItemElements is not deployed (invisible)
 $.bundleItemElements.visible = false;
-
-APP.log("debug","$.deployed");
-APP.log("debug",$.deployed);
 
 $.bundleItem.addEventListener("click", function(_event) {
 	//APP.log("debug","$.bundleItemForm.getHeight()");
@@ -22,7 +18,6 @@ $.bundleItem.addEventListener("click", function(_event) {
 	  }).show();
 	  */
 	if ($.bundleItemElements.visible == true) {
-		//$.bundleItemElements.bak.height = $.bundleItemElements.height;
 		$.bundleItemForm.height="140dp";
 		$.bundleItemElements.animate({
 			height: "1dp",
@@ -34,21 +29,8 @@ $.bundleItem.addEventListener("click", function(_event) {
 			});
 			$.bundleItemElements.visible = false;		
 		});
-		
-		//$.bundleItemForm.height="40dp";
-		//$.bundleItemElements.height="1dp";
 		$.deployed=false;
-		APP.log("debug","$.deployed");
-		APP.log("debug",$.deployed);
 	} else {
-		//$.bundleItemElements.height = $.bundleItemElements.bak.height;
-		//$.bundleItemContainer.height = "140dp";
-		/*
-		 * $.bundleItemElements.animate({
-			height : "100dp",
-			duration:500
-		});
-		 */
 		$.bundleItemElements.visible = true;		
 		$.bundleItemForm.height="140dp";
 		$.bundleItemElements.animate({
@@ -56,8 +38,6 @@ $.bundleItem.addEventListener("click", function(_event) {
 			duration:500
 		});
 		$.deployed = true;
-	APP.log("debug","$.deployed");
-	APP.log("debug",$.deployed);
 	}
 	
 });
@@ -66,6 +46,10 @@ $.bundleItem.addEventListener("click", function(_event) {
 var rows=[];
 var i = 1;
 for(var element in CONFIG.content.elements_in_set) {
+	APP.log("debug","element");
+	APP.log("debug",element);
+	APP.log("debug",CONFIG.content.elements_in_set[element]);
+
 	if(i<10) {
 		// if element.datatype == "Text" => formulaire texte, else...
 		var row = Alloy.createController("edit_metadata_element", {
