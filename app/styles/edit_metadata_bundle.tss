@@ -42,32 +42,8 @@
 	borderWidth: "1dp"
 },
 "#bundleItemElements": {
-	height:"1dp",
-	backgroundColor:"#dddddd"
-},
-"#bundleItemElementsForm":{
-	layout:"vertical"
-},
-".textfield": {
-	color: '#336699',
-	width: "300dp",
-	height: "40dp",
-	hintText: 'username',
-	keyboardType: Titanium.UI.KEYBOARD_DEFAULT,
-	returnKeyType: Titanium.UI.RETURNKEY_DEFAULT,
-	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
-	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE
-},
-"#savebutton": {
-	title: 'Login',
-	width: "90dp",
-	backgroundColor: "darkgray",
-	color: "white",
-	height: "35dp",
-	borderRadius: "1dp",
-	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
-	font: {
-		fontWeight: 'bold',
-		fontSize: 14
-	}
+	//height:"1dp",
+	height:Ti.UI.SIZE,
+	layout:"vertical",
+	bottom:10
 }
