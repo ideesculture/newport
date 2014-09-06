@@ -1,11 +1,19 @@
 "#field":{
 	layout:"vertical",
-	textAlign:"left"
+	textAlign:"left",
+	height:Ti.UI.SIZE,
+	top:0,
+	bottom:2
 },
 "#label": {
 	left:10,
 	color: 'black',
-	height: 40
+	top:4,
+	height: 16,
+	font: {
+		fontSize: 13,
+		fontFamily: "HelveticaNeue"
+	}
 },
 "#textfield": {
 	left:10,
