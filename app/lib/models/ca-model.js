@@ -126,57 +126,13 @@ function Model() {
 	};
 
 	/**
-	 * Retrieves all articles
+	 * Retrieves first level info
 	 */
 	this.getModelFirstLevelInfo = function() {
 		return APP.ca_modele_prop;
 	};
 	
-	this.getAllArticles = function() {
-		APP.log("debug", "CA_MODEL.getAllArticles(" + table + ")");
-		var temp = [];
-		return temp;
-	};
 
-	/**
-	 * Retrieves an article by ID
-	 * @param {Number} _id The article ID
-	 */
-	this.getArticle = function(_id) {
-		APP.log("debug", "CA_MODEL.getArticle");
-		var temp = [];
-		return temp;
-	};
-
-	/**
-	 * Retrieves the next article
-	 * @param {Number} _id The current article ID
-	 */
-	this.getNextArticle = function(_id) {
-		APP.log("debug", "CA_MODEL.getNextArticle");
-		var temp = [];
-		return temp;
-
-	};
-
-	/**
-	 * Retrieves the previous article
-	 * @param {Number} _id The current article ID
-	 */
-	this.getPreviousArticle = function(_id) {
-		APP.log("debug", "CA_MODEL.getPreviousArticle");
-		var temp = [];
-		return temp;
-
-	};
-	
-	/**
-	 * Return if the user is logged in or not
-	 * @param ???
-	 */
-	this.isConnected = function() {
-		return true;
-	};
 }
 
 module.exports = function() {
