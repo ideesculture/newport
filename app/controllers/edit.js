@@ -100,7 +100,7 @@ $.handleData = function(_data) {
 	var i = 1;
 	for(var element in APP.ca_modele_values.elements) {
 		if(i<10) {
-			var row = Alloy.createController("edit_metadata_row", {
+			var row = Alloy.createController("edit_metadata_bundle", {
 				element:element,
 				content:APP.ca_modele_values.elements[element]
 			}).getView();
@@ -117,63 +117,6 @@ $.handleData = function(_data) {
 	$.bundles.setOpacity(1);
 
 	APP.closeLoading();
-};
-
-$.renderMetadataBox = function(_metadataElement,_metadataContent) {
-	/*
-	 * Creating view for item
-
-		<View class="bundleItem">
-			<Label class="bundleItemName" text="Item" />
-			<View class="bundleItemRight">
-				<ImageView class="downArrowIcon" image="/icons/black/ca_arrow_down.png"></ImageView>
-			</View>
-		</View>
-	 * 
-	 */
-	
-	var bundleItemContainer = Ti.UI.createView({height:Ti.UI.SIZE});
-	// Creating line with Item name & arrow down or up
-	var bundleItem = Ti.UI.createView();
-	$.addClass(bundleItem, "bundleItem");
-	var bundleItemForm = Ti.UI.createView();
-	$.addClass(bundleItemForm, "bundleItemForm");
-	var label = $.UI.create("Label",{
-		color: '#000',
-		width:"auto",
-		height:"auto",
-		text: _metadataContent.name,
-		textAlign: 'center'
-	});
-	$.addClass(label, "bundleItemName");
-	var bundleItemRight = Ti.UI.createView();
-	$.addClass(bundleItemRight, "bundleItemRight");
-	var downArrowIcon = Ti.UI.createImageView({image:"/icons/black/ca_arrow_down.png"});
-	
-	// Adding listener on downArrowIcon
-	bundleItem.addEventListener("click", function(_event) {
-		
-		var parent = _event.source.getParent();
-		APP.log("debug", _event.parent);
-		/*
-		var dialog = Ti.UI.createAlertDialog({
-		    message: _metadataElement+" clicked",
-		    ok: 'OK',
-		    title: 'Click'
-		  }).show();
-		*/
-	});
-	
-	$.addClass(downArrowIcon, "downArrowIcon");
-	bundleItemRight.add(downArrowIcon);
-	bundleItem.add(label);
-	bundleItem.add(bundleItemRight);
-	bundleItemContainer.add(bundleItem);
-	bundleItemContainer.add(bundleItemForm);
-	$.bundles.add(bundleItemContainer);
-	
-	
-	return true;
 };
 
 /*
