@@ -1,0 +1,11 @@
+<Alloy>
+	<View id="field">
+		<Label id="label"/>
+		<View id="fieldWithIcon">
+			<TextField id="textfield"/>
+			<View id="iconContainer">
+				<Require type="widget" src="ti.ux.iconfont" icon="fa-link" size="20" color="white" id="icon"/>
+			</View>
+		</View>
+	</View>
+</Alloy>
