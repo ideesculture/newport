@@ -13,4 +13,12 @@ APP.log("debug",CONFIG);
 
 $.label.text=CONFIG.content.display_label; 
 $.textfield.value="ici";
-$.textfield.width=CONFIG.content.settings.fieldWidth * 4;
+
+// Check if we have settings defined
+if(CONFIG.content.settings) {
+	// Check if we have width defined
+	if(CONFIG.content.settings.fieldWidth) {
+		$.textfield.width=CONFIG.content.settings.fieldWidth * 4;		
+	}
+}
+
