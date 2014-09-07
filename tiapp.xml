@@ -1,52 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
-    <!-- 
-    <property name="acs-oauth-secret-production" type="string"></property>
-    <property name="acs-oauth-key-production" type="string"></property>
-    <property name="acs-api-key-production" type="string"></property>
-    <property name="acs-oauth-secret-development" type="string"></property>
-    <property name="acs-oauth-key-development" type="string"></property>
-    <property name="acs-api-key-development" type="string"></property>	
-    -->
-    <deployment-targets>
-        <target device="tizen">false</target>
-        <target device="mobileweb">false</target>
-        <target device="iphone">false</target>
-        <target device="ipad">true</target>
-        <target device="android">true</target>
-        <target device="blackberry">false</target>
-    </deployment-targets>
-    <sdk-version>3.3.0.GA</sdk-version>
     <id>com.ideesculture.newport</id>
-    <name>Newport</name>
+    <name>newport2</name>
     <version>1.0</version>
-    <publisher>idéesculture</publisher>
-    <url>http://www.ideesculture.com</url>
-    <description>newport</description>
-    <copyright>2014</copyright>
+    <publisher>gautier</publisher>
+    <url>http://ideesculture.com</url>
+    <description>undefined</description>
+    <copyright>2014 by gautier</copyright>
     <icon>appicon.png</icon>
     <fullscreen>false</fullscreen>
     <navbar-hidden>false</navbar-hidden>
-    <analytics>false</analytics>
-    <guid>66774a0a-ba43-45f5-9686-f2de98701f32</guid>
-    <property name="ti.ui.defaultunit">dip</property>
+    <analytics>true</analytics>
+    <guid>7c2188d7-868c-4d86-824f-413ae854a361</guid>
+    <property name="ti.ui.defaultunit" type="string">dp</property>
     <ios>
-        <min-ios-ver>4.3</min-ios-ver>
         <plist>
             <dict>
-                <key>UIRequiresPersistentWiFi</key>
-                <false/>
-                <key>UIPrerenderedIcon</key>
-                <true/>
-                <key>UIStatusBarHidden</key>
-                <false/>
-                <key>UIStatusBarStyle</key>
-                <string>UIStatusBarStyleDefault</string>
                 <key>UISupportedInterfaceOrientations~iphone</key>
-                <array>
-                    <string>UIInterfaceOrientationPortrait</string>
-                </array>
-                <key>UISupportedInterfaceOrientations~ipod</key>
                 <array>
                     <string>UIInterfaceOrientationPortrait</string>
                 </array>
@@ -57,18 +27,18 @@
                     <string>UIInterfaceOrientationLandscapeLeft</string>
                     <string>UIInterfaceOrientationLandscapeRight</string>
                 </array>
-                <key>UIBackgroundModes</key>
-                <array>
-                    <string>audio</string>
-                </array>
+                <key>UIRequiresPersistentWiFi</key>
+                <false/>
+                <key>UIPrerenderedIcon</key>
+                <false/>
+                <key>UIStatusBarHidden</key>
+                <false/>
+                <key>UIStatusBarStyle</key>
+                <string>UIStatusBarStyleDefault</string>
             </dict>
         </plist>
     </ios>
-    <android xmlns:android="http://schemas.android.com/apk/res/android">
-        <manifest>
-            <uses-sdk android:minSdkVersion="10"/>
-        </manifest>
-    </android>
+    <android xmlns:android="http://schemas.android.com/apk/res/android"/>
     <mobileweb>
         <precache/>
         <splash>
@@ -78,11 +48,16 @@
         <theme>default</theme>
     </mobileweb>
     <modules>
-        <module platform="iphone">dk.napp.social</module>
-        <module platform="iphone">ti.urbanairship</module>
-        <module platform="android">ti.urbanairship</module>
         <module platform="commonjs">ti.cloud</module>
     </modules>
+    <deployment-targets>
+        <target device="android">false</target>
+        <target device="blackberry">false</target>
+        <target device="ipad">true</target>
+        <target device="iphone">false</target>
+        <target device="mobileweb">false</target>
+    </deployment-targets>
+    <sdk-version>3.3.0.GA</sdk-version>
     <plugins>
         <plugin version="1.0">ti.alloy</plugin>
     </plugins>

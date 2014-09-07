@@ -219,6 +219,16 @@ exports.cleanEscapeString = function(_string) {
 };
 
 /**
+ * Replace single quotes by double quotes for JSON
+ * @param {String} _string The string to perform the action on
+ */
+exports.singleToDoubleQuotes = function(_string) {
+	return _string.replace(/'/g, "\"");
+};
+
+
+
+/**
  * Cleans up nasty XML
  * @param {String} _string The XML string to perform the action on
  */

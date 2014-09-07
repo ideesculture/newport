@@ -9,7 +9,7 @@ var UTIL = require("utilities");
 var DATE = require("alloy/moment");
 
 var CONFIG = arguments[0];
-APP.log("debug",CONFIG);
+//APP.log("debug",CONFIG);
 
 $.label.text=CONFIG.content.display_label; 
 $.textfield.value="ici";

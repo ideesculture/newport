@@ -1,7 +1,7 @@
 /**
- * Facebook post model
+ * Collectiveaccess user interface for object edition model
  * 
- * @class Models.ca-connexion
+ * @class Models.ca-model
  * @uses core
  * @uses http
  * @uses utilities
@@ -9,23 +9,24 @@
 var APP = require("core");
 var HTTP = require("http");
 var UTIL = require("utilities");
+var DBNAME = "Newport";
 var table =  "ca_objects";
 	
 function Model() {
-
+	this.TABLE="";
 
 	/**
 	 * Initializes the model
 	 * @param {Number} _id The UID of the component
 	 */
-	this.init = function(_id) {
-		APP.log("debug", "CA_MODEL.init(" + _id + ")");
+	this.init = function(_ca_table) {
+		APP.log("debug", "CA_MODEL.init(" + _ca_table + ")");
 
-
-
-		var db = Ti.Database.open("Newport");
-
-		db.execute("CREATE TABLE IF NOT EXISTS ca_model_" + table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, date TEXT, description TEXT, link TEXT);");
+		this.TABLE = _ca_table;
+		var db = Ti.Database.open(DBNAME);
+		var request = "CREATE TABLE IF NOT EXISTS ca_models (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, record_type TEXT, information_type TEXT, element_name TEXT, date TEXT, content TEXT);";
+ 		Ti.API.info(request);
+		db.execute(request);
 
 		db.close();
 	};
@@ -40,7 +41,7 @@ function Model() {
 	 */
 	this.fetch = function(_params) {
 		APP.log("debug", "CA_MODEL.fetch");
-		APP.log("trace", JSON.stringify(_params));
+		//APP.log("trace", JSON.stringify(_params));
 
 		var isStale = UTIL.isStale(_params.url, _params.cache);
 
@@ -54,14 +55,26 @@ function Model() {
 				headers: [{name: 'Authorization', value: _params.authString}],
 				type: "GET",
 				format: "JSON",
+				//format:"text",
 				url: _params.url,
 				passthrough: _params.callback,
 				success: this.handleData,
+				//success: this.echoData,
 				failure: _params.error
 			});
 		} else {
 			_params.callback();
 		}
+	};
+	
+	/**
+	 * Useful to only log the data return when debugging
+	 * @param {Object} _data The returned data
+	 * @param {String} _url The URL of the remote source
+	 * @param {Function} _callback The function to run on data retrieval
+	 */
+	this.echoData = function(_data, _url, _callback) {
+		Ti.API.info(_data);
 	};
 
 	/**
@@ -71,50 +84,58 @@ function Model() {
 	 * @param {Function} _callback The function to run on data retrieval
 	 */
 	this.handleData = function(_data, _url, _callback) {
+		//Ti.API.info(_data);
+
 		APP.log("debug", "CA_MODEL.handleData");
-		//APP.log("trace", JSON.stringify(_data));
-		//APP.log("trace", _data);
-		APP.log("trace", _data.ok);
 		if(_data.ok == true) {
 			APP.log("debug", "connected");
-			var db = Ti.Database.open("Newport");
-			APP.log("debug", table);
-			//db.execute("DELETE FROM ca_model_" + table + ";");
+			var db = Ti.Database.open(DBNAME);
+			db.execute("DELETE FROM ca_models;");
 			db.execute("BEGIN TRANSACTION;");
-			//APP.log("debug",_data);
-			APP.log("debug","HERE");
+			
 			APP.ca_modele_prop = new Array();
 			APP.ca_modele_values = {};
 			var _data2;
-			
+
+			var ca_table = UTIL.cleanEscapeString("ca_objects");
+			var record_type;
 			
 			// Browsing data
 		    for (var prop in _data) {
+		    	var record_type = UTIL.cleanEscapeString(prop);
+		        		
 		        var _data2 = _data[prop];
 		        if(prop != "ok") {
 		        	for (var prop2 in _data2) {
+		        		Ti.API.info(prop2);
 		        		APP.ca_modele_prop.push(prop2);
-		        		APP.log("debug","HERE2");
 		        		APP.ca_modele_values[prop2] = _data2[prop2];
+		        		// id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, record_type TEXT, information_type TEXT, element_name TEXT, date TEXT, content TEXT
+		        		
+		        		var information_type = UTIL.cleanEscapeString(prop2);
+		        		var insert_date = UTIL.cleanEscapeString(new Date().getTime());
+		        		var content = UTIL.cleanEscapeString(JSON.stringify(_data2[prop2]));
+	        			var element_data = null;
+		        		if(prop2 == "elements") {
+		        			var element_data = _data2[prop2];
+		        			for(var element_name in element_data) {
+								content = UTIL.cleanEscapeString(JSON.stringify(element_data[element_name]));
+								// We need to clean the value before its insertion in the request
+								var element_name_cleaned = UTIL.cleanEscapeString(element_name);
+								// Constructing request to insert a line for each element for a particular type 
+		        				var request = "INSERT INTO ca_models (id, ca_table, record_type, information_type, element_name, date, content) VALUES (NULL, " + ca_table+","+record_type+","+information_type+","+element_name_cleaned+","+insert_date+","+content+");";
+ 								//Ti.API.info(request);
+								db.execute(request);
+		        			}
+		        		} else {
+		        			// Inserting non element properties
+			        		var request = "INSERT INTO ca_models (id, ca_table, record_type, information_type, date, content) VALUES (NULL, " + ca_table+","+record_type+","+information_type+","+insert_date+","+content+");";
+							//Ti.API.info(request);
+							db.execute(request);
+		        		}
 	        		} 
 		        }
 		    }
-    
-			/*for(var i = 0, x = _data.entries.length; i < x; i++) {
-				var article = _data.entries[i];
-
-				var title = UTIL.cleanEscapeString(article.title);
-
-				if(title.length > 2) {
-					var date = article.published.split("T")[0].replace(/-/g, "/") + " " + article.published.split("T")[1].split("+")[0].split("-")[0];
-					date = UTIL.escapeString(new Date(date).getTime());
-					var description = UTIL.cleanEscapeString(article.content);
-					var link = UTIL.cleanEscapeString(article.alternate);
-
-					db.execute("INSERT INTO ca_model_" + table + " (id, title, date, description, link) VALUES (NULL, " + title + ", " + date + ", " + description + ", " + link + ");");
-				}
-			}*/
-
 			db.execute("INSERT OR REPLACE INTO updates (url, time) VALUES(" + UTIL.escapeString(_url) + ", " + new Date().getTime() + ");");
 			db.execute("END TRANSACTION;");
 			db.close();
@@ -131,8 +152,33 @@ function Model() {
 	this.getModelFirstLevelInfo = function() {
 		return APP.ca_modele_prop;
 	};
-	
 
+	this.getElementInfo = function(_ca_table, _element_name) {
+		var ca_table = UTIL.cleanEscapeString(_ca_table);
+		var element_name = UTIL.cleanEscapeString(_element_name); 
+		APP.log("debug", "CA-MODEL.getElementInfo");
+
+		var db = Ti.Database.open(DBNAME),
+			request = "select content from ca_models where ca_table like "+ca_table+" and element_name like "+element_name+" limit 1",
+			temp = [];
+		var data = db.execute(request);
+		// Fetching content, but caution, we store JSON inside SQLite with single quotes, need to revert them before using it
+		
+		if(data.rowCount > 0) {
+			var content = UTIL.singleToDoubleQuotes(data.fieldByName("content"));
+			var result = JSON.parse(content);
+		} else {
+			var result = [];
+		};
+		//
+		// Sending back unserialized content
+		
+		data.close();
+		db.close();
+
+		return result;
+
+	};
 }
 
 module.exports = function() {

@@ -17,14 +17,12 @@ function Model() {
 	 * Initializes the model
 	 * @param {Number} _id The UID of the component
 	 */
-	this.init = function(_id) {
-		APP.log("debug", "CA_CONNEXION.init(" + _id + ")");
-
-		TID = _id;
+	this.init = function() {
+		APP.log("debug", "CA_LOGIN.init()");
 
 		var db = Ti.Database.open("Newport");
 
-		db.execute("CREATE TABLE IF NOT EXISTS ca_connexion_" + TID + " (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, date TEXT, description TEXT, link TEXT);");
+		db.execute("CREATE TABLE IF NOT EXISTS ca_connexion (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, date TEXT, description TEXT, link TEXT);");
 
 		db.close();
 	};
@@ -38,7 +36,7 @@ function Model() {
 	 * @param {Number} _params.cache The length of time to consider cached data 'warm'
 	 */
 	this.fetch = function(_params) {
-		APP.log("debug", "CA_CONNEXION.fetch");
+		APP.log("debug", "CA-LOGIN.fetch");
 		APP.log("trace", JSON.stringify(_params));
 
 		var isStale = UTIL.isStale(_params.url, _params.cache);

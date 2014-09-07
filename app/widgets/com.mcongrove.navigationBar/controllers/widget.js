@@ -1,6 +1,6 @@
 /**
  * The navigation bar widget
- *
+ * 
  * @class Widgets.com.mcongrove.navigationBar
  */
 
@@ -16,23 +16,17 @@ var navigation, theme;
 var deviceVersion = parseInt(Titanium.Platform.version.split(".")[0], 10);
 
 if(CONFIG.image) {
-	var image = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, CONFIG.image);
-
-	if(image.exists()) {
-		image = image.nativePath;
-
-		$.title = Ti.UI.createImageView({
-			image: image,
-			height: "26dp",
-			width: Ti.UI.SIZE,
-			top: (OS_IOS && deviceVersion >= 7) ? "30dp" : "10dp",
-			bottom: "10dp",
-			preventDefaultImage: true
-		});
-	}
+	$.title = Ti.UI.createImageView({
+		image: CONFIG.image,
+		height: "26dp",
+		width: Ti.UI.SIZE,
+		top: "10dp",
+		bottom: "10dp",
+		preventDefaultImage: true
+	});
 } else {
 	$.title = Ti.UI.createLabel({
-		top: (OS_IOS && deviceVersion >= 7) ? "20dp" : "0dp",
+		top: "0dp",
 		left: "58dp",
 		right: "58dp",
 		height: "46dp",
@@ -67,15 +61,20 @@ $.removeNavigation = function() {
 /**
  * Sets the background color
  * @param {Object} _color The hex color code (e.g. "#FFF")
+ * @param {Object} _theme The theme to set manually (e.g. "white" or "black")
  */
-$.setBackgroundColor = function(_color) {
+$.setBackgroundColor = function(_color, _theme) {
 	$.Wrapper.backgroundColor = _color;
 
-	// Checks the brightness of the background color, sets color of icons/text
-	if(hexToHsb(_color).b < 65) {
-		theme = "white";
+	if (_theme) {
+		theme = _theme;
 	} else {
-		theme = "black"
+		// Checks the brightness of the background color, sets color of icons/text
+		if(hexToHsb(_color).b < 65) {
+			theme = "white";
+		} else {
+			theme = "black";
+		}
 	}
 };
 
@@ -124,8 +123,7 @@ $.showRight = function(_params) {
 $.showBack = function(_callback) {
 	if(_callback && typeof _callback !== "undefined") {
 		$.backImage.image = theme == "white" ? WPATH("/images/white/back.png") : WPATH("/images/black/back.png");
-		$.backImage.setAccessibilityLabel("Back");
-    $.back.visible = true;
+		$.back.visible = true;
 
 		$.back.addEventListener("click", _callback);
 	}
@@ -138,8 +136,7 @@ $.showBack = function(_callback) {
 $.showNext = function(_callback) {
 	if(_callback && typeof _callback !== "undefined") {
 		$.nextImage.image = theme == "white" ? WPATH("/images/white/next.png") : WPATH("/images/black/next.png");
-		$.nextImage.setAccessibilityLabel("Next");
-    $.next.visible = true;
+		$.next.visible = true;
 
 		$.next.addEventListener("click", _callback);
 	}
@@ -155,7 +152,6 @@ $.showMenu = function(_callback) {
 			image: theme == "white" ? WPATH("/images/white/menu.png") : WPATH("/images/black/menu.png"),
 			callback: _callback
 		});
-    $.leftImage.setAccessibilityLabel("Toggle Menu");
 	}
 };
 
@@ -169,8 +165,6 @@ $.showSettings = function(_callback) {
 			image: theme == "white" ? WPATH("/images/white/settings.png") : WPATH("/images/black/settings.png"),
 			callback: _callback
 		});
-
-    $.rightImage.setAccessibilityLabel("Settings");
 	}
 };
 
@@ -184,8 +178,6 @@ $.showAction = function(_callback) {
 			image: theme == "white" ? WPATH("/images/white/action.png") : WPATH("/images/black/action.png"),
 			callback: _callback
 		});
-    // not clear possibly add property for this?
-    $.rightImage.setAccessibilityLabel("Action");
 	}
 };
 
@@ -267,7 +259,7 @@ function hexToHsb(_hex) {
 }
 
 if($.title) {
-	$.Wrapper.add($.title);
+	$.titleView.add($.title);
 }
 
 // Move the UI down if iOS7+

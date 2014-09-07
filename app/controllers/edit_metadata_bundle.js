@@ -1,5 +1,6 @@
 var APP = require("core");
 var CONFIG = arguments[0] || {};
+APP.log("debug",CONFIG);
 
 $.bundleItemName.text = CONFIG.content.name;
 $.bundleItemName.bak = {height : 0};
@@ -32,12 +33,13 @@ var datatypeControllers = {
 	"Length":"edit_metadata_element_length",
 	"Weight":"edit_metadata_element_weight"
 };
+
 for(var element in CONFIG.content.elements_in_set) {
 	var content = CONFIG.content.elements_in_set[element];
 
 	if(i<25) {
 		// if element.datatype == "Text" => formulaire texte, else...
-		APP.log("debug",element.datatype);
+		//APP.log("debug",element.datatype);
 		if(content.datatype in datatypeControllers) {
     		// does exist
 			var row = Alloy.createController(datatypeControllers[content.datatype], {

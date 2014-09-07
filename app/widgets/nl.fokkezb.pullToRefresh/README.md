@@ -45,11 +45,17 @@ The widgets adds a *HeaderPullView* to a *TableView* that is shown when the user
 	```xml
 	<Alloy>
 	  <Collection src="myCollection" />
-	  <TableView dataCollection="myCollection">
+	  <TableView id="table" dataCollection="myCollection">
 	    <Widget id="ptr" src="nl.fokkezb.pullToRefresh" onRelease="myLoader" />
 	    <TableViewRow title="{myColumn}" />
 	  </TableView>
 	</Alloy>
+	```
+
+* Only in Alloy 1.3.0 (shoud be fixed in 1.3.1) you have to manually bind the table from the controller:
+
+	```
+	$.ptr.init($.table);
 	```
 	
 * In the callback set via `myLoader` make sure you call `e.hide()` to hide the *headerPullView* when it is done loading. For example: 
@@ -110,6 +116,7 @@ You can also manually show and hide the view or trigger the complete cycle of th
 ## Changelog
 * 1.5.1.
   * Workaround for regression in Alloy 1.3.0-cr
+  * Closes #17 by checking source of events
 * 1.5
   * New `top` option for compatibility with `Ti.UI.Window.extendEdges` on iOS7
   * Arrow now properly hidden on Android, using opacity

@@ -21,7 +21,8 @@
 		"useSlideMenu": true,
 		"CollectiveAccess": {
 			"urlForLogin": "http://192.168.0.27/service.php/find/ca_objects?q=zzzzzzzz",
-			"urlForModel": "http://192.168.0.27/ws_ca_modele_simplifie.json"
+			"urlForModel": "http://192.168.0.27/ws_ca_modele5.json",
+			"urlForUis" : "http://192.168.0.27/ws_ca_uis2.json"
 		}
 	},
 	"manifest": [
