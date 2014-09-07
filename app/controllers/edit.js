@@ -188,7 +188,6 @@ $.uiHandleData = function(_data) {
 
 	var i = 1;
 	var screen_content = _data.content.screen_content;
-	//APP.log("debug", MODEL_MODEL.getElementInfo("ca_objects", "supporto_fascicolo"));
 	for(var bundle in screen_content) {
 		var bundle_code = screen_content[bundle].bundle_code;
 
@@ -197,12 +196,11 @@ $.uiHandleData = function(_data) {
 			if (bundle_code.substring(0, 13) == "ca_attribute_") {
 				// If the bundle described in the screen corresponds to sthg in the model, display it
 				var attribute = bundle_code.replace(/^ca_attribute_/,"");
-				APP.log("debug","attribute : "+attribute);
-				APP.log("debug", MODEL_MODEL.getElementInfo("ca_objects", attribute));
-				
 				//APP.log("debug", JSON.parse(MODEL_MODEL.getElementInfo("ca_objects", attribute)));
 				
-				if (MODEL_MODEL.getElementInfo("ca_objects", attribute)) {
+				if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {
+					APP.log("debug","attribute : "+attribute);
+					APP.log("debug", MODEL_MODEL.hasElementInfo("ca_objects", attribute));
 					var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
 					var row = Alloy.createController("edit_metadata_bundle", {
 						element:attribute,

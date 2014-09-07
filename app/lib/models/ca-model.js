@@ -153,29 +153,43 @@ function Model() {
 		return APP.ca_modele_prop;
 	};
 
+	this.hasElementInfo = function(_ca_table, _element_name) {
+		var ca_table = UTIL.cleanEscapeString(_ca_table);
+		var element_name = UTIL.cleanEscapeString(_element_name); 
+		APP.log("debug", "CA-MODEL.hasElementInfo");
+
+		var db = Ti.Database.open(DBNAME),
+			request = "select content from ca_models where ca_table like "+ca_table+" and element_name like "+element_name+" limit 1",
+			temp = [];
+		var data = db.execute(request);
+		var result = data.getRowCount();
+		data.close();
+		db.close();
+		
+		return result;
+	};
+
 	this.getElementInfo = function(_ca_table, _element_name) {
 		var ca_table = UTIL.cleanEscapeString(_ca_table);
 		var element_name = UTIL.cleanEscapeString(_element_name); 
-		APP.log("debug", "CA-MODEL.getElementInfo");
+		APP.log("debug", "CA-UI.getAllScreensForUI");
 
 		var db = Ti.Database.open(DBNAME),
 			request = "select content from ca_models where ca_table like "+ca_table+" and element_name like "+element_name+" limit 1",
 			temp = [];
 		var data = db.execute(request);
 		// Fetching content, but caution, we store JSON inside SQLite with single quotes, need to revert them before using it
-		
-		if(data.rowCount > 0) {
+
+		if(data.getRowCount() > 0) {
 			var content = UTIL.singleToDoubleQuotes(data.fieldByName("content"));
+			// Sending back unserialized content
 			var result = JSON.parse(content);
 		} else {
-			var result = [];
-		};
-		//
-		// Sending back unserialized content
-		
+			var result = false;
+		}
 		data.close();
 		db.close();
-
+		
 		return result;
 
 	};
