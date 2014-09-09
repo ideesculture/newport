@@ -219,11 +219,15 @@ exports.cleanEscapeString = function(_string) {
 };
 
 /**
- * Replace single quotes by double quotes for JSON
+ * JSON.stringify a string after escaping single quotes
  * @param {String} _string The string to perform the action on
  */
-exports.singleToDoubleQuotes = function(_string) {
-	return _string.replace(/'/g, "\"");
+exports.jsonStringify = function(_string) {
+	if(typeof _string !== "string") {
+		return false;
+	}
+
+	return _string.replace(/'/g, "\'");
 };
 
 

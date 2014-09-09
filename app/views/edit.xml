@@ -15,7 +15,8 @@
 	  					<Label class="bundleItemName" text="&gt; Basic Info" />
 	  				</View>
 	  			</View>
-	  			
+		        <ScrollView id="screenButtonsScrollView" platform="ios">
+		        </ScrollView>
 	    		<ScrollView class="bundleItems" id="bundles">
 	    			<!--
 					<View class="bundleItem">

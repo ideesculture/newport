@@ -25,7 +25,6 @@ function Model() {
 		this.TABLE = _ca_table;
 		var db = Ti.Database.open(DBNAME);
 		var request = "CREATE TABLE IF NOT EXISTS ca_models (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, record_type TEXT, information_type TEXT, element_name TEXT, date TEXT, content TEXT);";
- 		Ti.API.info(request);
 		db.execute(request);
 
 		db.close();
@@ -41,7 +40,7 @@ function Model() {
 	 */
 	this.fetch = function(_params) {
 		APP.log("debug", "CA_MODEL.fetch");
-		//APP.log("trace", JSON.stringify(_params));
+		//APP.log("trace", UTIL.jsonStringify(_params));
 
 		var isStale = UTIL.isStale(_params.url, _params.cache);
 
@@ -84,7 +83,6 @@ function Model() {
 	 * @param {Function} _callback The function to run on data retrieval
 	 */
 	this.handleData = function(_data, _url, _callback) {
-		//Ti.API.info(_data);
 
 		APP.log("debug", "CA_MODEL.handleData");
 		if(_data.ok == true) {
@@ -97,41 +95,39 @@ function Model() {
 			APP.ca_modele_values = {};
 			var _data2;
 
-			var ca_table = UTIL.cleanEscapeString("ca_objects");
+			var ca_table = "ca_objects";
 			var record_type;
 			
 			// Browsing data
 		    for (var prop in _data) {
-		    	var record_type = UTIL.cleanEscapeString(prop);
+		    	var record_type = prop;
 		        		
 		        var _data2 = _data[prop];
 		        if(prop != "ok") {
 		        	for (var prop2 in _data2) {
-		        		Ti.API.info(prop2);
 		        		APP.ca_modele_prop.push(prop2);
 		        		APP.ca_modele_values[prop2] = _data2[prop2];
 		        		// id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, record_type TEXT, information_type TEXT, element_name TEXT, date TEXT, content TEXT
 		        		
-		        		var information_type = UTIL.cleanEscapeString(prop2);
-		        		var insert_date = UTIL.cleanEscapeString(new Date().getTime());
-		        		var content = UTIL.cleanEscapeString(JSON.stringify(_data2[prop2]));
+		        		var information_type = prop2;
+		        		var insert_date = new Date().getTime();
+		        		var content = JSON.stringify(_data2[prop2]);
 	        			var element_data = null;
 		        		if(prop2 == "elements") {
 		        			var element_data = _data2[prop2];
 		        			for(var element_name in element_data) {
-								content = UTIL.cleanEscapeString(JSON.stringify(element_data[element_name]));
+								content = JSON.stringify(element_data[element_name]);
+								content = content.replace(/'/g,"\'");
 								// We need to clean the value before its insertion in the request
-								var element_name_cleaned = UTIL.cleanEscapeString(element_name);
-								// Constructing request to insert a line for each element for a particular type 
-		        				var request = "INSERT INTO ca_models (id, ca_table, record_type, information_type, element_name, date, content) VALUES (NULL, " + ca_table+","+record_type+","+information_type+","+element_name_cleaned+","+insert_date+","+content+");";
- 								//Ti.API.info(request);
-								db.execute(request);
+								// Constructing request to insert a line for each element for a particular type
+								
+		        				var request = "INSERT INTO ca_models (id, ca_table, record_type, information_type, element_name, date, content) VALUES (NULL, ?, ?, ?, ?, ?, ?);";
+								db.execute(request, ca_table, record_type, information_type, element_name, insert_date, content);
 		        			}
 		        		} else {
 		        			// Inserting non element properties
-			        		var request = "INSERT INTO ca_models (id, ca_table, record_type, information_type, date, content) VALUES (NULL, " + ca_table+","+record_type+","+information_type+","+insert_date+","+content+");";
-							//Ti.API.info(request);
-							db.execute(request);
+			        		var request = "INSERT INTO ca_models (id, ca_table, record_type, information_type, date, content) VALUES (NULL, ?, ?, ?, ?, ?);";
+							db.execute(request, ca_table, record_type, information_type, insert_date, content);
 		        		}
 	        		} 
 		        }
@@ -154,12 +150,10 @@ function Model() {
 	};
 
 	this.hasElementInfo = function(_ca_table, _element_name) {
-		var ca_table = UTIL.cleanEscapeString(_ca_table);
-		var element_name = UTIL.cleanEscapeString(_element_name); 
 		APP.log("debug", "CA-MODEL.hasElementInfo");
 
 		var db = Ti.Database.open(DBNAME),
-			request = "select content from ca_models where ca_table like "+ca_table+" and element_name like "+element_name+" limit 1",
+			request = "select content from ca_models where ca_table like '"+_ca_table+"' and element_name like '"+_element_name+"' limit 1",
 			temp = [];
 		var data = db.execute(request);
 		var result = data.getRowCount();
@@ -170,18 +164,16 @@ function Model() {
 	};
 
 	this.getElementInfo = function(_ca_table, _element_name) {
-		var ca_table = UTIL.cleanEscapeString(_ca_table);
-		var element_name = UTIL.cleanEscapeString(_element_name); 
-		APP.log("debug", "CA-UI.getAllScreensForUI");
+		APP.log("debug", "CA-UI.getElementInfo");
 
 		var db = Ti.Database.open(DBNAME),
-			request = "select content from ca_models where ca_table like "+ca_table+" and element_name like "+element_name+" limit 1",
+			request = "select content from ca_models where ca_table like '"+_ca_table+"' and element_name like '"+_element_name+"' limit 1",
 			temp = [];
 		var data = db.execute(request);
 		// Fetching content, but caution, we store JSON inside SQLite with single quotes, need to revert them before using it
 
 		if(data.getRowCount() > 0) {
-			var content = UTIL.singleToDoubleQuotes(data.fieldByName("content"));
+			var content = data.fieldByName("content");
 			// Sending back unserialized content
 			var result = JSON.parse(content);
 		} else {
@@ -192,6 +184,26 @@ function Model() {
 		
 		return result;
 
+	};
+	this.getTestResults = function(_ca_table, _element_name) {
+		
+		var db = Ti.Database.open(DBNAME),
+			request = "select content from ca_models where ca_table like '"+_ca_table+"' and element_name like '"+_element_name+"' limit 1",
+			temp = [];
+		var data = db.execute(request);
+		// Fetching content, but caution, we store JSON inside SQLite with single quotes, need to revert them before using it
+
+		if(data.getRowCount() > 0) {
+			var content = data.fieldByName("content");
+			// Sending back unserialized content
+			var result = content;
+		} else {
+			var result = false;
+		}
+		data.close();
+		db.close();
+		
+		return result;
 	};
 }
 

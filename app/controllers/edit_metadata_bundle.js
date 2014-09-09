@@ -1,6 +1,6 @@
 var APP = require("core");
 var CONFIG = arguments[0] || {};
-APP.log("debug",CONFIG);
+//APP.log("debug",CONFIG);
 
 $.bundleItemName.text = CONFIG.content.name;
 $.bundleItemName.bak = {height : 0};

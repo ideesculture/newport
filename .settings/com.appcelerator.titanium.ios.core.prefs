@@ -1,0 +1,10 @@
+eclipse.preferences.version=1
+iosLaunchConfigurationAttributes/ATTR_MINIFY=true
+iosLaunchConfigurationAttributes/ATTR_PROJECT_NAME=newport
+iosLaunchConfigurationAttributes/appid=com.ideesculture.newport
+iosLaunchConfigurationAttributes/certificate=IDEESCULTURE (7BC84TRA3B)
+iosLaunchConfigurationAttributes/distribute_path=/Volumes/Data/dev/newport.release
+iosLaunchConfigurationAttributes/keychain=
+iosLaunchConfigurationAttributes/output_format=ipa
+iosLaunchConfigurationAttributes/sdk_version=7.1
+iosLaunchConfigurationAttributes/uuid=fbf190a9-0543-4ee5-a1c7-e80e62344a2f

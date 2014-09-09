@@ -14,11 +14,17 @@ var UI_MODEL = require("models/ca-ui")();
 var CONFIG = arguments[0];
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
-var TABLE = "ca_objects";
+$.TABLE = "ca_objects";
+// List of all screen
+$.SCREENS = [];
+// Index of the screen we want to display, default -1 (first available)
+$.SCREEN = "";
+$.UI_CODE = "";
 
 $.init = function() {
+	APP.openLoading();
 	// Initiating CA db model class
-	MODEL_MODEL.init(TABLE);
+	MODEL_MODEL.init($.TABLE);
 	// Initiating CA available UIs class
 	UI_MODEL.init();
 	
@@ -27,15 +33,18 @@ $.init = function() {
 	APP.ca_password="smf2013";
 	
 	APP.log("debug", "settings.init");
-	APP.log("debug", "text | " + JSON.stringify(CONFIG));
 	
 	$.heading.color = APP.Settings.colors.hsb.primary.b > 70 ? "#000" : APP.Settings.colors.primary;
 	
+	// Defining global variables for styling
+	Alloy.Globals.primaryColor =  APP.Settings.colors.primary;
+	Alloy.Globals.secondaryColor = APP.Settings.colors.secondary;
 	Alloy.Globals.fieldsColor = APP.Settings.colors.secondary;
 	
+	$.screenButtonsScrollView.setBackgroundColor(APP.Settings.colors.primary);
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
 	
-	APP.openLoading();
+
 	
 	
 	APP.authString = 'Basic ' +Titanium.Utils.base64encode(APP.ca_login+':'+APP.ca_password);
@@ -104,43 +113,6 @@ $.modelRetrieveData = function(_force, _callback) {
 	//$.uiRetrieveData();
 };
 
-$.uiRetrieveData = function(_force, _callback) {
-	APP.log("debug","edit.retrieveData");
-	APP.log("debug","CONFIG.ui_url");
-	APP.log("debug",CONFIG.ui_url);
-	
-	UI_MODEL.fetch({
-		url: CONFIG.ui_url,
-		authString: APP.authString,
-		cache: 0,
-		callback: function() {
-			// Getting default (aka first) available ui for the record type we have
-			var ui_code = UI_MODEL.getFirstAvailableUIForTable(TABLE).code;
-			APP.log("debug",ui_code);
-			// Fetching defaulft (aka first) available screen for this UI
-			APP.log("debug","UI_MODEL.getFirstAvailableScreenWithContentForUI("+TABLE+","+ui_code+")");
-
-			$.uiHandleData(UI_MODEL.getFirstAvailableScreenWithContentForUI(TABLE,ui_code));
-
-			if(typeof _callback !== "undefined") {
-				_callback();
-			}
-		},
-		error: function() {
-			APP.closeLoading();
-			var dialog = Ti.UI.createAlertDialog({
-			    message: 'Connexion failed. Please retry.',
-			    ok: 'OK',
-			    title: 'Error'
-			  }).show();
-			if(typeof _callback !== "undefined") {
-				_callback();
-			}
-		}
-	});
-	
-};
-
 /**
  * Handles the data return
  * @param {Object} _data The returned data
@@ -180,13 +152,79 @@ $.modelHandleData = function(_data) {
 	APP.closeLoading();*/
 };
 
-$.uiHandleData = function(_data) {
-	APP.log("debug", "edit.uiHandleData");
+
+$.uiRetrieveData = function(_force, _callback) {
+	APP.log("debug","edit.retrieveData");
+	APP.log("debug","CONFIG.ui_url");
+	APP.log("debug",CONFIG.ui_url);
 	
-	APP.log("debug",_data);
+	UI_MODEL.fetch({
+		url: CONFIG.ui_url,
+		authString: APP.authString,
+		cache: 0,
+		callback: function() {
+			// Getting default (aka first) available ui for the record type we have
+			$.UI_CODE = UI_MODEL.getFirstAvailableUIForTable($.TABLE).code;
+			APP.log("debug",$.UI_CODE);
+			// Fetching defaulft (aka first) available screen for this UI
+			APP.log("debug","UI_MODEL.getFirstAvailableScreenWithContentForUI("+$.TABLE+","+$.UI_CODE+")");
+
+			if($.SCREEN == "") {
+				$.uiHandleData(UI_MODEL.getFirstAvailableScreenWithContentForUI($.TABLE,$.UI_CODE));	
+			} else {
+				//APP.log("debug",UI_MODEL.getContentForScreen($.TABLE,$.UI_CODE,$.SCREEN));
+				$.uiHandleData(UI_MODEL.getContentForScreen($.TABLE,$.UI_CODE,$.SCREEN)); 
+			}
+
+			if(typeof _callback !== "undefined") {
+				_callback();
+			}
+		},
+		error: function() {
+			APP.closeLoading();
+			var dialog = Ti.UI.createAlertDialog({
+			    message: 'Connexion failed. Please retry.',
+			    ok: 'OK',
+			    title: 'Error'
+			  }).show();
+			if(typeof _callback !== "undefined") {
+				_callback();
+			}
+		}
+	});
+};
+
+$.uiHandleData = function(_data) {
+	
+	// If the list of the screens is not initiated, populate it from the model
+	if($.SCREENS.length == 0) {
+		$.SCREENS = UI_MODEL.getAllScreensForUI($.TABLE,$.UI_CODE);
+	}
+	
+	// Create a label for each screen and add it to $.screenButtonsScrollView
+	var labels= [];
+	APP.log("debug",$.SCREENS);
+	
+	for(var index in $.SCREENS) {
+		var labelMargin = Ti.UI.createView();
+		$.addClass(labelMargin,"buttonMargin");
+		var label = Ti.UI.createLabel({
+		    color: '#000',
+		    text: $.SCREENS[index].preferred_labels,
+		    textAlign: 'center',
+		    code:$.SCREENS[index].code
+		});
+		$.addClass(label,"button");
+		labelMargin.add(label);
+		$.screenButtonsScrollView.add(labelMargin);
+	}
+	
+	APP.log("debug", "edit.uiHandleData");
+	//APP.log("debug",_data);
 	var rows=[];
 
 	var i = 1;
+	// If we have some content back
 	var screen_content = _data.content.screen_content;
 	for(var bundle in screen_content) {
 		var bundle_code = screen_content[bundle].bundle_code;
@@ -194,13 +232,14 @@ $.uiHandleData = function(_data) {
 		if(i<50) {
 			// Test if we're in presence of an attribute
 			if (bundle_code.substring(0, 13) == "ca_attribute_") {
+
 				// If the bundle described in the screen corresponds to sthg in the model, display it
 				var attribute = bundle_code.replace(/^ca_attribute_/,"");
-				//APP.log("debug", JSON.parse(MODEL_MODEL.getElementInfo("ca_objects", attribute)));
-				
+
 				if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {
 					APP.log("debug","attribute : "+attribute);
-					APP.log("debug", MODEL_MODEL.hasElementInfo("ca_objects", attribute));
+					
+					//APP.log("debug", MODEL_MODEL.hasElementInfo("ca_objects", attribute));
 					var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
 					var row = Alloy.createController("edit_metadata_bundle", {
 						element:attribute,
@@ -213,21 +252,27 @@ $.uiHandleData = function(_data) {
 		i++;
 	};
 	
-	$.bundles.setOpacity(0);
+	$.bundles.removeAllChildren();
 	$.bundles.setData(rows);
 	for(var x=0; x<rows.length; x++) {
 		$.bundles.add(rows[x]);
+		// Close loading on the last view addition
+		if(x==(rows.length - 1)) {
+			APP.closeLoading();
+		}
 	}
-	$.bundles.setOpacity(1);
-	APP.closeLoading();
-	//APP.log("debug",APP.ca_modele_prop);
-	//APP.log("debug",APP.ca_modele_values.elements);
 
+	
 };
 
-/*
-// Event listeners
-$.loginbutton.addEventListener("click", function(_event) {
+$.screenButtonsScrollView.addEventListener("click", function(_event) {
+	APP.log("debug",_event.source);
+	// Getting screen code from the code parameter inside the label
+	APP.openLoading();
+	$.SCREEN = _event.source.code;
+	 $.uiRetrieveData();
+	//_event.source.code => ce qu'on veut
 });
-*/
+
+
 $.init();

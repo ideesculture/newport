@@ -37,7 +37,7 @@ function Model() {
 	 */
 	this.fetch = function(_params) {
 		APP.log("debug", "CA-UI.fetch");
-		//APP.log("trace", JSON.stringify(_params));
+		//APP.log("trace", UTIL.jsonStringify(_params));
 
 		var isStale = UTIL.isStale(_params.url, _params.cache);
 
@@ -73,38 +73,33 @@ function Model() {
 		// Emptying cache
 		var db = Ti.Database.open(DBNAME);
 		db.execute("DELETE FROM ca_uis;");
-		Ti.API.info("DELETE FROM ca_uis;");
 		db.execute("BEGIN TRANSACTION;");
-		Ti.API.info("BEGIN TRANSACTION;");
 				
-		Ti.API.info(_data);
 		if(_data.ok == true) {
 
 			// Defining store value for insertion date
-			var insert_date = UTIL.cleanEscapeString(new Date().getTime());			
+			var insert_date = new Date().getTime();			
 			
 			// Browsing data
 		    for (var prop in _data) {
-		    	var record_type = UTIL.cleanEscapeString(prop);
+		    	var record_type = prop;
 		        var _data2 = _data[prop];
-		        Ti.API.info(_data2);
 		        if(prop != "ok") {
 
 		        	// We are not at the WS request result, so we got a CA record table as first level
-					var ca_table = UTIL.cleanEscapeString(prop);
+					var ca_table = prop;
 					
 		        	for (var prop2 in _data2) {
-		        		Ti.API.info(prop2);
 		        		
 		        		var _data3 = _data2[prop2];
 		        		
 		        		// 2nd level : no direct type, but a code as sublevel
-						var code = UTIL.cleanEscapeString(_data2[prop2].editor_code);
+						var code = _data2[prop2].editor_code;
 						
 						for (var prop3 in _data3) {
 
 			        		// 3rd level : getting information type
-							var information_type = UTIL.cleanEscapeString(prop3);
+							var information_type = prop3;
 		        			
 		        			if(prop3 == "screens") {
 		        				// 3rd level : for screens only, doing a 4th level
@@ -112,24 +107,20 @@ function Model() {
 		        				var _data4 = _data3[prop3];
 		        				for (var prop4 in _data4) {
 									// 4rth level for screens, preparing store values
-		        					var screen_name = UTIL.cleanEscapeString(_data4[prop4].idno);
-		        					var screen_label = UTIL.cleanEscapeString(_data4[prop4].name);
-		        					var content = UTIL.cleanEscapeString(JSON.stringify(_data4[prop4]));
+		        					var screen_name = _data4[prop4].idno;
+		        					var screen_label = _data4[prop4].name;
+		        					var content = JSON.stringify(_data4[prop4]);
 
 		        					//id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, code TEXT, information_type TEXT, screen_name TEXT, screen_label TEXT, date TEXT, content TEXT
-		        					var request = "INSERT INTO ca_uis (ca_table, code, information_type, screen_name, screen_label, date, content)"+ 
-		        						"VALUES (" + ca_table+","+code+","+information_type+","+screen_name+","+screen_label+","+insert_date+","+content+");";
-	        						Ti.API.info(request);
-									db.execute(request);
+		        					var request = "INSERT INTO ca_uis (ca_table, code, information_type, screen_name, screen_label, date, content) VALUES (?, ?, ?, ?, ?, ?, ?);";
+									db.execute(request, ca_table, code, information_type, screen_name, screen_label, insert_date, content);
 		        				}
 		        			} else {
 		        				// 3rd level, non screen information
-		        				var content = UTIL.cleanEscapeString(_data3[prop3]);
+		        				var content = _data3[prop3];
 		        				//id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, code TEXT, information_type TEXT, screen_name TEXT, screen_label TEXT, date TEXT, content TEXT
-	        					var request = "INSERT INTO ca_uis (ca_table, code, information_type, date, content) "+ 
-	        						"VALUES (" + ca_table+","+code+","+information_type+","+insert_date+","+content+");";
-        						Ti.API.info(request);
-								db.execute(request);
+	        					var request = "INSERT INTO ca_uis (ca_table, code, information_type, date, content) VALUES (?, ?, ?, ?, ?);";
+								db.execute(request, ca_table, code, information_type, insert_date, content);
 							}
 						
 						}
@@ -150,11 +141,11 @@ function Model() {
 	 * Returns all availables uis for a record table
 	 */
 	this.getAvailableUIsForTable = function(_ca_table) {
-		var ca_table = UTIL.cleanEscapeString(_ca_table);
+		var ca_table = _ca_table;
 		APP.log("debug", "CA-UI.getAvailableUIsForTable");
 
 		var db = Ti.Database.open(DBNAME),
-			request = "select code from ca_uis where ca_table like "+ ca_table +" group by 1",
+			request = "select code from ca_uis where ca_table like '"+ ca_table +"' group by 1",
 			temp = [];
 		var data = db.execute(request);
 
@@ -186,15 +177,13 @@ function Model() {
 	 * Returns all screens for a UI
 	 */
 	this.getAllScreensForUI = function(_ca_table,_ui_code) {
-		var ca_table = UTIL.cleanEscapeString(_ca_table);
-		var ui_code = UTIL.cleanEscapeString(_ui_code); 
 		APP.log("debug", "CA-UI.getAllScreensForUI");
 
 		var db = Ti.Database.open(DBNAME),
-			request = "select screen_name, screen_label from ca_uis where ca_table like "+ca_table+" and code like "+ui_code+" and information_type like \"screens\" group by 1,2",
+			request = "select screen_name, screen_label from ca_uis where ca_table like '"+_ca_table+"' and code like '"+_ui_code+"' and information_type like 'screens' group by 1,2",
 			temp = [];
 		var data = db.execute(request);
-
+		
 		while(data.isValidRow()) {
 			temp.push({
 				code: data.fieldByName("screen_name"),
@@ -202,7 +191,6 @@ function Model() {
 			});
 			data.next();
 		}
-
 		data.close();
 		db.close();
 
@@ -223,12 +211,10 @@ function Model() {
 	 * Returns all screens & contents for a UI
 	 */
 	this.getAllScreensWithContentForUI = function(_ca_table,_ui_code) {
-		var ca_table = UTIL.cleanEscapeString(_ca_table);
-		var ui_code = UTIL.cleanEscapeString(_ui_code); 
 		APP.log("debug", "CA-UI.getAllScreensWithContentForUI");
 
 		var db = Ti.Database.open(DBNAME),
-			request = "select screen_name, screen_label, content from ca_uis where ca_table like "+ca_table+" and code like "+ui_code+" and information_type like \"screens\" group by 1,2";
+			request = "select screen_name, screen_label, content from ca_uis where ca_table like '"+_ca_table+"' and code like '"+_ui_code+"' and information_type like 'screens' group by 1,2";
 			temp = [];
 		var data = db.execute(request);
 
@@ -236,12 +222,10 @@ function Model() {
 			//Ti.API.log(data.fieldByName("content"));
 			// As JSON are stored inside the DB with single quotes, we need to replace theme before parsing JSON
 			//Ti.API.log(data.fieldByName("content"));
-			//Ti.API.log(UTIL.singleToDoubleQuotes(data.fieldByName("content")));
-			var text = UTIL.singleToDoubleQuotes(data.fieldByName("content"));
+			var text = data.fieldByName("content");
 			//Titanium.API.log(Titanium.API.WARN,text);
 			var content = JSON.parse(text);
 			
-			//var content = [];
 			temp.push({
 				code: data.fieldByName("screen_name"),
 				preferred_labels: data.fieldByName("screen_label"),
@@ -270,12 +254,10 @@ function Model() {
 	 * Returns all screens & contents for a UI
 	 */
 	this.getNonScreenInfosForUI = function(_ca_table,_ui_code) {
-		var ca_table = UTIL.cleanEscapeString(_ca_table);
-		var ui_code = UTIL.cleanEscapeString(_ui_code); 
 		APP.log("debug", "CA-UI.getAllScreensForUI");
 
 		var db = Ti.Database.open(DBNAME),
-			request = "select information_type, content from ca_uis where ca_table like "+ca_table+" and code like "+ui_code+" and information_type not like \"screens\" group by 1,2",
+			request = "select information_type, content from ca_uis where ca_table like '"+_ca_table+"' and code like '"+_ui_code+"' and information_type not like 'screens' group by 1,2",
 			temp = [];
 		var data = db.execute(request);
 
@@ -296,18 +278,15 @@ function Model() {
 	 * Returns content for a screen
 	 */
 	this.getContentForScreen = function(_ca_table,_ui_code,_screen_code) {
-		var ca_table = UTIL.cleanEscapeString(_ca_table);
-		var ui_code = UTIL.cleanEscapeString(_ui_code);
-		var screen_code = UTIL.cleanEscapeString(_screen_code);  
 		APP.log("debug", "CA-UI.getAllScreensForUI");
 
 		var db = Ti.Database.open(DBNAME),
-			request = "select content from ca_uis where ca_table like "+ca_table+" and code like "+ui_code+" and screen_name like "+screen_code+" limit 1",
-			temp = [];
+			request = "select content from ca_uis where ca_table like '"+_ca_table+"' and code like '"+_ui_code+"' and screen_name like '"+_screen_code+"' limit 1",
+			temp;
 		var data = db.execute(request);
 
 		while(data.isValidRow()) {
-			temp.push(JSON.parse(data.fieldByName("content")));
+			temp = { content: JSON.parse(data.fieldByName("content")) };
 			data.next();
 		}
 

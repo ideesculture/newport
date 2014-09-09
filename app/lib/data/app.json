@@ -15,14 +15,14 @@
 			"secret": "s-RDQejhRwmx-j4DCaXPMw"
 		},
 		"colors": {
-			"primary": "#2f8dc4",
-			"secondary": "#4faff2"
+			"primary": "#4faff2",
+			"secondary": "#1f7fc2"
 		},
 		"useSlideMenu": true,
 		"CollectiveAccess": {
-			"urlForLogin": "http://192.168.0.27/service.php/find/ca_objects?q=zzzzzzzz",
-			"urlForModel": "http://192.168.0.27/ws_ca_modele5.json",
-			"urlForUis" : "http://192.168.0.27/ws_ca_uis3.json"
+			"urlForLogin": "http://newport.idcultu.re/service.php/find/ca_objects?q=zzzzzzzz",
+			"urlForModel": "http://newport.idcultu.re/ws_ca_modele5.json",
+			"urlForUis" : "http://newport.idcultu.re/ws_ca_uis2.json"
 		}
 	},
 	"manifest": [
