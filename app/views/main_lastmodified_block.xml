@@ -1,0 +1,39 @@
+<Alloy>
+	<View class="rightbarBlock">
+		<Label text="Tuesday 22, July" class="rightbarDate"></Label>
+		<View class="itemTreeTable" id="itemTreeTable">
+			<View class="itemTreeRow itemTreeFolder">
+				<View class="itemTreeRowLeft">
+					<Label text="Item" class="itemTreeLabel"></Label>
+				</View>
+				<View class="itemTreeRowRight">
+					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="24" size="20" color="#000" class="faIcon"/>
+				</View>
+			</View>
+			<View class="itemTreeRow itemTreeFolder">
+				<View class="itemTreeRowLeft">
+					<Label text="Item" class="itemTreeLabel"></Label>
+				</View>
+				<View class="itemTreeRowRight">
+					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="24" size="20" color="#000" class="faIcon"/>
+				</View>
+			</View>
+			<View class="itemTreeRow itemTreeFolder">
+				<View class="itemTreeRowLeft">
+					<Label text="Item" class="itemTreeLabel"></Label>
+				</View>
+				<View class="itemTreeRowRight">
+					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="24" size="20" color="#000" class="faIcon"/>
+				</View>
+			</View>
+			<View class="itemTreeRow itemTreeLeaf">
+				<View class="itemTreeRowLeft">
+					<Label text="Item" class="itemTreeLabel"></Label>
+				</View>
+				<View class="itemTreeRowRight">
+					<Require type="widget" src="ti.ux.iconfont" icon="fa-file-o" left="24" size="20" color="#000" class="faIcon"/>
+				</View>
+			</View>
+		</View>
+	</View>
+</Alloy>

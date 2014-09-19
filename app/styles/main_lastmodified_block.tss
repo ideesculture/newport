@@ -1,0 +1,53 @@
+".rightbarBlock":{
+	left:0,
+	top:10,
+	color:"black",
+	height:Ti.UI.SIZE
+},
+".rightbarDate":{
+	height:38,
+	left:0,
+	top:10,
+	color:"white"
+},
+".itemTreeTable": {
+	layout:"vertical",
+	backgroundColor:"red",
+	height:Ti.UI.SIZE,
+	width:Ti.UI.FILL,
+	//height:100,
+	top:48,
+	left:0
+},
+".itemTreeRow": {
+	height:40,
+	borderColor:"darkgray",
+	width:210,
+	left:0
+},
+".itemTreeFolder": {
+	backgroundColor:"#ddd"
+},
+".itemTreeLeaf": {
+	backgroundColor:"#fff"
+},
+".itemTreeLabel":{
+	height:Ti.UI.FILL
+},
+".faIcon":{
+	top:10
+},
+".itemTreeRowLeft":{
+	width:Ti.UI.SIZE,
+	height:Ti.UI.SIZE,
+	top:0,
+	left:10,
+	layout:'horizontal'
+},
+".itemTreeRowRight":{
+	width:Ti.UI.SIZE,
+	height:Ti.UI.SIZE,
+	top:0,
+	right:10,
+	layout:'horizontal'
+}

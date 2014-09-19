@@ -172,7 +172,7 @@
 },
 "#rightbar":{
 	width:230, 
-	backgroundColor:"#000",
+	backgroundColor:"black",
 	font: {
 		fontSize: 14,
 		fontFamily: "AvenirNext-Medium"

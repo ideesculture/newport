@@ -1,0 +1,10 @@
+<Alloy>
+	<View class="itemTreeRow itemTreeFolder">
+		<View class="itemTreeRowLeft">
+			<Label text="Item" class="itemTreeLabel"></Label>
+		</View>
+		<View class="itemTreeRowRight">
+			<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="24" size="20" color="#000" class="faIcon"/>
+		</View>
+	</View>
+</Alloy>

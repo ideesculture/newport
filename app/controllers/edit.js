@@ -22,7 +22,7 @@ $.SCREEN = "";
 $.UI_CODE = "";
 
 $.init = function() {
-	APP.openLoading();
+	//APP.openLoading();
 	// Initiating CA db model class
 	MODEL_MODEL.init($.TABLE);
 	// Initiating CA available UIs class
@@ -70,7 +70,7 @@ $.init = function() {
 		});
 	} else {
 		$.NavigationBar.showSettings(function(_event) {
-			APP.openSettings();
+			//APP.openSettings();
 		});
 	}
 	
@@ -170,6 +170,7 @@ $.uiRetrieveData = function(_force, _callback) {
 			APP.log("debug","UI_MODEL.getFirstAvailableScreenWithContentForUI("+$.TABLE+","+$.UI_CODE+")");
 
 			if($.SCREEN == "") {
+				APP.log("debug",UI_MODEL.getFirstAvailableScreenWithContentForUI($.TABLE,$.UI_CODE));
 				$.uiHandleData(UI_MODEL.getFirstAvailableScreenWithContentForUI($.TABLE,$.UI_CODE));	
 			} else {
 				//APP.log("debug",UI_MODEL.getContentForScreen($.TABLE,$.UI_CODE,$.SCREEN));
@@ -205,19 +206,22 @@ $.uiHandleData = function(_data) {
 	var labels= [];
 	APP.log("debug",$.SCREENS);
 	
-	for(var index in $.SCREENS) {
-		var labelMargin = Ti.UI.createView();
-		$.addClass(labelMargin,"buttonMargin");
-		var label = Ti.UI.createLabel({
-		    color: '#000',
-		    text: $.SCREENS[index].preferred_labels,
-		    textAlign: 'center',
-		    code:$.SCREENS[index].code
-		});
-		$.addClass(label,"button");
-		labelMargin.add(label);
-		$.screenButtonsScrollView.add(labelMargin);
+	if ($.screenButtonsScrollView.children.length == 0) {
+		for(var index in $.SCREENS) {
+			var labelMargin = Ti.UI.createView();
+			$.addClass(labelMargin,"buttonMargin");
+			var label = Ti.UI.createLabel({
+			    color: '#000',
+			    text: $.SCREENS[index].preferred_labels,
+			    textAlign: 'center',
+			    code:$.SCREENS[index].code
+			});
+			$.addClass(label,"button");
+			labelMargin.add(label);
+			$.screenButtonsScrollView.add(labelMargin);
+		}		
 	}
+
 	
 	APP.log("debug", "edit.uiHandleData");
 	//APP.log("debug",_data);
@@ -268,7 +272,7 @@ $.uiHandleData = function(_data) {
 $.screenButtonsScrollView.addEventListener("click", function(_event) {
 	APP.log("debug",_event.source);
 	// Getting screen code from the code parameter inside the label
-	APP.openLoading();
+	//APP.openLoading();
 	$.SCREEN = _event.source.code;
 	 $.uiRetrieveData();
 	//_event.source.code => ce qu'on veut

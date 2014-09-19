@@ -1,0 +1,33 @@
+".itemTreeRow": {
+	height:40,
+	borderColor:"darkgray",
+	width:"100%"
+},
+".itemTreeFolder": {
+	backgroundColor:"#ddd"
+},
+".itemTreeLeaf": {
+	backgroundColor:"#fff"
+},
+".itemTreeLabel":{
+	height:Ti.UI.FILL
+},
+".faIcon":{
+	top:10
+},
+".itemTreeRowLeft":{
+	width:Ti.UI.SIZE,
+	height:Ti.UI.SIZE,
+	top:0,
+	left:10,
+	layout:'horizontal'
+},
+".itemTreeRowRight":{
+	width:Ti.UI.SIZE,
+	height:Ti.UI.SIZE,
+	top:0,
+	right:10,
+	layout:'horizontal'
+}
+
+

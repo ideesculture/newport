@@ -20,9 +20,10 @@
 		},
 		"useSlideMenu": true,
 		"CollectiveAccess": {
-			"urlForLogin": "http://newport.idcultu.re/service.php/find/ca_objects?q=zzzzzzzz",
-			"urlForModel": "http://newport.idcultu.re/ws_ca_modele5.json",
-			"urlForUis" : "http://newport.idcultu.re/ws_ca_uis2.json"
+			"urlForLogin": "http://aspi.idcultu.re/gestion/service.php/find/ca_objects?q=zzzzzzzz",
+			"urlForModel": "http://aspi.idcultu.re/gestion/service.php/model/ca_objects",
+			"urlForUis" : "http://aspi.idcultu.re/gestion/service-uis.php/ca_objects",
+			"urlForHierarchy" : "http://aspi.idcultu.re/gestion/service.php/find/ca_objects?q=*&bundles=%7B%22created%22%3A+%7B%22returnAsArray%22%3Atrue%7D%2C+%22parent_id%22%3A%7B%7D%7D"
 		}
 	},
 	"manifest": [
@@ -30,16 +31,16 @@
 	],
 	"tabs": [
 		{
-			"title": "New",
-			"type": "edit",
-			"image": "new_icon",
+			"title": "Main",
+			"type": "main",
+			"image": "home_icon",
 			"tabletSupport": false,
 			"downTab" : false
 		},
 		{
-			"title": "Main",
-			"type": "main",
-			"image": "home_icon",
+			"title": "New",
+			"type": "edit",
+			"image": "new_icon",
 			"tabletSupport": false,
 			"downTab" : false
 		},
