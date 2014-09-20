@@ -1,0 +1,47 @@
+".cell":{
+	width: "227dp",
+	height: "260dp",
+	top: 10,
+	bottom: 10,
+	left: 20,
+	layout: "vertical",
+	borderColor:"black",
+	borderWidth:1
+},
+".cellimage":{
+	backgroundColor: "#dddddd",
+	top:"5dp",
+	left:"5dp",
+	right:"5dp"
+},
+".objectName":{
+	left:10,
+	top:10,
+	width:Ti.UI.FILL
+},
+".objectRow2": {
+	height: "40dp",
+	width: Ti.UI.FILL,
+	layout: "absolute",
+	left:10
+},
+".objectInfo":{
+	left:"0"
+},
+".objectRow2Right":{
+	right: 10
+},
+".infoIcon":{
+	backgroundColor:"black",
+	borderRadius:10,
+	height:20,
+	width:20,
+	right:0,
+	color:"white",
+	text:"i",
+	font: {
+		fontSize: 18,
+		fontFamily: "TimesNewRomanPS-BoldMT"
+	},
+	textAlign:"center"
+}
