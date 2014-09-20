@@ -177,6 +177,57 @@ function Model() {
 		return temp;
 		
 	}
+
+	this.getChildrenFoldersInside = function(_ca_table, id) {
+		APP.log("debug", "CA-HIERARCHY.getChildrenFoldersInside");
+		var db = Ti.Database.open(DBNAME), temp = {};
+		var parent_criteria = "is NULL";
+		if (id) parent_criteria = "="+id;
+		var request = "select cao1.object_id, cao1.display_label, count(cao2.object_id) as contains from "+_ca_table+" as cao1 left join "+_ca_table+" as cao2 on cao1.object_id=cao2.parent_id where cao1.parent_id "+parent_criteria+" group by cao1.object_id having contains > 0 order by cao1.display_label ";
+		var data = db.execute(request);
+		var fieldnumber = 0, linenumber = 1;
+
+		while (data.isValidRow()) {
+			temp[linenumber] = {};
+			while (fieldnumber < data.getFieldCount()) {
+				temp[linenumber][data.fieldName(fieldnumber)] = data.field(fieldnumber);
+				fieldnumber++;
+			}
+			linenumber++;
+			fieldnumber = 0;
+			data.next();
+		}
+
+		data.close();
+		db.close();
+		return temp;
+	}
+
+	this.getObjectsInside = function(_ca_table, id) {
+		APP.log("debug", "CA-HIERARCHY.getObjectsInside");
+		var db = Ti.Database.open(DBNAME), temp = {};
+		var parent_criteria = "is NULL";
+		if (id) parent_criteria = "="+id;
+		var request = "select object_id, display_label from "+_ca_table+" where parent_id "+parent_criteria+" order by display_label";
+		var data = db.execute(request);
+		var fieldnumber = 0, linenumber = 1;
+
+		while (data.isValidRow()) {
+			temp[linenumber] = {};
+			while (fieldnumber < data.getFieldCount()) {
+				temp[linenumber][data.fieldName(fieldnumber)] = data.field(fieldnumber);
+				fieldnumber++;
+			}
+			linenumber++;
+			fieldnumber = 0;
+			data.next();
+		}
+
+		data.close();
+		db.close();
+		return temp;
+	}
+
 }
 
 module.exports = function() {
