@@ -176,13 +176,14 @@
 	font: {
 		fontSize: 14,
 		fontFamily: "AvenirNext-Medium"
-	}
+	},
+	showVerticalScrollIndicator:true
 },
 "#rightbarContainer":{
 	top:10,
 	left:10,
 	right:10,
-	layout:"vertical"	
+	layout:"vertical"
 },
 "#rightbarTitle":{
 	font: {
