@@ -151,12 +151,12 @@
 		        </ScrollView>
 			</View>
 			
-	    	<View id="rightbar">
+	    	<ScrollView id="rightbar">
 	    		<View id="rightbarContainer">
 					<Label text="Last Modified" id="rightbarTitle"></Label>
 
 		    	</View>
-	    	</View>
+	    	</ScrollView>
     	</View>
     </View>
 </Alloy>
