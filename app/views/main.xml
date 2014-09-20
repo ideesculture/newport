@@ -23,7 +23,7 @@
 		  			</View>
 
 		    		<ScrollView class="folderItems" id="folderItems">
-		    			<!-- top folders go here -->
+		    			<!-- folders created by main_folders_row.js -->
 					</ScrollView>
 				</View>
 
@@ -41,26 +41,7 @@
 		  			</View>
 		  			<!-- objects = container for cells aka block to display one item -->
 					<View id="objects">
-						<View class="cell">
-							<ImageView id="firstImage" class="cellimage" image="/newport/cadre-plus-ipad.png" />
-							<Label class="objectName" text="Object 1" />
-			    			<View class="objectRow2">
-			    				<Label class="objectInfo" text="Item" />
-			    				
-			    				<View class="objectRow2Right">
-			    					<Label class="infoIcon" text="i" />
-			    				</View>
-			    			</View></View>
-						<View class="cell">
-							<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" />
-							<Label class="objectName" text="Object 1" />
-			    			<View class="objectRow2">
-			    				<Label class="objectInfo" text="Item" />
-			    				
-			    				<View class="objectRow2Right">
-			    					<Label class="infoIcon" text="i" />
-			    				</View>
-			    			</View></View>
+						<!-- objects created by main_object_block.js  -->
 					</View>
 		        </ScrollView>
 			</View>
