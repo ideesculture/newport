@@ -22,15 +22,6 @@ $.init = function() {
 	$.heading.color = APP.Settings.colors.hsb.primary.b > 70 ? "#000" : APP.Settings.colors.primary;
 
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
-	
-	// Adding recent items to right panel
-	var view = Alloy.createController("main_lastmodified_block", {id:43}).getView();
-	var view2 = Alloy.createController("main_lastmodified_block", {id:44}).getView();
-	var view3 = Alloy.createController("main_lastmodified_block", {id:45}).getView();
-	APP.log("debug",view);
-	$.rightbarContainer.add(view);
-	$.rightbarContainer.add(view2);
-	$.rightbarContainer.add(view3);
 		
 	// Loading CA database model (metadatas & fields) & filling cache
 	CONFIG.url = APP.Settings.CollectiveAccess.urlForHierarchy;
@@ -72,7 +63,7 @@ $.retrieveData = function(_force, _callback) {
 		cache: 0,
 		callback: function() {
 			//$.handleData(HIERARCHY_MODEL.nbLines($.TABLE));
-
+			$.handleLastModifiedData(HIERARCHY_MODEL.getLastRecords($.TABLE));
 			if(typeof _callback !== "undefined") {
 				_callback();
 			}
@@ -97,6 +88,14 @@ $.retrieveData = function(_force, _callback) {
  * @param {Object} _data The returned data
  */
 $.handleData = function(_data) {
+};
+
+$.handleLastModifiedData = function(_data) {
+	// Adding recent items to right panel
+	for(var lastModified in _data) {
+		var lastmodified_block_view = Alloy.createController("main_lastmodified_block", _data[lastModified]).getView();
+		$.rightbarContainer.add(lastmodified_block_view);	
+	}	
 };
 
 // Event listeners
