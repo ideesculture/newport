@@ -2,6 +2,8 @@
  * The main app singleton used throughout the app. This object contains static
  * properties, global event handling, etc.
  *
+ * This class comes from ChariTi project, customized by Gautier Michelin for Newport project.
+ *
  * @class core
  * @singleton
  * @uses utilities
@@ -114,6 +116,11 @@ var APP = {
 		type: Ti.Network.networkTypeName,
 		online: Ti.Network.online
 	},
+	/**
+	 * breadcrumb contents for main screen
+	 * @type {Array}
+	 */
+	breadcrumb: [],
 	/**
 	 * Current controller view stack index
 	 * @type {Number}
