@@ -1,4 +1,4 @@
-".cell":{
+"#cell":{
 	width: "227dp",
 	height: "260dp",
 	top: 10,
@@ -14,7 +14,7 @@
 	left:"5dp",
 	right:"5dp"
 },
-".objectName":{
+"#objectName":{
 	left:10,
 	top:10,
 	width:Ti.UI.FILL
