@@ -19,12 +19,53 @@ $.init = function() {
 	// Initiating CA db model class
 	HIERARCHY_MODEL.init($.TABLE);
 	
-	$.heading.color = APP.Settings.colors.hsb.primary.b > 70 ? "#000" : APP.Settings.colors.primary;
-
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
 		
 	// Loading CA database model (metadatas & fields) & filling cache
 	CONFIG.url = APP.Settings.CollectiveAccess.urlForHierarchy;
+
+	// Handling breadcrumb
+	if(CONFIG.id) {
+		// TODO : move breadcrumb interaction inside its own controller
+		// Changing home button & adding listener
+		$.breadcrumb_home.color = APP.Settings.colors.primary;
+		$.breadcrumb_home.addEventListener('click',function(e) {
+			CONFIG.id = undefined;
+			CONFIG.display_label = undefined;
+			APP.removeChild();
+			APP.breadcrumb.splice(-1,1);
+		});
+		// Adding ancestors to breadcrumb
+		for(var step in APP.breadcrumb) {
+			var breadcrumb_label=Ti.UI.createLabel({
+				text: APP.breadcrumb[step].display_label,
+				left:10,
+				color:APP.Settings.colors.primary
+			});
+			Ti.API.log("step");
+			Ti.API.log(step);
+			// Calculating how many removeChild we have to execute : going from last to current
+			for(i=1;i<=(APP.breadcrumb.length - step);i++) {
+				breadcrumb_label.addEventListener('click',function(e) {
+					Ti.API.log("removing one child");
+					APP.removeChild();
+					APP.breadcrumb.pop();
+				});
+			};
+			$.breadcrumb.add(breadcrumb_label);
+			var breadcrumb_separator=Ti.UI.createLabel({
+				text: ">",
+				left:10
+			});
+			$.breadcrumb.add(breadcrumb_separator);
+		};
+		// Adding current level to breadcrumb
+		var breadcrumb_label=Ti.UI.createLabel({
+			text: CONFIG.display_label,
+			left:10
+		});
+		$.breadcrumb.add(breadcrumb_label);}
+
 	$.retrieveData();
 		
 	if(CONFIG.isChild === true) {
@@ -64,6 +105,8 @@ $.retrieveData = function(_force, _callback) {
 		callback: function() {
 			//$.handleData(HIERARCHY_MODEL.nbLines($.TABLE));
 			$.handleLastModifiedData(HIERARCHY_MODEL.getLastRecords($.TABLE));
+			$.handleFoldersData(HIERARCHY_MODEL.getChildrenFoldersInside($.TABLE,CONFIG.id));
+			$.handleObjectsData(HIERARCHY_MODEL.getObjectsInside($.TABLE,CONFIG.id))
 			if(typeof _callback !== "undefined") {
 				_callback();
 			}
@@ -95,6 +138,22 @@ $.handleLastModifiedData = function(_data) {
 	for(var lastModified in _data) {
 		var lastmodified_block_view = Alloy.createController("main_lastmodified_block", _data[lastModified]).getView();
 		$.rightbarContainer.add(lastmodified_block_view);	
+	}	
+};
+
+$.handleFoldersData = function(_data) {
+	// Adding top objects to top block, those having no parent_id
+	for(var folder in _data) {
+		var folder_row = Alloy.createController("main_folders_row", _data[folder]).getView();
+		$.folderItems.add(folder_row);
+	}	
+};
+
+$.handleObjectsData = function(_data) {
+	// Adding top objects to top block, those having no parent_id
+	for(var object in _data) {
+		var object_block = Alloy.createController("main_object_block", _data[object]).getView();
+		$.objects.add(object_block);
 	}	
 };
 
