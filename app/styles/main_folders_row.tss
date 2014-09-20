@@ -1,0 +1,29 @@
+"#foldersItem": {
+	height: "40dp",
+	borderColor: "#000",
+	backgroundColor:"#ddd",
+	borderWidth: "1dp",
+	width: Ti.UI.FILL,
+	layout: "absolute"
+},
+"#foldersItemName": {
+	left: 10,
+	font: {
+		fontSize: 14,
+		fontFamily: "HelveticaNeue"
+	}
+},
+"#foldersItemRight": {
+	layout: "horizontal",
+	right: 10,
+	width: Ti.UI.SIZE,
+	height:Ti.UI.FILL,
+	font: {
+		fontSize: 14,
+		fontFamily: "HelveticaNeue"
+	},
+	top:10
+},
+".folderIcon":{
+	width: 20
+}

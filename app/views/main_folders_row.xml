@@ -1,0 +1,10 @@
+<Alloy>
+	<View id="foldersItem">
+		<Label id="foldersItemName" text="Item" />
+		
+		<View id="foldersItemRight">
+			<Label id="foldersItemCount" text="(2)" />
+				<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="0" size="20" color="#000" class="folderIcon"/>
+		</View>
+	</View>
+</Alloy>
