@@ -101,13 +101,8 @@ function Model() {
 			
 			// Browsing data
 		    for (var prop in _data) {
-		    	Ti.API.log("_data.length");
-		    	Ti.API.log(_data.length);
 		    	var record_type = prop;
-		        		
 		        var _data2 = _data[prop];
-		        Ti.API.log("_data2.length");
-		    	Ti.API.log(_data2.length);
 		    	if(prop != "ok") {
 		        	for (var prop2 in _data2) {
 						var record = _data2[prop2];
@@ -159,14 +154,27 @@ function Model() {
 
 		var db = Ti.Database.open(DBNAME),
 			//request = "select ca_table, object_id, parent_id, idno, display_label, date, created from ca_models where ca_table like '"+_ca_table,
-			request = "select count(object_id) as nb from "+_ca_table+" where ca_table like '"+_ca_table+"' group by 1",
-			temp = [];
+			request = "select cao4.object_id as id4, cao4.display_label as label4, cao3.object_id as id3, cao3.display_label as label3, cao2.object_id as id2, cao2.display_label as label2, cao1.object_id as id1, cao1.display_label as label1, cao1.created from "+_ca_table+" as cao1 left join "+_ca_table+" as cao2 on cao2.object_id=cao1.parent_id left join "+_ca_table+" as cao3 on cao3.object_id=cao2.parent_id left join "+_ca_table+" as cao4 on cao4.object_id=cao3.parent_id order by cao1.created desc limit 4",
+			temp = {};
 		var data = db.execute(request);
-		var result = data.getRowCount();
+		var fieldnumber = 0, linenumber = 1;
+
+
+		while (data.isValidRow()) {
+			temp[linenumber] = {};
+			while (fieldnumber < data.getFieldCount()) {
+				temp[linenumber][data.fieldName(fieldnumber)] = data.field(fieldnumber);
+				fieldnumber++;
+			}
+			linenumber++;
+			fieldnumber = 0;
+			data.next();
+		}
+
 		data.close();
 		db.close();
 		
-		return result;
+		return temp;
 		
 	}
 }
