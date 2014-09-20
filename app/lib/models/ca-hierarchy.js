@@ -208,7 +208,7 @@ function Model() {
 		var db = Ti.Database.open(DBNAME), temp = {};
 		var parent_criteria = "is NULL";
 		if (id) parent_criteria = "="+id;
-		var request = "select object_id, display_label from "+_ca_table+" where parent_id "+parent_criteria+" order by display_label";
+		var request = "select cao1.object_id, cao1.display_label from "+_ca_table+" as cao1 left join "+_ca_table+" as cao2 on cao1.object_id=cao2.parent_id where cao1.parent_id "+parent_criteria+" and cao2.object_id is null order by cao1.display_label";
 		var data = db.execute(request);
 		var fieldnumber = 0, linenumber = 1;
 
