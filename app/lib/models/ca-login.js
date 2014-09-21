@@ -1,5 +1,5 @@
 /**
- * Facebook post model
+ * Login model for CollectiveAccess WS 
  * 
  * @class Models.ca-connexion
  * @uses core
