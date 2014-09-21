@@ -3,10 +3,9 @@
 		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
     	
     	<View id="container">
-    		<View id="mainview" >
+    		<ScrollView id="mainview" >
     			<View id="breadcrumb">
 					<Label id="breadcrumb_home" text="Home" />
-					<Label class="breadcrumb_separator" text=">" />
 		  		</View>
 				<!-- foldersView = top part of screen, containing rows of folders, title and right buttons -->
 		  		<View id="foldersView">
@@ -43,7 +42,7 @@
 					<View id="objects">
 						<!-- objects created by main_object_block.js  -->
 						<View class="cell">
-							<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" />
+							<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" id="firstImage" />
 							<Label class="objectName" text="Object 1" />
 			    			<View class="objectRow2">
 			    				<Label class="objectInfo" text="Item" />
@@ -55,7 +54,7 @@
 			    		</View>
 					</View>
 		        </ScrollView>
-			</View>
+			</ScrollView>
 			
 	    	<ScrollView id="rightbar">
 	    		<View id="rightbarContainer">
