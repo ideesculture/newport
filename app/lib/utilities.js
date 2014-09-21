@@ -48,7 +48,6 @@ exports.lastUpdate = function(_url) {
 
 	while(data.isValidRow()) {
 		lastUpdate = data.fieldByName("time");
-
 		data.next();
 	}
 
