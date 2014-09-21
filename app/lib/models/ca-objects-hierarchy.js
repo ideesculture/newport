@@ -40,7 +40,7 @@ function Model() {
 	 * @param {Number} _params.cache The length of time to consider cached data 'warm'
 	 */
 	this.fetch = function(_params) {
-		APP.log("debug", "CA_MODEL.fetch");
+		APP.log("debug", "CA_HIERARCHY.fetch");
 		//APP.log("trace", UTIL.jsonStringify(_params));
 
 		var isStale = UTIL.isStale(_params.url, _params.cache);
@@ -226,6 +226,10 @@ function Model() {
 		data.close();
 		db.close();
 		return temp;
+	}
+
+	this.isCacheValid = function() {
+		return false;
 	}
 
 }
