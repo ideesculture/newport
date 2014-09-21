@@ -5,10 +5,11 @@
  * @uses core
  */
 var APP = require("core");
+var COMMONS = require("ca-commons");
 var CONFIG = arguments[0];
 var maxwidth = Ti.Platform.displayCaps.platformWidth;
 var maxheight = Ti.Platform.displayCaps.platformHeight;
-var HIERARCHY_MODEL = require("models/ca-hierarchy")();
+var HIERARCHY_MODEL = require("models/ca-objects-hierarchy")();
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
 $.TABLE = "ca_objects";
@@ -22,19 +23,26 @@ $.init = function() {
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
 		
 	// Loading CA database model (metadatas & fields) & filling cache
-	CONFIG.url = APP.Settings.CollectiveAccess.urlForHierarchy;
+	CONFIG.url = APP.Settings.CollectiveAccess.urlForHierarchy.url;
+	CONFIG.validity = APP.Settings.CollectiveAccess.urlForHierarchy.cache;
 
 	// Handling breadcrumb
 	if(CONFIG.id) {
 		// TODO : move breadcrumb interaction inside its own controller
 		// Changing home button & adding listener
 		$.breadcrumb_home.color = APP.Settings.colors.primary;
-		$.breadcrumb_home.addEventListener('click',function(e) {
-			CONFIG.id = undefined;
-			CONFIG.display_label = undefined;
-			APP.removeChild();
-			APP.breadcrumb.splice(-1,1);
+		for(i=1;i<=APP.breadcrumb.length;i++) {
+			$.breadcrumb_home.addEventListener('click',function(e) {
+				Ti.API.log("removing one child");
+				APP.removeChild();
+				APP.breadcrumb.pop();
+			});
+		};
+		var breadcrumb_separator=Ti.UI.createLabel({
+			text: ">",
+			left:10
 		});
+		$.breadcrumb.add(breadcrumb_separator);
 		// Adding ancestors to breadcrumb
 		for(var step in APP.breadcrumb) {
 			var breadcrumb_label=Ti.UI.createLabel({
@@ -91,6 +99,12 @@ $.init = function() {
 
 };
 
+$.retrieveCallbackFunctions = function() {
+	$.handleLastModifiedData(HIERARCHY_MODEL.getLastRecords($.TABLE));
+	$.handleFoldersData(HIERARCHY_MODEL.getChildrenFoldersInside($.TABLE,CONFIG.id));
+	$.handleObjectsData(HIERARCHY_MODEL.getObjectsInside($.TABLE,CONFIG.id));
+}
+
 /**
  * Retrieves the data
  * @param {Object} _force Whether to force the request or not (ignores cached data)
@@ -98,32 +112,34 @@ $.init = function() {
  */
 $.retrieveData = function(_force, _callback) {
 	APP.log("debug","main.retrieveData");
-	HIERARCHY_MODEL.fetch({
-		url: CONFIG.url,
-		authString: APP.authString,
-		cache: 0,
-		callback: function() {
-			//$.handleData(HIERARCHY_MODEL.nbLines($.TABLE));
-			$.handleLastModifiedData(HIERARCHY_MODEL.getLastRecords($.TABLE));
-			$.handleFoldersData(HIERARCHY_MODEL.getChildrenFoldersInside($.TABLE,CONFIG.id));
-			$.handleObjectsData(HIERARCHY_MODEL.getObjectsInside($.TABLE,CONFIG.id))
-			if(typeof _callback !== "undefined") {
-				_callback();
-			}
-		},
-		error: function() {
-			APP.closeLoading();
-			var dialog = Ti.UI.createAlertDialog({
-			    message: 'Connexion failed. Please retry.',
-			    ok: 'OK',
-			    title: 'Error'
-			  }).show();
-			if(typeof _callback !== "undefined") {
-				_callback();
-			}
-		}
-	});
 
+	if(COMMONS.isCacheValid(CONFIG.url,CONFIG.validity)) {
+		$.retrieveCallbackFunctions();
+	} else {
+		HIERARCHY_MODEL.fetch({
+			url: CONFIG.url,
+			authString: APP.authString,
+			cache: 0,
+			callback: function() {
+				//$.handleData(HIERARCHY_MODEL.nbLines($.TABLE));
+				$.retrieveCallbackFunctions();
+				if(typeof _callback !== "undefined") {
+					_callback();
+				}
+			},
+			error: function() {
+				APP.closeLoading();
+				var dialog = Ti.UI.createAlertDialog({
+				    message: 'Connexion failed. Please retry.',
+				    ok: 'OK',
+				    title: 'Error'
+				  }).show();
+				if(typeof _callback !== "undefined") {
+					_callback();
+				}
+			}
+		});
+	}
 };
 
 /**
