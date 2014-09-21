@@ -23,7 +23,14 @@
 			"urlForLogin": "http://aspi.idcultu.re/gestion/service.php/find/ca_objects?q=zzzzzzzz",
 			"urlForModel": "http://aspi.idcultu.re/gestion/service.php/model/ca_objects",
 			"urlForUis" : "http://aspi.idcultu.re/gestion/service-uis.php/ca_objects",
-			"urlForHierarchy" : "http://aspi.idcultu.re/gestion/service.php/find/ca_objects?q=*&bundles=%7B%22created%22%3A+%7B%22returnAsArray%22%3Atrue%7D%2C+%22parent_id%22%3A%7B%7D%7D"
+			"urlForHierarchy" : {
+				"url":"http://aspi.idcultu.re/gestion/service.php/find/ca_objects?q=*&bundles=%7B%22created%22%3A+%7B%22returnAsArray%22%3Atrue%7D%2C+%22parent_id%22%3A%7B%7D%7D",
+				"cache":"86400"
+			},
+			"urlForObjectDetails" : {
+				"url" : "http://aspi.idcultu.re/gestion/service.php/item/ca_objects/id/ID?format=edit",
+				"cache":"86400"
+			}
 		}
 	},
 	"manifest": [
