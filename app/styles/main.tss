@@ -11,7 +11,9 @@
 	backgroundColor: "#FFF",
 	layout: "vertical",
 	showVerticalScrollIndicator: true,
-	width:Ti.UI.FILL
+	width:Ti.UI.FILL,
+	contentHeight: 'auto',
+	height: "100%"
 },
 
 "#breadcrumb": {
@@ -49,7 +51,7 @@
 	},
 	color: "#000"
 },
-".foldersButtons": {
+"#foldersButtons": {
 	width: Ti.UI.SIZE,
 	height: Ti.UI.SIZE,
 	right: "0dp",
@@ -59,6 +61,22 @@
 		fontSize: 14,
 		fontFamily: "HelveticaNeue"
 	}
+},
+"#foldersButtonsList": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	right: "0dp",
+	top: "0dp",
+	layout: "horizontal",
+	visible:"true"
+},
+"#foldersButtonsBlocks": {
+	width: 0,
+	height: Ti.UI.SIZE,
+	right: "0dp",
+	top: "0dp",
+	layout: "horizontal",
+	visible:"false"
 },
 ".topGridButton": {
 	title: "Grid",
@@ -76,34 +94,19 @@
 		fontFamily: "HelveticaNeue"
 	}
 },
-".folderItems": {
+"#folderItemsList": {
 	height: Ti.UI.SIZE,
 	width: Ti.UI.FILL,
 	layout: "vertical",
-	top:10
+	top:10,
+	visible:"true"	
 },
-".foldersItem": {
-	height: "40dp",
-	borderColor: "#000",
-	backgroundColor:"#ddd",
-	borderWidth: "1dp",
-	width: Ti.UI.FILL,
-	layout: "absolute",
-},
-".foldersItemName": {
-	left: 10
-},
-".foldersItemRight": {
+"#folderItemsBlocks":{
+	top:10,
 	layout: "horizontal",
-	right: 10,
-	width: Ti.UI.SIZE,
-	font: {
-		fontSize: 14,
-		fontFamily: "HelveticaNeue"
-	}
-},
-".folderIcon":{
-	width: 20
+	contentWidth: "100%",
+	contentHeight:'auto',
+	visible:"false"
 },
 ".label": {
 	font: {

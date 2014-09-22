@@ -14,12 +14,19 @@ var HIERARCHY_MODEL = require("models/ca-objects-hierarchy")();
 // Temporary fixing the table we"re editing, need to come through CONFIG after
 $.TABLE = "ca_objects";
 
+// Logging controller start
 APP.log("debug", "text | " + JSON.stringify(CONFIG));
 
 $.init = function() {
 	// Initiating CA db model class
 	HIERARCHY_MODEL.init($.TABLE);
-	
+	Ti.API.log("APP.Settings.defaultdisplay");
+	Ti.API.log(APP.Settings.defaultdisplay);
+	// Saving current value of controller
+	if (APP.Settings.defaultdisplay.topfolders == "main_folder_block") {
+		$.toggleFoldersDisplay();
+	}
+
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
 		
 	// Loading CA database model (metadatas & fields) & filling cache
@@ -31,7 +38,7 @@ $.init = function() {
 		// TODO : move breadcrumb interaction inside its own controller
 		// Changing home button & adding listener
 		$.breadcrumb_home.color = APP.Settings.colors.primary;
-		for(i=1;i<=APP.breadcrumb.length;i++) {
+		for(i=0;i<=APP.breadcrumb.length;i++) {
 			$.breadcrumb_home.addEventListener('click',function(e) {
 				Ti.API.log("removing one child");
 				APP.removeChild();
@@ -72,7 +79,8 @@ $.init = function() {
 			text: CONFIG.display_label,
 			left:10
 		});
-		$.breadcrumb.add(breadcrumb_label);}
+		$.breadcrumb.add(breadcrumb_label);
+	}
 
 	$.retrieveData();
 		
@@ -100,8 +108,11 @@ $.init = function() {
 };
 
 $.retrieveCallbackFunctions = function() {
+	// Handling right side last modified records
 	$.handleLastModifiedData(HIERARCHY_MODEL.getLastRecords($.TABLE));
+	// Handling top screen folders data
 	$.handleFoldersData(HIERARCHY_MODEL.getChildrenFoldersInside($.TABLE,CONFIG.id));
+	// Handling bottom objects
 	$.handleObjectsData(HIERARCHY_MODEL.getObjectsInside($.TABLE,CONFIG.id));
 }
 
@@ -114,6 +125,7 @@ $.retrieveData = function(_force, _callback) {
 	APP.log("debug","main.retrieveData");
 
 	if(COMMONS.isCacheValid(CONFIG.url,CONFIG.validity)) {
+		APP.log("debug","ca-objects-hierarchy cache is valid");
 		$.retrieveCallbackFunctions();
 	} else {
 		HIERARCHY_MODEL.fetch({
@@ -158,19 +170,33 @@ $.handleLastModifiedData = function(_data) {
 };
 
 $.handleFoldersData = function(_data) {
-	// Adding top objects to top block, those having no parent_id
-	for(var folder in _data) {
-		var folder_row = Alloy.createController("main_folders_row", _data[folder]).getView();
-		$.folderItems.add(folder_row);
-	}	
+	// If we have data to display...
+	// Source : http://stackoverflow.com/questions/126100/how-to-efficiently-count-the-number-of-keys-properties-of-an-object-in-javascrip
+	if (Object.keys(_data).length > 0) {
+		// Adding top objects to top block, those having no parent_id
+		for(var folder in _data) {
+			var folder_row = Alloy.createController("main_folders_row", _data[folder]).getView();
+			$.folderItemsList.add(folder_row);
+			var folder_block = Alloy.createController("main_folder_block", _data[folder]).getView();
+			$.folderItemsBlocks.add(folder_block);
+		}
+	// If we don't have any data to display, removing container
+	} else {
+		$.mainview.remove($.foldersView);
+	};	
 };
 
 $.handleObjectsData = function(_data) {
+	// If we have data to display...
 	// Adding top objects to top block, those having no parent_id
-	for(var object in _data) {
-		var object_block = Alloy.createController("main_object_block", _data[object]).getView();
-		$.objects.add(object_block);
-	}	
+	if (Object.keys(_data).length > 0) {
+		for(var object in _data) {
+			var object_block = Alloy.createController("main_object_block", _data[object]).getView();
+			$.objects.add(object_block);
+		}	
+	} else {
+		$.mainview.remove($.table);
+	}
 };
 
 // Event listeners
@@ -187,6 +213,29 @@ $.firstImage.addEventListener('click',function(e) {
     	animate : true
 	});
 });
+
+$.foldersButtons.addEventListener('click',function(e) {
+	$.toggleFoldersDisplay();
+});
+
+$.toggleFoldersDisplay = function() {
+	var initial = $.folderItemsList.visible;
+	// Depending on "initial" status, reveal other buttons... 
+	$.foldersButtonsList.width = initial ? 0 : Ti.UI.SIZE;	
+	$.foldersButtonsList.visible = initial ? false : true;
+	$.foldersButtonsBlocks.width = initial ? Ti.UI.SIZE : 0;
+	$.foldersButtonsBlocks.visible = initial ? true : false;
+	// ... and switch view	
+	$.folderItemsList.height = initial ? 0 : Ti.UI.FILL;
+	$.folderItemsList.visible = initial ? false : true;
+	$.folderItemsBlocks.visible = initial ? true : false;
+	// ... and save back as default display
+	Ti.API.log("APP.Settings.defaultdisplay.topfolders : avant/après");
+	Ti.API.log(APP.Settings.defaultdisplay.topfolders);
+	APP.Settings.defaultdisplay.topfolders = initial ? "main_folder_block" : "main_folders_row";
+	Ti.API.log(APP.Settings.defaultdisplay.topfolders);
+	
+}
 
 // Animation togglers
 var showRightbar = function() {

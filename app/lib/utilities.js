@@ -55,7 +55,7 @@ exports.lastUpdate = function(_url) {
 	db.close();
 
 	if(lastUpdate === 0) {
-		return new Date().getTime();
+		return false;
 	} else {
 		return lastUpdate;
 	}

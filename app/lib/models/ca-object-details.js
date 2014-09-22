@@ -19,12 +19,11 @@ function Model() {
 	 * Initializes the model
 	 * @param {Number} _id The UID of the component
 	 */
-	this.init = function(_ca_table) {
-		APP.log("debug", "CA_OBJECT_DETAILS.init(" + _ca_table + "_details)");
-
+	this.init = function(_ca_table, _id) {
+		APP.log("debug", "CA_OBJECT_DETAILS.init(" + _ca_table + "_details,"+_id+")");
 		this.TABLE = _ca_table;
 		var db = Ti.Database.open(DBNAME);
-		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_details (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, thumbnail TEXT, json TEXT);";
+		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_details (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, thumbnail_url TEXT, thumbnail_file TEXT, json TEXT);";
 		APP.log("debug", request);		
 		db.execute(request);
 
@@ -84,33 +83,29 @@ function Model() {
 	 */
 	this.handleData = function(_data, _url, _callback) {
 		var _ca_table = table;
-		APP.log("debug", "CA_OBJECT_DETAILS.handleData");
 		if(_data.ok == true) {
-			APP.log("debug", "connected");
+			var record = _data;
+			delete(record.ok);
+
+			APP.log("debug", "CA_OBJECT_DETAILS.handleData ("+record.object_id.value+")");
+
 			var db = Ti.Database.open(DBNAME);
-			db.execute("DELETE FROM " + _ca_table + "_detail;");
+			//db.execute("DELETE FROM " + _ca_table + "_details;");
 			db.execute("BEGIN TRANSACTION;");
 			
 			APP.ca_modele_prop = new Array();
 			APP.ca_modele_values = {};
 			var ca_table = "ca_objects";
 			
-			// Browsing data
-		    /*for (var prop in _data) {
-		    	var record_type = prop;
-		        var _data2 = _data[prop];
-		    	if(prop != "ok") {
-		        	for (var prop2 in _data2) {
-						var record = _data2[prop2];
-		        		
-		        		var request = "INSERT INTO " + _ca_table + " (id, ca_table, object_id, parent_id, idno, display_label, created) VALUES (NULL, ?, ?, ?, ?, ?, ?);";
-						db.execute(request, _ca_table, record["object_id"], record["parent_id"], record["idno"], record["display_label"], record["created"]["timestamp"]);
-
-		        		last = prop2;
-	        		} 
-		        }
-		    }
-			*/
+			// Storing JSON result in SQLite
+			var thumbnail_url = "";
+			for(var related in record.representations) {
+				if (record.representations[related].is_primary == "1") {
+					thumbnail_url = record.representations[related].urls.preview170;
+				}
+			}
+		    var request = "INSERT INTO " + _ca_table + "_details (id, object_id, thumbnail_url, json) VALUES (NULL, ?, ?, ?);";
+			db.execute(request, record.object_id.value, thumbnail_url, JSON.stringify(record));
 			db.execute("INSERT OR REPLACE INTO updates (url, time) VALUES(" + UTIL.escapeString(_url) + ", " + new Date().getTime() + ");");
 			db.execute("END TRANSACTION;");
 			db.close();
@@ -129,9 +124,25 @@ function Model() {
 	};
 
 	this.getMainObjectInfo = function(_id) {
-		return _id;
-	}
+		APP.log("debug", "CA-OBJECT-DETAILS.getMainObjectInfo "+_id);
+		var db = Ti.Database.open(DBNAME), temp = {};
+		var request = "select caod.object_id, thumbnail_url, idno, display_label from ca_objects_details caod left join ca_objects cao on caod.object_id=cao.object_id where caod.object_id="+_id+" limit 1";
+		var data = db.execute(request);
+		var fieldnumber = 0;
 
+		while (data.isValidRow()) {
+			while (fieldnumber < data.getFieldCount()) {
+				temp[data.fieldName(fieldnumber)] = data.field(fieldnumber);
+				fieldnumber++;
+			}
+			fieldnumber = 0;
+			data.next();
+		}
+
+		data.close();
+		db.close();
+		return temp;
+	}		
 }
 
 module.exports = function() {

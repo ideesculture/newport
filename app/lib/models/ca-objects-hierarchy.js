@@ -25,7 +25,6 @@ function Model() {
 		this.TABLE = _ca_table;
 		var db = Ti.Database.open(DBNAME);
 		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, object_id INTEGER, parent_id INTEGER, idno TEXT, display_label TEXT, date TEXT, created TEXT);";
-		APP.log("debug", request);		
 		db.execute(request);
 
 		db.close();
@@ -87,7 +86,6 @@ function Model() {
 		var _ca_table = table;
 		APP.log("debug", "CA_HIERARCHY.handleData");
 		if(_data.ok == true) {
-			APP.log("debug", "connected");
 			var db = Ti.Database.open(DBNAME);
 			db.execute("DELETE FROM " + _ca_table + ";");
 			db.execute("BEGIN TRANSACTION;");
@@ -208,7 +206,7 @@ function Model() {
 		var db = Ti.Database.open(DBNAME), temp = {};
 		var parent_criteria = "is NULL";
 		if (id) parent_criteria = "="+id;
-		var request = "select cao1.object_id, cao1.display_label from "+_ca_table+" as cao1 left join "+_ca_table+" as cao2 on cao1.object_id=cao2.parent_id where cao1.parent_id "+parent_criteria+" and cao2.object_id is null order by cao1.display_label";
+		var request = "select cao1.object_id, cao1.display_label, cao1.idno from "+_ca_table+" as cao1 left join "+_ca_table+" as cao2 on cao1.object_id=cao2.parent_id where cao1.parent_id "+parent_criteria+" and cao2.object_id is null order by cao1.display_label";
 		var data = db.execute(request);
 		var fieldnumber = 0, linenumber = 1;
 

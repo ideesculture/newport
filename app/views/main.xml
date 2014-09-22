@@ -15,19 +15,28 @@
 	  						<Label class="label" text="Folders" />
 						</View>
 	  					
-		  				<View class="foldersButtons">
-		  					<Require type="widget" src="ti.ux.iconfont" icon="fa-th-large" left="12" size="36" color="#aaa" class="faIcon"/>
-		  					<Require type="widget" src="ti.ux.iconfont" icon="fa-align-justify" left="12" size="36" color="#000" class="faIcon"/>
+		  				<View id="foldersButtons">
+		  					<View id="foldersButtonsList">
+		  						<Require type="widget" src="ti.ux.iconfont" icon="fa-th-large" left="12" size="36" color="#aaa" class="faIcon"/>
+		  						<Require type="widget" src="ti.ux.iconfont" icon="fa-align-justify" left="12" size="36" color="#000" class="faIcon"/>
+		  					</View>
+		  					<View id="foldersButtonsBlocks">
+		  						<Require type="widget" src="ti.ux.iconfont" icon="fa-th-large" left="12" size="36" color="#000" class="faIcon"/>
+		  						<Require type="widget" src="ti.ux.iconfont" icon="fa-align-justify" left="12" size="36" color="#aaa" class="faIcon"/>
+		  					</View>
 		  				</View>
 		  			</View>
 
-		    		<ScrollView class="folderItems" id="folderItems">
+		    		<View id="folderItemsList">
 		    			<!-- folders created by main_folders_row.js -->
-					</ScrollView>
+					</View>
+		    		<View id="folderItemsBlocks">
+		    			<!-- folders created by main_folder_block.js -->
+					</View>
 				</View>
 
 				<!-- table = bottom part of screen, containing table of objects, title and right buttons -->
-				<ScrollView id="table">
+				<View id="table">
 					<!-- header, with title and right buttons -->
 		  			<View class="foldersTop">
 		  				<View class="foldersTitle">
@@ -53,7 +62,7 @@
 			    			</View>
 			    		</View>
 					</View>
-		        </ScrollView>
+		        </View>
 			</ScrollView>
 			
 	    	<ScrollView id="rightbar">

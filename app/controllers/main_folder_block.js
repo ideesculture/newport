@@ -13,7 +13,7 @@ var COMMONS = require("ca-commons");
 $.TABLE = "ca_objects";
 
 $.init = function() {
-	APP.log("debug","Adding object block ("+CONFIG.object_id+")");
+	APP.log("debug","Adding folder block ("+CONFIG.object_id+")");
 	$.objectInfo.text = CONFIG.idno;
 	$.objectName.text = CONFIG.display_label;
 
@@ -60,5 +60,15 @@ $.handleData = function(_data) {
 	}
 	$.objectInfo.text = _data.idno;
 }
+
+$.cellimage.addEventListener('click',function(e) {
+	APP.log("debug", "adding new child (main.js): "+CONFIG.object_id);
+	var child_info = {
+		id: CONFIG.object_id,
+		display_label: CONFIG.display_label
+	}
+	APP.addChild("main", child_info, false, false);
+	APP.breadcrumb.push(child_info);
+});
 
 $.init();

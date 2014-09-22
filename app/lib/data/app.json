@@ -28,9 +28,12 @@
 				"cache":"86400"
 			},
 			"urlForObjectDetails" : {
-				"url" : "http://aspi.idcultu.re/gestion/service.php/item/ca_objects/id/ID?format=edit",
+				"url" : "http://aspi.idcultu.re/gestion/service.php/item/ca_objects/id/ID",
 				"cache":"86400"
 			}
+		},
+		"defaultdisplay" : {
+			"topfolders":"main_folders_row"
 		}
 	},
 	"manifest": [
