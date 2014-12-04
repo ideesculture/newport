@@ -36,19 +36,25 @@
 				</View>
 
 				<!-- table = bottom part of screen, containing table of objects, title and right buttons -->
-				<View id="table">
+				<View id="objectsView">
 					<!-- header, with title and right buttons -->
 		  			<View class="foldersTop">
 		  				<View class="foldersTitle">
 	  						<Label class="label" text="Objects" />
 						</View>
-		  				<View class="foldersButtons">
-		  					<Require type="widget" src="ti.ux.iconfont" icon="fa-th-large" left="12" size="36" color="#000" class="faIcon"/>
-		  					<Require type="widget" src="ti.ux.iconfont" icon="fa-align-justify" left="12" size="36" color="#aaa" class="faIcon"/>
+		  				<View id="objectsButtons">
+		  					<View id="objectsButtonsList">
+			  					<Require type="widget" src="ti.ux.iconfont" icon="fa-th-large" left="12" size="36" color="#000" class="faIcon"/>
+			  					<Require type="widget" src="ti.ux.iconfont" icon="fa-align-justify" left="12" size="36" color="#aaa" class="faIcon"/>
+		  					</View>
+		  					<View id="objectsButtonsBlocks">
+			  					<Require type="widget" src="ti.ux.iconfont" icon="fa-th-large" left="12" size="36" color="#aaa" class="faIcon"/>
+			  					<Require type="widget" src="ti.ux.iconfont" icon="fa-align-justify" left="12" size="36" color="#000" class="faIcon"/>
+		  					</View>
 		  				</View>
 		  			</View>
 		  			<!-- objects = container for cells aka block to display one item -->
-					<View id="objects">
+					<View id="objectBlocks">
 						<!-- objects created by main_object_block.js  -->
 						<View class="cell">
 							<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" id="firstImage" />
@@ -62,6 +68,9 @@
 			    			</View>
 			    		</View>
 					</View>
+					<View id="objectsList">
+						<!-- objects created by main_object_row.js  -->
+					</View>					
 		        </View>
 			</ScrollView>
 			

@@ -7,7 +7,7 @@
  */
 var APP = require("core");
 var UTIL = require("utilities");
-var MOMENT = require('/iphone/moment'); 
+var MOMENT = require('alloy/moment'); 
 
 
 /**

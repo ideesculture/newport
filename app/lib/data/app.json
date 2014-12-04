@@ -33,7 +33,8 @@
 			}
 		},
 		"defaultdisplay" : {
-			"topfolders":"main_folders_row"
+			"topfolders":"main_folders_row",
+			"bottomobjects":"main_object_block"
 		}
 	},
 	"manifest": [

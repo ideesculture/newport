@@ -6,7 +6,7 @@
  */
 var APP = require("core");
 var CONFIG = arguments[0];
-var MOMENT = require('/iphone/moment');  
+var MOMENT = require('alloy/moment');  
 
 var created = MOMENT.unix(CONFIG.created).format("dddd D, MMMM YYYY");
 APP.log("debug","Adding lastmodified block: "+CONFIG.label1+" ("+created+")");

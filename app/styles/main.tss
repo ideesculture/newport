@@ -78,22 +78,6 @@
 	layout: "horizontal",
 	visible:"false"
 },
-".topGridButton": {
-	title: "Grid",
-	whitchObj: "buttonGrid",
-	font: {
-		fontSize: "11dp",
-		fontFamily: "HelveticaNeue"
-	}
-},
-".topListButton": {
-	title: "List",
-	whitchObj: "buttonList",
-	font: {
-		fontSize: "11dp",
-		fontFamily: "HelveticaNeue"
-	}
-},
 "#folderItemsList": {
 	height: Ti.UI.SIZE,
 	width: Ti.UI.FILL,
@@ -108,6 +92,33 @@
 	contentHeight:'auto',
 	visible:"false"
 },
+"#objectsButtons": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	right: "0dp",
+	top: "0dp",
+	layout: "horizontal",
+	font: {
+		fontSize: 14,
+		fontFamily: "HelveticaNeue"
+	}
+},
+"#objectsButtonsList": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	right: "0dp",
+	top: "0dp",
+	layout: "horizontal",
+	visible:"true"
+},
+"#objectsButtonsBlocks": {
+	width: 0,
+	height: Ti.UI.SIZE,
+	right: "0dp",
+	top: "0dp",
+	layout: "horizontal",
+	visible:"false"
+},
 ".label": {
 	font: {
 		fontSize: 14,
@@ -116,7 +127,7 @@
 	color: "#000",
 	height: Ti.UI.FILL
 },
-"#table":{
+"#objectsView":{
 	layout: "horizontal",
 	top: 10,
 	left: 10,
@@ -124,11 +135,19 @@
 	contentWidth: "100%",
 	contentHeight:'auto'
 },
-"#objects":{
+"#objectBlocks":{
 	layout: "horizontal",
 	width:Ti.UI.FILL,
-	height:"auto"	
-}
+	height:"auto",
+	visible:"true"	
+},
+"#objectsList":{
+	height: Ti.UI.SIZE,
+	width: Ti.UI.FILL,
+	layout: "vertical",
+	top:10,
+	visible:"false"
+},
 ".cell":{
 	width: "227dp",
 	height: "260dp",

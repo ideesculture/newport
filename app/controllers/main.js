@@ -124,6 +124,11 @@ $.retrieveCallbackFunctions = function() {
 $.retrieveData = function(_force, _callback) {
 	APP.log("debug","main.retrieveData");
 
+	// Hard fixing login & password to improve dev speed
+	APP.ca_login="admin";
+	APP.ca_password="smf2013";
+	APP.authString = 'Basic ' +Titanium.Utils.base64encode(APP.ca_login+':'+APP.ca_password);
+
 	if(COMMONS.isCacheValid(CONFIG.url,CONFIG.validity)) {
 		APP.log("debug","ca-objects-hierarchy cache is valid");
 		$.retrieveCallbackFunctions();
@@ -192,10 +197,10 @@ $.handleObjectsData = function(_data) {
 	if (Object.keys(_data).length > 0) {
 		for(var object in _data) {
 			var object_block = Alloy.createController("main_object_block", _data[object]).getView();
-			$.objects.add(object_block);
+			$.objectBlocks.add(object_block);
 		}	
 	} else {
-		$.mainview.remove($.table);
+		$.mainview.remove($.objectsView);
 	}
 };
 
@@ -217,6 +222,9 @@ $.firstImage.addEventListener('click',function(e) {
 $.foldersButtons.addEventListener('click',function(e) {
 	$.toggleFoldersDisplay();
 });
+$.objectsButtons.addEventListener('click',function(e) {
+	$.toggleObjectsDisplay();
+});
 
 $.toggleFoldersDisplay = function() {
 	var initial = $.folderItemsList.visible;
@@ -235,6 +243,27 @@ $.toggleFoldersDisplay = function() {
 	APP.Settings.defaultdisplay.topfolders = initial ? "main_folder_block" : "main_folders_row";
 	Ti.API.log(APP.Settings.defaultdisplay.topfolders);
 	
+}
+
+$.toggleObjectsDisplay = function() {
+	var initial = $.objectBlocks.visible;
+	// Depending on "initial" status, reveal other buttons... 
+	if (initial) {
+		$.objectsButtonsList.animate({width:0, visible : false, duration:300});
+		$.objectsButtonsBlocks.animate({width : Ti.UI.SIZE, visible : true , duration:300});
+	} else {
+		$.objectsButtonsList.animate({width: Ti.UI.SIZE, visible : true, duration:300});
+		$.objectsButtonsBlocks.animate({width : 0, visible : false, duration:300});
+	}
+	// ... and switch view	
+	//$.objectBlocks.height = initial ? 0 : Ti.UI.FILL;
+	$.objectBlocks.animate({height : (initial ? 0 : Ti.UI.FILL), visible : (initial ? false : true), duration:300});
+	$.objectsList.animate({visible : (initial ? true : false), duration:300});
+	// ... and save back as default display
+	Ti.API.log("APP.Settings.defaultdisplay.bottomobjects : avant/après");
+	Ti.API.log(APP.Settings.defaultdisplay.bottomobjects);
+	APP.Settings.defaultdisplay.bottomobjects = initial ? "main_object_row" : "main_object_block";
+	Ti.API.log(APP.Settings.defaultdisplay.bottomobjects);
 }
 
 // Animation togglers
