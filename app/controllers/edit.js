@@ -28,9 +28,9 @@ $.init = function() {
 	// Initiating CA available UIs class
 	UI_MODEL.init();
 	
-	// Hard fixing login & password to improve dev speed
-	APP.ca_login="admin";
-	APP.ca_password="smf2013";
+	// Credentials are inside app.json file
+	APP.ca_login=APP.Settings.CollectiveAccess.login;
+	APP.ca_password=APP.Settings.CollectiveAccess.password;
 	
 	APP.log("debug", "settings.init");
 	

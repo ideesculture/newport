@@ -20,6 +20,8 @@
 		},
 		"useSlideMenu": true,
 		"CollectiveAccess": {
+			"login":"administrator",
+			"pass":"admin",
 			"urlForLogin": "http://aspi.idcultu.re/gestion/service.php/find/ca_objects?q=zzzzzzzz",
 			"urlForModel": "http://aspi.idcultu.re/gestion/service.php/model/ca_objects",
 			"urlForUis" : "http://aspi.idcultu.re/gestion/service-uis.php/ca_objects",

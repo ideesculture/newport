@@ -21,11 +21,13 @@ $.init = function() {
 	CONFIG.url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.object_id);
 	CONFIG.validity = APP.Settings.CollectiveAccess.urlForObjectDetails.cache;
 
-	OBJECT_DETAILS.init($.TABLE);
+	OBJECT_DETAILS.init($.TABLE,CONFIG.object_id);
 	$.retrieveData();
 }
 
 $.retrieveData = function() {
+	Ti.API.log("debug","APP.authString " + APP.authString);
+
 	OBJECT_DETAILS.fetch({
 			url: CONFIG.url,
 			authString: APP.authString,

@@ -125,8 +125,8 @@ $.retrieveData = function(_force, _callback) {
 	APP.log("debug","main.retrieveData");
 
 	// Hard fixing login & password to improve dev speed
-	APP.ca_login="admin";
-	APP.ca_password="smf2013";
+	APP.ca_login="administrator";
+	APP.ca_password="admin";
 	APP.authString = 'Basic ' +Titanium.Utils.base64encode(APP.ca_login+':'+APP.ca_password);
 
 	if(COMMONS.isCacheValid(CONFIG.url,CONFIG.validity)) {

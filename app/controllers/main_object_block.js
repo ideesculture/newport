@@ -26,6 +26,8 @@ $.init = function() {
 }
 
 $.retrieveData = function() {
+	Ti.API.log("debug","APP.authString " + APP.authString);
+
 	OBJECT_DETAILS.fetch({
 			url: CONFIG.url,
 			authString: APP.authString,

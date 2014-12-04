@@ -83,8 +83,7 @@ $.handleData = function(_data) {
 
 // Event listeners
 $.loginbutton.addEventListener("click", function(_event) {
-	//$.loginfield.value = "admin";
-	//$.passwordfield.value = "smf2013";
+
 	APP.log("debug","fields");
 	APP.log("debug",$.loginfield);
 	
