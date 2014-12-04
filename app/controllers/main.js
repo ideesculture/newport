@@ -11,6 +11,13 @@ var maxwidth = Ti.Platform.displayCaps.platformWidth;
 var maxheight = Ti.Platform.displayCaps.platformHeight;
 var HIERARCHY_MODEL = require("models/ca-objects-hierarchy")();
 
+var 	myModal = Ti.UI.createWindow({
+	    title           : 'My Modal',
+	    backgroundColor : 'black'
+	    //backgroundColor : 'transparent'
+	});
+
+
 // Temporary fixing the table we"re editing, need to come through CONFIG after
 $.TABLE = "ca_objects";
 
@@ -213,7 +220,7 @@ Ti.Gesture.addEventListener('orientationchange', function(e) {
 });
 
 $.firstImage.addEventListener('click',function(e) {
-	APP.closeMenu();
+	APP.log("debug","$.firstImage.addEventListener");
 	myModal.open({
     	animate : true
 	});
@@ -292,10 +299,8 @@ $.NavigationBar.showRight({
 });
 
 $.thatNeedsToGoElsewhere = function() {
-	var myModal = Ti.UI.createWindow({
-	    title           : 'My Modal',
-	    backgroundColor : 'transparent'
-	});
+	APP.closeLoading();
+	APP.log("debug","myModal created");
 	var wrapperView    = Ti.UI.createView(); // Full screen
 	var backgroundView = Ti.UI.createView({  // Also full screen
 	    backgroundColor : '#000',
@@ -440,8 +445,13 @@ $.thatNeedsToGoElsewhere = function() {
 	wrapperView.add(rightButtonView);
 	
 	myModal.add(wrapperView);
+	$.init();
 };
 
 // Kick off the init
 $.thatNeedsToGoElsewhere();
-$.init();
+var profile = Alloy.createController('main_modal_details');
+APP.log('debug', profile.getView());
+//$.index.open();
+//Alloy.createController('main_modal_details');
+//$.init();
