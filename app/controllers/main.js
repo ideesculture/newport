@@ -449,9 +449,9 @@ $.thatNeedsToGoElsewhere = function() {
 };
 
 // Kick off the init
-$.thatNeedsToGoElsewhere();
-var profile = Alloy.createController('main_modal_details');
-APP.log('debug', profile.getView());
+//$.thatNeedsToGoElsewhere();
+//var profile = Alloy.createController('main_modal_details');
+//APP.log('debug', profile.getView());
 //$.index.open();
 //Alloy.createController('main_modal_details');
-//$.init();
+$.init();

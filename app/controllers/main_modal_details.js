@@ -10,21 +10,18 @@ var CONFIG = arguments[0];
 var maxwidth = Ti.Platform.displayCaps.platformWidth;
 var maxheight = Ti.Platform.displayCaps.platformHeight;
 
-	var backgroundView = Ti.UI.createView({  // Also full screen
-	    backgroundColor : '#000',
-	    opacity         : 0.5,
-	    top: 47
-	});
+	$.backgroundView.backgroundColor='#000';
+	$.backgroundView.opacity=0.5;
+	$.backgroundView.top=47;
+	
 	if(OS_IOS && APP.Device.versionMajor >= 7) {
-		backgroundView.top = 67;
+		$.backgroundView.top = 67;
 	}
-	var topcontainerView  = Ti.UI.createView({  // Set height appropriately
-	    width: Ti.UI.FILL,
-	    backgroundColor : '#111',
-	    color: "white"
-	});
-	topcontainerView.top = backgroundView.top; 
-	topcontainerView.height = maxheight / 6;
+	$.topcontainerView.width = "Ti.UI.FILL";
+	$.topcontainerView.backgroundColor = '#111';
+	$.topcontainerView.color= "white";
+	$.topcontainerView.top = $.backgroundView.top; 
+	$.topcontainerView.height = maxheight / 6;
 	
 	var topLeft  = Ti.UI.createView({  // Set height appropriately
 		width:"60%",
@@ -62,7 +59,7 @@ var maxheight = Ti.Platform.displayCaps.platformHeight;
 	});
 	topLeft.add(label1);
 	topLeft.add(textArea);
-	topcontainerView.add(topLeft);
+	$.topcontainerView.add(topLeft);
 	var closeButton    = Ti.UI.createButton({
 		font: { fontSize:24, fontFamily:"GillSans" },
 	    title  : 'X',
@@ -104,51 +101,38 @@ var maxheight = Ti.Platform.displayCaps.platformHeight;
 	topRight.add(label2);
 	topRight.add(label3);
 	topRight.add(editButton);
-	topcontainerView.add(topRight);
+	$.topcontainerView.add(topRight);
 	
-	var imagecontainerView  = Ti.UI.createView({  // Set height appropriately
-	    height: 500,
-	    width: 480,
-	    bottom: 100,
-	    backgroundColor : '#FFF',
-	    color: "black"
-	});
+	$.imagecontainerView.height= 500;
+	$.imagecontainerView.width= 480;
+	$.imagecontainerView.bottom= 100;
+	$.imagecontainerView.backgroundColor='#FFF';
+	$.imagecontainerView.color="black";
+
 	var someLabel      = Ti.UI.createLabel({
 	    title : 'Here is your modal',
 	    top   : 40,
 	    color: "black"
 	});
 	
-	var leftButtonView = Ti.UI.createView({
-		left:40,
-		bottom:100,
-		height:100,
-		width: 70
-	});
 	var leftButton    = Ti.UI.createButton({
 		font: { fontSize:80, fontFamily:"ChalkboardSE-Regular" },
 	    title  : '<',
 	    color: "#fff"
 	});
-	leftButtonView.add(leftButton);
-	var rightButtonView = Ti.UI.createView({
-		right:40,
-		bottom:100,
-		height:100,
-		width: 70
-	});
+	$.leftButtonView.add(leftButton);
 	var rightButton    = Ti.UI.createButton({
 		font: { fontSize:80, fontFamily:"ChalkboardSE-Regular" },
 	    title  : '>',
 	    color: "#fff"
 	});
-	rightButtonView.add(rightButton);
-	imagecontainerView.add(someLabel);
+	$.rightButtonView.add(rightButton);
+	$.imagecontainerView.add(someLabel);
 	
-	
+	/*
 	$.wrapperView.add(backgroundView);
 	$.wrapperView.add(imagecontainerView);
 	$.wrapperView.add(topcontainerView);
 	$.wrapperView.add(leftButtonView);
 	$.wrapperView.add(rightButtonView);
-	
+	*/
