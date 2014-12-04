@@ -13,6 +13,7 @@ $.foldersItemName.text = CONFIG.display_label;
 $.foldersItemCount.text = "("+CONFIG.contains+")";
 
 $.foldersItem.addEventListener('click',function(e) {
+	APP.openLoading();
 	APP.log("debug", "adding new child (main.js): "+CONFIG.object_id);
 	var child_info = {
 		id: CONFIG.object_id,

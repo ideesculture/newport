@@ -39,7 +39,7 @@ $.retrieveData = function() {
 				}
 			},
 			error: function() {
-				APP.closeLoading();
+			/*	APP.closeLoading();
 				var dialog = Ti.UI.createAlertDialog({
 				    message: 'Connexion failed. Please retry.',
 				    ok: 'OK',
@@ -47,9 +47,11 @@ $.retrieveData = function() {
 				  }).show();
 				if(typeof _callback !== "undefined") {
 					_callback();
-				}
+				}*/
+				Ti.API.log("debug","OBJECT_DETAILS.fetch crashed :-(");
 			}
 	});
+	APP.closeLoading();
 }
 
 $.handleData = function(_data) {
@@ -64,6 +66,7 @@ $.handleData = function(_data) {
 }
 
 $.cellimage.addEventListener('click',function(e) {
+	APP.openLoading();
 	APP.log("debug", "adding new child (main.js): "+CONFIG.object_id);
 	var child_info = {
 		id: CONFIG.object_id,

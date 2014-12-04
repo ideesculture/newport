@@ -13,6 +13,7 @@ var COMMONS = require("ca-commons");
 $.TABLE = "ca_objects";
 
 $.init = function() {
+	APP.openLoading();
 	APP.log("debug","Adding object block ("+CONFIG.object_id+")");
 	$.objectInfo.text = CONFIG.idno;
 	$.objectName.text = CONFIG.display_label;
@@ -40,14 +41,15 @@ $.retrieveData = function() {
 			},
 			error: function() {
 				APP.closeLoading();
-				var dialog = Ti.UI.createAlertDialog({
+				/*var dialog = Ti.UI.createAlertDialog({
 				    message: 'Connexion failed. Please retry.',
 				    ok: 'OK',
 				    title: 'Error'
 				  }).show();
 				if(typeof _callback !== "undefined") {
 					_callback();
-				}
+				}*/
+				Ti.API.log("debug","OBJECT_DETAILS.fetch crashed :-(");
 			}
 	});
 }
