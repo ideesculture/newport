@@ -13,8 +13,8 @@ var HIERARCHY_MODEL = require("models/ca-objects-hierarchy")();
 
 var 	myModal = Ti.UI.createWindow({
 	    title           : 'My Modal',
-	    backgroundColor : 'black'
-	    //backgroundColor : 'transparent'
+	    //backgroundColor : 'black'
+	    backgroundColor : 'transparent'
 	});
 
 
@@ -25,6 +25,7 @@ $.TABLE = "ca_objects";
 APP.log("debug", "text | " + JSON.stringify(CONFIG));
 
 $.init = function() {
+	APP.openLoading();
 	// Initiating CA db model class
 	HIERARCHY_MODEL.init($.TABLE);
 	Ti.API.log("APP.Settings.defaultdisplay");
@@ -152,7 +153,6 @@ $.retrieveData = function(_force, _callback) {
 				}
 			},
 			error: function() {
-				APP.closeLoading();
 				var dialog = Ti.UI.createAlertDialog({
 				    message: 'Connexion failed. Please retry.',
 				    ok: 'OK',
@@ -163,7 +163,8 @@ $.retrieveData = function(_force, _callback) {
 				}
 			}
 		});
-	}
+	};
+	APP.closeLoading();
 };
 
 /**
@@ -300,6 +301,7 @@ $.NavigationBar.showRight({
 
 $.thatNeedsToGoElsewhere = function() {
 	APP.closeLoading();
+	/*
 	APP.log("debug","myModal created");
 	var wrapperView    = Ti.UI.createView(); // Full screen
 	var backgroundView = Ti.UI.createView({  // Also full screen
@@ -444,14 +446,15 @@ $.thatNeedsToGoElsewhere = function() {
 	wrapperView.add(leftButtonView);
 	wrapperView.add(rightButtonView);
 	
-	myModal.add(wrapperView);
+	myModal.add(wrapperView);*/
 	$.init();
 };
 
 // Kick off the init
-//$.thatNeedsToGoElsewhere();
-//var profile = Alloy.createController('main_modal_details');
-//APP.log('debug', profile.getView());
+$.thatNeedsToGoElsewhere();
+var profile = Alloy.createController('main_modal_details', myModal);
+var profile_view = profile.getView();
+myModal.add(profile_view);
 //$.index.open();
 //Alloy.createController('main_modal_details');
 $.init();

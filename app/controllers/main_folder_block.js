@@ -13,6 +13,8 @@ var COMMONS = require("ca-commons");
 $.TABLE = "ca_objects";
 
 $.init = function() {
+	APP.openLoading();
+	
 	APP.log("debug","Adding folder block ("+CONFIG.object_id+")");
 	$.objectInfo.text = CONFIG.idno;
 	$.objectName.text = CONFIG.display_label;
