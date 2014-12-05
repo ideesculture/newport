@@ -260,6 +260,14 @@
 	top:0,
 	right:10,
 	layout:'horizontal'
+},
+
+".arrowButttons": {
+	font: { fontSize:80, fontFamily:"ChalkboardSE-Regular" }	
+},
+"#leftButtton": {
+	font: { fontSize:80, fontFamily:"ChalkboardSE-Regular" }	
+},
+"#rightButtton": {
+	font: { fontSize:80, fontFamily:"ChalkboardSE-Regular" }	
 }
-
-

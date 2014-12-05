@@ -56,7 +56,7 @@
 		  			<!-- objects = container for cells aka block to display one item -->
 					<View id="objectBlocks">
 						<!-- objects created by main_object_block.js  -->
-						<View class="cell">
+						<!-- sample view for one object <View class="cell">
 							<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" id="firstImage" />
 							<Label class="objectName" text="Object 1" />
 			    			<View class="objectRow2">
@@ -66,7 +66,7 @@
 			    					<Label class="infoIcon" text="i" />
 			    				</View>
 			    			</View>
-			    		</View>
+			    		</View>-->
 					</View>
 					<View id="objectsList">
 						<!-- objects created by main_object_row.js  -->

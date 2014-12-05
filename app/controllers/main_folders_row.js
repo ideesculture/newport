@@ -7,8 +7,6 @@
 var APP = require("core");
 var CONFIG = arguments[0];
 
-APP.openLoading();
-
 APP.log("debug","Adding folder row ("+CONFIG.object_id+")");
 
 $.foldersItemName.text = CONFIG.display_label;

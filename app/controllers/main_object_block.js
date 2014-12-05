@@ -15,8 +15,8 @@ $.TABLE = "ca_objects";
 $.init = function() {
 	APP.openLoading();
 	APP.log("debug","Adding object block ("+CONFIG.object_id+")");
-	$.objectInfo.text = CONFIG.idno;
-	$.objectName.text = CONFIG.display_label;
+	$.objectInfo.text = CONFIG.obj_data.idno;
+	$.objectName.text = CONFIG.obj_data.display_label;
 
 	// Loading URL for object details, replacing ID by the current object_id
 	CONFIG.url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.object_id);
@@ -34,7 +34,7 @@ $.retrieveData = function() {
 			authString: APP.authString,
 			cache: 0,
 			callback: function() {
-				$.handleData(OBJECT_DETAILS.getMainObjectInfo(CONFIG.object_id));
+				$.handleData(OBJECT_DETAILS.getMainObjectInfo(CONFIG.obj_data.object_id));
 				if(typeof _callback !== "undefined") {
 					_callback();
 				}
@@ -64,5 +64,19 @@ $.handleData = function(_data) {
 	}
 	$.objectInfo.text = _data.idno;
 }
+
+$.cellimage.addEventListener('click',function(e) {
+	APP.log("debug","$.cellimage.addEventListener");
+	var modal_info = {
+		idno: CONFIG.obj_data.idno,		
+		display_label: CONFIG.obj_data.display_label,
+		container: CONFIG.modal		
+	}
+    var modal_view = Alloy.createController('main_modal_details',modal_info);
+    CONFIG.modal.add(modal_view.getView());
+	CONFIG.modal.open({
+    	animate : true
+	});
+});
 
 $.init();
