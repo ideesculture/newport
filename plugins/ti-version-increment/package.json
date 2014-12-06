@@ -1,0 +1,8 @@
+{
+	"name": "version_increment",
+	"description": "Increments the 3rd digit of a Titanium app's version",
+	"version": "0.1.0",
+	"dependencies": {
+		"xmldom": "0.1.19"
+	}
+}
