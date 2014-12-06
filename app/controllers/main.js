@@ -37,7 +37,7 @@ $.init = function() {
 
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
 		
-	// Loading CA database model (metadatas & fields) & filling cache
+	// loading url & cache validity from settings
 	CONFIG.url = APP.Settings.CollectiveAccess.urlForHierarchy.url;
 	CONFIG.validity = APP.Settings.CollectiveAccess.urlForHierarchy.cache;
 
@@ -116,12 +116,13 @@ $.init = function() {
 };
 
 $.retrieveCallbackFunctions = function() {
-	// Handling right side last modified records
-	$.handleLastModifiedData(HIERARCHY_MODEL.getLastRecords($.TABLE));
 	// Handling top screen folders data
 	$.handleFoldersData(HIERARCHY_MODEL.getChildrenFoldersInside($.TABLE,CONFIG.id));
 	// Handling bottom objects
 	$.handleObjectsData(HIERARCHY_MODEL.getObjectsInside($.TABLE,CONFIG.id));
+	// Handling right side last modified records
+	$.handleLastModifiedData(HIERARCHY_MODEL.getLastRecords($.TABLE));
+	
 }
 
 /**
@@ -164,6 +165,8 @@ $.retrieveData = function(_force, _callback) {
 			}
 		});
 	}
+
+	APP.closeLoading();
 };
 
 /**

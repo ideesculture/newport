@@ -12,7 +12,12 @@ var CONFIG = arguments[0];
 //APP.log("debug",CONFIG);
 
 $.label.text=CONFIG.content.display_label; 
-$.textfield.value="ici";
+if (typeof CONFIG.value == "string") {
+	$.textfield.value=CONFIG.value;
+} else {
+	$.textfield.value="";
+}
+
 
 // Check if we have settings defined
 if(CONFIG.content.settings) {

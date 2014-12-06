@@ -14,12 +14,12 @@ $.TABLE = "ca_objects";
 
 $.init = function() {
 	APP.openLoading();
-	APP.log("debug","Adding object block ("+CONFIG.object_id+")");
+	APP.log("debug","Adding object block ("+CONFIG.obj_data.object_id+")");
 	$.objectInfo.text = CONFIG.obj_data.idno;
 	$.objectName.text = CONFIG.obj_data.display_label;
 
 	// Loading URL for object details, replacing ID by the current object_id
-	CONFIG.url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.object_id);
+	CONFIG.url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.obj_data.object_id);
 	CONFIG.validity = APP.Settings.CollectiveAccess.urlForObjectDetails.cache;
 
 	OBJECT_DETAILS.init($.TABLE);
@@ -77,6 +77,10 @@ $.handleData = function(_data) {
 
 $.cellimage.addEventListener('click',function(e) {
 	APP.log("debug","$.cellimage.addEventListener");
+	// if menu opened, close it
+	if(APP.SlideMenuOpen) {
+		APP.closeMenu();
+	}
 	var modal_info = {
 		obj_data: CONFIG.obj_data,		
 		container: CONFIG.modal		

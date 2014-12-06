@@ -142,6 +142,27 @@ function Model() {
 		data.close();
 		db.close();
 		return temp;
+	}
+
+	this.getDetails = function(_id) {
+		APP.log("debug", "CA-OBJECT-DETAILS.getDetails "+_id);
+		var db = Ti.Database.open(DBNAME), temp = {};
+		var request = "select json, thumbnail_url from ca_objects_details caod where caod.object_id="+_id+" limit 1";
+		var data = db.execute(request);
+		var fieldnumber = 0;
+		
+		while (data.isValidRow()) {
+			while (fieldnumber < data.getFieldCount()) {
+				temp[data.fieldName(fieldnumber)] = data.field(fieldnumber);
+				fieldnumber++;
+			}
+			fieldnumber = 0;
+			data.next();
+		}
+
+		data.close();
+		db.close();
+		return temp;
 	}		
 }
 

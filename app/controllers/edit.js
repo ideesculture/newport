@@ -8,6 +8,8 @@ var APP = require("core");
 var UTIL = require("utilities");
 var DATE = require("alloy/moment");
 var HTTP = require("http");
+var COMMONS = require("ca-commons");
+
 var MODEL_MODEL = require("models/ca-model")();
 var UI_MODEL = require("models/ca-ui")();
 var OBJECT_DETAILS = require("models/ca-object-details")();
@@ -25,8 +27,14 @@ $.SCREENS = [];
 // Index of the screen we want to display, default -1 (first available)
 $.SCREEN = "";
 $.UI_CODE = "";
+// Global variable for this controller to store the object details
+$.RECORD = {};
 
 $.init = function() {
+
+	// loading url & cache validity from settings
+	CONFIG.validity = APP.Settings.CollectiveAccess.urlForHierarchy.cache;
+
 	//APP.openLoading();
 	// Initiating CA db model class
 	MODEL_MODEL.init($.TABLE);
@@ -63,31 +71,39 @@ $.init = function() {
 
 	// Loading CA screens & uis & filling cache
 	CONFIG.ui_url = APP.Settings.CollectiveAccess.urlForUis;
-	$.uiRetrieveData();
+	
+	// uiRetrieveData is called from objectRetrieveCallbackFunctions : we need to have the values available before displaying bundles
+	//$.uiRetrieveData();
 
 	// Loading object details
+	// Loading URL for object details, replacing ID by the current object_id
+	CONFIG.object_url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.obj_data.object_id);
+	CONFIG.validity = APP.Settings.CollectiveAccess.urlForObjectDetails.cache;
+
 	$.objectRetrieveData();
 	
 	if(CONFIG.isChild === true) {
 		$.NavigationBar.showBack(function(_event) {
 			APP.removeChild();
 		});
-	}
-	
-	if(APP.Settings.useSlideMenu) {
-		$.NavigationBar.showMenu(function(_event) {
-			APP.toggleMenu();
-		});
 	} else {
-		$.NavigationBar.showSettings(function(_event) {
-			//APP.openSettings();
-		});
+		if(APP.Settings.useSlideMenu) {
+			$.NavigationBar.showMenu(function(_event) {
+				APP.toggleMenu();
+			});
+		} else {
+			$.NavigationBar.showSettings(function(_event) {
+				//APP.openSettings();
+			});
+		}		
 	}
 	
 	$.NavigationBar.text = "Archivio Teatro Regio";
-
-	$.objectRetrieveData();
 };
+
+$.modelRetrieveCallbackFunctions = function () {
+	$.modelHandleData(MODEL_MODEL.getModelFirstLevelInfo());
+}
 
 /**
  * Retrieves the data
@@ -96,29 +112,35 @@ $.init = function() {
  */
 $.modelRetrieveData = function(_force, _callback) {
 	APP.log("debug","edit.retrieveData");
-	MODEL_MODEL.fetch({
-		url: CONFIG.url,
-		authString: APP.authString,
-		cache: 0,
-		callback: function() {
-			$.modelHandleData(MODEL_MODEL.getModelFirstLevelInfo());
+	if(COMMONS.isCacheValid(CONFIG.url,CONFIG.validity)) {
+		APP.log("debug","ca-objects-hierarchy cache is valid");
+		$.modelRetrieveCallbackFunctions();
+	} else {
+		MODEL_MODEL.fetch({
+			url: CONFIG.url,
+			authString: APP.authString,
+			cache: 0,
+			callback: function() {
+				$.modelRetrieveCallbackFunctions();	
 
-			if(typeof _callback !== "undefined") {
-				_callback();
+				if(typeof _callback !== "undefined") {
+					_callback();
+				}
+			},
+			error: function() {
+				APP.closeLoading();
+				var dialog = Ti.UI.createAlertDialog({
+				    message: 'Connexion failed. Please retry.',
+				    ok: 'OK',
+				    title: 'Error'
+				  }).show();
+				if(typeof _callback !== "undefined") {
+					_callback();
+				}
 			}
-		},
-		error: function() {
-			APP.closeLoading();
-			var dialog = Ti.UI.createAlertDialog({
-			    message: 'Connexion failed. Please retry.',
-			    ok: 'OK',
-			    title: 'Error'
-			  }).show();
-			if(typeof _callback !== "undefined") {
-				_callback();
-			}
-		}
-	});
+		});
+
+	}
 	
 	
 	//$.uiRetrieveData();
@@ -137,73 +159,62 @@ $.modelHandleData = function(_data) {
 	var rows=[];
 	var totalHeight = 0;
 	var i = 0;
-	/*
-	for(var element in APP.ca_modele_values.elements) {
-		if(i<10) {
-			APP.log("debug", element);
-			
-			var row = Alloy.createController("edit_metadata_bundle", {
-				element:element,
-				content:APP.ca_modele_values.elements[element]
-			}).getView();
-			totalHeight += row.getHeigh();
-			rows.push(row);
-			
-		}	
-		i++;
-	};*/
-	/*
-	$.bundles.setOpacity(0);
-	$.bundles.setData(rows);
-	for(var x=0; x<rows.length; x++) {
-		$.bundles.add(rows[x]);
-	}
-	$.bundles.setOpacity(1);
-
-	APP.closeLoading();*/
 };
 
+$.uiRetrieveCallbackFunctions = function() {
+	// Getting default (aka first) available ui for the record type we have
+	APP.log("debug","UI_MODEL.getFirstAvailableUIForTable($.TABLE)");
+	APP.log("debug",UI_MODEL.getFirstAvailableUIForTable($.TABLE));
+
+	$.UI_CODE = UI_MODEL.getFirstAvailableUIForTable($.TABLE).code;
+	APP.log("debug","$.UI_CODE");
+	APP.log("debug",$.UI_CODE);
+	// Fetching defaulft (aka first) available screen for this UI
+	APP.log("debug","UI_MODEL.getFirstAvailableScreenWithContentForUI("+$.TABLE+","+$.UI_CODE+")");
+	APP.log("debug","$.SCREEN");
+	APP.log("debug",$.SCREEN);
+	
+	if($.SCREEN == "") {
+		APP.log("debug",UI_MODEL.getFirstAvailableScreenWithContentForUI($.TABLE,$.UI_CODE));
+		$.uiHandleData(UI_MODEL.getFirstAvailableScreenWithContentForUI($.TABLE,$.UI_CODE));	
+	} else {
+		//APP.log("debug",UI_MODEL.getContentForScreen($.TABLE,$.UI_CODE,$.SCREEN));
+		$.uiHandleData(UI_MODEL.getContentForScreen($.TABLE,$.UI_CODE,$.SCREEN)); 
+	}
+};
 
 $.uiRetrieveData = function(_force, _callback) {
 	APP.log("debug","edit.retrieveData");
 	APP.log("debug","CONFIG.ui_url");
 	APP.log("debug",CONFIG.ui_url);
 	
-	UI_MODEL.fetch({
-		url: CONFIG.ui_url,
-		authString: APP.authString,
-		cache: 0,
-		callback: function() {
-			// Getting default (aka first) available ui for the record type we have
-			$.UI_CODE = UI_MODEL.getFirstAvailableUIForTable($.TABLE).code;
-			APP.log("debug",$.UI_CODE);
-			// Fetching defaulft (aka first) available screen for this UI
-			APP.log("debug","UI_MODEL.getFirstAvailableScreenWithContentForUI("+$.TABLE+","+$.UI_CODE+")");
+	/*if(COMMONS.isCacheValid(CONFIG.url,CONFIG.validity)) {
+		APP.log("debug","ca-objects-hierarchy cache is valid");
+		$.uiRetrieveCallbackFunctions();
+	} else {*/
+		UI_MODEL.fetch({
+			url: CONFIG.ui_url,
+			authString: APP.authString,
+			cache: 0,
+			callback: function() {
+				$.uiRetrieveCallbackFunctions();
 
-			if($.SCREEN == "") {
-				APP.log("debug",UI_MODEL.getFirstAvailableScreenWithContentForUI($.TABLE,$.UI_CODE));
-				$.uiHandleData(UI_MODEL.getFirstAvailableScreenWithContentForUI($.TABLE,$.UI_CODE));	
-			} else {
-				//APP.log("debug",UI_MODEL.getContentForScreen($.TABLE,$.UI_CODE,$.SCREEN));
-				$.uiHandleData(UI_MODEL.getContentForScreen($.TABLE,$.UI_CODE,$.SCREEN)); 
+				if(typeof _callback !== "undefined") {
+					_callback();
+				}
+			},
+			error: function() {
+				APP.closeLoading();
+				var dialog = Ti.UI.createAlertDialog({
+				    message: 'Connexion failed. Please retry.',
+				    ok: 'OK',
+				    title: 'Error'
+				  }).show();
+				if(typeof _callback !== "undefined") {
+					_callback();
+				}
 			}
-
-			if(typeof _callback !== "undefined") {
-				_callback();
-			}
-		},
-		error: function() {
-			APP.closeLoading();
-			var dialog = Ti.UI.createAlertDialog({
-			    message: 'Connexion failed. Please retry.',
-			    ok: 'OK',
-			    title: 'Error'
-			  }).show();
-			if(typeof _callback !== "undefined") {
-				_callback();
-			}
-		}
-	});
+		});
 };
 
 $.uiHandleData = function(_data) {
@@ -255,10 +266,13 @@ $.uiHandleData = function(_data) {
 					APP.log("debug","attribute : "+attribute);
 					
 					//APP.log("debug", MODEL_MODEL.hasElementInfo("ca_objects", attribute));
+					var values = $.RECORD["ca_objects."+attribute];
+
 					var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
 					var row = Alloy.createController("edit_metadata_bundle", {
 						element:attribute,
-						content:element_data
+						content:element_data,
+						values:values
 					}).getView();
 					rows.push(row);
 				}
@@ -276,47 +290,47 @@ $.uiHandleData = function(_data) {
 			APP.closeLoading();
 		}
 	}
+};
 
-	
+$.objectRetrieveCallbackFunctions = function() {
+	$.RECORD = JSON.parse(OBJECT_DETAILS.getDetails(CONFIG.obj_data.object_id).json);
+	$.uiRetrieveData();
+	// There's no objectHandleData as the data is handled inside uiHandleDate
 };
 
 $.objectRetrieveData = function() {
 	Ti.API.log("debug","APP.authString " + APP.authString);
 
-	OBJECT_DETAILS.fetch({
-			url: CONFIG.url,
-			authString: APP.authString,
-			cache: 0,
-			callback: function() {
-				$.objectHandleData(OBJECT_DETAILS.getMainObjectInfo(CONFIG.obj_data.object_id));
-				if(typeof _callback !== "undefined") {
-					_callback();
+	if(COMMONS.isCacheValid(CONFIG.object_url,CONFIG.validity)) {
+		APP.log("debug","edit : ca-objects-hierarchy cache is valid");
+		APP.log("debug","CONFIG.object_url");
+		APP.log("debug",CONFIG.object_url);
+		$.objectRetrieveCallbackFunctions();
+	} else {
+		APP.log("debug","edit : ca-objects-hierarchy cache is invalid");
+		APP.log("debug","CONFIG.object_url");
+		APP.log("debug",CONFIG.object_url);
+		OBJECT_DETAILS.fetch({
+				url: CONFIG.object_url,
+				authString: APP.authString,
+				cache: 0,
+				callback: function() {
+					$.objectRetrieveCallbackFunctions();
+					if(typeof _callback !== "undefined") {
+						_callback();
+					}
+				},
+				error: function() {
+					APP.closeLoading();
+					Ti.API.log("debug","OBJECT_DETAILS.fetch crashed :-(");
 				}
-			},
-			error: function() {
-				APP.closeLoading();
-				/*var dialog = Ti.UI.createAlertDialog({
-				    message: 'Connexion failed. Please retry.',
-				    ok: 'OK',
-				    title: 'Error'
-				  }).show();
-				if(typeof _callback !== "undefined") {
-					_callback();
-				}*/
-				Ti.API.log("debug","OBJECT_DETAILS.fetch crashed :-(");
-			}
-	});
+		});
+	};
 }
 
 $.objectHandleData = function(_data) {
-	
-	if(_data.thumbnail_url) {
-		APP.log("debug",_data.thumbnail_url);
-		var file=COMMONS.getRemoteFile(_data.thumbnail_url);
-		APP.log("debug",file);
-		$.cellimage.image = file;
-	}
-	$.objectInfo.text = _data.idno;
+	APP.log("debug","$.objectHandleData");
+	APP.log("debug",_data);
 }
 
 $.screenButtonsScrollView.addEventListener("click", function(_event) {

@@ -164,7 +164,7 @@ function Model() {
 	};
 
 	this.getElementInfo = function(_ca_table, _element_name) {
-		APP.log("debug", "CA-UI.getElementInfo");
+		APP.log("debug", "CA-MODEL.getElementInfo");
 
 		var db = Ti.Database.open(DBNAME),
 			request = "select content from ca_models where ca_table like '"+_ca_table+"' and element_name like '"+_element_name+"' limit 1",

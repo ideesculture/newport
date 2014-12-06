@@ -9,7 +9,7 @@ var APP = require("core");
 var UTIL = require("utilities");
 var MOMENT = require('alloy/moment'); 
 
-
+APP.locale = APP.Settings.CollectiveAccess.locale;
 /**
  * Returns last updated time for an item in the cache
  * @param {String} _url The URL of the file we're checking
