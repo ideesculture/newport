@@ -1,5 +1,5 @@
 /**
- * Collectiveaccess user interface for object edition model
+ * Collectiveaccess model for object edition
  * 
  * @class Models.ca-model
  * @uses core

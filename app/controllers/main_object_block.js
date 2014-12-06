@@ -24,34 +24,44 @@ $.init = function() {
 
 	OBJECT_DETAILS.init($.TABLE);
 	$.retrieveData();
+	APP.closeLoading();
+}
+
+$.retrieveCallbackFunctions = function() {
+	$.handleData(OBJECT_DETAILS.getMainObjectInfo(CONFIG.obj_data.object_id));
 }
 
 $.retrieveData = function() {
 	Ti.API.log("debug","APP.authString " + APP.authString);
 
-	OBJECT_DETAILS.fetch({
-			url: CONFIG.url,
-			authString: APP.authString,
-			cache: 0,
-			callback: function() {
-				$.handleData(OBJECT_DETAILS.getMainObjectInfo(CONFIG.obj_data.object_id));
-				if(typeof _callback !== "undefined") {
-					_callback();
+	if(COMMONS.isCacheValid(CONFIG.url,CONFIG.validity)) {
+		APP.log("debug","ca-objects-hierarchy cache is valid");
+		$.retrieveCallbackFunctions();
+	} else {
+		OBJECT_DETAILS.fetch({
+				url: CONFIG.url,
+				authString: APP.authString,
+				cache: 0,
+				callback: function() {
+					$.retrieveCallbackFunctions();
+					if(typeof _callback !== "undefined") {
+						_callback();
+					}
+				},
+				error: function() {
+					APP.closeLoading();
+					/*var dialog = Ti.UI.createAlertDialog({
+					    message: 'Connexion failed. Please retry.',
+					    ok: 'OK',
+					    title: 'Error'
+					  }).show();
+					if(typeof _callback !== "undefined") {
+						_callback();
+					}*/
+					Ti.API.log("debug","OBJECT_DETAILS.fetch crashed :-(");
 				}
-			},
-			error: function() {
-				APP.closeLoading();
-				/*var dialog = Ti.UI.createAlertDialog({
-				    message: 'Connexion failed. Please retry.',
-				    ok: 'OK',
-				    title: 'Error'
-				  }).show();
-				if(typeof _callback !== "undefined") {
-					_callback();
-				}*/
-				Ti.API.log("debug","OBJECT_DETAILS.fetch crashed :-(");
-			}
-	});
+		});
+	};
 }
 
 $.handleData = function(_data) {
@@ -68,8 +78,7 @@ $.handleData = function(_data) {
 $.cellimage.addEventListener('click',function(e) {
 	APP.log("debug","$.cellimage.addEventListener");
 	var modal_info = {
-		idno: CONFIG.obj_data.idno,		
-		display_label: CONFIG.obj_data.display_label,
+		obj_data: CONFIG.obj_data,		
 		container: CONFIG.modal		
 	}
     var modal_view = Alloy.createController('main_modal_details',modal_info);

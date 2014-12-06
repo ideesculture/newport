@@ -10,11 +10,16 @@ var DATE = require("alloy/moment");
 var HTTP = require("http");
 var MODEL_MODEL = require("models/ca-model")();
 var UI_MODEL = require("models/ca-ui")();
-
+var OBJECT_DETAILS = require("models/ca-object-details")();
 var CONFIG = arguments[0];
 
+APP.log("debug","edit CONFIG");
+APP.log("debug",CONFIG);
+
+$.heading.text += " editing object #"+CONFIG.obj_data.object_id+" "+CONFIG.obj_data.display_label+" "+CONFIG.obj_data.idno;
+
 // Temporary fixing the table we"re editing, need to come through CONFIG after
-$.TABLE = "ca_objects";
+$.TABLE = CONFIG.type;
 // List of all screen
 $.SCREENS = [];
 // Index of the screen we want to display, default -1 (first available)
@@ -27,6 +32,8 @@ $.init = function() {
 	MODEL_MODEL.init($.TABLE);
 	// Initiating CA available UIs class
 	UI_MODEL.init();
+	// Initiating detail fetching for object
+	OBJECT_DETAILS.init($.TABLE);
 	
 	// Credentials are inside app.json file
 	APP.ca_login=APP.Settings.CollectiveAccess.login;
@@ -57,6 +64,9 @@ $.init = function() {
 	// Loading CA screens & uis & filling cache
 	CONFIG.ui_url = APP.Settings.CollectiveAccess.urlForUis;
 	$.uiRetrieveData();
+
+	// Loading object details
+	$.objectRetrieveData();
 	
 	if(CONFIG.isChild === true) {
 		$.NavigationBar.showBack(function(_event) {
@@ -76,6 +86,7 @@ $.init = function() {
 	
 	$.NavigationBar.text = "Archivio Teatro Regio";
 
+	$.objectRetrieveData();
 };
 
 /**
@@ -268,6 +279,45 @@ $.uiHandleData = function(_data) {
 
 	
 };
+
+$.objectRetrieveData = function() {
+	Ti.API.log("debug","APP.authString " + APP.authString);
+
+	OBJECT_DETAILS.fetch({
+			url: CONFIG.url,
+			authString: APP.authString,
+			cache: 0,
+			callback: function() {
+				$.objectHandleData(OBJECT_DETAILS.getMainObjectInfo(CONFIG.obj_data.object_id));
+				if(typeof _callback !== "undefined") {
+					_callback();
+				}
+			},
+			error: function() {
+				APP.closeLoading();
+				/*var dialog = Ti.UI.createAlertDialog({
+				    message: 'Connexion failed. Please retry.',
+				    ok: 'OK',
+				    title: 'Error'
+				  }).show();
+				if(typeof _callback !== "undefined") {
+					_callback();
+				}*/
+				Ti.API.log("debug","OBJECT_DETAILS.fetch crashed :-(");
+			}
+	});
+}
+
+$.objectHandleData = function(_data) {
+	
+	if(_data.thumbnail_url) {
+		APP.log("debug",_data.thumbnail_url);
+		var file=COMMONS.getRemoteFile(_data.thumbnail_url);
+		APP.log("debug",file);
+		$.cellimage.image = file;
+	}
+	$.objectInfo.text = _data.idno;
+}
 
 $.screenButtonsScrollView.addEventListener("click", function(_event) {
 	APP.log("debug",_event.source);
