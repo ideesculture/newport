@@ -35,25 +35,15 @@ if(SETTINGS.fieldHeight > 1) {
 	// 1.6 = coefficient between settings width & display width
 	$.textarea.width=Math.round(SETTINGS.fieldWidth * 7.28);
 
-	$.textarea.addEventListener('focus', function() {
-		alert("focus");
-	});
 	$.textarea.addEventListener('blur', function() {
 		// leaving focus from area
 		if ($.textarea.value != $.textarea.valuebak) {
-			alert("modifications detected");
-		} else {
-			alert("no modification");
+			$.textarea.backgroundColor = APP.Settings.colors.primary;
+
 		}
 	});
 } else {
 	// We have a textfield
 	$.field.remove($.textarea);
 	$.textfield.value = value;
-	$.textfield.addEventListener('focus', function() {
-		alert("focus");
-	});
-	$.textfield.addEventListener('blur', function() {
-		alert("blur");
-	});
 }
