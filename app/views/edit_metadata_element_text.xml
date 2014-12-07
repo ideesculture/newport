@@ -2,5 +2,6 @@
 	<View id="field">
 		<Label id="label"/>
 		<TextField id="textfield"/>
+		<TextArea id="textarea"/>
 	</View>
 </Alloy>

@@ -88,7 +88,7 @@ function Model() {
 		if(_data.ok == true) {
 			APP.log("debug", "connected");
 			var db = Ti.Database.open(DBNAME);
-			db.execute("DELETE FROM ca_models;");
+			//db.execute("DELETE FROM ca_models;");
 			db.execute("BEGIN TRANSACTION;");
 			
 			APP.ca_modele_prop = new Array();

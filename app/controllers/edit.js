@@ -58,27 +58,25 @@ $.init = function() {
 	
 	$.screenButtonsScrollView.setBackgroundColor(APP.Settings.colors.primary);
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
-	
-
-	
-	
+		
 	APP.authString = 'Basic ' +Titanium.Utils.base64encode(APP.ca_login+':'+APP.ca_password);
 	APP.log("debug","still logged as "+APP.ca_login);
 	
 	// Loading CA database model (metadatas & fields) & filling cache
-	CONFIG.url = APP.Settings.CollectiveAccess.urlForModel;
+	CONFIG.model_url = APP.Settings.CollectiveAccess.urlForModel.url;
+	CONFIG.model_url_validity = APP.Settings.CollectiveAccess.urlForModel.cache;
 	$.modelRetrieveData();
 
 	// Loading CA screens & uis & filling cache
-	CONFIG.ui_url = APP.Settings.CollectiveAccess.urlForUis;
-	
+	CONFIG.ui_url = APP.Settings.CollectiveAccess.urlForUis.url;
+	CONFIG.ui_url_validity = APP.Settings.CollectiveAccess.urlForUis.cache;
 	// uiRetrieveData is called from objectRetrieveCallbackFunctions : we need to have the values available before displaying bundles
 	//$.uiRetrieveData();
 
 	// Loading object details
 	// Loading URL for object details, replacing ID by the current object_id
 	CONFIG.object_url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.obj_data.object_id);
-	CONFIG.validity = APP.Settings.CollectiveAccess.urlForObjectDetails.cache;
+	CONFIG.object_url_validity = APP.Settings.CollectiveAccess.urlForObjectDetails.cache;
 
 	$.objectRetrieveData();
 	
@@ -112,12 +110,21 @@ $.modelRetrieveCallbackFunctions = function () {
  */
 $.modelRetrieveData = function(_force, _callback) {
 	APP.log("debug","edit.retrieveData");
-	if(COMMONS.isCacheValid(CONFIG.url,CONFIG.validity)) {
-		APP.log("debug","ca-objects-hierarchy cache is valid");
-		$.modelRetrieveCallbackFunctions();
+	APP.log("debug","CONFIG.model_url");
+	APP.log("debug",CONFIG.model_url);
+	APP.log("debug","CONFIG.model_url_validity");
+	APP.log("debug",CONFIG.model_url_validity);
+	if(COMMONS.isCacheValid(CONFIG.model_url,CONFIG.model_url_validity)) {
+		APP.log("debug","ca-model cache is valid");
 	} else {
+		APP.log("debug","ca-model cache is invalid");		
+	};
+	/* if(COMMONS.isCacheValid(CONFIG.model_url,CONFIG.model_url_validity)) {
+		APP.log("debug","ca-model cache is valid");
+		$.modelRetrieveCallbackFunctions();
+	} else {	*/			
 		MODEL_MODEL.fetch({
-			url: CONFIG.url,
+			url: CONFIG.model_url,
 			authString: APP.authString,
 			cache: 0,
 			callback: function() {
@@ -129,18 +136,14 @@ $.modelRetrieveData = function(_force, _callback) {
 			},
 			error: function() {
 				APP.closeLoading();
-				var dialog = Ti.UI.createAlertDialog({
-				    message: 'Connexion failed. Please retry.',
-				    ok: 'OK',
-				    title: 'Error'
-				  }).show();
+				Ti.API.log("debug","ca-model.fetch crashed :-(");
 				if(typeof _callback !== "undefined") {
 					_callback();
 				}
 			}
 		});
 
-	}
+	//}
 	
 	
 	//$.uiRetrieveData();
@@ -184,14 +187,17 @@ $.uiRetrieveCallbackFunctions = function() {
 };
 
 $.uiRetrieveData = function(_force, _callback) {
+	APP.openLoading();
+
 	APP.log("debug","edit.retrieveData");
 	APP.log("debug","CONFIG.ui_url");
 	APP.log("debug",CONFIG.ui_url);
 	
-	/*if(COMMONS.isCacheValid(CONFIG.url,CONFIG.validity)) {
-		APP.log("debug","ca-objects-hierarchy cache is valid");
+	if(COMMONS.isCacheValid(CONFIG.ui_url,CONFIG.ui_url_validity)) {
+		APP.log("debug","ca-ui cache is valid");
 		$.uiRetrieveCallbackFunctions();
-	} else {*/
+	} else {
+
 		UI_MODEL.fetch({
 			url: CONFIG.ui_url,
 			authString: APP.authString,
@@ -205,16 +211,14 @@ $.uiRetrieveData = function(_force, _callback) {
 			},
 			error: function() {
 				APP.closeLoading();
-				var dialog = Ti.UI.createAlertDialog({
-				    message: 'Connexion failed. Please retry.',
-				    ok: 'OK',
-				    title: 'Error'
-				  }).show();
+				Ti.API.log("debug","ca-ui.fetch crashed :-(");
 				if(typeof _callback !== "undefined") {
 					_callback();
 				}
 			}
 		});
+	}
+	APP.closeLoading();
 };
 
 $.uiHandleData = function(_data) {
@@ -301,7 +305,7 @@ $.objectRetrieveCallbackFunctions = function() {
 $.objectRetrieveData = function() {
 	Ti.API.log("debug","APP.authString " + APP.authString);
 
-	if(COMMONS.isCacheValid(CONFIG.object_url,CONFIG.validity)) {
+	if(COMMONS.isCacheValid(CONFIG.object_url,CONFIG.object_url_validity)) {
 		APP.log("debug","edit : ca-objects-hierarchy cache is valid");
 		APP.log("debug","CONFIG.object_url");
 		APP.log("debug",CONFIG.object_url);
@@ -336,11 +340,17 @@ $.objectHandleData = function(_data) {
 $.screenButtonsScrollView.addEventListener("click", function(_event) {
 	APP.log("debug",_event.source);
 	// Getting screen code from the code parameter inside the label
-	//APP.openLoading();
 	$.SCREEN = _event.source.code;
-	 $.uiRetrieveData();
+	//$.modelRetrieveData();
+	$.uiRetrieveData();
 	//_event.source.code => ce qu'on veut
 });
 
+$.NavigationBar.showRight({
+	image: "/newport/check.png",
+	callback: function() {
+		alert('Save icon clicked');
+	}
+});
 
 $.init();

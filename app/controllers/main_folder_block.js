@@ -27,32 +27,43 @@ $.init = function() {
 	$.retrieveData();
 }
 
+$.retrieveCallbackFunctions = function() {
+	$.handleData(OBJECT_DETAILS.getMainObjectInfo(CONFIG.object_id));
+}
+
 $.retrieveData = function() {
 	Ti.API.log("debug","APP.authString " + APP.authString);
 
-	OBJECT_DETAILS.fetch({
-			url: CONFIG.url,
-			authString: APP.authString,
-			cache: 0,
-			callback: function() {
-				$.handleData(OBJECT_DETAILS.getMainObjectInfo(CONFIG.object_id));
-				if(typeof _callback !== "undefined") {
-					_callback();
+	// Handling breadcrumb
+	if(COMMONS.isCacheValid(CONFIG.url,CONFIG.validity)) {
+		APP.log("debug","ca-objects-details cache is valid");
+		$.retrieveCallbackFunctions();
+	} else {
+		OBJECT_DETAILS.fetch({
+				url: CONFIG.url,
+				authString: APP.authString,
+				cache: 0,
+				callback: function() {
+					$.retrieveCallbackFunctions();
+					
+					if(typeof _callback !== "undefined") {
+						_callback();
+					}
+				},
+				error: function() {
+				/*	APP.closeLoading();
+					var dialog = Ti.UI.createAlertDialog({
+					    message: 'Connexion failed. Please retry.',
+					    ok: 'OK',
+					    title: 'Error'
+					  }).show();
+					if(typeof _callback !== "undefined") {
+						_callback();
+					}*/
+					Ti.API.log("debug","OBJECT_DETAILS.fetch crashed :-(");
 				}
-			},
-			error: function() {
-			/*	APP.closeLoading();
-				var dialog = Ti.UI.createAlertDialog({
-				    message: 'Connexion failed. Please retry.',
-				    ok: 'OK',
-				    title: 'Error'
-				  }).show();
-				if(typeof _callback !== "undefined") {
-					_callback();
-				}*/
-				Ti.API.log("debug","OBJECT_DETAILS.fetch crashed :-(");
-			}
-	});
+		});
+	}
 	APP.closeLoading();
 }
 

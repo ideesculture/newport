@@ -24,8 +24,14 @@
 			"pass":"admin",
 			"locale":"en_US",
 			"urlForLogin": "http://aspi.idcultu.re/gestion/service.php/find/ca_objects?q=zzzzzzzz",
-			"urlForModel": "http://aspi.idcultu.re/gestion/service.php/model/ca_objects",
-			"urlForUis" : "http://aspi.idcultu.re/gestion/service-uis.php/ca_objects",
+			"urlForModel": {
+				"url":"http://aspi.idcultu.re/gestion/service.php/model/ca_objects",
+				"cache":"86400"
+			},
+			"urlForUis" : {
+				"url":"http://aspi.idcultu.re/gestion/service-uis.php/ca_objects",
+				"cache":"86400"
+			},
 			"urlForHierarchy" : {
 				"url":"http://aspi.idcultu.re/gestion/service.php/find/ca_objects?q=*&source={\"bundles\":{\"created\": {\"returnAsArray\":true}, \"parent_id\":{}}}",
 				"cache":"86400"

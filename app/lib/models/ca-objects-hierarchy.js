@@ -87,7 +87,7 @@ function Model() {
 		APP.log("debug", "CA_HIERARCHY.handleData");
 		if(_data.ok == true) {
 			var db = Ti.Database.open(DBNAME);
-			db.execute("DELETE FROM " + _ca_table + ";");
+			//db.execute("DELETE FROM " + _ca_table + ";");
 			db.execute("BEGIN TRANSACTION;");
 			
 			APP.ca_modele_prop = new Array();

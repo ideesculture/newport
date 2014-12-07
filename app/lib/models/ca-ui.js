@@ -22,7 +22,7 @@ function Model() {
 		APP.log("debug", "CA-UI.init()");
 
 		var db = Ti.Database.open(DBNAME);
-		db.execute("DROP TABLE IF EXISTS ca_uis;");
+
 		db.execute("CREATE TABLE IF NOT EXISTS ca_uis (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, code TEXT, information_type TEXT, screen_name TEXT, screen_label TEXT, date TEXT, content TEXT);");
 		db.close();
 	};
@@ -72,7 +72,7 @@ function Model() {
 		
 		// Emptying cache
 		var db = Ti.Database.open(DBNAME);
-		db.execute("DELETE FROM ca_uis;");
+		//db.execute("DELETE FROM ca_uis;");
 		db.execute("BEGIN TRANSACTION;");
 				
 		if(_data.ok == true) {
