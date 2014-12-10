@@ -36,10 +36,11 @@
 		fontFamily: "HelveticaNeue"
 	}
 },
-".downArrowIcon":{
+"#arrowIcon":{
 	top:"10dp",
 	width: "20dp",
 	height: "20dp",
+	right:"10dp",
 	borderColor: "black",
 	borderWidth: "1dp"
 },
@@ -50,7 +51,7 @@
 },
 "#addNewButtonView": {
 	height:"20dp",
-	left:"0dp",
+	left:"10dp",
 	width:"auto",
 	bottom:10
 },

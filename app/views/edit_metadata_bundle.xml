@@ -4,7 +4,7 @@
 			<View id="bundleItem">
 				<Label id="bundleItemName" text="Item" />
 				<View id="bundleItemRight">
-					<ImageView class="downArrowIcon" image="/icons/black/ca_arrow_down.png"></ImageView>
+					<ImageView id="arrowIcon" image="/icons/black/ca_arrow_down.png"></ImageView>
 				</View>
 			</View>
     		<View id="bundleItemElements">

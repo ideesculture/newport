@@ -39,65 +39,13 @@ $.init = function() {
 		// looping through each metadata element to display inside the row
 		var row = Alloy.createController("edit_metadata_bundle_row", {
 				elements_in_set:CONFIG.content.elements_in_set,
-				values:VALUES[i]
+				values:VALUES[i],
+				content:{},
+				parent:$.bundleItemElements
 			}).getView();
 		$.bundleItemElements.add(row);
 
 	}
-};
-
-$.addBundleElementsRow = function(_values) { 
-	// adding remove one container button
-	var removeButton = Ti.UI.createLabel({
-	  color:'blue',
-	  text: 'x',
-	  textAlign: Ti.UI.TEXT_ALIGNMENT_RIGHT,
-	  top: 0,right:"10dp", height:"20dp"
-	});
-	$.bundleItemElements.add(removeButton);
-
-	// adding metadata elements
-	for(var element in CONFIG.content.elements_in_set) {
-		var content = CONFIG.content.elements_in_set[element];
-		var j = 0;
-
-		if(j<25) {
-			// if element.datatype == "Text" => formulaire texte, else...
-			//APP.log("debug",element.datatype);
-			if(content.datatype in DATATYPECONTROLLERS) {
-	    		// does exist
-	    		var dataForDatatypeController = {
-					element:element,
-					content:content,
-					parent:$.bundleItemElements
-				};
-				if (typeof _values != 'undefined') {
-					// We have one value for the element, does this one take a locale ?
-					if ((typeof _values[APP.locale] != 'undefined') && (typeof _values[APP.locale][element] != 'undefined')) {
-						value = _values[APP.locale][element];
-					} else if (typeof _values[element] != 'undefined') {
-						value = _values[element];
-					}
-					dataForDatatypeController.value = value;
-				};
-				APP.log("debug","element "+element+" value "+value+" ("+content.datatype+")");
-
-				var row = Alloy.createController(
-						DATATYPECONTROLLERS[content.datatype], 
-						dataForDatatypeController
-					).getView();
-			} else {
-	    		var row = Alloy.createController("edit_metadata_element_unsupported", {
-					element:element,
-					content:CONFIG.content.elements_in_set[element],
-					parent:$.bundleItemElements
-				}).getView();
-			}
-			$.bundleItemElements.add(row);
-			
-		}
-		j++;
-	};
 };
 
 /* 
@@ -112,11 +60,13 @@ $.bundleItem.addEventListener("click", function(_event) {
 		$.bundleItemElements.height = 1;
 		$.addNewButtonView.visible = false;
 		$.addNewButtonView.height = 1;
+		$.arrowIcon.image = "/icons/black/ca_arrow_down.png";
 	} else {
 		$.bundleItemElements.visible = true;
 		$.bundleItemElements.height = Ti.UI.SIZE;
 		$.addNewButtonView.visible = true;
 		$.addNewButtonView.height = Ti.UI.SIZE;
+		$.arrowIcon.image = "/icons/black/ca_arrow_up.png";
 	}
 	
 });

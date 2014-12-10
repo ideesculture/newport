@@ -12,6 +12,6 @@
 "#removeButton": {
 	color:"blue",
 	top:"0",
-	right:"10dp",
+	right:"20dp",
 	height:"20dp"
 }

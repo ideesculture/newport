@@ -2,6 +2,6 @@
 	<View id="bundleRow">
 		<View id="bundleRowContent">
 		</View>		
-		<Label id="removeButton" text="X" />
+		<Label id="removeButton" text="x" />
 	</View>
 </Alloy>
