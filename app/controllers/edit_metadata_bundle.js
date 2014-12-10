@@ -68,7 +68,8 @@ $.addBundleElementsRow = function(_values) {
 	    		// does exist
 	    		var dataForDatatypeController = {
 					element:element,
-					content:content
+					content:content,
+					parent:$.bundleItemElements
 				};
 				if (typeof _values != 'undefined') {
 					// We have one value for the element, does this one take a locale ?
@@ -88,10 +89,10 @@ $.addBundleElementsRow = function(_values) {
 			} else {
 	    		var row = Alloy.createController("edit_metadata_element_unsupported", {
 					element:element,
-					content:CONFIG.content.elements_in_set[element]
+					content:CONFIG.content.elements_in_set[element],
+					parent:$.bundleItemElements
 				}).getView();
 			}
-			
 			$.bundleItemElements.add(row);
 			
 		}
@@ -123,7 +124,9 @@ $.bundleItem.addEventListener("click", function(_event) {
 // Add new bundle container (+)
 $.addNewButton.addEventListener("click", function(_event) {
 	var row = Alloy.createController("edit_metadata_bundle_row", {
-			elements_in_set:CONFIG.content.elements_in_set
+			elements_in_set:CONFIG.content.elements_in_set,
+			content:{},
+			parent:$.bundleItemElements
 		}).getView();
 	$.bundleItemElements.add(row);
 });

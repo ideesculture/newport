@@ -27,6 +27,7 @@ $.init = function() {
 					element:element,
 					content:content
 				};
+				var value={};
 				if (typeof VALUES != 'undefined') {
 					// We have one value for the element, does this one take a locale ?
 					if ((typeof VALUES[APP.locale] != 'undefined') && (typeof VALUES[APP.locale][element] != 'undefined')) {
@@ -57,7 +58,7 @@ $.init = function() {
 };
 
 $.removeButton.addEventListener("click", function(_event) {
-	alert("removing...");
+	CONFIG.parent.remove($.bundleRow);
 	$.destroy();
 });
 
