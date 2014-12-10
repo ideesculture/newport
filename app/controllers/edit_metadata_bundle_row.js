@@ -27,12 +27,12 @@ $.init = function() {
 					element:element,
 					content:content
 				};
-				if (typeof _values != 'undefined') {
+				if (typeof VALUES != 'undefined') {
 					// We have one value for the element, does this one take a locale ?
-					if ((typeof _values[APP.locale] != 'undefined') && (typeof _values[APP.locale][element] != 'undefined')) {
-						value = _values[APP.locale][element];
-					} else if (typeof _values[element] != 'undefined') {
-						value = _values[element];
+					if ((typeof VALUES[APP.locale] != 'undefined') && (typeof VALUES[APP.locale][element] != 'undefined')) {
+						value = VALUES[APP.locale][element];
+					} else if (typeof VALUES[element] != 'undefined') {
+						value = VALUES[element];
 					}
 					dataForDatatypeController.value = value;
 				};
@@ -45,16 +45,21 @@ $.init = function() {
 			} else {
 	    		var row = Alloy.createController("edit_metadata_element_unsupported", {
 					element:element,
-					content:CONFIG.content.elements_in_set[element]
+					content:content
 				}).getView();
 			}
 			
-			$.bundleItemElements.add(row);
+			$.bundleRowContent.add(row);
 			
 		}
 		j++;
 	};
 };
+
+$.removeButton.addEventListener("click", function(_event) {
+	alert("removing...");
+	$.destroy();
+});
 
 $.init();
 	

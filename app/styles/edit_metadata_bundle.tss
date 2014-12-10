@@ -12,6 +12,8 @@
 "#bundleItem": {
 	top:"0dp",
 	height:"40dp",
+	left:"10dp",
+	right:"10dp",
 	borderColor: "#000",
 	borderWidth: "1dp",
 	width: Ti.UI.FILL,

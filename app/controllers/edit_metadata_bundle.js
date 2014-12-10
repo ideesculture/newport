@@ -37,7 +37,12 @@ $.init = function() {
 	// looping through each row to display metadatas values
 	for (var i = 0; i < numrows; i++) {
 		// looping through each metadata element to display inside the row
-		$.addBundleElementsRow(VALUES[i]);
+		var row = Alloy.createController("edit_metadata_bundle_row", {
+				elements_in_set:CONFIG.content.elements_in_set,
+				values:VALUES[i]
+			}).getView();
+		$.bundleItemElements.add(row);
+
 	}
 };
 

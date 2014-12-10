@@ -2,6 +2,7 @@
 	layout:"vertical",
 	textAlign:"left",
 	height:Ti.UI.SIZE,
+	width:Ti.UI.SIZE,
 	top:0,
 	bottom:2
 },
@@ -10,6 +11,7 @@
 	color: 'black',
 	top:4,
 	height: 16,
+	width:Ti.UI.SIZE,
 	font: {
 		fontSize: 13,
 		fontFamily: "HelveticaNeue"
