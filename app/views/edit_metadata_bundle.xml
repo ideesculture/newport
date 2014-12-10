@@ -9,7 +9,10 @@
 			</View>
     		<View id="bundleItemElements">
     			<!-- Here come the fields -->
-			</View>			
+			</View>	
+			<View id="addNewButtonView">
+				<Button id="addNewButton" title="+ add new ..."/>
+			</View>		
 		</View>
 	</View>
 </Alloy>

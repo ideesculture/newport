@@ -1,31 +1,7 @@
 var APP = require("core");
 var CONFIG = arguments[0] || {};
 var VALUES = CONFIG.values || {};
-//APP.log("debug",CONFIG);
-
-$.bundleItemName.text = CONFIG.content.name;
-$.bundleItemName.bak = {height : 0};
-
-// by default the panel bundleItemElements is not deployed (invisible)
-$.bundleItemElements.height = 1;
-$.bundleItemElements.visible = false;
-
-$.bundleItem.addEventListener("click", function(_event) {
-
-	if ($.bundleItemElements.visible == true) {
-		$.bundleItemElements.visible = false;
-		$.bundleItemElements.height = 1;
-	} else {
-		$.bundleItemElements.visible = true;
-		$.bundleItemElements.height = Ti.UI.SIZE;
-	}
-	
-});
-
-// Create fields inside the bundle
-var height=0;
-var i = 1;
-var datatypeControllers = {
+var DATATYPECONTROLLERS = {
 	"Text":"edit_metadata_element_text",
 	"Currency":"edit_metadata_element_currency",
 	"Numeric":"edit_metadata_element_numeric",
@@ -34,43 +10,74 @@ var datatypeControllers = {
 	"Length":"edit_metadata_element_length",
 	"Weight":"edit_metadata_element_weight"
 };
+//APP.log("debug",CONFIG);
 
-var value = "";
-// counting how many metadata values we have to open metadata rows, minimum 1
-var numrows = 1;
+$.init = function() {
+	$.bundleItemName.text = CONFIG.content.name;
+	$.addNewButton.title = "+ Add new "+CONFIG.content.name.toLowerCase();
+	$.bundleItemName.bak = {height : 0};
 
-if (VALUES.length > 1) {
-	numrows = VALUES.length
-}; 
+	// by default the panel bundleItemElements is not deployed (invisible)
+	$.bundleItemElements.height = 1;
+	$.bundleItemElements.visible = false;
+	$.addNewButtonView.visible = false;
+	$.addNewButtonView.height = 1;
 
-// looping through each row to display metadatas values
-for (var i = 0; i < numrows; i++) {
-	// looping through each metadata element to display inside the row
+	// Create fields inside the bundle
+	var height=0;
+
+	var value = "";
+	// counting how many metadata values we have to open metadata rows, minimum 1
+	var numrows = 1;
+
+	if (VALUES.length > 1) {
+		numrows = VALUES.length
+	}; 
+
+	// looping through each row to display metadatas values
+	for (var i = 0; i < numrows; i++) {
+		// looping through each metadata element to display inside the row
+		$.addBundleElementsRow(VALUES[i]);
+	}
+};
+
+$.addBundleElementsRow = function(_values) { 
+	// adding remove one container button
+	var removeButton = Ti.UI.createLabel({
+	  color:'blue',
+	  text: 'x',
+	  textAlign: Ti.UI.TEXT_ALIGNMENT_RIGHT,
+	  top: 0,right:"10dp", height:"20dp"
+	});
+	$.bundleItemElements.add(removeButton);
+
+	// adding metadata elements
 	for(var element in CONFIG.content.elements_in_set) {
 		var content = CONFIG.content.elements_in_set[element];
+		var j = 0;
 
-		if(i<25) {
+		if(j<25) {
 			// if element.datatype == "Text" => formulaire texte, else...
 			//APP.log("debug",element.datatype);
-			if(content.datatype in datatypeControllers) {
+			if(content.datatype in DATATYPECONTROLLERS) {
 	    		// does exist
 	    		var dataForDatatypeController = {
 					element:element,
-					content:CONFIG.content.elements_in_set[element]
+					content:content
 				};
-				if (typeof VALUES[i] != 'undefined') {
+				if (typeof _values != 'undefined') {
 					// We have one value for the element, does this one take a locale ?
-					if ((typeof VALUES[i][APP.locale] != 'undefined') && (typeof VALUES[i][APP.locale][element] != 'undefined')) {
-						value = VALUES[i][APP.locale][element];
-					} else if (typeof VALUES[i][element] != 'undefined') {
-						value = VALUES[i][element];
+					if ((typeof _values[APP.locale] != 'undefined') && (typeof _values[APP.locale][element] != 'undefined')) {
+						value = _values[APP.locale][element];
+					} else if (typeof _values[element] != 'undefined') {
+						value = _values[element];
 					}
 					dataForDatatypeController.value = value;
 				};
 				APP.log("debug","element "+element+" value "+value+" ("+content.datatype+")");
 
 				var row = Alloy.createController(
-						datatypeControllers[content.datatype], 
+						DATATYPECONTROLLERS[content.datatype], 
 						dataForDatatypeController
 					).getView();
 			} else {
@@ -83,8 +90,38 @@ for (var i = 0; i < numrows; i++) {
 			$.bundleItemElements.add(row);
 			
 		}
-		i++;
+		j++;
 	};
-    //Do something
-}
+};
+
+/* 
+ *  Handlers
+ */
+
+// Folding bundle 
+$.bundleItem.addEventListener("click", function(_event) {
+
+	if ($.bundleItemElements.visible == true) {
+		$.bundleItemElements.visible = false;
+		$.bundleItemElements.height = 1;
+		$.addNewButtonView.visible = false;
+		$.addNewButtonView.height = 1;
+	} else {
+		$.bundleItemElements.visible = true;
+		$.bundleItemElements.height = Ti.UI.SIZE;
+		$.addNewButtonView.visible = true;
+		$.addNewButtonView.height = Ti.UI.SIZE;
+	}
+	
+});
+
+// Add new bundle container (+)
+$.addNewButton.addEventListener("click", function(_event) {
+	var row = Alloy.createController("edit_metadata_bundle_row", {
+			elements_in_set:CONFIG.content.elements_in_set
+		}).getView();
+	$.bundleItemElements.add(row);
+});
+
+$.init();
 	

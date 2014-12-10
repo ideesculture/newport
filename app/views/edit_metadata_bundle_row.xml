@@ -1,0 +1,7 @@
+<Alloy>
+	<View id="bundleRow">
+		<Label id="removeButton" text="x" color='blue' textAlign="Ti.UI.TEXT_ALIGNMENT_RIGHT" top="0" right="10dp" height="20dp" />
+		<View id="bundleRowContent">
+		</View>		
+	</View>
+</Alloy>
