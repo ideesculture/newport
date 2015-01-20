@@ -29,6 +29,7 @@ $.init = function() {
 
 $.retrieveCallbackFunctions = function() {
 	$.handleData(OBJECT_DETAILS.getMainObjectInfo(CONFIG.object_id));
+	APP.closeLoading();	
 }
 
 $.retrieveData = function() {
@@ -64,7 +65,6 @@ $.retrieveData = function() {
 				}
 		});
 	}
-	APP.closeLoading();
 }
 
 $.handleData = function(_data) {
