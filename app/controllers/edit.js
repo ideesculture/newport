@@ -1,7 +1,7 @@
 /**
- * Controller for the text screen
+ * Controller for the edit screen
  * 
- * @class Controllers.text
+ * @class Controllers.edit
  * @uses core
  */
 var APP = require("core");
@@ -9,14 +9,19 @@ var UTIL = require("utilities");
 var DATE = require("alloy/moment");
 var HTTP = require("http");
 var COMMONS = require("ca-commons");
+var BUFFER = require("ca-editbuffer");
 
 var MODEL_MODEL = require("models/ca-model")();
 var UI_MODEL = require("models/ca-ui")();
 var OBJECT_DETAILS = require("models/ca-object-details")();
+
 var CONFIG = arguments[0];
 
 APP.log("debug","edit CONFIG");
 APP.log("debug",CONFIG);
+
+// Initializes original values and target buffer where modified values will go
+//Ti.App.EDIT = {};
 
 $.heading.text += " editing object #"+CONFIG.obj_data.object_id+" "+CONFIG.obj_data.display_label+" "+CONFIG.obj_data.idno;
 
@@ -26,7 +31,9 @@ $.TABLE = CONFIG.type;
 $.SCREENS = [];
 // Index of the screen we want to display, default -1 (first available)
 $.SCREEN = "";
+
 $.UI_CODE = "";
+
 // Global variable for this controller to store the object details
 $.RECORD = {};
 
@@ -189,6 +196,11 @@ $.uiRetrieveCallbackFunctions = function() {
 $.uiRetrieveData = function(_force, _callback) {
 	APP.openLoading();
 
+	// Initializes original values and target buffer where modified values will go
+	/*Ti.App.EDIT = {};
+	Ti.App.EDIT.VALUES = {};
+	Ti.App.EDIT.BUFFER = {};*/
+
 	APP.log("debug","edit.retrieveData");
 	APP.log("debug","CONFIG.ui_url");
 	APP.log("debug",CONFIG.ui_url);
@@ -252,41 +264,46 @@ $.uiHandleData = function(_data) {
 	//APP.log("debug",_data);
 	var rows=[];
 
-	var i = 1;
+	var i = 0;
 	
 	// error handling if _data has not been rightly fetched back
-	if (typeof _data.content != "undefined") {
-		// If we have some content back
-		var screen_content = _data.content.screen_content;
-		for(var bundle in screen_content) {
-			var bundle_code = screen_content[bundle].bundle_code;
+	if (typeof _data != "undefined") {
+		if (typeof _data.content != "undefined") {
+			// If we have some content back
+			var screen_content = _data.content.screen_content;
+			for(var bundle in screen_content) {
+				var bundle_code = screen_content[bundle].bundle_code;
 
-			if(i<50) {
-				// Test if we're in presence of an attribute
-				if (bundle_code.substring(0, 13) == "ca_attribute_") {
+				if(i<50) {
+					// Test if we're in presence of an attribute
+					if (bundle_code.substring(0, 13) == "ca_attribute_") {
 
-					// If the bundle described in the screen corresponds to sthg in the model, display it
-					var attribute = bundle_code.replace(/^ca_attribute_/,"");
+						// If the bundle described in the screen corresponds to sthg in the model, display it
+						var attribute = bundle_code.replace(/^ca_attribute_/,"");
 
-					if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {
-						APP.log("debug","attribute : "+attribute);
-						
-						//APP.log("debug", MODEL_MODEL.hasElementInfo("ca_objects", attribute));
-						var values = $.RECORD["ca_objects."+attribute];
+						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {
+							APP.log("debug","attribute : "+attribute);
+							
+							//APP.log("debug", MODEL_MODEL.hasElementInfo("ca_objects", attribute));
+							var values = $.RECORD["ca_objects."+attribute];
 
-						var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
-						var row = Alloy.createController("edit_metadata_bundle", {
-							element:attribute,
-							content:element_data,
-							values:values
-						}).getView();
-						rows.push(row);
+							var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
+
+							var row = Alloy.createController("edit_metadata_bundle", {
+								element:attribute,
+								content:element_data,
+								values:values,
+								newport_id:{0:i}
+							}).getView();
+							rows.push(row);
+						}
 					}
-				}
-			}	
-			i++;
-		};
-
+				}	
+				i++;
+			};
+		}
+		APP.log("debug","BUFFER.ORIGINAL");
+		APP.log("debug",BUFFER.ORIGINAL);
 	}
 		
 	$.bundles.removeAllChildren();
@@ -302,6 +319,8 @@ $.uiHandleData = function(_data) {
 
 $.objectRetrieveCallbackFunctions = function() {
 	$.RECORD = JSON.parse(OBJECT_DETAILS.getDetails(CONFIG.obj_data.object_id).json);
+	APP.log("debug","$.RECORD");
+	APP.log("debug",$.RECORD);
 	$.uiRetrieveData();
 	// There's no objectHandleData as the data is handled inside uiHandleDate
 };
@@ -350,11 +369,51 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 	//_event.source.code => ce qu'on veut
 });
 
+/*
+ * SAVE BUTTON
+ */
+
 $.NavigationBar.showRight({
 	image: "/newport/check.png",
 	callback: function() {
-		alert('Save icon clicked');
+		if ($.hasChanged == true) {
+			//alert('Modifications to be saved');
+			var dialog = Ti.UI.createAlertDialog({
+			    cancel: 2,
+			    buttonNames: ['Save', 'Revert the modifications', 'Cancel'],
+			    message: 'Would you like to save your modifications ?',
+			    title: 'Save'
+			  });
+			dialog.addEventListener('click', function(e){
+				if (e.index === e.source.cancel){
+					// Cancel
+					Ti.API.info('The cancel button was clicked');
+				} else if (e.index == 1) {
+					// Revert = reload ui data
+					$.uiRetrieveData();
+				} else if (e.index == 0) {
+					// Save
+					APP.log("debug","SAVE !");
+					APP.log("debug",BUFFER.VALUES);
+				}
+			});
+			dialog.show();
+		} else {
+			var dialog = Ti.UI.createAlertDialog({
+				title: 'Save',
+			    message: 'No modification to save',
+			    ok: 'OK'
+			  });
+			  dialog.show();
+		}
 	}
+});
+
+Ti.App.addEventListener('event_haschanged', function(e) { 
+	$.hasChanged = true;
+	APP.log("debug","event_haschanged ");
+	APP.log("debug",e.reference);
+	APP.log("debug",e.value);
 });
 
 $.init();
