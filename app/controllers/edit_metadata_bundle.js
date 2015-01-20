@@ -16,6 +16,8 @@ $.init = function() {
 	$.bundleItemName.text = CONFIG.content.name;
 	$.addNewButton.title = "+ Add new "+CONFIG.content.name.toLowerCase();
 	$.bundleItemName.bak = {height : 0};
+	APP.log("debug","CONFIG.newport_id");
+	APP.log("debug",CONFIG.newport_id);
 
 	// by default the panel bundleItemElements is not deployed (invisible)
 	$.bundleItemElements.height = 1;
@@ -37,11 +39,18 @@ $.init = function() {
 	// looping through each row to display metadatas values
 	for (var i = 0; i < numrows; i++) {
 		// looping through each metadata element to display inside the row
+		var newport_id = CONFIG.newport_id;
+		APP.log("debug","newport_id");
+		APP.log("debug",newport_id);
+		APP.log("debug",i);
+		newport_id[1] = i;
 		var row = Alloy.createController("edit_metadata_bundle_row", {
 				elements_in_set:CONFIG.content.elements_in_set,
 				values:VALUES[i],
 				content:{},
-				parent:$.bundleItemElements
+				parent:$.bundleItemElements,
+				parentTitle:$.bundleItem,
+				newport_id:newport_id
 			}).getView();
 		$.bundleItemElements.add(row);
 
