@@ -1040,7 +1040,14 @@ var APP = {
 	 * Flush log from db
 	**/
 	logFlush:function() {
-		alert('Log db table will be flushed.')
+
+		var db = Ti.Database.open("Newport");
+		var data = db.execute("DELETE FROM log;");
+
+		alert('Log db table has been flushed. ' + db.rowsAffected + 'rows removed.');
+
+		data.close();
+		db.close();
 
 	},
 
