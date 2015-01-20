@@ -1,7 +1,7 @@
 /**
  * Controller for the main view
  * 
- * @class Controllers.text
+ * @class Controllers.main
  * @uses core
  */
 var APP = require("core");
