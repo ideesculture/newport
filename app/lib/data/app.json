@@ -79,6 +79,13 @@
 			"downTab" : false
 		},
 		{
+			"title": "Settings",
+			"type": "settings",
+			"image": "settings_icon",
+			"tabletSupport": false,
+			"downTab" : false
+		},
+		{
 			"title": "Login",
 			"type": "login",
 			"image": "museum_mode",

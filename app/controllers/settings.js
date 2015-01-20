@@ -45,5 +45,11 @@ $.logs.addEventListener("click", function(_event) {
 	APP.logSend();
 });
 
+$.flushlogs.addEventListener("click", function(_event) {
+	APP.log("debug", "settings @flushlogs");
+
+	APP.logFlush();
+});
+
 // Kick off the init
 $.init();

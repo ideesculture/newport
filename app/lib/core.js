@@ -1037,6 +1037,14 @@ var APP = {
 		}
 	},
 	/**
+	 * Flush log from db
+	**/
+	logFlush:function() {
+		alert('Log db table will be flushed.')
+
+	},
+
+	/**
 	 * Global orientation event handler
 	 * @param {Object} _event Standard Titanium event callback
 	 */
