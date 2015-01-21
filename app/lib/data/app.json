@@ -1,10 +1,10 @@
 {
-	"id": "Newport.1.0",
+	"id": "Newport",
 	"version": "1.0",
 	"minimumVersion": "1.0",
 	"configurationUrl": "",
 	"legal": {
-		"copyright": "Copyright ‌2014 idéesculture & contributors"
+		"copyright": "Copyright ‌2015 idéesculture & contributors"
 	},
 	"settings": {
 		"share": "Share some content",

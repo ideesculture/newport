@@ -39,6 +39,13 @@ $.acknowledgements.addEventListener("click", function(_event) {
 	APP.addChild("settings_credits", {}, true);
 });
 
+$.devsummary.addEventListener("click", function(_event) {
+	APP.log("debug", "settings @devsummary");
+
+	APP.addChild("settings_devsummary", {}, true);
+});
+
+
 $.logs.addEventListener("click", function(_event) {
 	APP.log("debug", "settings @logs");
 

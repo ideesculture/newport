@@ -3,10 +3,11 @@
 		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
 		
 		<ScrollView id="container">			
-			<TableView id="logs_table" height="135dp">
+			<TableView id="logs_table" height="180dp">
 				<TableViewRow id="logs" title="Send Application Logs" hasChild="true" />
 				<TableViewRow id="flushlogs" title="Flush application logs" hasChild="true" />
 				<TableViewRow id="acknowledgements" title="Acknowledgements" hasChild="true" />
+				<TableViewRow id="devsummary" title="Development : fast info control" hasChild="true" />
 			</TableView>
 			
 			<Label id="copyright" />
