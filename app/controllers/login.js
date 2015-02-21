@@ -47,7 +47,6 @@ $.retrieveData = function(_force, _callback) {
 			}
 		},
 		error: function() {
-			APP.closeLoading();
 			var dialog = Ti.UI.createAlertDialog({
 			    message: 'Connexion failed. Please retry.',
 			    ok: 'OK',
@@ -69,7 +68,6 @@ $.handleData = function(_data) {
 	APP.log("debug",_data);
 	
 	// If we are here, we are logged in
-	APP.closeLoading();
 	$.message.text = "You are connected.";
 	$.loginfield.hide();
 	$.passwordfield.hide();
@@ -90,7 +88,6 @@ $.loginbutton.addEventListener("click", function(_event) {
 	if(APP.ca_logged != true) {
 		// Login form : password & login are defined
 		if($.loginfield.value && $.passwordfield.value) {
-			APP.openLoading();
 			CONFIG.url = APP.Settings.CollectiveAccess.urlForLogin;
 			APP.authString = 'Basic ' +Titanium.Utils.base64encode($.loginfield.value+':'+$.passwordfield.value);
 			$.retrieveData();

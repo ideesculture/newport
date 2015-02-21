@@ -5,7 +5,7 @@
  * @uses core
  */
 var APP = require("core");
-APP.openLoading();
+
 
 var COMMONS = require("ca-commons");
 var CONFIG = arguments[0];
@@ -17,7 +17,7 @@ var 	myModal = Ti.UI.createWindow({
 	    title           : 'My Modal',
 	    backgroundColor : 'transparent'
 	});
-
+$.NavigationBar.title.text = "loading...";
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
 $.TABLE = "ca_objects";
@@ -26,6 +26,7 @@ $.TABLE = "ca_objects";
 APP.log("debug", "text | " + JSON.stringify(CONFIG));
 
 $.init = function() {
+
 	// Initiating CA db model class
 	HIERARCHY_MODEL.init($.TABLE);
 	Ti.API.log("APP.Settings.defaultdisplay");
@@ -36,6 +37,7 @@ $.init = function() {
 	}
 
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
+	
 		
 	// loading url & cache validity from settings
 	CONFIG.url = APP.Settings.CollectiveAccess.urlForHierarchy.url;
@@ -113,6 +115,7 @@ $.init = function() {
 	// Setting main view to full screen width
 	$.mainview.width = maxwidth;
 
+
 };
 
 $.retrieveCallbackFunctions = function() {
@@ -166,7 +169,6 @@ $.retrieveData = function(_force, _callback) {
 		});
 	}
 
-	APP.closeLoading();
 };
 
 /**
@@ -189,11 +191,19 @@ $.handleFoldersData = function(_data) {
 	// Source : http://stackoverflow.com/questions/126100/how-to-efficiently-count-the-number-of-keys-properties-of-an-object-in-javascrip
 	if (Object.keys(_data).length > 0) {
 		// Adding top objects to top block, those having no parent_id
+		var last_folder_no = Object.keys(_data).length;
+		var folder_no =0;
 		for(var folder in _data) {
+			folder_no++;
 			var folder_row = Alloy.createController("main_folders_row", _data[folder]).getView();
 			$.folderItemsList.add(folder_row);
 			var folder_block = Alloy.createController("main_folder_block", _data[folder]).getView();
 			$.folderItemsBlocks.add(folder_block);
+			if (folder_no == last_folder_no) {
+				setTimeout(function() {
+   					$.NavigationBar.title.text = "loaded";
+				},500);
+			}
 		}
 	// If we don't have any data to display, removing container
 	} else {
@@ -204,14 +214,24 @@ $.handleFoldersData = function(_data) {
 $.handleObjectsData = function(_data) {
 	// If we have data to display...
 	// Adding top objects to top block, those having no parent_id
+	
+	
 	if (Object.keys(_data).length > 0) {
+		var last_object_no = Object.keys(_data).length;
+		var object_no =0;
 		for(var object in _data) {
+			object_no++;
 			var object_data = {
 				obj_data : _data[object],
 				modal : myModal
 			};
 			var object_block = Alloy.createController("main_object_block", object_data).getView();
 			$.objectBlocks.add(object_block);
+			if (object_no == last_object_no) {
+				setTimeout(function() {
+   					$.NavigationBar.title.text = "loaded";
+				},500);
+			}
 		}	
 	} else {
 		$.mainview.remove($.objectsView);
@@ -315,3 +335,4 @@ $.NavigationBar.showRight({
 // Kick off the init
 //$.thatNeedsToGoElsewhere();
 $.init();
+APP.closeLoading();

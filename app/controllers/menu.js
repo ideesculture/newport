@@ -14,8 +14,6 @@ var CONFIG = arguments[0];
 $.init = function() {
 	APP.log("debug", "menu.init | " + JSON.stringify(CONFIG));
 
-	APP.openLoading();
-
 	$.handleData(CONFIG.items);
 
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
@@ -61,7 +59,6 @@ $.handleData = function(_data) {
 
 	$.container.setData(rows);
 
-	APP.closeLoading();
 };
 
 // Event listeners

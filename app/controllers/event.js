@@ -24,8 +24,6 @@ $.init = function() {
 
 	CONFIG.feed = "https://graph.facebook.com/" + CONFIG.userid + "/events?fields=id,name,start_time,end_time,location,description&since=now&access_token=AAAEdFU8bj50BAL7MQcSHuIDf1KzST7gZAAubz49tio8yLM8Lb7o29IxtxZALrogeimSAsTkYXJRzzqrRqSniABwtDRPONoQxsdNy6XQjIaRR9sedAM";
 
-	APP.openLoading();
-
 	$.retrieveData();
 
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
@@ -64,8 +62,6 @@ $.retrieveData = function(_force, _callback) {
 			}
 		},
 		error: function() {
-			APP.closeLoading();
-
 			Alloy.createWidget("com.mcongrove.toast", null, {
 				text: "Unable to connect; try again later",
 				duration: 2000,
@@ -99,8 +95,6 @@ $.handleData = function(_data) {
 	}
 
 	$.container.setData(rows);
-
-	APP.closeLoading();
 
 	if(APP.Device.isTablet && !SELECTED) {
 		SELECTED = _data[0].id;

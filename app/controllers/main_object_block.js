@@ -13,7 +13,6 @@ var COMMONS = require("ca-commons");
 $.TABLE = "ca_objects";
 
 $.init = function() {
-	APP.openLoading();
 	APP.log("debug","Adding object block ("+CONFIG.obj_data.object_id+")");
 	$.objectInfo.text = CONFIG.obj_data.idno;
 	$.objectName.text = CONFIG.obj_data.display_label;
@@ -24,7 +23,6 @@ $.init = function() {
 
 	OBJECT_DETAILS.init($.TABLE);
 	$.retrieveData();
-	APP.closeLoading();
 }
 
 $.retrieveCallbackFunctions = function() {
@@ -49,7 +47,6 @@ $.retrieveData = function() {
 					}
 				},
 				error: function() {
-					APP.closeLoading();
 					/*var dialog = Ti.UI.createAlertDialog({
 					    message: 'Connexion failed. Please retry.',
 					    ok: 'OK',

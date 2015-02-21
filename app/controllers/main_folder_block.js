@@ -12,9 +12,7 @@ var COMMONS = require("ca-commons");
 // Fixing the table we"re working on, eventually to come through CONFIG after
 $.TABLE = "ca_objects";
 
-$.init = function() {
-	APP.openLoading();
-	
+$.init = function() {	
 	APP.log("debug","Adding folder block ("+CONFIG.object_id+")");
 	$.objectInfo.text = CONFIG.idno;
 	$.objectName.text = CONFIG.display_label;
@@ -29,7 +27,6 @@ $.init = function() {
 
 $.retrieveCallbackFunctions = function() {
 	$.handleData(OBJECT_DETAILS.getMainObjectInfo(CONFIG.object_id));
-	APP.closeLoading();	
 }
 
 $.retrieveData = function() {
@@ -52,8 +49,7 @@ $.retrieveData = function() {
 					}
 				},
 				error: function() {
-				/*	APP.closeLoading();
-					var dialog = Ti.UI.createAlertDialog({
+					/*var dialog = Ti.UI.createAlertDialog({
 					    message: 'Connexion failed. Please retry.',
 					    ok: 'OK',
 					    title: 'Error'
@@ -79,7 +75,6 @@ $.handleData = function(_data) {
 }
 
 $.cellimage.addEventListener('click',function(e) {
-	APP.openLoading();
 	APP.log("debug", "adding new child (main.js): "+CONFIG.object_id);
 	var child_info = {
 		id: CONFIG.object_id,

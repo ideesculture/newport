@@ -42,7 +42,6 @@ $.init = function() {
 	// loading url & cache validity from settings
 	CONFIG.validity = APP.Settings.CollectiveAccess.urlForHierarchy.cache;
 
-	//APP.openLoading();
 	// Initiating CA db model class
 	MODEL_MODEL.init($.TABLE);
 	// Initiating CA available UIs class
@@ -142,7 +141,6 @@ $.modelRetrieveData = function(_force, _callback) {
 				}
 			},
 			error: function() {
-				APP.closeLoading();
 				Ti.API.log("debug","ca-model.fetch crashed :-(");
 				if(typeof _callback !== "undefined") {
 					_callback();
@@ -194,7 +192,6 @@ $.uiRetrieveCallbackFunctions = function() {
 };
 
 $.uiRetrieveData = function(_force, _callback) {
-	APP.openLoading();
 
 	// Initializes original values and target buffer where modified values will go
 	/*Ti.App.EDIT = {};
@@ -222,7 +219,6 @@ $.uiRetrieveData = function(_force, _callback) {
 				}
 			},
 			error: function() {
-				APP.closeLoading();
 				Ti.API.log("debug","ca-ui.fetch crashed :-(");
 				if(typeof _callback !== "undefined") {
 					_callback();
@@ -230,7 +226,6 @@ $.uiRetrieveData = function(_force, _callback) {
 			}
 		});
 	}
-	APP.closeLoading();
 };
 
 $.uiHandleData = function(_data) {
@@ -312,7 +307,6 @@ $.uiHandleData = function(_data) {
 		$.bundles.add(rows[x]);
 		// Close loading on the last view addition
 		if(x==(rows.length - 1)) {
-			APP.closeLoading();
 		}
 	}
 };
@@ -348,7 +342,6 @@ $.objectRetrieveData = function() {
 					}
 				},
 				error: function() {
-					APP.closeLoading();
 					Ti.API.log("debug","OBJECT_DETAILS.fetch crashed :-(");
 				}
 		});

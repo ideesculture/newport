@@ -965,6 +965,11 @@ var APP = {
 		APP.cancelLoading = true;
 
 		if(APP.loadingOpen) {
+			setTimeout(function(){
+   				//APP.GlobalWrapper.remove(APP.Loading);
+   				//alert("waited 1 second before alerting");
+			},5000); //1000 milliseconds wait
+
 			APP.GlobalWrapper.remove(APP.Loading);
 
 			APP.loadingOpen = false;

@@ -49,12 +49,10 @@ $.closeButton.addEventListener('click', function () {
 });
 
 $.editButton.addEventListener('click',function () {
-	APP.openLoading();
 	APP.addChild("edit", {
 		type: "ca_objects",
 		obj_data : CONFIG.obj_data,
 		isChild: true
 	}, false, true);
-	APP.closeLoading();
 	CONFIG.container.close();
 });

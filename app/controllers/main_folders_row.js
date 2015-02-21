@@ -19,6 +19,10 @@ $.foldersItem.addEventListener('click',function(e) {
 		id: CONFIG.object_id,
 		display_label: CONFIG.display_label
 	}
-	APP.addChild("main", child_info, false, false);
-	APP.breadcrumb.push(child_info);
+	setTimeout(function() {
+		APP.addChild("main", child_info, false, false);
+   		//$.NavigationBar.title.text = "loaded";
+   	},100);
+	//APP.addChild("main", child_info, false, false);
+	//APP.breadcrumb.push(child_info);
 });
