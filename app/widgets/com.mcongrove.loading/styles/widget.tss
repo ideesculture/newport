@@ -2,12 +2,6 @@
 	width: Ti.UI.FILL,
 	top: "0dp"
 },
-"#Background": {
-	backgroundColor: "#000",
-	opacity: 0.3,
-	width: Ti.UI.FILL,
-	height: Ti.UI.FILL
-},
 "#Modal": {
 	width: "92dp",
 	height: "92dp",

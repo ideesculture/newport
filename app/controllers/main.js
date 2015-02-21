@@ -17,7 +17,7 @@ var 	myModal = Ti.UI.createWindow({
 	    title           : 'My Modal',
 	    backgroundColor : 'transparent'
 	});
-$.NavigationBar.title.text = "loading...";
+//$.NavigationBar.title.text = "loading...";
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
 $.TABLE = "ca_objects";
@@ -201,7 +201,7 @@ $.handleFoldersData = function(_data) {
 			$.folderItemsBlocks.add(folder_block);
 			if (folder_no == last_folder_no) {
 				setTimeout(function() {
-   					$.NavigationBar.title.text = "loaded";
+   					//$.NavigationBar.title.text = "loaded";
 				},500);
 			}
 		}
@@ -229,7 +229,7 @@ $.handleObjectsData = function(_data) {
 			$.objectBlocks.add(object_block);
 			if (object_no == last_object_no) {
 				setTimeout(function() {
-   					$.NavigationBar.title.text = "loaded";
+   					//$.NavigationBar.title.text = "loaded";
 				},500);
 			}
 		}	
