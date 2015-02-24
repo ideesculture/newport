@@ -24,5 +24,5 @@ $.foldersItem.addEventListener('click',function(e) {
    		//$.NavigationBar.title.text = "loaded";
    	},100);
 	//APP.addChild("main", child_info, false, false);
-	//APP.breadcrumb.push(child_info);
+	APP.breadcrumb.push(child_info);
 });

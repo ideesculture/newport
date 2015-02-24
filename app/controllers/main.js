@@ -51,7 +51,10 @@ $.init = function() {
 		for(i=0;i<=APP.breadcrumb.length;i++) {
 			$.breadcrumb_home.addEventListener('click',function(e) {
 				Ti.API.log("removing one child");
-				APP.removeChild();
+				APP.openLoading();
+				setTimeout(function() {
+					APP.removeChild();
+			   	},100);
 				APP.breadcrumb.pop();
 			});
 		};
@@ -73,7 +76,10 @@ $.init = function() {
 			for(i=1;i<=(APP.breadcrumb.length - step);i++) {
 				breadcrumb_label.addEventListener('click',function(e) {
 					Ti.API.log("removing one child");
-					APP.removeChild();
+					APP.openLoading();
+					setTimeout(function() {
+						APP.removeChild();
+				   	},100);
 					APP.breadcrumb.pop();
 				});
 			};

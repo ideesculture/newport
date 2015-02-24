@@ -20,6 +20,10 @@ var CONFIG = arguments[0];
 APP.log("debug","edit CONFIG");
 APP.log("debug",CONFIG);
 
+// Pseudo constants
+var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "ca_places", "ca_collections", "ca_loans", "ca_movements"];
+				
+
 // Initializes original values and target buffer where modified values will go
 //Ti.App.EDIT = {};
 
@@ -268,7 +272,6 @@ $.uiHandleData = function(_data) {
 			var screen_content = _data.content.screen_content;
 			for(var bundle in screen_content) {
 				var bundle_code = screen_content[bundle].bundle_code;
-
 				if(i<50) {
 					// Test if we're in presence of an attribute
 					if (bundle_code.substring(0, 13) == "ca_attribute_") {
@@ -292,6 +295,10 @@ $.uiHandleData = function(_data) {
 							}).getView();
 							rows.push(row);
 						}
+					} elseif (ca_main_tables.indexOf(bundle_code.substring(0, 13) > -1) {
+						// relation
+					} elseif (ca_intrinsic_fields.indexOf(bundle_code.substring(0, 13) > -1) {
+						//intrinsic field
 					}
 				}	
 				i++;
