@@ -233,6 +233,7 @@ $.uiRetrieveData = function(_force, _callback) {
 };
 
 $.uiHandleData = function(_data) {
+	//APP.openLoading();
 	
 	// If the list of the screens is not initiated, populate it from the model
 	if($.SCREENS.length == 0) {
@@ -315,6 +316,7 @@ $.uiHandleData = function(_data) {
 		if(x==(rows.length - 1)) {
 		}
 	}
+	APP.closeLoading();
 };
 
 $.objectRetrieveCallbackFunctions = function() {
@@ -362,9 +364,15 @@ $.objectHandleData = function(_data) {
 $.screenButtonsScrollView.addEventListener("click", function(_event) {
 	APP.log("debug",_event.source);
 	// Getting screen code from the code parameter inside the label
+	APP.openLoading();
 	$.SCREEN = _event.source.code;
 	//$.modelRetrieveData();
-	$.uiRetrieveData();
+
+	setTimeout(function() {
+				$.uiRetrieveData();
+				
+		   	},100);
+	
 	//_event.source.code => ce qu'on veut
 });
 
