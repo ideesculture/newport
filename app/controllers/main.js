@@ -53,6 +53,7 @@ $.init = function() {
 				Ti.API.log("removing one child");
 				APP.openLoading();
 				setTimeout(function() {
+					APP.closeLoading();
 					APP.removeChild();
 			   	},100);
 				APP.breadcrumb.pop();
@@ -78,6 +79,7 @@ $.init = function() {
 					Ti.API.log("removing one child");
 					APP.openLoading();
 					setTimeout(function() {
+						APP.closeLoading();
 						APP.removeChild();
 				   	},100);
 					APP.breadcrumb.pop();
@@ -131,6 +133,7 @@ $.retrieveCallbackFunctions = function() {
 	$.handleObjectsData(HIERARCHY_MODEL.getObjectsInside($.TABLE,CONFIG.id));
 	// Handling right side last modified records
 	$.handleLastModifiedData(HIERARCHY_MODEL.getLastRecords($.TABLE));
+	$.updateRightButtonShowLast();
 	
 }
 
@@ -163,6 +166,7 @@ $.retrieveData = function(_force, _callback) {
 				}
 			},
 			error: function() {
+				$.updateRightButtonRefresh();
 				var dialog = Ti.UI.createAlertDialog({
 				    message: 'Connexion failed. Please retry.',
 				    ok: 'OK',
@@ -325,18 +329,50 @@ var hideRightbar = function() {
 	});
 };
 
-$.NavigationBar.showRight({
-	image: "/newport/hourglass.png",
-	callback: function() {
-		if($.rightbar.shown) {
-			hideRightbar();
-			$.rightbar.shown = false;
-		} else {
-			showRightbar();
-			$.rightbar.shown = true;
+$.updateRightButtonShowLast = function() {
+	$.NavigationBar.showRight({
+		image: "/newport/hourglass.png",
+		callback: function() {
+			if($.rightbar.shown) {
+				hideRightbar();
+				$.rightbar.shown = false;
+			} else {
+				showRightbar();
+				$.rightbar.shown = true;
+			}
 		}
-	}
-});
+	});
+}
+
+$.updateRightButtonRefresh = function() {
+	$.NavigationBar.showRight({
+		image: "/newport/refresh.png",
+		callback: function() {
+			HIERARCHY_MODEL.fetch({
+				url: CONFIG.url,
+				authString: APP.authString,
+				cache: 0,
+				callback: function() {
+					//$.handleData(HIERARCHY_MODEL.nbLines($.TABLE));
+					$.retrieveCallbackFunctions();
+					if(typeof _callback !== "undefined") {
+						_callback();
+					}
+				},
+				error: function() {
+					var dialog = Ti.UI.createAlertDialog({
+					    message: 'Connexion failed. Please retry.',
+					    ok: 'OK',
+					    title: 'Error'
+					  }).show();
+					if(typeof _callback !== "undefined") {
+						_callback();
+					}
+				}
+			});
+		}
+	});
+}
 
 // Kick off the init
 //$.thatNeedsToGoElsewhere();
