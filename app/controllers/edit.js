@@ -295,12 +295,11 @@ $.uiHandleData = function(_data) {
 							}).getView();
 							rows.push(row);
 						}
-					} elseif (ca_main_tables.indexOf(bundle_code.substring(0, 13) > -1) {
+					} /*elseif (ca_main_tables.indexOf(bundle_code.substring(0, 13)) > -1) {
 						// relation
-					} elseif (ca_intrinsic_fields.indexOf(bundle_code.substring(0, 13) > -1) {
-						//intrinsic field
-					}
-				}	
+					} elseif (ca_intrinc.indexOf(bundle_code.substring(0, 13)) > -1) {
+					};*/
+				};	
 				i++;
 			};
 		}
