@@ -373,7 +373,7 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
  */
 
 $.NavigationBar.showRight({
-	image: "/newport/check.png",
+	image: "/image/check.png",
 	callback: function() {
 		if ($.hasChanged == true) {
 			//alert('Modifications to be saved');

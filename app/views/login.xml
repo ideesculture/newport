@@ -4,7 +4,7 @@
 		
 		<ScrollView id="container">
 			<Label id="loginheader" text="login" />
-			<ImageView id="image" image="/newport/cadre-plus-ipad.png" />
+			<ImageView id="image" image="/image/cadre-plus-ipad.png" />
 			<View id="alertmessage">
 				<Label id="message" />
 			</View>

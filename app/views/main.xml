@@ -57,7 +57,7 @@
 					<View id="objectBlocks">
 						<!-- objects created by main_object_block.js  -->
 						<!-- sample view for one object <View class="cell">
-							<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" id="firstImage" />
+							<ImageView class="cellimage" image="/image/cadre-plus-ipad.png" id="firstImage" />
 							<Label class="objectName" text="Object 1" />
 			    			<View class="objectRow2">
 			    				<Label class="objectInfo" text="Item" />

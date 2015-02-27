@@ -59,7 +59,7 @@
 		  			</View>
 	
 					<View class="cell">
-						<ImageView id="firstImage" class="cellimage" image="/newport/cadre-plus-ipad.png" />
+						<ImageView id="firstImage" class="cellimage" image="/image/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
@@ -70,7 +70,7 @@
 		    			</View>
 					</View>
 					<View class="cell">
-						<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" />
+						<ImageView class="cellimage" image="/image/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
@@ -81,7 +81,7 @@
 		    			</View>
 					</View>
 					<View class="cell">
-						<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" />
+						<ImageView class="cellimage" image="/image/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
@@ -92,7 +92,7 @@
 		    			</View>
 					</View>
 					<View class="cell">
-						<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" />
+						<ImageView class="cellimage" image="/image/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
@@ -103,7 +103,7 @@
 		    			</View>
 					</View>
 					<View class="cell">
-						<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" />
+						<ImageView class="cellimage" image="/image/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
@@ -114,7 +114,7 @@
 		    			</View>
 					</View>
 					<View class="cell">
-						<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" />
+						<ImageView class="cellimage" image="/image/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
@@ -125,7 +125,7 @@
 		    			</View>
 					</View>
 					<View class="cell">
-						<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" />
+						<ImageView class="cellimage" image="/image/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
@@ -136,7 +136,7 @@
 		    			</View>
 					</View>
 					<View class="cell">
-						<ImageView class="cellimage" image="/newport/cadre-plus-ipad.png" />
+						<ImageView class="cellimage" image="/image/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><ti:app xmlns:ti="http://ti.appcelerator.org">
     <id>com.ideesculture.newport</id>
-    <name>newport2</name>
-    <version>1.0.134</version>
+    <name>newport</name>
+    <version>1.0.138</version>
     <publisher>gautier</publisher>
     <url>http://ideesculture.com</url>
     <description>undefined</description>

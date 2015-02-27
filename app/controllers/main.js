@@ -48,56 +48,60 @@ $.init = function() {
 		// TODO : move breadcrumb interaction inside its own controller
 		// Changing home button & adding listener
 		$.breadcrumb_home.color = APP.Settings.colors.primary;
-		for(i=0;i<=APP.breadcrumb.length;i++) {
-			$.breadcrumb_home.addEventListener('click',function(e) {
-				Ti.API.log("removing one child");
-				APP.openLoading();
-				setTimeout(function() {
-					APP.closeLoading();
-					APP.removeChild();
-			   	},100);
-				APP.breadcrumb.pop();
-			});
-		};
+		/*for(i=0;i<APP.breadcrumb.length;i++) {
+			
+		};*/
+		$.breadcrumb_home.addEventListener('click',function(e) {
+			Ti.API.log("removing one child");
+			APP.openLoading();
+			setTimeout(function() {
+				APP.closeLoading();
+				APP.removeChild();
+		   	},100);
+			APP.breadcrumb.pop();
+		});
 		var breadcrumb_separator=Ti.UI.createLabel({
 			text: ">",
 			left:10
 		});
-		$.breadcrumb.add(breadcrumb_separator);
 		// Adding ancestors to breadcrumb
 		for(var step in APP.breadcrumb) {
-			var breadcrumb_label=Ti.UI.createLabel({
-				text: APP.breadcrumb[step].display_label,
-				left:10,
-				color:APP.Settings.colors.primary
-			});
+			$.breadcrumb.add(breadcrumb_separator);
 			Ti.API.log("step");
 			Ti.API.log(step);
-			// Calculating how many removeChild we have to execute : going from last to current
-			for(i=1;i<=(APP.breadcrumb.length - step);i++) {
-				breadcrumb_label.addEventListener('click',function(e) {
-					Ti.API.log("removing one child");
-					APP.openLoading();
-					setTimeout(function() {
-						APP.closeLoading();
-						APP.removeChild();
-				   	},100);
-					APP.breadcrumb.pop();
+			if (APP.breadcrumb.length != step) {
+				var breadcrumb_label=Ti.UI.createLabel({
+					text: APP.breadcrumb[step].display_label,
+					left:10,
+					color:APP.Settings.colors.primary
 				});
-			};
+				// Calculating how many removeChild we have to execute : going from last to current
+				for(i=0;i<(APP.breadcrumb.length - step);i++) {
+					breadcrumb_label.addEventListener('click',function(e) {
+						Ti.API.log("removing one child");
+						APP.openLoading();
+						setTimeout(function() {
+							APP.closeLoading();
+							APP.removeChild();
+					   	},100);
+						APP.breadcrumb.pop();
+					});
+				};
+			} else {
+				var breadcrumb_label=Ti.UI.createLabel({
+					text: APP.breadcrumb[step].display_label,
+					left:10,
+					color:"black"
+				});
+			}
 			$.breadcrumb.add(breadcrumb_label);
-			var breadcrumb_separator=Ti.UI.createLabel({
-				text: ">",
-				left:10
-			});
-			$.breadcrumb.add(breadcrumb_separator);
 		};
 		// Adding current level to breadcrumb
-		var breadcrumb_label=Ti.UI.createLabel({
+		/*var breadcrumb_label=Ti.UI.createLabel({
 			text: CONFIG.display_label,
 			left:10
 		});
-		$.breadcrumb.add(breadcrumb_label);
+		$.breadcrumb.add(breadcrumb_label);*/
 	}
 
 	$.retrieveData();
@@ -331,7 +335,7 @@ var hideRightbar = function() {
 
 $.updateRightButtonShowLast = function() {
 	$.NavigationBar.showRight({
-		image: "/newport/hourglass.png",
+		image: "/image/hourglass.png",
 		callback: function() {
 			if($.rightbar.shown) {
 				hideRightbar();
@@ -346,7 +350,7 @@ $.updateRightButtonShowLast = function() {
 
 $.updateRightButtonRefresh = function() {
 	$.NavigationBar.showRight({
-		image: "/newport/refresh.png",
+		image: "/image/refresh.png",
 		callback: function() {
 			HIERARCHY_MODEL.fetch({
 				url: CONFIG.url,

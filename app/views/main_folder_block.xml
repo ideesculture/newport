@@ -1,6 +1,6 @@
 <Alloy>
 	<View id="cell">
-		<ImageView id="cellimage" image="/newport/folder-large.png" />
+		<ImageView id="cellimage" image="/image/folder-large.png" />
 		<Label id="objectName"/>
 		<View class="objectRow2">
 			<Label id="objectInfo"/>
