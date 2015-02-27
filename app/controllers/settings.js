@@ -58,5 +58,10 @@ $.flushlogs.addEventListener("click", function(_event) {
 	APP.logFlush();
 });
 
+
+$.emptycache.addEventListener("click", function(_event) {
+	APP.log("debug", "settings @emptycache");
+	APP.addChild("settings_clearcache", {}, true);
+});
 // Kick off the init
 $.init();

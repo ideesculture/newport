@@ -30,6 +30,17 @@ function Model() {
 		db.close();
 	};
 
+
+	this.clear = function(_ca_table) {
+		APP.log("debug", "CA_HIERARCHY.clear(" + _ca_table + ")");
+
+		this.TABLE = _ca_table;
+		var db = Ti.Database.open(DBNAME);
+		var request = "DELETE FROM " + _ca_table + ";";
+		db.execute(request);
+
+		db.close();
+	};
 	/**
 	 * Fetches the remote data
 	 * @param {Object} _params The request paramaters to send
