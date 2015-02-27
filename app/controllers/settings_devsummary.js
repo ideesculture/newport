@@ -18,7 +18,7 @@ $.init = function() {
 		APP.removeChild(true);
 	});
 
-	$.label.text = APP.ID + "\nVersion app/lib/data/app.json : " + APP.VERSION + "\nVersion tiapp.xml : " + Titanium.App.version +"\n(" + APP.CVERSION + ")\n" + APP.Device.os + " " + APP.Device.version + " (" + APP.Device.name + ") " + Ti.Platform.locale + "\n\n";
+	$.label.text = APP.ID + "\nVersion app/lib/data/app.json : " + APP.VERSION + "\nVersion tiapp.xml : " + Titanium.App.version +"\n(" + APP.CVERSION + ")\n" + APP.Device.os + " " + APP.Device.version + " (" + APP.Device.name + ") " + Ti.Platform.locale + "\n\n" + JSON.stringify(APP.controllerStacks);
 
 };
 
