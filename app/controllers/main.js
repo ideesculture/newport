@@ -69,7 +69,8 @@ $.init = function() {
 			$.breadcrumb.add(breadcrumb_separator);
 			Ti.API.log("step");
 			Ti.API.log(step);
-			if (APP.breadcrumb.length != step) {
+			APP.log("debug","APP.breadcrumb.length : "+APP.breadcrumb.length);
+			if (step < APP.breadcrumb.length -1) {
 				var breadcrumb_label=Ti.UI.createLabel({
 					text: APP.breadcrumb[step].display_label,
 					left:10,
