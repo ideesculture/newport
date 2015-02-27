@@ -52,11 +52,11 @@ $.init = function() {
 			
 		};*/
 		$.breadcrumb_home.addEventListener('click',function(e) {
-			Ti.API.log("removing one child");
+			Ti.API.log("removing all children");
 			APP.openLoading();
 			setTimeout(function() {
 				APP.closeLoading();
-				APP.removeChild();
+				APP.removeAllChildren();
 		   	},100);
 			APP.breadcrumb.pop();
 		});
@@ -77,7 +77,7 @@ $.init = function() {
 					color:APP.Settings.colors.primary
 				});
 				// Calculating how many removeChild we have to execute : going from last to current
-				for(i=0;i<(APP.breadcrumb.length - step);i++) {
+				for(i=1;i<(APP.breadcrumb.length - step);i++) {
 					breadcrumb_label.addEventListener('click',function(e) {
 						Ti.API.log("removing one child");
 						APP.openLoading();

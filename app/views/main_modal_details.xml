@@ -15,6 +15,7 @@
 					<Button id="editButton" color="#fff" title='Edit' width="100" height="34" right="10" top="124"></Button>
 			</View>
 			<View id="imagecontainerView" height="500" width="480" bottom="100" backgroundColor='#FFF' color="black">
+				<ImageView id="imageView" image="/images/cadre-plus-ipad.png" />
 				<View id="someLabel" title='Here is your modal' top="40" color="black"></View>
 			</View>
 		</View>

@@ -65,28 +65,33 @@ $.handleData = function(_data) {
 	
 	if(_data.thumbnail_url) {
 		APP.log("debug",_data.thumbnail_url);
-		var file=COMMONS.getRemoteFile(_data.thumbnail_url);
-		APP.log("debug",file);
-		$.cellimage.image = file;
+		var image_file=COMMONS.getRemoteFile(_data.thumbnail_url);
+		APP.log("debug",image_file);
+		$.cellimage.image = image_file;
+	} else {
+		var file = null;
 	}
 	$.objectInfo.text = _data.idno;
-}
 
-$.cellimage.addEventListener('click',function(e) {
-	APP.log("debug","$.cellimage.addEventListener");
-	// if menu opened, close it
-	if(APP.SlideMenuOpen) {
-		APP.closeMenu();
-	}
-	var modal_info = {
-		obj_data: CONFIG.obj_data,		
-		container: CONFIG.modal		
-	}
-    var modal_view = Alloy.createController('main_modal_details',modal_info);
-    CONFIG.modal.add(modal_view.getView());
-	CONFIG.modal.open({
-    	animate : true
+	$.cellimage.addEventListener('click',function(e) {
+		APP.log("debug","$.cellimage.addEventListener");
+		// if menu opened, close it
+		if(APP.SlideMenuOpen) {
+			APP.closeMenu();
+		}
+		var modal_info = {
+			obj_data: CONFIG.obj_data,		
+			container: CONFIG.modal	
+		}
+		if (image_file) {
+			modal_info.image_file = image_file;
+		}
+	    var modal_view = Alloy.createController('main_modal_details',modal_info);
+	    CONFIG.modal.add(modal_view.getView());
+		CONFIG.modal.open({
+	    	animate : true
+		});
 	});
-});
+}
 
 $.init();

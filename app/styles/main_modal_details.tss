@@ -1,0 +1,14 @@
+"#imagecontainerView":{
+	backgroundColor:'#FFF',
+	color:"black",
+	width: "480dp",
+	height: "500dp",
+	bottom: 100
+},
+"#imageView":{
+	backgroundColor:'#FFF',
+	color:"black",
+	width: "460dp",
+	height: "480dp",
+	bottom: 10
+}
