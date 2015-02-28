@@ -20,13 +20,15 @@ function Model() {
 	 * @param {Number} _id The UID of the component
 	 */
 	this.init = function(_ca_table, _id) {
-		APP.log("debug", "CA_OBJECT_DETAILS.init(" + _ca_table + "_details,"+_id+")");
+		APP.log("debug", "CA_OBJECT_EDIT.init(" + _ca_table + "_edit_base,"+_id+")");
 		this.TABLE = _ca_table;
 		var db = Ti.Database.open(DBNAME);
-		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_details (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, thumbnail_url TEXT, thumbnail_file TEXT, json TEXT);";
+		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_base (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, thumbnail_url TEXT, thumbnail_file TEXT, json TEXT);";
 		APP.log("debug", request);		
 		db.execute(request);
-
+		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_updates (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, thumbnail_url TEXT, thumbnail_file TEXT, json TEXT);";
+		APP.log("debug", request);		
+		db.execute(request);
 		db.close();
 	};
 
@@ -39,7 +41,7 @@ function Model() {
 	 * @param {Number} _params.cache The length of time to consider cached data 'warm'
 	 */
 	this.fetch = function(_params) {
-		APP.log("debug", "CA_OBJECT_DETAILS.fetch");
+		APP.log("debug", "CA_OBJECT_EDIT.fetch");
 
 		var isStale = UTIL.isStale(_params.url, _params.cache);
 
@@ -88,10 +90,10 @@ function Model() {
 			var record = _data;
 			delete(record.ok);
 
-			APP.log("debug", "CA_OBJECT_DETAILS.handleData ("+record.object_id.value+")");
+			APP.log("debug", "CA_OBJECT_EDIT.handleData ("+record.object_id.value+")");
 
 			var db = Ti.Database.open(DBNAME);
-			//db.execute("DELETE FROM " + _ca_table + "_details;");
+			//db.execute("DELETE FROM " + _ca_table + "_edit_base;");
 			db.execute("BEGIN TRANSACTION;");
 			
 			APP.ca_modele_prop = new Array();
@@ -105,7 +107,7 @@ function Model() {
 					thumbnail_url = record.representations[related].urls.preview170;
 				}
 			}
-		    var request = "INSERT INTO " + _ca_table + "_details (id, object_id, thumbnail_url, json) VALUES (NULL, ?, ?, ?);";
+		    var request = "INSERT INTO " + _ca_table + "_edit_base (id, object_id, thumbnail_url, json) VALUES (NULL, ?, ?, ?);";
 			db.execute(request, record.object_id.value, thumbnail_url, JSON.stringify(record));
 			db.execute("INSERT OR REPLACE INTO updates (url, time) VALUES(" + UTIL.escapeString(_url) + ", " + new Date().getTime() + ");");
 			db.execute("END TRANSACTION;");
@@ -117,36 +119,8 @@ function Model() {
 		}
 	};
 
-	/**
-	 * Retrieves first level info
-	 */
-	this.getModelFirstLevelInfo = function() {
-		return APP.ca_modele_prop;
-	};
-
-	this.getMainObjectInfo = function(_id) {
-		APP.log("debug", "CA-OBJECT-DETAILS.getMainObjectInfo "+_id);
-		var db = Ti.Database.open(DBNAME), temp = {};
-		var request = "select caod.object_id, thumbnail_url, idno, display_label from ca_objects_details caod left join ca_objects cao on caod.object_id=cao.object_id where caod.object_id="+_id+" limit 1";
-		var data = db.execute(request);
-		var fieldnumber = 0;
-
-		while (data.isValidRow()) {
-			while (fieldnumber < data.getFieldCount()) {
-				temp[data.fieldName(fieldnumber)] = data.field(fieldnumber);
-				fieldnumber++;
-			}
-			fieldnumber = 0;
-			data.next();
-		}
-
-		data.close();
-		db.close();
-		return temp;
-	}
-
-	this.getDetails = function(_id) {
-		APP.log("debug", "CA-OBJECT-DETAILS.getDetails "+_id);
+	this.getBaseForEdition = function(_id) {
+		APP.log("debug", "CA_OBJECT_EDIT.getDetails "+_id);
 		var db = Ti.Database.open(DBNAME), temp = {};
 		var request = "select json, thumbnail_url from ca_objects_details caod where caod.object_id="+_id+" limit 1";
 		var data = db.execute(request);
