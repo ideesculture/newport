@@ -371,7 +371,7 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 	setTimeout(function() {
 				$.uiRetrieveData();
 				
-		   	},100);
+		   	},500);
 	
 	//_event.source.code => ce qu'on veut
 });
@@ -381,7 +381,7 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
  */
 
 $.NavigationBar.showRight({
-	image: "/image/check.png",
+	image: "/images/check.png",
 	callback: function() {
 		if ($.hasChanged == true) {
 			//alert('Modifications to be saved');
@@ -419,7 +419,7 @@ $.NavigationBar.showRight({
 Ti.App.addEventListener('event_haschanged', function(e) { 
 	$.hasChanged = true;
 	APP.log("debug","event_haschanged ");
-	APP.log("debug",e.reference);
+	APP.log("debug",e.config);	
 	APP.log("debug",e.value);
 });
 
