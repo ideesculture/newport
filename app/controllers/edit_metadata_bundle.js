@@ -63,20 +63,23 @@ $.init = function() {
 
 // Folding bundle 
 $.bundleItem.addEventListener("click", function(_event) {
-
-	if ($.bundleItemElements.visible == true) {
-		$.bundleItemElements.visible = false;
-		$.bundleItemElements.height = 1;
-		$.addNewButtonView.visible = false;
-		$.addNewButtonView.height = 1;
-		$.arrowIcon.image = "/icons/black/ca_arrow_down.png";
-	} else {
-		$.bundleItemElements.visible = true;
-		$.bundleItemElements.height = Ti.UI.SIZE;
-		$.addNewButtonView.visible = true;
-		$.addNewButtonView.height = Ti.UI.SIZE;
-		$.arrowIcon.image = "/icons/black/ca_arrow_up.png";
-	}
+	APP.openLoading();
+	setTimeout(function() {
+		if ($.bundleItemElements.visible == true) {			
+			$.bundleItemElements.visible = false;
+			$.bundleItemElements.height = 1;
+			$.addNewButtonView.visible = false;
+			$.addNewButtonView.height = 1;
+			$.arrowIcon.image = "/icons/black/ca_arrow_down.png";
+		} else {
+			$.bundleItemElements.visible = true;
+			$.bundleItemElements.height = Ti.UI.SIZE;
+			$.addNewButtonView.visible = true;
+			$.addNewButtonView.height = Ti.UI.SIZE;
+			$.arrowIcon.image = "/icons/black/ca_arrow_up.png";
+		}
+	},300);
+	APP.closeLoading();
 	
 });
 
