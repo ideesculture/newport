@@ -14,7 +14,7 @@
 					<Label id="label3" text='Even some more info' textAlign="Ti.UI.TEXT_ALIGNMENT_RIGHT" right="10" width="Ti.UI.SIZE" height="Ti.UI.SIZE" color="#ddd" right="10"  top="74"></Label>
 					<Button id="editButton" color="#fff" title='Edit' width="100" height="34" right="10" top="124"></Button>
 			</View>
-			<View id="imagecontainerView" height="500" width="480" bottom="100" backgroundColor='#FFF' color="black">
+			<View id="imagecontainerView">
 				<ImageView id="imageView" image="/images/cadre-plus-ipad.png" />
 				<View id="someLabel" title='Here is your modal' top="40" color="black"></View>
 			</View>
