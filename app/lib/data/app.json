@@ -39,6 +39,10 @@
 			"urlForObjectDetails" : {
 				"url" : "http://aspi.idcultu.re/gestion/service.php/item/ca_objects/id/ID",
 				"cache":"86400"
+			},
+			"urlForObjectEdit" : {
+				"url" : "http://aspi.idcultu.re/gestion/service.php/item/ca_objects/id/ID?pretty=1&format=edit",
+				"cache":"86400"
 			}
 		},
 		"defaultdisplay" : {
