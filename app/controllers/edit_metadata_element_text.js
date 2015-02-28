@@ -74,6 +74,7 @@ var leavingFocus = function(_field) {
 		Ti.App.fireEvent('event_haschanged', {
     		name: 'bar',
     		reference: CONFIG.newport_id,
+    		config: CONFIG,
     		value: _field.value
 		});
 	} else {
