@@ -10,23 +10,24 @@ var APP = require("core");
 var HTTP = require("http");
 var UTIL = require("utilities");
 var DBNAME = "Newport";
-var table =  "ca_objects";
+//var table =  "ca_objects";
 	
 function Model() {
-	this.TABLE="";
-
 	/**
 	 * Initializes the model
 	 * @param {Number} _id The UID of the component
 	 */
 	this.init = function(_ca_table, _id) {
+		// Filling object id inside this model as we won't have it inside the JSON returned
+		APP.CURRENT_ID = _id;
+		APP.CURRENT_TABLE = _ca_table;
+
 		APP.log("debug", "CA_OBJECT_EDIT.init(" + _ca_table + "_edit_base,"+_id+")");
-		this.TABLE = _ca_table;
 		var db = Ti.Database.open(DBNAME);
-		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_base (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, thumbnail_url TEXT, thumbnail_file TEXT, json TEXT);";
+		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_base (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, json TEXT);";
 		APP.log("debug", request);		
 		db.execute(request);
-		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_updates (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, thumbnail_url TEXT, thumbnail_file TEXT, json TEXT);";
+		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_updates (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, json TEXT);";
 		APP.log("debug", request);		
 		db.execute(request);
 		db.close();
@@ -85,12 +86,13 @@ function Model() {
 	 * @param {Function} _callback The function to run on data retrieval
 	 */
 	this.handleData = function(_data, _url, _callback) {
-		var _ca_table = table;
+		Ti.API.log("debug","APP.CURRENT_TABLE APP.CURRENT_ID " +APP.CURRENT_TABLE+ " " +APP.CURRENT_ID);
+
 		if(_data.ok == true) {
 			var record = _data;
 			delete(record.ok);
 
-			APP.log("debug", "CA_OBJECT_EDIT.handleData ("+record.object_id.value+")");
+			APP.log("debug", "CA_OBJECT_EDIT.handleData ("+APP.CURRENT_ID+")");
 
 			var db = Ti.Database.open(DBNAME);
 			//db.execute("DELETE FROM " + _ca_table + "_edit_base;");
@@ -100,15 +102,9 @@ function Model() {
 			APP.ca_modele_values = {};
 			var ca_table = "ca_objects";
 			
-			// Storing JSON result in SQLite
-			var thumbnail_url = "";
-			for(var related in record.representations) {
-				if (record.representations[related].is_primary == "1") {
-					thumbnail_url = record.representations[related].urls.preview170;
-				}
-			}
-		    var request = "INSERT INTO " + _ca_table + "_edit_base (id, object_id, thumbnail_url, json) VALUES (NULL, ?, ?, ?);";
-			db.execute(request, record.object_id.value, thumbnail_url, JSON.stringify(record));
+			// main difference at this step with ca_object_details is that we don't need thumbnail here
+			var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_base (id, object_id, json) VALUES (NULL, ?, ?);";
+			db.execute(request, APP.CURRENT_ID, JSON.stringify(record));
 			db.execute("INSERT OR REPLACE INTO updates (url, time) VALUES(" + UTIL.escapeString(_url) + ", " + new Date().getTime() + ");");
 			db.execute("END TRANSACTION;");
 			db.close();
@@ -119,25 +115,33 @@ function Model() {
 		}
 	};
 
-	this.getBaseForEdition = function(_id) {
-		APP.log("debug", "CA_OBJECT_EDIT.getDetails "+_id);
+	this.getBaseForEdition = function() {
+		Ti.API.log("debug", "CA_OBJECT_EDIT.getBaseForEdition "+ APP.CURRENT_ID);
 		var db = Ti.Database.open(DBNAME), temp = {};
-		var request = "select json, thumbnail_url from ca_objects_details caod where caod.object_id="+_id+" limit 1";
+		var request = "select object_id, json from " + APP.CURRENT_TABLE + "_edit_base where object_id="+APP.CURRENT_ID+" limit 1";
 		var data = db.execute(request);
 		var fieldnumber = 0;
 		
-		while (data.isValidRow()) {
+		/*while (data.isValidRow()) {
 			while (fieldnumber < data.getFieldCount()) {
 				temp[data.fieldName(fieldnumber)] = data.field(fieldnumber);
 				fieldnumber++;
 			}
 			fieldnumber = 0;
 			data.next();
+		}*/
+		if(data.getRowCount() > 0) {
+			var content = data.fieldByName("json");
+			Ti.API.log("debug", "CA_OBJECT_EDIT.getBaseForEdition JSON "+content);
+			// Sending back unserialized content
+			var result = content; //JSON.parse(content);
+		} else {
+			var result = false;
 		}
 
 		data.close();
 		db.close();
-		return temp;
+		return result;
 	}		
 }
 

@@ -14,6 +14,7 @@ var BUFFER = require("ca-editbuffer");
 var MODEL_MODEL = require("models/ca-model")();
 var UI_MODEL = require("models/ca-ui")();
 var OBJECT_DETAILS = require("models/ca-object-details")();
+var OBJECT_EDIT = require("models/ca-object-edit")();
 
 var CONFIG = arguments[0];
 
@@ -52,7 +53,9 @@ $.init = function() {
 	UI_MODEL.init();
 	// Initiating detail fetching for object
 	OBJECT_DETAILS.init($.TABLE);
-	
+	// Initiating edit model for object
+	OBJECT_EDIT.init($.TABLE, CONFIG.obj_data.object_id);
+
 	// Credentials are inside app.json file
 	APP.ca_login=APP.Settings.CollectiveAccess.login;
 	APP.ca_password=APP.Settings.CollectiveAccess.password;
@@ -80,6 +83,8 @@ $.init = function() {
 	// Loading CA screens & uis & filling cache
 	CONFIG.ui_url = APP.Settings.CollectiveAccess.urlForUis.url;
 	CONFIG.ui_url_validity = APP.Settings.CollectiveAccess.urlForUis.cache;
+
+
 	// uiRetrieveData is called from objectRetrieveCallbackFunctions : we need to have the values available before displaying bundles
 	//$.uiRetrieveData();
 
@@ -87,6 +92,11 @@ $.init = function() {
 	// Loading URL for object details, replacing ID by the current object_id
 	CONFIG.object_url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.obj_data.object_id);
 	CONFIG.object_url_validity = APP.Settings.CollectiveAccess.urlForObjectDetails.cache;
+
+	// Loading URL for base object edition data, replacing ID by the current object_id
+	CONFIG.base_edit_url = APP.Settings.CollectiveAccess.urlForObjectEdit.url.replace(/ID/g,CONFIG.obj_data.object_id);
+	CONFIG.base_edit_url_validity = APP.Settings.CollectiveAccess.urlForObjectEdit.cache;
+
 
 	$.objectRetrieveData();
 	
@@ -320,7 +330,7 @@ $.uiHandleData = function(_data) {
 };
 
 $.objectRetrieveCallbackFunctions = function() {
-	$.RECORD = JSON.parse(OBJECT_DETAILS.getDetails(CONFIG.obj_data.object_id).json);
+	$.RECORD = JSON.parse(OBJECT_EDIT.getBaseForEdition());
 	APP.log("debug","$.RECORD");
 	APP.log("debug",$.RECORD);
 	$.uiRetrieveData();
@@ -330,6 +340,21 @@ $.objectRetrieveCallbackFunctions = function() {
 $.objectRetrieveData = function() {
 	Ti.API.log("debug","APP.authString " + APP.authString);
 
+	OBJECT_EDIT.fetch({
+		url: CONFIG.base_edit_url,
+		authString: APP.authString,
+		cache: 0,
+		callback: function() {
+			$.objectRetrieveCallbackFunctions();
+			if(typeof _callback !== "undefined") {
+				_callback();
+			}
+		},
+		error: function() {
+			Ti.API.log("debug","OBJECT_EDIT.fetch crashed :-(");
+		}
+	});		
+/*
 	if(COMMONS.isCacheValid(CONFIG.object_url,CONFIG.object_url_validity)) {
 		APP.log("debug","edit : ca-objects-hierarchy cache is valid");
 		APP.log("debug","CONFIG.object_url");
@@ -354,6 +379,7 @@ $.objectRetrieveData = function() {
 				}
 		});
 	};
+	*/
 }
 
 $.objectHandleData = function(_data) {
