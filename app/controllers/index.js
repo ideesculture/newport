@@ -11,6 +11,7 @@
 
 // Pull in the core APP singleton
 var APP = require("core");
+require('com.arihiro.titestfairy').begin("b911dae286a68622d9e1cb8fb15ee847b85d27fc");
 
 // Make sure we always have a reference to global elements throughout the APP singleton
 APP.MainWindow = $.MainWindow;
