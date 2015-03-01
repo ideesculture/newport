@@ -429,6 +429,8 @@ $.NavigationBar.showRight({
 				} else if (e.index == 0) {
 					// Save
 					APP.log("debug","SAVE !");
+
+					// TODO : copy data from temp to cache upload table
 					APP.log("debug",BUFFER.VALUES);
 				}
 			});
@@ -444,12 +446,56 @@ $.NavigationBar.showRight({
 	}
 });
 
+$.updateRightButtonRefresh = function() {
+	$.NavigationBar.showRight({
+		image: "/image/refresh.png",
+		callback: function() {
+			MODEL_MODEL.fetch({
+				url: CONFIG.model_url,
+				authString: APP.authString,
+				cache: 0,
+				callback: function() {
+					$.modelRetrieveCallbackFunctions();	
+
+					if(typeof _callback !== "undefined") {
+						_callback();
+					}
+				},
+				error: function() {
+					var dialog = Ti.UI.createAlertDialog({
+					    message: 'Connexion failed. Please retry.',
+					    ok: 'OK',
+					    title: 'Error'
+					  }).show();
+					if(typeof _callback !== "undefined") {
+						_callback();
+					}
+				}
+			});
+		}
+	});
+}
+
 Ti.App.addEventListener('event_haschanged', function(e) { 
 	$.hasChanged = true;
 	APP.log("debug","event_haschanged ");
 	APP.log("debug",e);	
 	APP.log("debug",e.config);	
 	APP.log("debug",e.value);
+	APP.log("debug","before");
+	var attribute = e.config.bundle_code.replace(/^ca_attribute_/,"");
+	APP.log("debug",attribute);
+	var values = $.RECORD["ca_objects."+attribute];
+	APP.log("debug","ca_objects."+attribute);
+	if (typeof $.RECORD.attributes[attribute] != "undefined") {
+		APP.log("debug",$.RECORD.attributes[attribute]);
+	} else {
+		APP.log("debug","No previous value");
+		// Inserting into the temp table
+		OBJECT_EDIT.insertTempAddition(attribute, e.value);
+
+	}
+	
 });
 
 $.init();

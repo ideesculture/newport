@@ -30,6 +30,9 @@ function Model() {
 		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_updates (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, json TEXT);";
 		APP.log("debug", request);		
 		db.execute(request);
+		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_temp_insert (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, attribute TEXT, value TEXT);";
+		APP.log("debug", request);		
+		db.execute(request);
 		db.close();
 	};
 
@@ -145,7 +148,19 @@ function Model() {
 		data.close();
 		db.close();
 		return result;
-	}		
+	}
+
+	this.insertTempAddition = function(attribute, value) {
+		APP.log("debug", "CA_OBJECT_EDIT.insertTempAddition ("+attribute+", "+value+")");
+		var db = Ti.Database.open(DBNAME);
+		db.execute("BEGIN TRANSACTION;");
+
+		var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_temp_insert (id, object_id, attribute, value) VALUES (NULL, ?, ?, ?);";
+		db.execute(request, APP.CURRENT_ID, attribute, value);
+
+		db.execute("END TRANSACTION;");
+		db.close();
+	}
 }
 
 module.exports = function() {
