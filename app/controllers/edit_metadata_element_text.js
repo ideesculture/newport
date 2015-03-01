@@ -27,6 +27,8 @@ $.init = function() {
 	APP.log("debug",SETTINGS);
 	APP.log("debug","grandparent");
 	APP.log("debug",CONFIG.grandparent);
+	APP.log("debug","element_name");
+	APP.log("debug",CONFIG.element_name);
 
 	// Field title
 	$.label.text=CONFIG.content.display_label; 

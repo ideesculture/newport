@@ -50,7 +50,8 @@ $.init = function() {
 				content:{},
 				parent:$.bundleItemElements,
 				parentTitle:$.bundleItem,
-				newport_id:newport_id
+				newport_id:newport_id,
+				bundle_code:CONFIG.bundle_code
 			}).getView();
 		$.bundleItemElements.add(row);
 

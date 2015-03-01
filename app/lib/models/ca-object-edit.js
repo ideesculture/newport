@@ -101,7 +101,10 @@ function Model() {
 			APP.ca_modele_prop = new Array();
 			APP.ca_modele_values = {};
 			var ca_table = "ca_objects";
-			
+			// emptying previous cached results
+			var request = "DELETE FROM " + APP.CURRENT_TABLE + "_edit_base WHERE id = ?;";
+			db.execute(request, APP.CURRENT_ID);
+
 			// main difference at this step with ca_object_details is that we don't need thumbnail here
 			var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_base (id, object_id, json) VALUES (NULL, ?, ?);";
 			db.execute(request, APP.CURRENT_ID, JSON.stringify(record));

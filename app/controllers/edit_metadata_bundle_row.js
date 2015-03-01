@@ -31,6 +31,7 @@ $.init = function() {
 	    		// does exist
 
 	    		var dataForDatatypeController = {
+	    			bundle_code:CONFIG.bundle_code,
 					element:element,
 					content:content,
 					grandparent:CONFIG.parent,

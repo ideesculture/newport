@@ -299,7 +299,7 @@ $.uiHandleData = function(_data) {
 							var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
 
 							var row = Alloy.createController("edit_metadata_bundle", {
-								element:attribute,
+								bundle_code:bundle_code,
 								content:element_data,
 								values:values,
 								newport_id:{0:i}
@@ -339,6 +339,8 @@ $.objectRetrieveCallbackFunctions = function() {
 
 $.objectRetrieveData = function() {
 	Ti.API.log("debug","APP.authString " + APP.authString);
+
+	// TODO : reintroduce valid cache
 
 	OBJECT_EDIT.fetch({
 		url: CONFIG.base_edit_url,
@@ -445,6 +447,7 @@ $.NavigationBar.showRight({
 Ti.App.addEventListener('event_haschanged', function(e) { 
 	$.hasChanged = true;
 	APP.log("debug","event_haschanged ");
+	APP.log("debug",e);	
 	APP.log("debug",e.config);	
 	APP.log("debug",e.value);
 });
