@@ -155,7 +155,8 @@ $.modelRetrieveData = function(_force, _callback) {
 				}
 			},
 			error: function() {
-				Ti.API.log("debug","ca-model.fetch crashed :-(");
+				$.updateRightButtonRefresh();
+				Ti.API.log("debug","Connexion failed. Please retry.");
 				if(typeof _callback !== "undefined") {
 					_callback();
 				}
@@ -233,7 +234,13 @@ $.uiRetrieveData = function(_force, _callback) {
 				}
 			},
 			error: function() {
-				Ti.API.log("debug","ca-ui.fetch crashed :-(");
+				$.updateRightButtonRefresh();
+				var dialog = Ti.UI.createAlertDialog({
+					    message: 'Connexion failed. Please retry.',
+					    ok: 'OK',
+					    title: 'Error'
+					  }).show();
+
 				if(typeof _callback !== "undefined") {
 					_callback();
 				}
@@ -327,6 +334,10 @@ $.uiHandleData = function(_data) {
 		}
 	}
 	APP.closeLoading();
+
+
+	// Adding button to save the modifications
+	$.updateRightButtonSave();
 };
 
 $.objectRetrieveCallbackFunctions = function() {
@@ -353,7 +364,12 @@ $.objectRetrieveData = function() {
 			}
 		},
 		error: function() {
-			Ti.API.log("debug","OBJECT_EDIT.fetch crashed :-(");
+			$.updateRightButtonRefresh();
+			var dialog = Ti.UI.createAlertDialog({
+					    message: 'Connexion failed. Please retry.',
+					    ok: 'OK',
+					    title: 'Error'
+					  }).show();
 		}
 	});		
 /*
@@ -407,48 +423,50 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 /*
  * SAVE BUTTON
  */
+$.updateRightButtonSave = function() {
+	$.NavigationBar.showRight({
+		image: "/images/check.png",
+		callback: function() {
+			if ($.hasChanged == true) {
+				//alert('Modifications to be saved');
+				var dialog = Ti.UI.createAlertDialog({
+				    cancel: 2,
+				    buttonNames: ['Save', 'Revert the modifications', 'Cancel'],
+				    message: 'Would you like to save your modifications ?',
+				    title: 'Save'
+				  });
+				dialog.addEventListener('click', function(e){
+					if (e.index === e.source.cancel){
+						// Cancel
+						Ti.API.info('The cancel button was clicked');
+					} else if (e.index == 1) {
+						// Revert = reload ui data
+						$.uiRetrieveData();
+					} else if (e.index == 0) {
+						// Save
+						APP.log("debug","SAVE !");
 
-$.NavigationBar.showRight({
-	image: "/images/check.png",
-	callback: function() {
-		if ($.hasChanged == true) {
-			//alert('Modifications to be saved');
-			var dialog = Ti.UI.createAlertDialog({
-			    cancel: 2,
-			    buttonNames: ['Save', 'Revert the modifications', 'Cancel'],
-			    message: 'Would you like to save your modifications ?',
-			    title: 'Save'
-			  });
-			dialog.addEventListener('click', function(e){
-				if (e.index === e.source.cancel){
-					// Cancel
-					Ti.API.info('The cancel button was clicked');
-				} else if (e.index == 1) {
-					// Revert = reload ui data
-					$.uiRetrieveData();
-				} else if (e.index == 0) {
-					// Save
-					APP.log("debug","SAVE !");
-
-					// TODO : copy data from temp to cache upload table
-					APP.log("debug",BUFFER.VALUES);
-				}
-			});
-			dialog.show();
-		} else {
-			var dialog = Ti.UI.createAlertDialog({
-				title: 'Save',
-			    message: 'No modification to save',
-			    ok: 'OK'
-			  });
-			  dialog.show();
+						// TODO : copy data from temp to cache upload table
+						APP.log("debug",BUFFER.VALUES);
+					}
+				});
+				dialog.show();
+			} else {
+				var dialog = Ti.UI.createAlertDialog({
+					title: 'Save',
+				    message: 'No modification to save',
+				    ok: 'OK'
+				  });
+				  dialog.show();
+			}
 		}
-	}
-});
+	});
+}
+
 
 $.updateRightButtonRefresh = function() {
 	$.NavigationBar.showRight({
-		image: "/image/refresh.png",
+		image: "/images/refresh.png",
 		callback: function() {
 			MODEL_MODEL.fetch({
 				url: CONFIG.model_url,
@@ -487,6 +505,7 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 	APP.log("debug",attribute);
 	var values = $.RECORD["ca_objects."+attribute];
 	APP.log("debug","ca_objects."+attribute);
+	APP.log("debug",(typeof $.RECORD.attributes));
 	if (typeof $.RECORD.attributes[attribute] != "undefined") {
 		APP.log("debug",$.RECORD.attributes[attribute]);
 	} else {
