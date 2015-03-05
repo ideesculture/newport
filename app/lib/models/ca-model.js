@@ -41,7 +41,7 @@ function Model() {
 	this.fetch = function(_params) {
 		APP.log("debug", "CA_MODEL.fetch");
 		//APP.log("trace", UTIL.jsonStringify(_params));
-
+		
 		var isStale = UTIL.isStale(_params.url, _params.cache);
 
 		if(isStale) {
