@@ -14,8 +14,8 @@ var CONFIG = arguments[0];
 var value ="";
 
 $.init = function() {
-	APP.log("debug","CONFIG.newport_id");
-	APP.log("debug",CONFIG.newport_id);
+	//APP.log("debug","CONFIG.newport_id");
+	//APP.log("debug",CONFIG.newport_id);
 
 	// Defining value, activating or disabling textarea depending of fieldHeight, must be done before init to be available for Handlers
 	if (typeof CONFIG.value == "string") {
@@ -24,12 +24,12 @@ $.init = function() {
 
 	APP.log("debug","edit_metadata_bundle CONFIG.content.settings");
 	var SETTINGS = CONFIG.content.settings;
-	APP.log("debug",SETTINGS);
+	/*APP.log("debug",SETTINGS);
 	APP.log("debug","grandparent");
 	APP.log("debug",CONFIG.grandparent);
 	APP.log("debug","element_name");
 	APP.log("debug",CONFIG.element_name);
-
+	*/
 	// Field title
 	$.label.text=CONFIG.content.display_label; 
 
