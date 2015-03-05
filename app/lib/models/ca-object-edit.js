@@ -108,7 +108,30 @@ function Model() {
 			var request = "DELETE FROM " + APP.CURRENT_TABLE + "_edit_base WHERE id = ?;";
 			db.execute(request, APP.CURRENT_ID);
 
+			// expanding attribute informations for editing process tracking
+			for(var attribute in record.attributes) {
+				Ti.API.log("debug", "attribute "+attribute);
+				Ti.API.log("debug", "JSON stringify");
+				Ti.API.log("debug", JSON.stringify(record.attributes[attribute]));
+				for(var value in attribute) {
+					var value_content = record.attributes[attribute][value];
+					if((typeof value_content != "undefined") && (value_content != "")) {
+						value_content.is_origin = 1;
+						value_content.is_modified = 0;
+						value_content.is_saved_in_buffer = 0;
+						value_content.buffer_ref = 0;
+						Ti.API.log("debug", "value "+attribute);
+						Ti.API.log("debug", value_content);
+						record.attributes[attribute][value] = value_content;
+					}
+				}
+			}
+			alert("ici");
+
 			// main difference at this step with ca_object_details is that we don't need thumbnail here
+			var request = "DELETE FROM " + APP.CURRENT_TABLE + "_edit_base where object_id = ?;";
+			db.execute(request, APP.CURRENT_ID);
+			
 			var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_base (id, object_id, json) VALUES (NULL, ?, ?);";
 			db.execute(request, APP.CURRENT_ID, JSON.stringify(record));
 			db.execute("INSERT OR REPLACE INTO updates (url, time) VALUES(" + UTIL.escapeString(_url) + ", " + new Date().getTime() + ");");
@@ -124,7 +147,7 @@ function Model() {
 	this.getBaseForEdition = function() {
 		Ti.API.log("debug", "CA_OBJECT_EDIT.getBaseForEdition "+ APP.CURRENT_ID);
 		var db = Ti.Database.open(DBNAME), temp = {};
-		var request = "select object_id, json from " + APP.CURRENT_TABLE + "_edit_base where object_id="+APP.CURRENT_ID+" limit 1";
+		var request = "select object_id, json from " + APP.CURRENT_TABLE + "_edit_base where object_id="+APP.CURRENT_ID+" order by id desc limit 1";
 		var data = db.execute(request);
 		var fieldnumber = 0;
 		
@@ -154,6 +177,9 @@ function Model() {
 		APP.log("debug", "CA_OBJECT_EDIT.insertTempAddition ("+attribute+", "+value+")");
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
+		//removing previous temp values
+		var request = "DELETE FROM " + APP.CURRENT_TABLE + "_edit_temp_insert WHERE object_id = ? AND attribute = ?;";
+		db.execute(request, APP.CURRENT_ID, attribute);
 
 		var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_temp_insert (id, object_id, attribute, value) VALUES (NULL, ?, ?, ?);";
 		db.execute(request, APP.CURRENT_ID, attribute, value);
