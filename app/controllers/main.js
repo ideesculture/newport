@@ -336,7 +336,7 @@ var hideRightbar = function() {
 
 $.updateRightButtonShowLast = function() {
 	$.NavigationBar.showRight({
-		image: "/image/hourglass.png",
+		image: "/images/hourglass.png",
 		callback: function() {
 			if($.rightbar.shown) {
 				hideRightbar();
@@ -351,7 +351,7 @@ $.updateRightButtonShowLast = function() {
 
 $.updateRightButtonRefresh = function() {
 	$.NavigationBar.showRight({
-		image: "/image/refresh.png",
+		image: "/images/refresh.png",
 		callback: function() {
 			HIERARCHY_MODEL.fetch({
 				url: CONFIG.url,
