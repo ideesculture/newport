@@ -126,7 +126,7 @@ function Model() {
 					}
 				}
 			}
-			alert("ici");
+			//alert("ici");
 
 			// main difference at this step with ca_object_details is that we don't need thumbnail here
 			var request = "DELETE FROM " + APP.CURRENT_TABLE + "_edit_base where object_id = ?;";

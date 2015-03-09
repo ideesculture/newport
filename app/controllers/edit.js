@@ -301,7 +301,10 @@ $.uiHandleData = function(_data) {
 							APP.log("debug","attribute : "+attribute);
 							
 							//APP.log("debug", MODEL_MODEL.hasElementInfo("ca_objects", attribute));
-							var values = $.RECORD["ca_objects."+attribute];
+							var values = $.RECORD["attributes"][attribute];
+							APP.log("debug","$.RECORD[ca_objects."+attribute+"]");
+							//APP.log("debug","$.RECORD[ca_objects."+attribute+"]");
+							APP.log("debug",$.RECORD["attributes"][attribute]);
 
 							var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
 
@@ -344,6 +347,7 @@ $.objectRetrieveCallbackFunctions = function() {
 	$.RECORD = JSON.parse(OBJECT_EDIT.getBaseForEdition());
 	APP.log("debug","$.RECORD");
 	APP.log("debug",$.RECORD);
+
 	$.uiRetrieveData();
 	// There's no objectHandleData as the data is handled inside uiHandleDate
 };
