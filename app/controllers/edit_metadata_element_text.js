@@ -14,9 +14,6 @@ var CONFIG = arguments[0];
 var value ="";
 
 $.init = function() {
-	//APP.log("debug","CONFIG.newport_id");
-	//APP.log("debug",CONFIG.newport_id);
-
 	// Defining value, activating or disabling textarea depending of fieldHeight, must be done before init to be available for Handlers
 	if (typeof CONFIG.value == "string") {
 			value = CONFIG.value;
@@ -24,14 +21,9 @@ $.init = function() {
 
 	APP.log("debug","edit_metadata_bundle CONFIG.content.settings");
 	var SETTINGS = CONFIG.content.settings;
-	/*APP.log("debug",SETTINGS);
-	APP.log("debug","grandparent");
-	APP.log("debug",CONFIG.grandparent);
-	APP.log("debug","element_name");
-	APP.log("debug",CONFIG.element_name);
-	*/
+
 	// Field title
-	$.label.text=CONFIG.content.display_label; 
+	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j; 
 
 	if(SETTINGS.fieldHeight > 1) {
 		// we have a textarea
@@ -46,10 +38,8 @@ $.init = function() {
 		$.field.remove($.textarea);
 		$.textortextarea = $.textfield;
 	};
-	BUFFER.ORIGINAL[CONFIG.newport_id] = value;
 	$.textortextarea.value = value;
 	$.textortextarea.valuebak = value;
-
 };
 
 $.validate = function () {
@@ -68,21 +58,14 @@ var leavingFocus = function(_field) {
 	//if (_field.hasChanged == "true") return false;
 	if (_field.value != _field.valuebak) {
 		_field.backgroundColor = APP.Settings.colors.primary;
-		//CONFIG.grandparentTitle.backgroundColor = APP.Settings.colors.primary;
-		//CONFIG.grandparent.fireEvent("hasChanged",{});
-		CONFIG.grandparent.hasChanged = true;
-		APP.log("debug",'event_haschanged');
-		APP.log("debug",CONFIG.newport_id);
 		Ti.App.fireEvent('event_haschanged', {
     		name: 'bar',
-    		reference: CONFIG.newport_id,
     		config: CONFIG,
     		value: _field.value
 		});
 		_field.backgroundColor = APP.Settings.colors.secondary;
 	} else {
 		_field.backgroundColor = "white";
-		CONFIG.grandparentTitle.backgroundColor = "white";
 	}
 
 };

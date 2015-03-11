@@ -22,16 +22,12 @@ function Model() {
 		APP.CURRENT_ID = _id;
 		APP.CURRENT_TABLE = _ca_table;
 
-		APP.log("debug", "CA_OBJECT_EDIT.init(" + _ca_table + "_edit_base,"+_id+")");
 		var db = Ti.Database.open(DBNAME);
 		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_base (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, json TEXT);";
-		APP.log("debug", request);		
 		db.execute(request);
 		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_updates (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, json TEXT);";
-		APP.log("debug", request);		
 		db.execute(request);
 		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_temp_insert (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, attribute TEXT, value TEXT);";
-		APP.log("debug", request);		
 		db.execute(request);
 		db.close();
 	};
@@ -45,8 +41,6 @@ function Model() {
 	 * @param {Number} _params.cache The length of time to consider cached data 'warm'
 	 */
 	this.fetch = function(_params) {
-		APP.log("debug", "CA_OBJECT_EDIT.fetch");
-
 		var isStale = UTIL.isStale(_params.url, _params.cache);
 
 		if(isStale) {
@@ -89,13 +83,9 @@ function Model() {
 	 * @param {Function} _callback The function to run on data retrieval
 	 */
 	this.handleData = function(_data, _url, _callback) {
-		Ti.API.log("debug","APP.CURRENT_TABLE APP.CURRENT_ID " +APP.CURRENT_TABLE+ " " +APP.CURRENT_ID);
-
 		if(_data.ok == true) {
 			var record = _data;
 			delete(record.ok);
-
-			APP.log("debug", "CA_OBJECT_EDIT.handleData ("+APP.CURRENT_ID+")");
 
 			var db = Ti.Database.open(DBNAME);
 			//db.execute("DELETE FROM " + _ca_table + "_edit_base;");
@@ -110,9 +100,6 @@ function Model() {
 
 			// expanding attribute informations for editing process tracking
 			for(var attribute in record.attributes) {
-				Ti.API.log("debug", "attribute "+attribute);
-				Ti.API.log("debug", "JSON stringify");
-				Ti.API.log("debug", JSON.stringify(record.attributes[attribute]));
 				for(var value in attribute) {
 					var value_content = record.attributes[attribute][value];
 					if((typeof value_content != "undefined") && (value_content != "")) {
@@ -120,8 +107,6 @@ function Model() {
 						value_content.is_modified = 0;
 						value_content.is_saved_in_buffer = 0;
 						value_content.buffer_ref = 0;
-						Ti.API.log("debug", "value "+attribute);
-						Ti.API.log("debug", value_content);
 						record.attributes[attribute][value] = value_content;
 					}
 				}
@@ -145,7 +130,6 @@ function Model() {
 	};
 
 	this.getBaseForEdition = function() {
-		Ti.API.log("debug", "CA_OBJECT_EDIT.getBaseForEdition "+ APP.CURRENT_ID);
 		var db = Ti.Database.open(DBNAME), temp = {};
 		var request = "select object_id, json from " + APP.CURRENT_TABLE + "_edit_base where object_id="+APP.CURRENT_ID+" order by id desc limit 1";
 		var data = db.execute(request);
@@ -161,7 +145,6 @@ function Model() {
 		}*/
 		if(data.getRowCount() > 0) {
 			var content = data.fieldByName("json");
-			Ti.API.log("debug", "CA_OBJECT_EDIT.getBaseForEdition JSON "+content);
 			// Sending back unserialized content
 			var result = content; //JSON.parse(content);
 		} else {
@@ -173,8 +156,17 @@ function Model() {
 		return result;
 	}
 
+	this.getBundleValueForEmptyOne = function() {
+		var value_content = {};
+		value_content.is_origin = 1;
+		value_content.is_modified = 0;
+		value_content.is_saved_in_buffer = 0;
+		value_content.buffer_ref = 0;
+		
+		return value_content;
+	}
+
 	this.insertTempAddition = function(attribute, value) {
-		APP.log("debug", "CA_OBJECT_EDIT.insertTempAddition ("+attribute+", "+value+")");
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
 		//removing previous temp values

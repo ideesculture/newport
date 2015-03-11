@@ -38,19 +38,12 @@ $.init = function() {
 
 	// looping through each row to display metadatas values
 	for (var i = 0; i < numrows; i++) {
+		APP.log("debug","PREMIERE BOUCLE "+i);
 		// looping through each metadata element to display inside the row
-		var newport_id = CONFIG.newport_id;
-		//APP.log("debug","newport_id");
-		//APP.log("debug",newport_id);
-		//APP.log("debug",i);
-		newport_id[1] = i;
 		var row = Alloy.createController("edit_metadata_bundle_row", {
 				elements_in_set:CONFIG.content.elements_in_set,
-				values:VALUES[i],
-				content:{},
-				parent:$.bundleItemElements,
-				parentTitle:$.bundleItem,
-				newport_id:newport_id,
+				bundle_values:VALUES,
+				i:i,
 				bundle_code:CONFIG.bundle_code
 			}).getView();
 		$.bundleItemElements.add(row);

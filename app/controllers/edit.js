@@ -18,8 +18,6 @@ var OBJECT_EDIT = require("models/ca-object-edit")();
 
 var CONFIG = arguments[0];
 
-APP.log("debug","edit CONFIG");
-APP.log("debug",CONFIG);
 
 // Pseudo constants
 var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "ca_places", "ca_collections", "ca_loans", "ca_movements"];
@@ -41,6 +39,8 @@ $.UI_CODE = "";
 
 // Global variable for this controller to store the object details
 $.RECORD = {};
+// Global variable to store default values for an empty bundle
+$.EMPTY_BUNDLE = {};
 
 $.init = function() {
 
@@ -60,8 +60,6 @@ $.init = function() {
 	APP.ca_login=APP.Settings.CollectiveAccess.login;
 	APP.ca_password=APP.Settings.CollectiveAccess.password;
 	
-	APP.log("debug", "settings.init");
-	
 	$.heading.color = APP.Settings.colors.hsb.primary.b > 70 ? "#000" : APP.Settings.colors.primary;
 	
 	// Defining global variables for styling
@@ -73,7 +71,6 @@ $.init = function() {
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
 		
 	APP.authString = 'Basic ' +Titanium.Utils.base64encode(APP.ca_login+':'+APP.ca_password);
-	APP.log("debug","still logged as "+APP.ca_login);
 	
 	// Loading CA database model (metadatas & fields) & filling cache
 	CONFIG.model_url = APP.Settings.CollectiveAccess.urlForModel.url;
@@ -129,20 +126,12 @@ $.modelRetrieveCallbackFunctions = function () {
  * @param {Object} _callback The function to run on data retrieval
  */
 $.modelRetrieveData = function(_force, _callback) {
-	APP.log("debug","edit.retrieveData");
-	APP.log("debug","CONFIG.model_url");
-	APP.log("debug",CONFIG.model_url);
-	APP.log("debug","CONFIG.model_url_validity");
-	APP.log("debug",CONFIG.model_url_validity);
 	if(COMMONS.isCacheValid(CONFIG.model_url,CONFIG.model_url_validity)) {
 		APP.log("debug","ca-model cache is valid");
 	} else {
 		APP.log("debug","ca-model cache is invalid");		
 	};
-	/* if(COMMONS.isCacheValid(CONFIG.model_url,CONFIG.model_url_validity)) {
-		APP.log("debug","ca-model cache is valid");
-		$.modelRetrieveCallbackFunctions();
-	} else {	*/			
+
 		MODEL_MODEL.fetch({
 			url: CONFIG.model_url,
 			authString: APP.authString,
@@ -162,11 +151,7 @@ $.modelRetrieveData = function(_force, _callback) {
 				}
 			}
 		});
-
-	//}
 	
-	
-	//$.uiRetrieveData();
 };
 
 /**
@@ -174,11 +159,6 @@ $.modelRetrieveData = function(_force, _callback) {
  * @param {Object} _data The returned data
  */
 $.modelHandleData = function(_data) {
-	//APP.log("debug", "login.handleData");
-	//APP.log("debug",_data);
-	
-	//APP.log("debug",APP.ca_modele_prop);
-	//APP.log("debug",APP.ca_modele_values.elements);
 	var rows=[];
 	var totalHeight = 0;
 	var i = 0;
@@ -186,22 +166,12 @@ $.modelHandleData = function(_data) {
 
 $.uiRetrieveCallbackFunctions = function() {
 	// Getting default (aka first) available ui for the record type we have
-	APP.log("debug","UI_MODEL.getFirstAvailableUIForTable($.TABLE)");
-	APP.log("debug",UI_MODEL.getFirstAvailableUIForTable($.TABLE));
 
 	$.UI_CODE = UI_MODEL.getFirstAvailableUIForTable($.TABLE).code;
-	APP.log("debug","$.UI_CODE");
-	APP.log("debug",$.UI_CODE);
 	// Fetching defaulft (aka first) available screen for this UI
-	APP.log("debug","UI_MODEL.getFirstAvailableScreenWithContentForUI("+$.TABLE+","+$.UI_CODE+")");
-	APP.log("debug","$.SCREEN");
-	APP.log("debug",$.SCREEN);
-	
 	if($.SCREEN == "") {
-		APP.log("debug",UI_MODEL.getFirstAvailableScreenWithContentForUI($.TABLE,$.UI_CODE));
 		$.uiHandleData(UI_MODEL.getFirstAvailableScreenWithContentForUI($.TABLE,$.UI_CODE));	
 	} else {
-		//APP.log("debug",UI_MODEL.getContentForScreen($.TABLE,$.UI_CODE,$.SCREEN));
 		$.uiHandleData(UI_MODEL.getContentForScreen($.TABLE,$.UI_CODE,$.SCREEN)); 
 	}
 };
@@ -212,13 +182,8 @@ $.uiRetrieveData = function(_force, _callback) {
 	/*Ti.App.EDIT = {};
 	Ti.App.EDIT.VALUES = {};
 	Ti.App.EDIT.BUFFER = {};*/
-
-	APP.log("debug","edit.retrieveData");
-	APP.log("debug","CONFIG.ui_url");
-	APP.log("debug",CONFIG.ui_url);
 	
 	if(COMMONS.isCacheValid(CONFIG.ui_url,CONFIG.ui_url_validity)) {
-		APP.log("debug","ca-ui cache is valid");
 		$.uiRetrieveCallbackFunctions();
 	} else {
 
@@ -259,7 +224,6 @@ $.uiHandleData = function(_data) {
 	
 	// Create a label for each screen and add it to $.screenButtonsScrollView
 	var labels= [];
-	APP.log("debug",$.SCREENS);
 	if ($.screenButtonsScrollView.children.length == 0) {
 		for(var index in $.SCREENS) {
 			var labelMargin = Ti.UI.createView();
@@ -276,9 +240,6 @@ $.uiHandleData = function(_data) {
 		}		
 	}
 
-	
-	APP.log("debug", "edit.uiHandleData");
-	//APP.log("debug",_data);
 	var rows=[];
 
 	var i = 0;
@@ -297,14 +258,13 @@ $.uiHandleData = function(_data) {
 						// If the bundle described in the screen corresponds to sthg in the model, display it
 						var attribute = bundle_code.replace(/^ca_attribute_/,"");
 
-						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {
-							APP.log("debug","attribute : "+attribute);
-							
-							//APP.log("debug", MODEL_MODEL.hasElementInfo("ca_objects", attribute));
+						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {							
+							// defining values from global var $.RECORD
 							var values = $.RECORD["attributes"][attribute];
-							APP.log("debug","$.RECORD[ca_objects."+attribute+"]");
-							//APP.log("debug","$.RECORD[ca_objects."+attribute+"]");
-							APP.log("debug",$.RECORD["attributes"][attribute]);
+							if ((typeof values) == "undefined") {
+								// No value defined for this bundle, we need to define default options to agglomerate in edition buffer
+								values = $.EMPTY_BUNDLE;
+							}
 
 							var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
 
@@ -316,16 +276,11 @@ $.uiHandleData = function(_data) {
 							}).getView();
 							rows.push(row);
 						}
-					} /*elseif (ca_main_tables.indexOf(bundle_code.substring(0, 13)) > -1) {
-						// relation
-					} elseif (ca_intrinc.indexOf(bundle_code.substring(0, 13)) > -1) {
-					};*/
+					} 
 				};	
 				i++;
 			};
 		}
-		APP.log("debug","BUFFER.ORIGINAL");
-		APP.log("debug",BUFFER.ORIGINAL);
 	}
 		
 	$.bundles.removeAllChildren();
@@ -345,16 +300,13 @@ $.uiHandleData = function(_data) {
 
 $.objectRetrieveCallbackFunctions = function() {
 	$.RECORD = JSON.parse(OBJECT_EDIT.getBaseForEdition());
-	APP.log("debug","$.RECORD");
-	APP.log("debug",$.RECORD);
+	$.EMPTY_BUNDLE = OBJECT_EDIT.getBundleValueForEmptyOne();
 
 	$.uiRetrieveData();
 	// There's no objectHandleData as the data is handled inside uiHandleDate
 };
 
 $.objectRetrieveData = function() {
-	Ti.API.log("debug","APP.authString " + APP.authString);
-
 	// TODO : reintroduce valid cache
 
 	OBJECT_EDIT.fetch({
@@ -376,41 +328,12 @@ $.objectRetrieveData = function() {
 					  }).show();
 		}
 	});		
-/*
-	if(COMMONS.isCacheValid(CONFIG.object_url,CONFIG.object_url_validity)) {
-		APP.log("debug","edit : ca-objects-hierarchy cache is valid");
-		APP.log("debug","CONFIG.object_url");
-		APP.log("debug",CONFIG.object_url);
-		$.objectRetrieveCallbackFunctions();
-	} else {
-		APP.log("debug","edit : ca-objects-hierarchy cache is invalid");
-		APP.log("debug","CONFIG.object_url");
-		APP.log("debug",CONFIG.object_url);
-		OBJECT_DETAILS.fetch({
-				url: CONFIG.object_url,
-				authString: APP.authString,
-				cache: 0,
-				callback: function() {
-					$.objectRetrieveCallbackFunctions();
-					if(typeof _callback !== "undefined") {
-						_callback();
-					}
-				},
-				error: function() {
-					Ti.API.log("debug","OBJECT_DETAILS.fetch crashed :-(");
-				}
-		});
-	};
-	*/
 }
 
 $.objectHandleData = function(_data) {
-	APP.log("debug","$.objectHandleData");
-	APP.log("debug",_data);
 }
 
 $.screenButtonsScrollView.addEventListener("click", function(_event) {
-	APP.log("debug",_event.source);
 	// Getting screen code from the code parameter inside the label
 	APP.openLoading();
 	$.SCREEN = _event.source.code;
@@ -500,23 +423,19 @@ $.updateRightButtonRefresh = function() {
 
 Ti.App.addEventListener('event_haschanged', function(e) { 
 	$.hasChanged = true;
-	APP.log("debug","event_haschanged ");
-	APP.log("debug",e);	
-	APP.log("debug",e.config);	
-	APP.log("debug",e.value);
-	APP.log("debug","before");
 	var attribute = e.config.bundle_code.replace(/^ca_attribute_/,"");
-	APP.log("debug",attribute);
-	var values = $.RECORD["ca_objects."+attribute];
-	APP.log("debug","ca_objects."+attribute);
-	APP.log("debug",(typeof $.RECORD.attributes));
+	var origin_values = $.RECORD.attributes[attribute];
 	if (typeof $.RECORD.attributes[attribute] != "undefined") {
-		APP.log("debug",$.RECORD.attributes[attribute]);
+		APP.log("debug","We have a previous value");
+		APP.log("debug","MERGING !");
+		APP.log("debug",origin_values);
+		var new_values = origin_values;
+		new_values[e.config.i][e.config.element] = e.value;
+		APP.log("debug",new_values);
 	} else {
 		APP.log("debug","No previous value");
 		// Inserting into the temp table
 		OBJECT_EDIT.insertTempAddition(attribute, e.value);
-
 	}
 	
 });

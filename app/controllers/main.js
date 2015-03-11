@@ -23,14 +23,11 @@ var 	myModal = Ti.UI.createWindow({
 $.TABLE = "ca_objects";
 
 // Logging controller start
-APP.log("debug", "text | " + JSON.stringify(CONFIG));
 
 $.init = function() {
 
 	// Initiating CA db model class
 	HIERARCHY_MODEL.init($.TABLE);
-	Ti.API.log("APP.Settings.defaultdisplay");
-	Ti.API.log(APP.Settings.defaultdisplay);
 	// Saving current value of controller
 	if (APP.Settings.defaultdisplay.topfolders == "main_folder_block") {
 		$.toggleFoldersDisplay();
@@ -52,7 +49,6 @@ $.init = function() {
 			
 		};*/
 		$.breadcrumb_home.addEventListener('click',function(e) {
-			Ti.API.log("removing all children");
 			APP.openLoading();
 			setTimeout(function() {
 				APP.closeLoading();
@@ -67,9 +63,6 @@ $.init = function() {
 		// Adding ancestors to breadcrumb
 		for(var step in APP.breadcrumb) {
 			$.breadcrumb.add(breadcrumb_separator);
-			Ti.API.log("step");
-			Ti.API.log(step);
-			APP.log("debug","APP.breadcrumb.length : "+APP.breadcrumb.length);
 			if (step < APP.breadcrumb.length -1) {
 				var breadcrumb_label=Ti.UI.createLabel({
 					text: APP.breadcrumb[step].display_label,
@@ -79,7 +72,6 @@ $.init = function() {
 				// Calculating how many removeChild we have to execute : going from last to current
 				for(i=1;i<(APP.breadcrumb.length - step);i++) {
 					breadcrumb_label.addEventListener('click',function(e) {
-						Ti.API.log("removing one child");
 						APP.openLoading();
 						setTimeout(function() {
 							APP.closeLoading();
@@ -148,7 +140,6 @@ $.retrieveCallbackFunctions = function() {
  * @param {Object} _callback The function to run on data retrieval
  */
 $.retrieveData = function(_force, _callback) {
-	APP.log("debug","main.retrieveData");
 
 	// Hard fixing login & password to improve dev speed
 	APP.ca_login="administrator";
@@ -156,7 +147,6 @@ $.retrieveData = function(_force, _callback) {
 	APP.authString = 'Basic ' +Titanium.Utils.base64encode(APP.ca_login+':'+APP.ca_password);
 
 	if(COMMONS.isCacheValid(CONFIG.url,CONFIG.validity)) {
-		APP.log("debug","ca-objects-hierarchy cache is valid");
 		$.retrieveCallbackFunctions();
 	} else {
 		HIERARCHY_MODEL.fetch({
@@ -260,21 +250,7 @@ Ti.Gesture.addEventListener('orientationchange', function(e) {
 	maxwidth = Ti.Platform.displayCaps.platformWidth;
 	$.mainview.applyProperties({width:maxwidth});
 });
-/*
-$.firstImage.addEventListener('click',function(e) {
-	APP.log("debug","$.firstImage.addEventListener");
-	var modal_info = {
-		id: "1",
-		container: myModal,
-		display_label: CONFIG.display_label
-	}
-    var modal_view = Alloy.createController('main_modal_details',modal_info);
-    myModal.add(modal_view.getView());
-	myModal.open({
-    	animate : true
-	});
-});
-*/
+
 $.foldersButtons.addEventListener('click',function(e) {
 	$.toggleFoldersDisplay();
 });
@@ -294,10 +270,7 @@ $.toggleFoldersDisplay = function() {
 	$.folderItemsList.visible = initial ? false : true;
 	$.folderItemsBlocks.visible = initial ? true : false;
 	// ... and save back as default display
-	Ti.API.log("APP.Settings.defaultdisplay.topfolders : avant/après");
-	Ti.API.log(APP.Settings.defaultdisplay.topfolders);
 	APP.Settings.defaultdisplay.topfolders = initial ? "main_folder_block" : "main_folders_row";
-	Ti.API.log(APP.Settings.defaultdisplay.topfolders);
 	
 }
 
@@ -316,10 +289,7 @@ $.toggleObjectsDisplay = function() {
 	$.objectBlocks.animate({height : (initial ? 0 : Ti.UI.FILL), visible : (initial ? false : true), duration:300});
 	$.objectsList.animate({visible : (initial ? true : false), duration:300});
 	// ... and save back as default display
-	Ti.API.log("APP.Settings.defaultdisplay.bottomobjects : avant/après");
-	Ti.API.log(APP.Settings.defaultdisplay.bottomobjects);
 	APP.Settings.defaultdisplay.bottomobjects = initial ? "main_object_row" : "main_object_block";
-	Ti.API.log(APP.Settings.defaultdisplay.bottomobjects);
 }
 
 // Animation togglers

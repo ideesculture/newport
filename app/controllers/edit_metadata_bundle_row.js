@@ -1,6 +1,7 @@
 var APP = require("core");
 var CONFIG = arguments[0] || {};
-var VALUES = CONFIG.values || {};
+var BUNDLE_VALUES = CONFIG.bundle_values || {};
+var VALUES = BUNDLE_VALUES[CONFIG.i] || {};
 var DATATYPECONTROLLERS = {
 	"Text":"edit_metadata_element_text",
 	"Currency":"edit_metadata_element_currency",
@@ -13,20 +14,20 @@ var DATATYPECONTROLLERS = {
 //APP.log("debug",CONFIG);
 
 $.init = function() {
-	APP.log("debug","CONFIG.newport_id");
-	APP.log("debug",CONFIG.newport_id);
+	
 
 	// adding metadata elements
+	var j = 0;
 	for(var element in CONFIG.elements_in_set) {
 		var content = CONFIG.elements_in_set[element];
-		var j = 0;
+		
 
 		if(j<25) {
+			APP.log("debug","DEUXIEME BOUCLE "+CONFIG.i+" "+j);
 			// if element.datatype == "Text" => formulaire texte, else...
 			//APP.log("debug",element.datatype);
-			var newport_id = CONFIG.newport_id;
-			newport_id[2] = j;
 			
+
 			if(content.datatype in DATATYPECONTROLLERS) {
 	    		// does exist
 
@@ -34,9 +35,8 @@ $.init = function() {
 	    			bundle_code:CONFIG.bundle_code,
 					element:element,
 					content:content,
-					grandparent:CONFIG.parent,
-					grandparentTitle:CONFIG.parentTitle,
-					newport_id:newport_id					
+					i:CONFIG.i,
+					j:j
 				};
 				var value={};
 				if (typeof VALUES != 'undefined') {
@@ -60,8 +60,7 @@ $.init = function() {
 					element:element,
 					content:content,
 					grandparent:CONFIG.parent,
-					grandparentTitle:CONFIG.parentTitle,
-					newport_id:newport_id
+					grandparentTitle:CONFIG.parentTitle
 
 				}).getView();
 			}
