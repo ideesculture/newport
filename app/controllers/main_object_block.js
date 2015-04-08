@@ -93,8 +93,6 @@ $.handleData = function(_data) {
 		});
 	});
 
-	//////////////////////////////////////////////////
-	//test controleur pr petit "i"
 	$.infoicon.addEventListener('click',function(e) {
 		//APP.log("debug","$.infoIcon.addEventListener");
 		// if menu opened, close it

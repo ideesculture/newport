@@ -25,9 +25,17 @@ $.TABLE = "ca_objects";
 // Logging controller start
 
 $.init = function() {
+	//APP.dropDatabase();
+		
+	// loading url & cache validity from settings
+	CONFIG.url = APP.Settings.CollectiveAccess.urlForHierarchy.url;
+	CONFIG.validity = APP.Settings.CollectiveAccess.urlForHierarchy.cache;
+	var info1 = APP.Settings.CollectiveAccess.urlForHierarchy.info1;
+	var info2 = APP.Settings.CollectiveAccess.urlForHierarchy.info2;
 
 	// Initiating CA db model class
-	HIERARCHY_MODEL.init($.TABLE);
+	HIERARCHY_MODEL.init($.TABLE, info1, info2);
+	
 	// Saving current value of controller
 	if (APP.Settings.defaultdisplay.topfolders == "main_folder_block") {
 		$.toggleFoldersDisplay();
@@ -35,10 +43,7 @@ $.init = function() {
 
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
 	
-		
-	// loading url & cache validity from settings
-	CONFIG.url = APP.Settings.CollectiveAccess.urlForHierarchy.url;
-	CONFIG.validity = APP.Settings.CollectiveAccess.urlForHierarchy.cache;
+
 
 	// Handling breadcrumb
 	if(CONFIG.id) {

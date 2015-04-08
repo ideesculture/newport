@@ -11,22 +11,30 @@ var HTTP = require("http");
 var UTIL = require("utilities");
 var DBNAME = "Newport";
 var table =  "ca_objects";
+var INFO1 = null;
+var INFO2 = null;
 	
 function Model() {
 	this.TABLE="";
+	this.INFO1="";
 
 	/**
 	 * Initializes the model
 	 * @param {Number} _id The UID of the component
 	 */
-	this.init = function(_ca_table) {
+	this.init = function(_ca_table, _info1, _info2) {
 		APP.log("debug", "CA_HIERARCHY.init(" + _ca_table + ")");
 
 		this.TABLE = _ca_table;
+		INFO1 = _info1;
+		this.INFO1 = _info1;
+		INFO2 = _info2;
+		//alert("info1 :"+ INFO1 + "  info2: "+ INFO2);
 		var db = Ti.Database.open(DBNAME);
-		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, object_id INTEGER, parent_id INTEGER, idno TEXT, display_label TEXT, date TEXT, created TEXT);";
+				//var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, object_id INTEGER, parent_id INTEGER, idno TEXT, display_label TEXT, date TEXT, created TEXT, info1 TEXT, info2 TEXT);";
+		//db.execute("DROP TABLE ca_objects ;");
+		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, object_id INTEGER, parent_id INTEGER, idno TEXT, display_label TEXT, date TEXT, created TEXT, info1 TEXT, info2 TEXT);";
 		db.execute(request);
-
 		db.close();
 	};
 
@@ -54,14 +62,14 @@ function Model() {
 		//APP.log("trace", UTIL.jsonStringify(_params));
 
 		var isStale = UTIL.isStale(_params.url, _params.cache);
-
+		Ti.API.log("url:"+_params.url);
 		if(isStale) {
 			if(_params.cache !== 0 && isStale !== "new") {
 				_params.callback();
 			}
 
 			HTTP.request({
-				timeout: 5000,
+				timeout: 30000,
 				async:false,
 				headers: [{name: 'Authorization', value: _params.authString}],
 				type: "GET",
@@ -116,9 +124,13 @@ function Model() {
 		    	if(prop != "ok") {
 		        	for (var prop2 in _data2) {
 						var record = _data2[prop2];
+		        		Ti.API.log("debug", record);
 		        		
-		        		var request = "INSERT INTO " + _ca_table + " (id, ca_table, object_id, parent_id, idno, display_label, created) VALUES (NULL, ?, ?, ?, ?, ?, ?);";
-						db.execute(request, _ca_table, record["object_id"], record["parent_id"], record["idno"], record["display_label"], record["created"]["timestamp"]);
+		        		var request = "INSERT INTO " + _ca_table + " (id, ca_table, object_id, parent_id, idno, display_label, created, info1, info2) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
+						db.execute(request, _ca_table, record["object_id"], record["parent_id"], record["idno"], record["display_label"], record["created"]["timestamp"], record[INFO1], record[INFO2]);
+
+						Ti.API.log("debug","#tuguduuu : "+this);
+		
 
 		        		last = prop2;
 	        		} 
@@ -218,7 +230,7 @@ function Model() {
 		var db = Ti.Database.open(DBNAME), temp = {};
 		var parent_criteria = "is NULL";
 		if (id) parent_criteria = "="+id;
-		var request = "select cao1.object_id, cao1.display_label, cao1.idno from "+_ca_table+" as cao1 left join "+_ca_table+" as cao2 on cao1.object_id=cao2.parent_id where cao1.parent_id "+parent_criteria+" and cao2.object_id is null order by cao1.display_label";
+		var request = "select cao1.object_id, cao1.display_label, cao1.idno, cao1.info1 , cao1.info2 from "+_ca_table+" as cao1 left join "+_ca_table+" as cao2 on cao1.object_id=cao2.parent_id where cao1.parent_id "+parent_criteria+" and cao2.object_id is null order by cao1.display_label";
 		var data = db.execute(request);
 		var fieldnumber = 0, linenumber = 1;
 
@@ -232,6 +244,9 @@ function Model() {
 			fieldnumber = 0;
 			data.next();
 		}
+
+		//////////////////////////////////////////////
+		// TEST CAROLINE: CHERCHER DONNEES DS TABLE DETAILS
 
 		data.close();
 		db.close();
