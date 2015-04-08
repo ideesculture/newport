@@ -17,7 +17,7 @@ var HIERARCHY_MODEL = require("models/ca-objects-hierarchy")();
  * Initializes the controller
  */
 $.init = function() {
-	APP.log("debug", "settings_clearcache.init");
+	//APP.log("debug", "settings_clearcache.init");
 
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
 

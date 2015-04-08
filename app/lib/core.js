@@ -535,6 +535,7 @@ var APP = {
 	rebuildRestart: function() {
 		Ti.API.debug("APP.rebuildRestart");
 
+		APP.dropDatabase();
 		APP.setupDatabase();
 		APP.loadContent();
 		APP.build();
