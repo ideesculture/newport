@@ -6,7 +6,7 @@
 			<Label id="objectInfo"/>
 			
 			<View class="objectRow2Right">
-				<Label class="infoIcon" text="i" />
+				<Label class="infoIcon" id="infoicon" text="i" />
 			</View>
 		</View>
 	</View>

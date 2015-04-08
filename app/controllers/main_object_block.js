@@ -92,6 +92,27 @@ $.handleData = function(_data) {
 	    	animate : true
 		});
 	});
+
+	//////////////////////////////////////////////////
+	//test controleur pr petit "i"
+	$.infoicon.addEventListener('click',function(e) {
+		//APP.log("debug","$.infoIcon.addEventListener");
+		// if menu opened, close it
+		if(APP.SlideMenuOpen) {
+			APP.closeMenu();
+		}
+		var modal_info_iicon = {
+			obj_data: CONFIG.obj_data,		
+			container: CONFIG.modal	
+		}
+
+	    var modal_view_iicon = Alloy.createController('main_modal_infoicon_details',modal_info_iicon);
+	    CONFIG.modal.add(modal_view_iicon.getView());
+		CONFIG.modal.open({
+	    	animate : true
+		});
+	});
+
 }
 
 $.init();
