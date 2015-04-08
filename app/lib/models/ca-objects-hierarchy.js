@@ -24,9 +24,10 @@ function Model() {
 
 		this.TABLE = _ca_table;
 		var db = Ti.Database.open(DBNAME);
-		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, object_id INTEGER, parent_id INTEGER, idno TEXT, display_label TEXT, date TEXT, created TEXT);";
+				//var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, object_id INTEGER, parent_id INTEGER, idno TEXT, display_label TEXT, date TEXT, created TEXT, info1 TEXT, info2 TEXT);";
+		//db.execute("DROP TABLE ca_objects ;");
+		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, object_id INTEGER, parent_id INTEGER, idno TEXT, display_label TEXT, date TEXT, created TEXT, info1 TEXT, info2 TEXT);";
 		db.execute(request);
-
 		db.close();
 	};
 
@@ -117,8 +118,8 @@ function Model() {
 		        	for (var prop2 in _data2) {
 						var record = _data2[prop2];
 		        		
-		        		var request = "INSERT INTO " + _ca_table + " (id, ca_table, object_id, parent_id, idno, display_label, created) VALUES (NULL, ?, ?, ?, ?, ?, ?);";
-						db.execute(request, _ca_table, record["object_id"], record["parent_id"], record["idno"], record["display_label"], record["created"]["timestamp"]);
+		        		var request = "INSERT INTO " + _ca_table + " (id, ca_table, object_id, parent_id, idno, display_label, created, info1, info2) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
+						db.execute(request, _ca_table, record["object_id"], record["parent_id"], record["idno"], record["display_label"], record["created"]["timestamp"], "11", "10 x 10");
 
 		        		last = prop2;
 	        		} 
@@ -232,6 +233,9 @@ function Model() {
 			fieldnumber = 0;
 			data.next();
 		}
+
+		//////////////////////////////////////////////
+		// TEST CAROLINE: CHERCHER DONNEES DS TABLE DETAILS
 
 		data.close();
 		db.close();

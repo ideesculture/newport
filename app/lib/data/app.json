@@ -34,7 +34,9 @@
 			},
 			"urlForHierarchy" : {
 				"url":"http://aspi.idcultu.re/gestion/service.php/find/ca_objects?q=*&source={\"bundles\":{\"created\": {\"returnAsArray\":true}, \"parent_id\":{}}}",
-				"cache":"86400"
+				"cache":"86400",
+				"info1":"date",
+				"info2":"dimensions"
 			},
 			"urlForObjectDetails" : {
 				"url" : "http://aspi.idcultu.re/gestion/service.php/item/ca_objects/id/ID",
