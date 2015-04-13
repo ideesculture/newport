@@ -18,10 +18,8 @@ var OBJECT_EDIT = require("models/ca-object-edit")();
 
 var CONFIG = arguments[0];
 
-
 // Pseudo constants
-var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "ca_places", "ca_collections", "ca_loans", "ca_movements"];
-				
+var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "ca_places", "ca_collections", "ca_loans", "ca_movements"];			
 
 // Initializes original values and target buffer where modified values will go
 //Ti.App.EDIT = {};
@@ -39,6 +37,8 @@ $.UI_CODE = "";
 
 // Global variable for this controller to store the object details
 $.RECORD = {};
+$.NEW_VALUES = {};
+
 // Global variable to store default values for an empty bundle
 $.EMPTY_BUNDLE = {};
 
@@ -300,6 +300,7 @@ $.uiHandleData = function(_data) {
 
 $.objectRetrieveCallbackFunctions = function() {
 	$.RECORD = JSON.parse(OBJECT_EDIT.getBaseForEdition());
+	$.NEW_VALUES = $.RECORD;
 	$.EMPTY_BUNDLE = OBJECT_EDIT.getBundleValueForEmptyOne();
 
 	$.uiRetrieveData();
@@ -371,10 +372,11 @@ $.updateRightButtonSave = function() {
 						$.uiRetrieveData();
 					} else if (e.index == 0) {
 						// Save
-						APP.log("debug","SAVE !");
+						APP.log("debug","------SAVE-----");
 
 						// TODO : copy data from temp to cache upload table
-						APP.log("debug",BUFFER.VALUES);
+						var json = OBJECT_EDIT.getTempData(); 
+						APP.log("debug", json);
 					}
 				});
 				dialog.show();
@@ -423,7 +425,10 @@ $.updateRightButtonRefresh = function() {
 
 Ti.App.addEventListener('event_haschanged', function(e) { 
 	$.hasChanged = true;
+	APP.log("debug", "DEBUG Ti.App.addEventListener");
+	//APP.log("debug", e.config);
 	var attribute = e.config.bundle_code.replace(/^ca_attribute_/,"");
+	APP.log("debug", attribute);
 	var origin_values = $.RECORD.attributes[attribute];
 	if (typeof $.RECORD.attributes[attribute] != "undefined") {
 		APP.log("debug","We have a previous value");
@@ -431,7 +436,12 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 		APP.log("debug",origin_values);
 		var new_values = origin_values;
 		new_values[e.config.i][e.config.element] = e.value;
-		APP.log("debug",new_values);
+		new_values[e.config.i].is_origin = 0; 
+		new_values[e.config.i].is_modified = 1;
+
+		$.NEW_VALUES.attributes[attribute] = new_values;
+		APP.log("debug",$.NEW_VALUES.attributes[attribute]);
+		OBJECT_EDIT.insertTempAddition(attribute, $.NEW_VALUES.attributes[attribute]);
 	} else {
 		APP.log("debug","No previous value");
 		// Inserting into the temp table

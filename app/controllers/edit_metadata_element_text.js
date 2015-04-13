@@ -63,6 +63,7 @@ var leavingFocus = function(_field) {
     		config: CONFIG,
     		value: _field.value
 		});
+		//_field.valuebak = _field.value;
 		_field.backgroundColor = APP.Settings.colors.secondary;
 	} else {
 		_field.backgroundColor = "white";
