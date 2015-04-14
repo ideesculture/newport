@@ -11,7 +11,7 @@ var COMMONS = require("ca-commons");
 var CONFIG = arguments[0];
 var maxwidth = Ti.Platform.displayCaps.platformWidth;
 var maxheight = Ti.Platform.displayCaps.platformHeight;
-//var DETAILS = require("models/ca-objects-edit")();
+var OBJECT_EDIT = require("models/ca-object-edit")();
 
 
 

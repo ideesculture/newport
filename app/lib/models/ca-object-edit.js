@@ -280,6 +280,46 @@ function Model() {
 		return result; 
 	}
 
+	//returns an array of objects, containing the name and value of the modified attributes to save in the server
+	this.getSavedData = function() {
+		var db = Ti.Database.open(DBNAME);
+		db.execute("BEGIN TRANSACTION;");
+		//removing previous temp values
+		var request = "SELECT object_id, attribute, value FROM " + APP.CURRENT_TABLE + "_edit_temp_insert WHERE object_id = "+APP.CURRENT_ID+" ;";
+		var data = db.execute(request);
+		db.execute("END TRANSACTION;");
+		
+		var content = new Array() ; 
+		var valeur, attribut, object_id; 
+		if(data.getRowCount() > 0) { 
+			var i = 0;
+			while (data.isValidRow()) {
+				valeur = data.fieldByName("value");
+				attribut = data.fieldByName("attribute");
+				object_id = data.fieldByName("object_id");
+				var otemp = {} ;
+				otemp.valeur = valeur;
+				otemp.attribut = attribut; 
+				otemp.object_id = object_id; 
+				content[i] = otemp; 
+				data.next();
+				i++;
+			}
+			// Sending back unserialized content: array containing attribute & its json 
+			var result = content; 
+		} else {
+			var result = false;
+		}
+
+		data.close();
+		db.close();
+
+		APP.log("debug", "getSavedData OK");
+		APP.log("debug", result);
+		return result;
+
+	}
+
 
 }
 

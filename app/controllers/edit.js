@@ -357,12 +357,11 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
  	if ($.hasChanged == true) {
 		APP.log("debug","------SAVE-----");
 
-		// TODO : copy data from temp to cache upload table
-		var data = OBJECT_EDIT.getTempData(); 
-		APP.log("debug", data);
 		var itWorked = OBJECT_EDIT.saveChanges();
 		if(itWorked) {
-			 alert ("Modifications has been saved");
+			 alert ("Modifications have been saved");
+			 var hello = OBJECT_EDIT.getSavedData();
+
 		} else alert ("echec");
 
  	}
