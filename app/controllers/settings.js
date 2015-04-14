@@ -63,5 +63,11 @@ $.emptycache.addEventListener("click", function(_event) {
 	APP.log("debug", "settings @emptycache");
 	APP.addChild("settings_clearcache", {}, true);
 });
+
+$.send.addEventListener("click", function(_event) {
+	APP.log("debug", "settings @send");
+	APP.addChild("settings_send", {}, true);
+});
+
 // Kick off the init
 $.init();
