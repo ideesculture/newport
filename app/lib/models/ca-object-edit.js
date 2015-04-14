@@ -243,29 +243,44 @@ function Model() {
 		return result;
 
 	}
-/*
-	this.saveChanges = function(data){
+	this.saveChanges = function() {
+		var attribut, valeur, result;
+		var db = Ti.Database.open(DBNAME);
+		db.execute("BEGIN TRANSACTION;");
+		
+		var request = "SELECT object_id, attribute, json FROM " + APP.CURRENT_TABLE + "_edit_updates WHERE object_id = "+APP.CURRENT_ID+" ;";
+		var data = db.execute(request);
+		db.execute("END TRANSACTION;");
 
-		var attribut, valeur;
-		//parse data & insert all the modifications that are to send to the server into the final table
-		for(var obj in data)
-		{
-			//get attribute
-			attribut = obj.attribut; 
-			//get value: 
-			//1)get json & parse it into an object
-			var otmp = JSON.parse(obj.valeur);
-			//2)get value
-			valeur = otmp.valeur; 
-			APP.log("saveChanges: ");
-			APP.log(attribut);
-			APP.log(valeur);
-			//Send to db
+		if(data.getRowCount() > 0) { 
+			while (data.isValidRow()) {
+				//get attribute OKDONE
+				attribut = data.fieldByName("attribute");
+				//get value: OKDONE
+				//1)get json & parse it into an object
+				var otmp = JSON.parse(data.fieldByName("json"));
+				//2)get value
+				valeur= otmp[0][attribut]; 					
+				//Send to db
+				//TODO
+				db.execute("BEGIN TRANSACTION;");
+				var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_temp_insert (id, object_id, attribute, value) VALUES (NULL, ?, ?, ?);";
+				db.execute(request, APP.CURRENT_ID, attribut, valeur); 
+				db.execute("END TRANSACTION;");
+				data.next();
+			}
+		result = true; 
+
+		} else {
+			result = false;
 		}
+		db.close();
 
-	return true; 
+
+		return result; 
 	}
-*/
+
+
 }
 
 module.exports = function() {

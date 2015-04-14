@@ -360,8 +360,10 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 		// TODO : copy data from temp to cache upload table
 		var data = OBJECT_EDIT.getTempData(); 
 		APP.log("debug", data);
-		//var itWorked = OBJECT_EDIT.saveChanges(data);
-		//if(itworked) alert ("Modifications has been saved");
+		var itWorked = OBJECT_EDIT.saveChanges();
+		if(itWorked) {
+			 alert ("Modifications has been saved");
+		} else alert ("echec");
 
  	}
 	else {
@@ -454,7 +456,7 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 		new_values[e.config.i][e.config.element] = e.value;
 		new_values[e.config.i].is_origin = 0; 
 		new_values[e.config.i].is_modified = 1;
-		APP.log("debug",$.RECORD.attributes[attribute]);
+		APP.log("debug",new_values);
 		// Inserting into the temp table
 		OBJECT_EDIT.insertTempAddition(attribute, new_values);
 	} else {
