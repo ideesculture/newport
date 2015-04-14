@@ -29,6 +29,10 @@ function Model() {
 		db.execute(request);
 		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_temp_insert (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, attribute TEXT, value TEXT);";
 		db.execute(request);
+		var request = "DELETE FROM " + _ca_table + "_edit_temp_insert ;"; 
+		db.execute(request);
+		var request = "VACUUM;"; 
+		db.execute(request);
 		db.close();
 	};
 
@@ -166,6 +170,7 @@ function Model() {
 		return value_content;
 	}
 
+	//creates json from the objet given as parameter (value) and saves this data + the name of the modified attribute in a temp table
 	this.insertTempAddition = function(attribute, value) {
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
@@ -173,12 +178,55 @@ function Model() {
 		var request = "DELETE FROM " + APP.CURRENT_TABLE + "_edit_temp_insert WHERE object_id = ? AND attribute = ?;";
 		db.execute(request, APP.CURRENT_ID, attribute);
 
+		var json = JSON.stringify(value); 
+		//APP.log("debug",json);
+	
 		var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_temp_insert (id, object_id, attribute, value) VALUES (NULL, ?, ?, ?);";
-		db.execute(request, APP.CURRENT_ID, attribute, value);
+		db.execute(request, APP.CURRENT_ID, attribute, json);
 
 		db.execute("END TRANSACTION;");
 		db.close();
+		APP.log("debug", "insertTempAddition OK");
+		
 	}
+
+	//returns an array of objects, containing the name of the modified attribute and the json created in insertTempAddition
+	this.getTempData = function() {
+		var db = Ti.Database.open(DBNAME);
+		db.execute("BEGIN TRANSACTION;");
+		//removing previous temp values
+		var request = "SELECT object_id, attribute, value FROM " + APP.CURRENT_TABLE + "_edit_temp_insert WHERE object_id = "+APP.CURRENT_ID+" ;";
+		var data = db.execute(request);
+		db.execute("END TRANSACTION;");
+		
+		var content = new Array() ; 
+		var valeur, attribut; 
+		if(data.getRowCount() > 0) { 
+			var i = 0;
+			while (data.isValidRow()) {
+				valeur = data.fieldByName("value");
+				attribut = data.fieldByName("attribute");
+				var otemp = {} ;
+				otemp.valeur = valeur;
+				otemp.attribut = attribut; 
+				content[i] = otemp; 
+				data.next();
+				i++;
+			}
+			// Sending back unserialized content
+			var result = content; 
+		} else {
+			var result = false;
+		}
+
+		data.close();
+		db.close();
+
+		APP.log("debug", "getTempData OK");
+		return result;
+
+	}
+
 }
 
 module.exports = function() {
