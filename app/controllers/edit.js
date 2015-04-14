@@ -361,14 +361,30 @@ while(curDate-date < millis);
 /*
  * SAVE BUTTON
  */
+ save = function () {
+ 	if ($.hasChanged == true) {
+		APP.log("debug","------SAVE-----");
+
+		// TODO : copy data from temp to cache upload table
+		var data = OBJECT_EDIT.getTempData(); 
+		APP.log("debug", data);
+ 	}
+	else {
+		var dialog = Ti.UI.createAlertDialog({
+			title: 'Save',
+		    message: 'No modification to save',
+		    ok: 'OK'
+		});
+		dialog.show();
+	}
+ }
 $.updateRightButtonSave = function() {
 	
 		
 	$.NavigationBar.showRight({
 		image: "/images/check.png",
 		callback: function() {		
-			if ($.hasChanged == true) {
-				//alert('Modifications to be saved');
+
 				var dialog = Ti.UI.createAlertDialog({
 				    cancel: 2,
 				    buttonNames: ['Save', 'Revert the modifications', 'Cancel'],
@@ -384,22 +400,12 @@ $.updateRightButtonSave = function() {
 						$.uiRetrieveData();
 					} else if (e.index == 0) {
 						// Save
-						APP.log("debug","------SAVE-----");
-
-						// TODO : copy data from temp to cache upload table
-						var json = OBJECT_EDIT.getTempData(); 
-						APP.log("debug", json);
+						save();
+						
 					}
 				});
 				dialog.show();
-			} else {
-				var dialog = Ti.UI.createAlertDialog({
-					title: 'Save',
-				    message: 'No modification to save',
-				    ok: 'OK'
-				  });
-				  dialog.show();
-			}
+
 		}
 	});
 }
