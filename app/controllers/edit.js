@@ -350,14 +350,6 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 	//_event.source.code => ce qu'on veut
 });
 
-function pausecomp(millis) 
-{
-var date = new Date();
-var curDate = null;
-
-do { curDate = new Date(); } 
-while(curDate-date < millis);
-} 
 /*
  * SAVE BUTTON
  */
@@ -368,6 +360,9 @@ while(curDate-date < millis);
 		// TODO : copy data from temp to cache upload table
 		var data = OBJECT_EDIT.getTempData(); 
 		APP.log("debug", data);
+		//var itWorked = OBJECT_EDIT.saveChanges(data);
+		//if(itworked) alert ("Modifications has been saved");
+
  	}
 	else {
 		var dialog = Ti.UI.createAlertDialog({
@@ -459,8 +454,6 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 		new_values[e.config.i][e.config.element] = e.value;
 		new_values[e.config.i].is_origin = 0; 
 		new_values[e.config.i].is_modified = 1;
-
-		//$.NEW_VALUES.attributes[attribute] = new_values;
 		APP.log("debug",$.RECORD.attributes[attribute]);
 		// Inserting into the temp table
 		OBJECT_EDIT.insertTempAddition(attribute, new_values);
@@ -468,10 +461,11 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 		APP.log("debug","No previous value");
 		//WONT WORK FOR SURE
 		// Inserting into the temp table
-		var new_values2 = {};
-		new_values2[0][e.config.element] = e.value;
-		new_values2[0].is_origin = 0; 
-		new_values2[0].is_modified = 1;
+		var vals = {is_origin : 0, is_modified : 1 };
+		vals[e.config.element] = e.value;
+		var new_values2 = [];
+		new_values2[0]=vals;
+
 		OBJECT_EDIT.insertTempAddition(attribute, new_values2);
 	}
 	
