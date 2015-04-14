@@ -75,10 +75,10 @@ $.textfield.addEventListener('blur', function() {
 	// leaving focus from area
 	leavingFocus($.textfield);
 });
+
 $.textarea.addEventListener('blur', function() {
 	// leaving focus from area
 	leavingFocus($.textarea);
 });
-
 
 $.init();

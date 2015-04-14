@@ -24,6 +24,8 @@ var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "
 // Initializes original values and target buffer where modified values will go
 //Ti.App.EDIT = {};
 
+
+
 $.heading.text += " editing object #"+CONFIG.obj_data.object_id+" "+CONFIG.obj_data.display_label+" "+CONFIG.obj_data.idno;
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
@@ -37,8 +39,7 @@ $.UI_CODE = "";
 
 // Global variable for this controller to store the object details
 $.RECORD = {};
-$.NEW_VALUES = {};
-
+$.RECORD_BACKUP = {};
 // Global variable to store default values for an empty bundle
 $.EMPTY_BUNDLE = {};
 
@@ -52,6 +53,7 @@ $.init = function() {
 	// Initiating CA available UIs class
 	UI_MODEL.init();
 	// Initiating detail fetching for object
+	
 	OBJECT_DETAILS.init($.TABLE);
 	// Initiating edit model for object
 	OBJECT_EDIT.init($.TABLE, CONFIG.obj_data.object_id);
@@ -260,7 +262,7 @@ $.uiHandleData = function(_data) {
 
 						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {							
 							// defining values from global var $.RECORD
-							var values = $.RECORD["attributes"][attribute];
+							var values = $.RECORD_BACKUP["attributes"][attribute];
 							if ((typeof values) == "undefined") {
 								// No value defined for this bundle, we need to define default options to agglomerate in edition buffer
 								values = $.EMPTY_BUNDLE;
@@ -300,7 +302,7 @@ $.uiHandleData = function(_data) {
 
 $.objectRetrieveCallbackFunctions = function() {
 	$.RECORD = JSON.parse(OBJECT_EDIT.getBaseForEdition());
-	$.NEW_VALUES = $.RECORD;
+	$.RECORD_BACKUP = $.RECORD;
 	$.EMPTY_BUNDLE = OBJECT_EDIT.getBundleValueForEmptyOne();
 
 	$.uiRetrieveData();
@@ -348,13 +350,23 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 	//_event.source.code => ce qu'on veut
 });
 
+function pausecomp(millis) 
+{
+var date = new Date();
+var curDate = null;
+
+do { curDate = new Date(); } 
+while(curDate-date < millis);
+} 
 /*
  * SAVE BUTTON
  */
 $.updateRightButtonSave = function() {
+	
+		
 	$.NavigationBar.showRight({
 		image: "/images/check.png",
-		callback: function() {
+		callback: function() {		
 			if ($.hasChanged == true) {
 				//alert('Modifications to be saved');
 				var dialog = Ti.UI.createAlertDialog({
@@ -423,13 +435,16 @@ $.updateRightButtonRefresh = function() {
 	});
 }
 
+
 Ti.App.addEventListener('event_haschanged', function(e) { 
+	
 	$.hasChanged = true;
 	APP.log("debug", "DEBUG Ti.App.addEventListener");
 	//APP.log("debug", e.config);
 	var attribute = e.config.bundle_code.replace(/^ca_attribute_/,"");
 	APP.log("debug", attribute);
 	var origin_values = $.RECORD.attributes[attribute];
+	
 	if (typeof $.RECORD.attributes[attribute] != "undefined") {
 		APP.log("debug","We have a previous value");
 		APP.log("debug","MERGING !");
@@ -439,13 +454,19 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 		new_values[e.config.i].is_origin = 0; 
 		new_values[e.config.i].is_modified = 1;
 
-		$.NEW_VALUES.attributes[attribute] = new_values;
-		APP.log("debug",$.NEW_VALUES.attributes[attribute]);
-		OBJECT_EDIT.insertTempAddition(attribute, $.NEW_VALUES.attributes[attribute]);
+		//$.NEW_VALUES.attributes[attribute] = new_values;
+		APP.log("debug",$.RECORD.attributes[attribute]);
+		// Inserting into the temp table
+		OBJECT_EDIT.insertTempAddition(attribute, new_values);
 	} else {
 		APP.log("debug","No previous value");
+		//WONT WORK FOR SURE
 		// Inserting into the temp table
-		OBJECT_EDIT.insertTempAddition(attribute, e.value);
+		var new_values2 = {};
+		new_values2[0][e.config.element] = e.value;
+		new_values2[0].is_origin = 0; 
+		new_values2[0].is_modified = 1;
+		OBJECT_EDIT.insertTempAddition(attribute, new_values2);
 	}
 	
 });

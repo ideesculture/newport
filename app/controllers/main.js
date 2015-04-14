@@ -25,6 +25,7 @@ $.TABLE = "ca_objects";
 // Logging controller start
 
 $.init = function() {
+
 	//APP.dropDatabase();
 		
 	// loading url & cache validity from settings
