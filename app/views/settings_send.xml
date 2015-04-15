@@ -3,7 +3,8 @@
 		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
 		
 		<ScrollView id="container">
-			<Label id="label" text="..." />
+			<Label class="url" id="label2" text="..." />
+			<Label class="json" id="label" text="..." />
 	
 		</ScrollView>
 	</View>

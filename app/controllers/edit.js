@@ -25,7 +25,6 @@ var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "
 //Ti.App.EDIT = {};
 
 
-
 $.heading.text += " editing object #"+CONFIG.obj_data.object_id+" "+CONFIG.obj_data.display_label+" "+CONFIG.obj_data.idno;
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
@@ -360,7 +359,7 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 		var itWorked = OBJECT_EDIT.saveChanges();
 		if(itWorked) {
 			 alert ("Modifications have been saved");
-			 var hello = OBJECT_EDIT.getSavedData();
+			 //var hello = OBJECT_EDIT.getSavedData();
 
 		} else alert ("echec");
 
@@ -374,34 +373,32 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 		dialog.show();
 	}
  }
-$.updateRightButtonSave = function() {
-	
-		
+$.updateRightButtonSave = function() {	
+
 	$.NavigationBar.showRight({
 		image: "/images/check.png",
+
 		callback: function() {		
 
-				var dialog = Ti.UI.createAlertDialog({
-				    cancel: 2,
-				    buttonNames: ['Save', 'Revert the modifications', 'Cancel'],
-				    message: 'Would you like to save your modifications ?',
-				    title: 'Save'
-				  });
-				dialog.addEventListener('click', function(e){
-					if (e.index === e.source.cancel){
-						// Cancel
-						Ti.API.info('The cancel button was clicked');
-					} else if (e.index == 1) {
-						// Revert = reload ui data
-						$.uiRetrieveData();
-					} else if (e.index == 0) {
-						// Save
-						save();
-						
-					}
-				});
-				dialog.show();
-
+			var dialog = Ti.UI.createAlertDialog({
+			    cancel: 2,
+			    buttonNames: ['Save', 'Revert the modifications', 'Cancel'],
+			    message: 'Would you like to save your modifications ?',
+			    title: 'Save'
+			});
+			dialog.addEventListener('click', function(e){
+				if (e.index === e.source.cancel){
+					// Cancel
+					Ti.API.info('The cancel button was clicked');
+				} else if (e.index == 1) {
+					// Revert = reload ui data
+					$.uiRetrieveData();
+				} else if (e.index == 0) {
+					// Save
+					save();	
+				}
+			});
+			dialog.show();
 		}
 	});
 }
@@ -450,12 +447,12 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 	if (typeof $.RECORD.attributes[attribute] != "undefined") {
 		APP.log("debug","We have a previous value");
 		APP.log("debug","MERGING !");
-		APP.log("debug",origin_values);
+		//APP.log("debug",origin_values);
 		var new_values = origin_values;
 		new_values[e.config.i][e.config.element] = e.value;
 		new_values[e.config.i].is_origin = 0; 
 		new_values[e.config.i].is_modified = 1;
-		APP.log("debug",new_values);
+		//APP.log("debug",new_values);
 		// Inserting into the temp table
 		OBJECT_EDIT.insertTempAddition(attribute, new_values);
 	} else {
