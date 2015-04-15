@@ -52,10 +52,10 @@ function Model() {
 
 		//ONLY FOR TESTING 
 		//cleans the _edit_temp_insert table
-		var request = "DELETE FROM " + _ca_table + "_edit_temp_insert ;"; 
+		/*var request = "DELETE FROM " + _ca_table + "_edit_temp_insert ;"; 
 		db.execute(request);
 		var request = "VACUUM;"; 
-		db.execute(request);
+		db.execute(request);*/
 
 		db.close();
 	};
