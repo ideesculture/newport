@@ -1,5 +1,5 @@
 /**
- * Collectiveaccess model for object edition
+ * Collectiveaccess model for object edition ca-object-edit.js
  * 
  * @class Models.ca-model
  * @uses core
@@ -25,23 +25,22 @@ function Model() {
 		//creates 3 tables: data before, while & after editing
 		var db = Ti.Database.open(DBNAME);
 
-		//cleans the db
+		//cleans the db: delete all tables
 		// you don't have to do that
-		//if you dont change the tables
-		/*
-		var request = "DROP TABLE IF EXISTS " + _ca_table + "_edit_base ;";
+		//if you dont change their structures
+		/*var request = "DROP TABLE IF EXISTS " + _ca_table + "_edit_base ;";
 		db.execute(request);
 		var request = "DROP TABLE IF EXISTS " + _ca_table + "_edit_updates ;";
 		db.execute(request);
 		var request = "DROP TABLE IF EXISTS " + _ca_table + "_edit_temp_insert ;";
-		db.execute(request);
-		*/
+		db.execute(request);*/
+		
 
 		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_base (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, json TEXT);";
 		db.execute(request);
 		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_updates (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, attribute TEXT, json TEXT);";
 		db.execute(request);
-		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_temp_insert (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, attribute TEXT, value TEXT);";
+		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_temp_insert (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, attribute TEXT, value TEXT, is_modified INTEGER, is_new INTEGER);";
 		db.execute(request);
 
 		//cleans update table so that it exclusively contains the fresh new modifications
@@ -52,10 +51,10 @@ function Model() {
 
 		//ONLY FOR TESTING 
 		//cleans the _edit_temp_insert table
-		/*var request = "DELETE FROM " + _ca_table + "_edit_temp_insert ;"; 
+		var request = "DELETE FROM " + _ca_table + "_edit_temp_insert ;"; 
 		db.execute(request);
 		var request = "VACUUM;"; 
-		db.execute(request);*/
+		db.execute(request);
 
 		db.close();
 	};
@@ -133,6 +132,7 @@ function Model() {
 					if((typeof value_content != "undefined") && (value_content != "")) {
 						value_content.is_origin = 1;
 						value_content.is_modified = 0;
+						value_content.is_new = 0; 
 						value_content.is_saved_in_buffer = 0;
 						value_content.buffer_ref = 0;
 						record.attributes[attribute][value] = value_content;
@@ -251,7 +251,7 @@ function Model() {
 
 	}
 	this.saveChanges = function() {
-		var attribut, valeur, result;
+		var attribut, valeur, result, is_modified, is_new;
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
 		
@@ -266,18 +266,25 @@ function Model() {
 				//get value: OKDONE
 				//1)get json & parse it into an object
 				var otmp = JSON.parse(data.fieldByName("json"));
-				//2)get value
-				valeur= otmp[0][attribut]; 					
+				//2)get value, isnew and ismodified
+				valeur= otmp[0][attribut]; 	
+				is_modified = otmp[0].is_modified;
+				is_new = otmp[0].is_new; 		
 				//Send to db
-				//TODO
 				db.execute("BEGIN TRANSACTION;");
-				var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_temp_insert (id, object_id, attribute, value) VALUES (NULL, ?, ?, ?);";
-				db.execute(request, APP.CURRENT_ID, attribut, valeur); 
+				var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_temp_insert (id, object_id, attribute, value, is_modified, is_new) VALUES (NULL, ?, ?, ?, ?, ?);";
+				db.execute(request, APP.CURRENT_ID, attribut, valeur, is_modified, is_new); 
 				db.execute("END TRANSACTION;");
 				data.next();
 			}
 		result = true; 
-
+		/*db.execute("BEGIN TRANSACTION;");
+		var request = "DELETE FROM " + _ca_table + "_edit_updates ;"; 
+		db.execute(request);
+		var request = "VACUUM;"; 
+		db.execute(request);
+		
+		db.execute("END TRANSACTION;");*/
 		} else {
 			result = false;
 		}
@@ -292,21 +299,25 @@ function Model() {
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
 		//removing previous temp values
-		var request = "SELECT object_id, attribute, value FROM " + APP.CURRENT_TABLE + "_edit_temp_insert WHERE object_id = "+APP.CURRENT_ID+" ;";
+		var request = "SELECT object_id, attribute, value, is_new, is_modified FROM ca_objects_edit_temp_insert ;";
 		var data = db.execute(request);
 		db.execute("END TRANSACTION;");
 		
 		var content = new Array() ; 
-		var valeur, attribut, object_id; 
+		var valeur, attribut, object_id, is_new, is_modified; 
 		if(data.getRowCount() > 0) { 
 			var i = 0;
 			while (data.isValidRow()) {
 				valeur = data.fieldByName("value");
 				attribut = data.fieldByName("attribute");
 				object_id = data.fieldByName("object_id");
+				is_new = data.fieldByName("is_new");
+				is_modified = data.fieldByName("is_modified");
 				var otemp = {} ;
 				otemp.valeur = valeur;
 				otemp.attribut = attribut; 
+				otemp.is_new = is_new; 
+				otemp.is_modified = is_modified; 
 				otemp.object_id = object_id; 
 				content[i] = otemp; 
 				data.next();
@@ -322,8 +333,33 @@ function Model() {
 		db.close();
 
 		APP.log("debug", "getSavedData OK");
-		APP.log("debug", result);
+		//APP.log("debug", result);
 		return result;
+
+	}
+
+	//apparement, fait tout crasher
+	/*
+	this.cleanTempInsertTable = function (_id, _attribute){
+		//cleans the _edit_temp_insert table
+		var db = Ti.Database.open(DBNAME);
+		db.execute("BEGIN TRANSACTION;");
+		var request = "DELETE FROM ca_objects_edit_temp_insert WHERE object_id = ? AND attribute = ?;";
+		db.execute(request, _id, _attribute);
+		var request = "VACUUM;"; 
+		db.execute(request);
+		db.execute("END TRANSACTION;");
+
+	}*/
+	this.cleanTempInsertTable = function (){
+		//cleans the _edit_temp_insert table
+		var db = Ti.Database.open(DBNAME);
+		db.execute("BEGIN TRANSACTION;");
+		var request = "DELETE FROM ca_objects_edit_temp_insert;";
+		db.execute(request);
+		var request = "VACUUM;"; 
+		db.execute(request);
+		db.execute("END TRANSACTION;");
 
 	}
 

@@ -442,28 +442,31 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 	//APP.log("debug", e.config);
 	var attribute = e.config.bundle_code.replace(/^ca_attribute_/,"");
 	APP.log("debug", attribute);
-	var origin_values = $.RECORD.attributes[attribute];
-	
+		
 	if (typeof $.RECORD.attributes[attribute] != "undefined") {
+//	if (typeof $.RECORD.attributes != "undefined") {	
+//	if (RECORD.attributes[attribute]) {	
 		APP.log("debug","We have a previous value");
 		APP.log("debug","MERGING !");
+		var origin_values = $.RECORD.attributes[attribute];
 		//APP.log("debug",origin_values);
 		var new_values = origin_values;
 		new_values[e.config.i][e.config.element] = e.value;
 		new_values[e.config.i].is_origin = 0; 
 		new_values[e.config.i].is_modified = 1;
-		//APP.log("debug",new_values);
+		new_values[e.config.i].is_new = 0;
+		APP.log("debug",new_values);
 		// Inserting into the temp table
 		OBJECT_EDIT.insertTempAddition(attribute, new_values);
 	} else {
 		APP.log("debug","No previous value");
 		//WONT WORK FOR SURE
 		// Inserting into the temp table
-		var vals = {is_origin : 0, is_modified : 1 };
+		var vals = {is_origin : 0, is_modified : 0, is_new : 1 };
 		vals[e.config.element] = e.value;
 		var new_values2 = [];
 		new_values2[0]=vals;
-
+		APP.log("debug",new_values2);
 		OBJECT_EDIT.insertTempAddition(attribute, new_values2);
 	}
 	

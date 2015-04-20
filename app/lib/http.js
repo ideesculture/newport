@@ -17,7 +17,7 @@
  * @param {Function} _params.success A function to execute when when successful
  * @param {Function} _params.passthrough Parameters to pass through to the failure or success callbacks
  */
- var APP = require("core");
+// var APP = require("core");
 
 exports.request = function(_params) {
 	Ti.API.debug("HTTP.request " + _params.url);
@@ -88,7 +88,7 @@ exports.request = function(_params) {
 		};
 
 		_params.type = _params.type ? _params.type : "GET";
-		APP.log("debug", _params.type);
+	//	APP.log("debug", _params.type);
 		_params.async = _params.async ? _params.async : true;
 
 		xhr.open(_params.type, _params.url, _params.async);
@@ -103,10 +103,7 @@ exports.request = function(_params) {
 		xhr.setRequestHeader("User-Agent", "Appcelerator Titanium/" + Ti.version + " (" + Ti.Platform.osname + "/" + Ti.Platform.version + "; " + Ti.Platform.name + "; " + Ti.Locale.currentLocale + ";)");
 
 		if(_params.data) {
-			APP.log("debug", "i got your data");
-			APP.log("debug", _params.data);
 			var json = JSON.stringify(_params.data);
-			APP.log(json);
 			xhr.send(JSON.stringify(_params.data));
 		} else {
 			xhr.send();
