@@ -88,7 +88,7 @@ $.init = function() {
 			}
 
 			var handleData = function( o1, o2){
-				alert("go erase data: "+ o1 + " , "+ o2);
+				//alert("go erase data: "+ o1 + " , "+ o2);
 				OBJECT_EDIT.cleanTempInsertTable(o1, o2);
 
 			}
