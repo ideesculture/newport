@@ -51,10 +51,10 @@ function Model() {
 
 		//ONLY FOR TESTING 
 		//cleans the _edit_temp_insert table
-		var request = "DELETE FROM " + _ca_table + "_edit_temp_insert ;"; 
+	/*	var request = "DELETE FROM " + _ca_table + "_edit_temp_insert ;"; 
 		db.execute(request);
 		var request = "VACUUM;"; 
-		db.execute(request);
+		db.execute(request); */
 
 		db.close();
 	};
@@ -248,8 +248,20 @@ function Model() {
 
 		APP.log("debug", "getTempData OK");
 		return result;
+	}
+
+	this.cleanEditUpdatesTable = function (){
+		//cleans the _edit_temp_insert table
+		var db = Ti.Database.open(DBNAME);
+		db.execute("BEGIN TRANSACTION;");
+		var request = "DELETE FROM " + APP.CURRENT_TABLE + "_edit_updates ;";
+		db.execute(request);
+		var request = "VACUUM;"; 
+		db.execute(request);
+		db.execute("END TRANSACTION;");
 
 	}
+
 	this.saveChanges = function() {
 		var attribut, valeur, result, is_modified, is_new;
 		var db = Ti.Database.open(DBNAME);
@@ -339,18 +351,21 @@ function Model() {
 	}
 
 	//apparement, fait tout crasher
-	/*
+	
 	this.cleanTempInsertTable = function (_id, _attribute){
+		APP.log("debug", "DEBUG cleanTempInsertTable");
+		APP.log("debug", _id);
+		APP.log("debug", _attribute);
 		//cleans the _edit_temp_insert table
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
-		var request = "DELETE FROM ca_objects_edit_temp_insert WHERE object_id = ? AND attribute = ?;";
+		var request = "DELETE FROM ca_objects_edit_temp_insert WHERE object_id = ? AND attribute = ? ;";
 		db.execute(request, _id, _attribute);
-		var request = "VACUUM;"; 
-		db.execute(request);
 		db.execute("END TRANSACTION;");
+		APP.log("debug", "ok fini");
 
-	}*/
+	}
+	/*
 	this.cleanTempInsertTable = function (){
 		//cleans the _edit_temp_insert table
 		var db = Ti.Database.open(DBNAME);
@@ -361,7 +376,7 @@ function Model() {
 		db.execute(request);
 		db.execute("END TRANSACTION;");
 
-	}
+	}*/
 
 
 }

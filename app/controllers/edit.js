@@ -18,6 +18,8 @@ var OBJECT_EDIT = require("models/ca-object-edit")();
 
 var CONFIG = arguments[0];
 
+var FLAG_SAVE = false; 
+
 // Pseudo constants
 var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "ca_places", "ca_collections", "ca_loans", "ca_movements"];			
 
@@ -358,8 +360,12 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 
 		var itWorked = OBJECT_EDIT.saveChanges();
 		if(itWorked) {
-			 alert ("Modifications have been saved");
-			 //var hello = OBJECT_EDIT.getSavedData();
+			var dialog = Ti.UI.createAlertDialog({
+			title: 'Save',
+		    message: 'Your modifications have been saved :)',
+		    ok: 'OK'
+		});
+		dialog.show();
 
 		} else alert ("echec");
 
@@ -374,33 +380,35 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 	}
  }
 $.updateRightButtonSave = function() {	
+	if(!FLAG_SAVE){
+		FLAG_SAVE =true; 
+		$.NavigationBar.showRight({
+			image: "/images/check.png",
 
-	$.NavigationBar.showRight({
-		image: "/images/check.png",
+			callback: function() {		
 
-		callback: function() {		
-
-			var dialog = Ti.UI.createAlertDialog({
-			    cancel: 2,
-			    buttonNames: ['Save', 'Revert the modifications', 'Cancel'],
-			    message: 'Would you like to save your modifications ?',
-			    title: 'Save'
-			});
-			dialog.addEventListener('click', function(e){
-				if (e.index === e.source.cancel){
-					// Cancel
-					Ti.API.info('The cancel button was clicked');
-				} else if (e.index == 1) {
-					// Revert = reload ui data
-					$.uiRetrieveData();
-				} else if (e.index == 0) {
-					// Save
-					save();	
-				}
-			});
-			dialog.show();
-		}
-	});
+				var dialog = Ti.UI.createAlertDialog({
+				    cancel: 2,
+				    buttonNames: ['Save', 'Revert the modifications', 'Cancel'],
+				    message: 'Would you like to save your modifications ?',
+				    title: 'Save'
+				});
+				dialog.addEventListener('click', function(e){
+					if (e.index === e.source.cancel){
+						// Cancel
+						Ti.API.info('The cancel button was clicked');
+					} else if (e.index == 1) {
+						// Revert = reload ui data
+						$.uiRetrieveData();
+					} else if (e.index == 0) {
+						// Save
+						save();	
+					}
+				});
+				dialog.show();
+			}
+		});
+	}
 }
 
 

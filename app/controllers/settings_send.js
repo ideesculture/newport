@@ -14,6 +14,8 @@ var CONFIG = arguments[0];
 var maxwidth = Ti.Platform.displayCaps.platformWidth;
 var maxheight = Ti.Platform.displayCaps.platformHeight;
 var OBJECT_EDIT = require("models/ca-object-edit")();
+var id ="";
+var attribut = ""; 
 
 
 
@@ -42,7 +44,6 @@ $.init = function() {
 	var tempobj = {};
 	var json = {}; 
 	var data = OBJECT_EDIT.getSavedData(); 
-	alert(data);
 	var row;
 	//$.label.text = data; 
 	if (data.length>0){
@@ -50,8 +51,8 @@ $.init = function() {
 			json = {};
 			fieldToSave = data[row];
 
-			//modifies the data
-			//NOT NEEDED 
+			id = fieldToSave.object_id;
+			attribut = fieldToSave.attribut;
 
 			//builds the object to be sent:
 			//1) remove_attributes
@@ -68,7 +69,7 @@ $.init = function() {
 			json.attributes = attributes; 
 
 
-			alert(JSON.stringify(json)); 
+			//alert(JSON.stringify(json)); 
 
 			/******************************
 			SENDS THE REQUEST 
@@ -86,8 +87,10 @@ $.init = function() {
 				  }).show();
 			}
 
-			var handleData = function(){
-			//	OBJECT_EDIT.cleanTempInsertTable(fieldToSave.object_id, fieldToSave.attribut);
+			var handleData = function( o1, o2){
+				alert("go erase data: "+ o1 + " , "+ o2);
+				OBJECT_EDIT.cleanTempInsertTable(o1, o2);
+
 			}
 
 			var callback = function(){
@@ -108,15 +111,22 @@ $.init = function() {
 				data: json,
 				url: ca_url,
 				passthrough: callback,
-				success: handleData,
+				success: handleData(id, attribut),
 				failure: error
 			});
 		
 		
 		}
-		data = OBJECT_EDIT.getSavedData(); 
-		$.label.text = data; 
+
+		$.label.text = "les données ont été envoyées au serveur :)";
+		
 	}
+	else
+	{
+		$.label2.text = "pas de données à sauver!";
+
+	}
+
 
 
 };
