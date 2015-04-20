@@ -361,11 +361,11 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 		var itWorked = OBJECT_EDIT.saveChanges();
 		if(itWorked) {
 			var dialog = Ti.UI.createAlertDialog({
-			title: 'Save',
-		    message: 'Your modifications have been saved :)',
-		    ok: 'OK'
-		});
-		dialog.show();
+				title: 'Save',
+			    message: 'Your modifications have been saved :)',
+			    ok: 'OK'
+			});
+			dialog.show();
 
 		} else alert ("echec");
 
@@ -399,7 +399,9 @@ $.updateRightButtonSave = function() {
 						Ti.API.info('The cancel button was clicked');
 					} else if (e.index == 1) {
 						// Revert = reload ui data
-						$.uiRetrieveData();
+
+						$.objectRetrieveData();
+						//OBJECT_EDIT.cleanEditUpdatesTable(); 
 					} else if (e.index == 0) {
 						// Save
 						save();	

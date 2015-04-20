@@ -250,8 +250,9 @@ function Model() {
 		return result;
 	}
 
+	//marche pas
 	this.cleanEditUpdatesTable = function (){
-		//cleans the _edit_temp_insert table
+		//cleans the _edit_updates table
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
 		var request = "DELETE FROM " + APP.CURRENT_TABLE + "_edit_updates ;";
@@ -259,7 +260,6 @@ function Model() {
 		var request = "VACUUM;"; 
 		db.execute(request);
 		db.execute("END TRANSACTION;");
-
 	}
 
 	this.saveChanges = function() {
@@ -365,6 +365,7 @@ function Model() {
 		APP.log("debug", "ok fini");
 
 	}
+
 	/*
 	this.cleanTempInsertTable = function (){
 		//cleans the _edit_temp_insert table
