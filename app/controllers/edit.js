@@ -399,9 +399,9 @@ $.updateRightButtonSave = function() {
 						Ti.API.info('The cancel button was clicked');
 					} else if (e.index == 1) {
 						// Revert = reload ui data
-
+						OBJECT_EDIT.cleanEditUpdatesTable(); 
 						$.objectRetrieveData();
-						//OBJECT_EDIT.cleanEditUpdatesTable(); 
+						
 					} else if (e.index == 0) {
 						// Save
 						save();	

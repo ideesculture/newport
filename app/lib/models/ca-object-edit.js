@@ -253,13 +253,14 @@ function Model() {
 	//marche pas
 	this.cleanEditUpdatesTable = function (){
 		//cleans the _edit_updates table
+		APP.log("debug", "DEBUG cleanEditUpdatesTable");
+
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
 		var request = "DELETE FROM " + APP.CURRENT_TABLE + "_edit_updates ;";
 		db.execute(request);
-		var request = "VACUUM;"; 
-		db.execute(request);
 		db.execute("END TRANSACTION;");
+		APP.log("debug", "fini");
 	}
 
 	this.saveChanges = function() {
