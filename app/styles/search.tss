@@ -1,0 +1,151 @@
+"#Wrapper": {
+	layout: "vertical"
+},
+"#container": {
+	top: "0dp",
+	backgroundColor: "#000",
+	contentWidth: "auto",
+	contentHeight: "auto",
+	layout: "vertical"
+},
+"TableView": {
+	right: "0dp",
+	left: "0dp",
+	top: "20dp",
+	separatorColor: "#EEE",
+	rowHeight: "45dp",
+	backgroundColor: "#FFF",
+	scrollable: false
+},
+"TableViewRow": {
+	selectedBackgroundColor: "#DDD",
+	font: {
+		fontSize: "17dp",
+		fontFamily: "HelveticaNeue-Light"
+	},
+	color: "#000",
+	selectedColor: "#000",
+	height: "45dp"
+},
+"Label": {
+	color: "#666",
+	font: {
+		fontSize: "14dp",
+		fontFamily: "HelveticaNeue"
+	},
+	top: "5dp",
+	left: "15dp",
+	right: "15dp",
+	height: Ti.UI.SIZE,
+	textAlign: "left"
+},
+"#copyright": {
+	top: "20dp"
+},
+"#chariti": {
+	bottom: "20dp"
+},
+"#alertmessage": {
+	width: Titanium.UI.FILL,
+	height: Ti.UI.SIZE,
+	width: "300dp"
+	
+},
+"#message": {
+	color: 'darkgray',
+	font: {
+		fontWeight: 'bold',
+		fontSize: 18
+	}
+},
+"#searchform": {
+	height: Ti.UI.SIZE
+},
+"#searchfield": {
+	color: '#336699',
+	top: "10dp",
+	width: "300dp",
+	height: "40dp",
+	textAlign: "left",
+	hintText: 'object_2561',
+	keyboardType: Titanium.UI.KEYBOARD_DEFAULT,
+	returnKeyType: Titanium.UI.RETURNKEY_DEFAULT,
+	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE
+},
+".objectBlocks":{
+	left:20,
+	top:70,
+	width:Ti.UI.FILL
+},
+".cell":{
+	width: "227dp",
+	height: "260dp",
+	top: 70,
+	bottom: 10,
+	left: 20,
+	layout: "vertical",
+	borderColor:"black",
+	borderWidth:1
+},
+".cellimage":{
+	backgroundColor: "#dddddd",
+	top:"5dp",
+	left:"5dp",
+	right:"5dp",
+	width:"100dp",
+	height:"80dp"
+},
+".objectName":{
+	left:10,
+	top:10,
+	width:Ti.UI.FILL, 
+	color: '#DDD',
+	font: {
+		fontSize: "18dp",
+		fontFamily: "HelveticaNeue"
+	}
+},
+".objectRow2": {
+	height: "40dp",
+	width: Ti.UI.FILL,
+	layout: "absolute",
+	left:10
+},
+".objectInfo":{
+	left:"0",
+	color: '#DDD',
+	font: {
+		fontSize: "14dp",
+		fontFamily: "HelveticaNeue"
+	}
+},
+".objectRow2Right":{
+	textAlign:"right", 
+	left: "60px"
+},
+".infoIcon":{
+	backgroundColor:"white",
+	borderRadius:10,
+	height:20,
+	width:20,
+	right:0,
+	color:"black",
+	text:"i",
+	font: {
+		fontSize: 18,
+		fontFamily: "TimesNewRomanPS-BoldMT"
+	},
+	textAlign:"center"
+},
+"#results": {
+	color: '#DDD',
+	top: "10dp",
+	left: "20dp",
+	width: "300dp",
+	height: "40dp",
+	font: {
+		fontSize: "28dp",
+		fontFamily: "HelveticaNeue"
+	}
+}

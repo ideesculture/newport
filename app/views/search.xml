@@ -1,0 +1,29 @@
+<Alloy>
+	<View id="Wrapper" name="Settings">
+		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
+		
+		<ScrollView id="container">
+			
+			<View id="alertmessage">
+				<Label id="message" />
+			</View>
+			<View id="searchform">
+				<TextField id="searchfield"/>
+			</View>
+			<View id="results_view">
+				<Label id="results" text="Results"/>
+				<View id="objectBlocks">
+					<View class="cell">
+						<ImageView class="cellimage" image="/image/cadre-plus-ipad.png" id="firstImage" />
+						<Label class="objectName" text="Object 1" />
+			    		<View class="objectRow2">			    				
+			    			<View class="objectRow2Right">
+			    				<Label class="infoIcon" text="i" />
+			    			</View>
+			    		</View>
+			    	</View>
+				</View>
+			</View>
+		</ScrollView>
+	</View>
+</Alloy>

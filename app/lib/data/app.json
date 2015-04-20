@@ -77,7 +77,7 @@
 		},
 		{
 			"title": "Search",
-			"type": "login",
+			"type": "search",
 			"image": "search_icon",
 			"tabletSupport": false,
 			"downTab" : false
