@@ -75,7 +75,7 @@ $.init = function() {
 			SENDS THE REQUEST 
 			*************************/
 			var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g,fieldToSave.object_id);
-			$.label2.text = ca_url; 
+			$.label2.text = "Data export"; 
 
 
 			
@@ -88,7 +88,7 @@ $.init = function() {
 			}
 
 			var handleData = function( o1, o2){
-				alert("go erase data: "+ o1 + " , "+ o2);
+				//alert("go erase data: "+ o1 + " , "+ o2);
 				OBJECT_EDIT.cleanTempInsertTable(o1, o2);
 
 			}
@@ -118,12 +118,13 @@ $.init = function() {
 		
 		}
 
-		$.label.text = "les données ont été envoyées au serveur :)";
+		$.label.text = "Data has been sent to the server successfully :)";
 		
 	}
 	else
 	{
-		$.label2.text = "pas de données à sauver!";
+		$.label2.text = "Data export"; 
+		$.label.text = "There are no modifications to send to the server";
 
 	}
 

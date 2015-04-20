@@ -359,13 +359,29 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 		APP.log("debug","------SAVE-----");
 
 		var itWorked = OBJECT_EDIT.saveChanges();
+
 		if(itWorked) {
-			var dialog = Ti.UI.createAlertDialog({
-			title: 'Save',
-		    message: 'Your modifications have been saved :)',
-		    ok: 'OK'
-		});
-		dialog.show();
+			//ici, essayer d'envoyer vers le serveur
+			if (Titanium.Network.networkType == Titanium.Network.NETWORK_WIFI )
+			{
+				$.sendDataToServer();
+				/*var dialog = Ti.UI.createAlertDialog({
+					title: 'Save',
+				    message: 'Your modifications have been saved :)',
+				    ok: 'OK'
+				});
+				dialog.show();*/
+
+			}
+			else
+			{
+				var dialog = Ti.UI.createAlertDialog({
+					title: 'Save',
+				    message: 'Your item will be uploaded as soon a wi-fi will be available',
+				    ok: 'OK'
+				});
+				dialog.show();
+			}
 
 		} else alert ("echec");
 
@@ -399,7 +415,9 @@ $.updateRightButtonSave = function() {
 						Ti.API.info('The cancel button was clicked');
 					} else if (e.index == 1) {
 						// Revert = reload ui data
-						$.uiRetrieveData();
+						OBJECT_EDIT.cleanEditUpdatesTable(); 
+						$.objectRetrieveData();
+						
 					} else if (e.index == 0) {
 						// Save
 						save();	
@@ -442,6 +460,99 @@ $.updateRightButtonRefresh = function() {
 	});
 }
 
+$.sendDataToServer = function() {
+	var fieldToSave = {}; 
+	var remove_attributes = []; 
+	var attributes = {}; 
+	var temptab = []; 
+	var tempobj = {};
+	var json = {}; 
+	var row;
+	var id ="";
+	var attribut = ""; 
+	var data = OBJECT_EDIT.getSavedData(); 
+
+	if (data.length>0){
+		for(row in data){
+			json = {};
+			fieldToSave = data[row];
+
+			//saves the id and attribute name, to call them in the handleData function
+			id = fieldToSave.object_id;
+			attribut = fieldToSave.attribut;
+
+			//builds the object to be sent:
+			//1) remove_attributes
+			if(fieldToSave.is_modified){
+				remove_attributes[0] = fieldToSave.attribut;
+				json.remove_attributes = remove_attributes;
+			}
+			//2) attributes
+			tempobj ={}; attributes = {}; 
+			tempobj["locale"]= "en_US"; 
+			tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
+			temptab[0]= tempobj; 
+			attributes[fieldToSave.attribut] = temptab; 
+			json.attributes = attributes; 
+
+
+			//alert(JSON.stringify(json)); 
+
+			/******************************
+			SENDS THE REQUEST 
+			*************************/
+			var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g,fieldToSave.object_id);
+			
+			var error = function() {
+				var dialog = Ti.UI.createAlertDialog({
+				    message: 'ERROR. Couldn\'t send data to the server',
+				    ok: 'OK',
+				    title: 'Error'
+				  }).show();
+			}
+
+			var handleData = function( o1, o2){
+				//alert("go erase data: "+ o1 + " , "+ o2);
+				OBJECT_EDIT.cleanTempInsertTable(o1, o2);
+			}
+
+			var callback = function(){
+				var dialog = Ti.UI.createAlertDialog({
+				    message: 'whatever that means',
+				    ok: 'got it',
+				    title: 'CALLBACK'
+				  }).show();
+			}
+
+			HTTP.request({
+				timeout: 2000,
+				async:false,
+				headers: [{name: 'Authorization', value: APP.authString}],
+				type: "PUT",
+				format: "JSON",
+				data: json,
+				url: ca_url,
+				passthrough: callback,
+				success: handleData(id, attribut),
+				failure: error
+			});
+
+		}
+		var dialog = Ti.UI.createAlertDialog({
+			title: 'Save',
+		    message: 'Your modifications have been saved :)',
+		    ok: 'OK'
+		});
+		dialog.show();
+		//$.label.text = "Data has been sent to the server successfully :)";		
+	}
+	else
+	{
+		alert("no data :(");
+	//	$.label2.text = "Data export"; 
+	//	$.label.text = "There are no modifications to send to the server";
+	}
+}
 
 Ti.App.addEventListener('event_haschanged', function(e) { 
 	
