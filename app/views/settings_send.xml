@@ -1,0 +1,11 @@
+<Alloy>
+	<View id="Wrapper" name="Settings Send">
+		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
+		
+		<ScrollView id="container">
+			<Label class="url" id="label2" text="..." />
+			<Label class="json" id="label" text="..." />
+	
+		</ScrollView>
+	</View>
+</Alloy>

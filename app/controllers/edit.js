@@ -18,12 +18,13 @@ var OBJECT_EDIT = require("models/ca-object-edit")();
 
 var CONFIG = arguments[0];
 
+var FLAG_SAVE = false; 
+
 // Pseudo constants
 var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "ca_places", "ca_collections", "ca_loans", "ca_movements"];			
 
 // Initializes original values and target buffer where modified values will go
 //Ti.App.EDIT = {};
-
 
 
 $.heading.text += " editing object #"+CONFIG.obj_data.object_id+" "+CONFIG.obj_data.display_label+" "+CONFIG.obj_data.idno;
@@ -350,14 +351,6 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 	//_event.source.code => ce qu'on veut
 });
 
-function pausecomp(millis) 
-{
-var date = new Date();
-var curDate = null;
-
-do { curDate = new Date(); } 
-while(curDate-date < millis);
-} 
 /*
  * SAVE BUTTON
  */
@@ -365,9 +358,17 @@ while(curDate-date < millis);
  	if ($.hasChanged == true) {
 		APP.log("debug","------SAVE-----");
 
-		// TODO : copy data from temp to cache upload table
-		var data = OBJECT_EDIT.getTempData(); 
-		APP.log("debug", data);
+		var itWorked = OBJECT_EDIT.saveChanges();
+		if(itWorked) {
+			var dialog = Ti.UI.createAlertDialog({
+			title: 'Save',
+		    message: 'Your modifications have been saved :)',
+		    ok: 'OK'
+		});
+		dialog.show();
+
+		} else alert ("echec");
+
  	}
 	else {
 		var dialog = Ti.UI.createAlertDialog({
@@ -378,19 +379,20 @@ while(curDate-date < millis);
 		dialog.show();
 	}
  }
-$.updateRightButtonSave = function() {
-	
-		
-	$.NavigationBar.showRight({
-		image: "/images/check.png",
-		callback: function() {		
+$.updateRightButtonSave = function() {	
+	if(!FLAG_SAVE){
+		FLAG_SAVE =true; 
+		$.NavigationBar.showRight({
+			image: "/images/check.png",
+
+			callback: function() {		
 
 				var dialog = Ti.UI.createAlertDialog({
 				    cancel: 2,
 				    buttonNames: ['Save', 'Revert the modifications', 'Cancel'],
 				    message: 'Would you like to save your modifications ?',
 				    title: 'Save'
-				  });
+				});
 				dialog.addEventListener('click', function(e){
 					if (e.index === e.source.cancel){
 						// Cancel
@@ -400,14 +402,13 @@ $.updateRightButtonSave = function() {
 						$.uiRetrieveData();
 					} else if (e.index == 0) {
 						// Save
-						save();
-						
+						save();	
 					}
 				});
 				dialog.show();
-
-		}
-	});
+			}
+		});
+	}
 }
 
 
@@ -449,29 +450,31 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 	//APP.log("debug", e.config);
 	var attribute = e.config.bundle_code.replace(/^ca_attribute_/,"");
 	APP.log("debug", attribute);
-	var origin_values = $.RECORD.attributes[attribute];
-	
+		
 	if (typeof $.RECORD.attributes[attribute] != "undefined") {
+//	if (typeof $.RECORD.attributes != "undefined") {	
+//	if (RECORD.attributes[attribute]) {	
 		APP.log("debug","We have a previous value");
 		APP.log("debug","MERGING !");
-		APP.log("debug",origin_values);
+		var origin_values = $.RECORD.attributes[attribute];
+		//APP.log("debug",origin_values);
 		var new_values = origin_values;
 		new_values[e.config.i][e.config.element] = e.value;
 		new_values[e.config.i].is_origin = 0; 
 		new_values[e.config.i].is_modified = 1;
-
-		//$.NEW_VALUES.attributes[attribute] = new_values;
-		APP.log("debug",$.RECORD.attributes[attribute]);
+		new_values[e.config.i].is_new = 0;
+		APP.log("debug",new_values);
 		// Inserting into the temp table
 		OBJECT_EDIT.insertTempAddition(attribute, new_values);
 	} else {
 		APP.log("debug","No previous value");
 		//WONT WORK FOR SURE
 		// Inserting into the temp table
-		var new_values2 = {};
-		new_values2[0][e.config.element] = e.value;
-		new_values2[0].is_origin = 0; 
-		new_values2[0].is_modified = 1;
+		var vals = {is_origin : 0, is_modified : 0, is_new : 1 };
+		vals[e.config.element] = e.value;
+		var new_values2 = [];
+		new_values2[0]=vals;
+		APP.log("debug",new_values2);
 		OBJECT_EDIT.insertTempAddition(attribute, new_values2);
 	}
 	
