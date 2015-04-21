@@ -16,11 +16,6 @@
 					<View class="cell">
 						<ImageView class="cellimage" image="/image/cadre-plus-ipad.png" id="firstImage" />
 						<Label class="objectName" text="Object 1" />
-			    		<View class="objectRow2">			    				
-			    			<View class="objectRow2Right">
-			    				<Label class="infoIcon" text="i" />
-			    			</View>
-			    		</View>
 			    	</View>
 				</View>
 			</View>
