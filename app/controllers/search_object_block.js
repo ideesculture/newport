@@ -12,21 +12,22 @@ var CONFIG = arguments[0];
 $.TABLE = "ca_objects";
 
 $.init = function() {
-	APP.log("debug", "block result");
-	APP.log("debug",CONFIG.label );
+	//APP.log("debug", "block result");
+	//APP.log("debug",CONFIG.label );
 
 	//OBJECT_DETAILS.init($.TABLE);
 	//APP.log("debug","Adding object block ("+CONFIG.obj_data.object_id+")");
 	//$.objectInfo.text = CONFIG.obj_data.idno;
-	$.objectName.text = CONFIG.label;
+	$.objectName.text = CONFIG.display_label;
 
 	$.cell.addEventListener('click',function () {
 		APP.addChild("edit", {
 			type: "ca_objects",
 			obj_data : CONFIG,
 			isChild: true
-		}, false, true);
+		}, false, false);
 	});
+
 }
 
 $.init();
