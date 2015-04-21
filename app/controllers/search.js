@@ -38,7 +38,14 @@ $.init = function() {
 };
 
 $.search = function(e){
-	alert(e.value);
+	if(e.value.length >= 3) {
+		//alert(e.value);
+		//if wifi, then calls CA WS and brings back data
+		//else...
+		var result = HIERARCHY_MODEL.getSearchedRecords($.TABLE, e.value);
+		alert(result);
+
+	}
 }
 
 

@@ -245,9 +245,6 @@ function Model() {
 			data.next();
 		}
 
-		//////////////////////////////////////////////
-		// TEST CAROLINE: CHERCHER DONNEES DS TABLE DETAILS
-
 		data.close();
 		db.close();
 		return temp;
@@ -255,6 +252,38 @@ function Model() {
 
 	this.isCacheValid = function() {
 		return false;
+	}
+
+	///////////////////////////////////////////////////////////
+	//search 
+	///////////////////////////////////////////////////////////
+	this.getSearchedRecords = function(_ca_table, _text) {
+		APP.log("debug", "CA-HIERARCHY.getLastRecords");
+
+		var db = Ti.Database.open(DBNAME);
+
+		var request = "SELECT idno, display_label AS label FROM "+_ca_table+" WHERE display_label LIKE '%"+_text+"%' ;";
+		var	temp = {};
+		var data = db.execute(request);
+		var fieldnumber = 0, linenumber = 1;
+
+
+		while (data.isValidRow()) {
+			temp[linenumber] = {};
+			while (fieldnumber < data.getFieldCount()) {
+				temp[linenumber][data.fieldName(fieldnumber)] = data.field(fieldnumber);
+				fieldnumber++;
+			}
+			linenumber++;
+			fieldnumber = 0;
+			data.next();
+		}
+
+		data.close();
+		db.close();
+		
+		return temp;
+		
 	}
 
 }
