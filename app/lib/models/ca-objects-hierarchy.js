@@ -262,7 +262,7 @@ function Model() {
 
 		var db = Ti.Database.open(DBNAME);
 
-		var request = "SELECT idno, display_label AS label FROM "+_ca_table+" WHERE display_label LIKE '%"+_text+"%' ;";
+		var request = "SELECT idno, object_id, display_label AS label FROM "+_ca_table+" WHERE display_label LIKE '%"+_text+"%' ;";
 		var	temp = {};
 		var data = db.execute(request);
 		var fieldnumber = 0, linenumber = 1;
