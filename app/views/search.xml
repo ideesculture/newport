@@ -4,21 +4,20 @@
 		
 		<ScrollView id="container">
 			
-			<View id="alertmessage">
-				<Label id="message" />
-			</View>
 			<View id="searchform">
 				<TextField id="searchfield"/>
 			</View>
 			<View id="results_view">
 				<Label id="results" text="Results"/>
-				<View id="objectBlocks">
-				<!-- objects created by search_object_block.js  -->
-				<!-- sample view for one object
-					<View class="cell">
-						<ImageView class="cellimage" image="/image/cadre-plus-ipad.png" id="firstImage" />
-						<Label class="objectName" text="Object 1" />
-			    	</View>-->
+				<View id="objectsView">
+					<View id="objectBlocks">
+					<!-- objects created by search_object_block.js  -->
+					<!-- sample view for one object
+						<View class="cell">
+							<ImageView class="cellimage" image="/image/cadre-plus-ipad.png" id="firstImage" />
+							<Label class="objectName" text="Object 1" />
+				    	</View>-->
+					</View>
 				</View>
 			</View>
 		</ScrollView>

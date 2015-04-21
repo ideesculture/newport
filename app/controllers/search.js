@@ -66,8 +66,8 @@ $.handleData = function(_data) {
 			}
 		}	
 	} 
-	/*else {
-		$.container.remove($.objectBlocks);
+/*	else {
+		$.container.remove($.results_view);
 	}*/
 };
 

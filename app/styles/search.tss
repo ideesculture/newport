@@ -8,25 +8,6 @@
 	contentHeight: "auto",
 	layout: "vertical"
 },
-"TableView": {
-	right: "0dp",
-	left: "0dp",
-	top: "20dp",
-	separatorColor: "#EEE",
-	rowHeight: "45dp",
-	backgroundColor: "#FFF",
-	scrollable: false
-},
-"TableViewRow": {
-	selectedBackgroundColor: "#DDD",
-	font: {
-		fontSize: "17dp",
-		fontFamily: "HelveticaNeue-Light"
-	},
-	color: "#000",
-	selectedColor: "#000",
-	height: "45dp"
-},
 "Label": {
 	color: "#666",
 	font: {
@@ -73,14 +54,33 @@
 	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
 	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE
 },
-".objectBlocks":{
-	left:20,
-	top:70,
-	width:Ti.UI.FILL
+"#results_view":{
+	left:0,
+	top: 50,
+	backgroundColor: "#000",
+	layout: "vertical",
+	showVerticalScrollIndicator: true,
+	width:Ti.UI.FILL,
+	contentHeight: 'auto',
+	height: "100%"
+},
+"#objectsView":{
+	layout: "horizontal",
+	top: 10,
+	left: 10,
+	right: 10,
+	contentWidth: "100%",
+	contentHeight:'auto'
+},
+"#objectBlocks":{
+	layout: "horizontal",
+	width:Ti.UI.FILL,
+	height:"auto",
+	visible:"true"	
 },
 ".cell":{
 	width: "227dp",
-	height: "260dp",
+	height: "260dp",	
 	top: 70,
 	bottom: 10,
 	left: 20,

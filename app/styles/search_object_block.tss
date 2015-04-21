@@ -1,12 +1,10 @@
 "#cell":{
 	width: "227dp",
 	height: "260dp",
-	top: 70,
+	top: 10,
 	bottom: 10,
 	left: 20,
-	layout: "vertical",
-	borderColor:"black",
-	borderWidth:1
+	layout: "vertical"
 },
 "#cellimage":{
 	backgroundColor: "#dddddd",
