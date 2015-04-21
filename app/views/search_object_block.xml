@@ -1,0 +1,6 @@
+<Alloy>
+	<View id="cell">
+		<ImageView id="cellimage" image="/image/cadre-plus-ipad.png" id="firstImage" />
+		<Label id="objectName" text="Object 1" />
+	</View>
+</Alloy>

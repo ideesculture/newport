@@ -44,9 +44,32 @@ $.search = function(e){
 		//else...
 		var result = HIERARCHY_MODEL.getSearchedRecords($.TABLE, e.value);
 		alert(result);
-
+		$.handleData(result);
 	}
 }
+
+$.handleData = function(_data) {
+	// If we have data to display...
+	if (Object.keys(_data).length > 0) {
+		var last_object_no = Object.keys(_data).length;
+		var object_no =0;
+		for(var object in _data) {
+			object_no++;
+			var object_data = _data[object];
+
+			var object_block = Alloy.createController("search_object_block", object_data).getView();
+			$.objectBlocks.add(object_block);
+			if (object_no == last_object_no) {
+				setTimeout(function() {
+   					//$.NavigationBar.title.text = "loaded";
+				},500);
+			}
+		}	
+	} 
+	/*else {
+		$.container.remove($.objectBlocks);
+	}*/
+};
 
 
 // Kick off the init

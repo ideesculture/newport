@@ -13,10 +13,12 @@
 			<View id="results_view">
 				<Label id="results" text="Results"/>
 				<View id="objectBlocks">
+				<!-- objects created by search_object_block.js  -->
+				<!-- sample view for one object
 					<View class="cell">
 						<ImageView class="cellimage" image="/image/cadre-plus-ipad.png" id="firstImage" />
 						<Label class="objectName" text="Object 1" />
-			    	</View>
+			    	</View>-->
 				</View>
 			</View>
 		</ScrollView>
