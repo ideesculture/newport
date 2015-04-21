@@ -43,7 +43,7 @@ $.search = function(e){
 		//if wifi, then calls CA WS and brings back data
 		//else...
 		var result = HIERARCHY_MODEL.getSearchedRecords($.TABLE, e.value);
-		alert(result);
+		//alert(result);
 		$.handleData(result);
 	}
 }
@@ -51,6 +51,11 @@ $.search = function(e){
 $.handleData = function(_data) {
 	// If we have data to display...
 	if (Object.keys(_data).length > 0) {
+		APP.log("debug", "handle Data");
+		$.objectBlocks.removeAllChildren();
+		/*while($.objectBlocks.children !== null){
+			$.objectBlocks.remove($.objectBlocks.children[0]);
+		}*/
 		var last_object_no = Object.keys(_data).length;
 		var object_no =0;
 		for(var object in _data) {
@@ -66,9 +71,9 @@ $.handleData = function(_data) {
 			}
 		}	
 	} 
-/*	else {
-		$.container.remove($.results_view);
-	}*/
+	else {
+		$.objectBlocks.removeAllChildren();
+	}
 };
 
 

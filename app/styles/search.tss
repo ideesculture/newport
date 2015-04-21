@@ -44,7 +44,7 @@
 },
 "#searchfield": {
 	color: '#336699',
-	top: "10dp",
+	top: "20dp",
 	width: "300dp",
 	height: "40dp",
 	textAlign: "left",
