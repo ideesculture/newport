@@ -1,0 +1,127 @@
+"#Wrapper": {
+	layout: "vertical"
+},
+"#container": {
+	top: "0dp",
+	backgroundColor: "#000",
+	contentWidth: "auto",
+	contentHeight: "auto",
+	layout: "vertical"
+},
+"Label": {
+	color: "#666",
+	font: {
+		fontSize: "14dp",
+		fontFamily: "HelveticaNeue"
+	},
+	top: "5dp",
+	left: "15dp",
+	right: "15dp",
+	height: Ti.UI.SIZE,
+	textAlign: "left"
+},
+"#copyright": {
+	top: "20dp"
+},
+"#chariti": {
+	bottom: "20dp"
+},
+"#alertmessage": {
+	width: Titanium.UI.FILL,
+	height: Ti.UI.SIZE,
+	width: "300dp"
+	
+},
+"#message": {
+	color: 'darkgray',
+	font: {
+		fontWeight: 'bold',
+		fontSize: 18
+	}
+},
+"#searchform": {
+	height: Ti.UI.SIZE
+},
+"#searchfield": {
+	color: '#336699',
+	top: "10dp",
+	width: "300dp",
+	height: "40dp",
+	textAlign: "left",
+	hintText: 'object_2561',
+	keyboardType: Titanium.UI.KEYBOARD_DEFAULT,
+	returnKeyType: Titanium.UI.RETURNKEY_DEFAULT,
+	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE
+},
+"#results_view":{
+	left:0,
+	top: 50,
+	backgroundColor: "#000",
+	layout: "vertical",
+	showVerticalScrollIndicator: true,
+	width:Ti.UI.FILL,
+	contentHeight: 'auto',
+	height: "100%"
+},
+"#objectsView":{
+	layout: "horizontal",
+	top: 10,
+	left: 10,
+	right: 10,
+	contentWidth: "100%",
+	contentHeight:'auto'
+},
+"#objectBlocks":{
+	layout: "horizontal",
+	width:Ti.UI.FILL,
+	height:"auto",
+	visible:"true"	
+},
+".cell":{
+	width: "227dp",
+	height: "260dp",	
+	top: 70,
+	bottom: 10,
+	left: 20,
+	layout: "vertical",
+	borderColor:"black",
+	borderWidth:1
+},
+".cellimage":{
+	backgroundColor: "#dddddd",
+	top:"5dp",
+	left:"5dp",
+	right:"5dp",
+	width:"100dp",
+	height:"80dp"
+},
+".objectName":{
+	left:10,
+	top:10,
+	width:Ti.UI.FILL, 
+	color: '#DDD',
+	font: {
+		fontSize: "18dp",
+		fontFamily: "HelveticaNeue"
+	}
+},
+".objectInfo":{
+	left:"0",
+	color: '#DDD',
+	font: {
+		fontSize: "14dp",
+		fontFamily: "HelveticaNeue"
+	}
+},
+"#results": {
+	color: '#DDD',
+	top: "10dp",
+	left: "20dp",
+	width: "300dp",
+	height: "40dp",
+	font: {
+		fontSize: "28dp",
+		fontFamily: "HelveticaNeue"
+	}
+}

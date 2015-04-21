@@ -376,7 +376,7 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 			else
 			{
 				var dialog = Ti.UI.createAlertDialog({
-					title: 'Save',
+					title: 'No signal',
 				    message: 'Your item will be uploaded as soon a wi-fi will be available',
 				    ok: 'OK'
 				});

@@ -1,0 +1,26 @@
+"#cell":{
+	width: "227dp",
+	height: "260dp",
+	top: 10,
+	bottom: 10,
+	left: 20,
+	layout: "vertical"
+},
+"#cellimage":{
+	backgroundColor: "#dddddd",
+	top:"5dp",
+	left:"5dp",
+	right:"5dp",
+	width:"100dp",
+	height:"80dp"
+},
+"#objectName":{
+	left:10,
+	top:10,
+	width:Ti.UI.FILL, 
+	color: '#DDD',
+	font: {
+		fontSize: "18dp",
+		fontFamily: "HelveticaNeue"
+	}
+}

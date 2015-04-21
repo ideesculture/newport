@@ -1,0 +1,25 @@
+<Alloy>
+	<View id="Wrapper" name="Settings">
+		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
+		
+		<ScrollView id="container">
+			
+			<View id="searchform">
+				<TextField id="searchfield"/>
+			</View>
+			<View id="results_view">
+				<Label id="results" text="Results"/>
+				<View id="objectsView">
+					<View id="objectBlocks">
+					<!-- objects created by search_object_block.js  -->
+					<!-- sample view for one object
+						<View class="cell">
+							<ImageView class="cellimage" image="/image/cadre-plus-ipad.png" id="firstImage" />
+							<Label class="objectName" text="Object 1" />
+				    	</View>-->
+					</View>
+				</View>
+			</View>
+		</ScrollView>
+	</View>
+</Alloy>
