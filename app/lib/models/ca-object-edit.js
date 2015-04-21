@@ -40,7 +40,7 @@ function Model() {
 		db.execute(request);
 		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_updates (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, attribute TEXT, json TEXT);";
 		db.execute(request);
-		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_temp_insert (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, attribute TEXT, value TEXT, is_modified INTEGER, is_new INTEGER);";
+		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_temp_insert (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id INTEGER, attribute TEXT, bundle_code TEXT, value TEXT, is_modified INTEGER, is_new INTEGER);";
 		db.execute(request);
 
 		//cleans update table so that it exclusively contains the fresh new modifications
@@ -264,7 +264,7 @@ function Model() {
 	}
 
 	this.saveChanges = function() {
-		var attribut, valeur, result, is_modified, is_new;
+		var attribut, valeur, result, is_modified, is_new, bundle_code;
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
 		
@@ -282,11 +282,12 @@ function Model() {
 				//2)get value, isnew and ismodified
 				valeur= otmp[0][attribut]; 	
 				is_modified = otmp[0].is_modified;
-				is_new = otmp[0].is_new; 		
+				is_new = otmp[0].is_new; 
+				bundle_code = otmp[0].bundle;
 				//Send to db
 				db.execute("BEGIN TRANSACTION;");
-				var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_temp_insert (id, object_id, attribute, value, is_modified, is_new) VALUES (NULL, ?, ?, ?, ?, ?);";
-				db.execute(request, APP.CURRENT_ID, attribut, valeur, is_modified, is_new); 
+				var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_temp_insert (id, object_id, attribute, value, is_modified, is_new, bundle_code) VALUES (NULL, ?, ?, ?, ?, ?, ?);";
+				db.execute(request, APP.CURRENT_ID, attribut, valeur, is_modified, is_new, bundle_code); 
 				db.execute("END TRANSACTION;");
 				data.next();
 			}
@@ -312,12 +313,12 @@ function Model() {
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
 		//removing previous temp values
-		var request = "SELECT object_id, attribute, value, is_new, is_modified FROM ca_objects_edit_temp_insert ;";
+		var request = "SELECT object_id, attribute, value, is_new, is_modified, bundle_code FROM ca_objects_edit_temp_insert ;";
 		var data = db.execute(request);
 		db.execute("END TRANSACTION;");
 		
 		var content = new Array() ; 
-		var valeur, attribut, object_id, is_new, is_modified; 
+		var valeur, attribut, object_id, is_new, is_modified, bundle_code; 
 		if(data.getRowCount() > 0) { 
 			var i = 0;
 			while (data.isValidRow()) {
@@ -326,11 +327,13 @@ function Model() {
 				object_id = data.fieldByName("object_id");
 				is_new = data.fieldByName("is_new");
 				is_modified = data.fieldByName("is_modified");
+				bundle_code = data.fieldByName("bundle_code");
 				var otemp = {} ;
 				otemp.valeur = valeur;
 				otemp.attribut = attribut; 
 				otemp.is_new = is_new; 
 				otemp.is_modified = is_modified; 
+				otemp.bundle_code = bundle_code; 
 				otemp.object_id = object_id; 
 				content[i] = otemp; 
 				data.next();

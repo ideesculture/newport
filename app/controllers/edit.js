@@ -40,7 +40,7 @@ $.UI_CODE = "";
 
 // Global variable for this controller to store the object details
 $.RECORD = {};
-$.RECORD_BACKUP = {};
+
 // Global variable to store default values for an empty bundle
 $.EMPTY_BUNDLE = {};
 
@@ -263,7 +263,7 @@ $.uiHandleData = function(_data) {
 
 						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {							
 							// defining values from global var $.RECORD
-							var values = $.RECORD_BACKUP["attributes"][attribute];
+							var values = $.RECORD["attributes"][attribute];
 							if ((typeof values) == "undefined") {
 								// No value defined for this bundle, we need to define default options to agglomerate in edition buffer
 								values = $.EMPTY_BUNDLE;
@@ -303,7 +303,6 @@ $.uiHandleData = function(_data) {
 
 $.objectRetrieveCallbackFunctions = function() {
 	$.RECORD = JSON.parse(OBJECT_EDIT.getBaseForEdition());
-	$.RECORD_BACKUP = $.RECORD;
 	$.EMPTY_BUNDLE = OBJECT_EDIT.getBundleValueForEmptyOne();
 
 	$.uiRetrieveData();
@@ -484,7 +483,7 @@ $.sendDataToServer = function() {
 			//builds the object to be sent:
 			//1) remove_attributes
 			if(fieldToSave.is_modified){
-				remove_attributes[0] = fieldToSave.attribut;
+				remove_attributes[0] = fieldToSave.bundle_code;
 				json.remove_attributes = remove_attributes;
 			}
 			//2) attributes
@@ -492,7 +491,7 @@ $.sendDataToServer = function() {
 			tempobj["locale"]= "en_US"; 
 			tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
 			temptab[0]= tempobj; 
-			attributes[fieldToSave.attribut] = temptab; 
+			attributes[fieldToSave.bundle_code] = temptab; 
 			json.attributes = attributes; 
 
 
@@ -570,23 +569,25 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 		var origin_values = $.RECORD.attributes[attribute];
 		//APP.log("debug",origin_values);
 		var new_values = origin_values;
+		new_values[e.config.i].bundle = attribute; 
 		new_values[e.config.i][e.config.element] = e.value;
 		new_values[e.config.i].is_origin = 0; 
 		new_values[e.config.i].is_modified = 1;
 		new_values[e.config.i].is_new = 0;
 		APP.log("debug",new_values);
 		// Inserting into the temp table
-		OBJECT_EDIT.insertTempAddition(attribute, new_values);
+		OBJECT_EDIT.insertTempAddition(e.config.element, new_values);
 	} else {
 		APP.log("debug","No previous value");
 		//WONT WORK FOR SURE
 		// Inserting into the temp table
 		var vals = {is_origin : 0, is_modified : 0, is_new : 1 };
 		vals[e.config.element] = e.value;
+		vals.bundle = attribute;
 		var new_values2 = [];
 		new_values2[0]=vals;
 		APP.log("debug",new_values2);
-		OBJECT_EDIT.insertTempAddition(attribute, new_values2);
+		OBJECT_EDIT.insertTempAddition(e.config.element, new_values2);
 	}
 	
 });

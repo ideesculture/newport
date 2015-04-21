@@ -39,11 +39,18 @@ $.init = function() {
 
 $.search = function(e){
 	if(e.value.length >= 3) {
-		//alert(e.value);
-		//if wifi, then calls CA WS and brings back data
-		//else...
-		var result = HIERARCHY_MODEL.getSearchedRecords($.TABLE, e.value);
-		//alert(result);
+
+		//calls CA WS and brings back data
+		/*if (Titanium.Network.networkType == Titanium.Network.NETWORK_WIFI )
+		{
+			 // do a search with the WS 
+			 //dunnow how to
+			var result = {};
+
+		}
+		else {*/
+			var result = HIERARCHY_MODEL.getSearchedRecords($.TABLE, e.value);
+		//}
 		$.handleData(result);
 	}
 }
