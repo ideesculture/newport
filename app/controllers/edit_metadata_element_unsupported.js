@@ -12,5 +12,5 @@ var CONFIG = arguments[0];
 //APP.log("debug",CONFIG);
 
 $.label.text=CONFIG.content.display_label; 
-$.textfield.value="ici";
+$.textfield.value="unsupported element type";
 //$.textfield.width=CONFIG.content.settings.fieldWidth * 4;

@@ -86,6 +86,7 @@ function Model() {
 	this.handleData = function(_data, _url, _callback) {
 
 		APP.log("debug", "CA_MODEL.handleData");
+		//APP.log("debug", _data);
 		if(_data.ok == true) {
 			APP.log("debug", "connected");
 			var db = Ti.Database.open(DBNAME);

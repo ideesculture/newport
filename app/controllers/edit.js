@@ -263,10 +263,22 @@ $.uiHandleData = function(_data) {
 
 						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {							
 							// defining values from global var $.RECORD
-							var values = $.RECORD["attributes"][attribute];
-							if ((typeof values) == "undefined") {
+							//APP.log("debug", "trululu");
+							//APP.log("debug", typeof($.RECORD["attributes"]));
+							
+							
+							if( (typeof ($.RECORD["attributes"])) == "undefined"){
+								APP.log("debug", "no attributes defined");
+								$.RECORD["attributes"] = {} ; 
+							}
+
+							//var values = $.RECORD["attributes"][attribute];
+							if ((typeof $.RECORD["attributes"][attribute]) == "undefined") {
 								// No value defined for this bundle, we need to define default options to agglomerate in edition buffer
-								values = $.EMPTY_BUNDLE;
+								//APP.log("debug", "IF UNDEFINED --------------------------------");
+								var values = $.EMPTY_BUNDLE;
+							} else {
+								var values = $.RECORD["attributes"][attribute]; 
 							}
 
 							var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
@@ -303,6 +315,8 @@ $.uiHandleData = function(_data) {
 
 $.objectRetrieveCallbackFunctions = function() {
 	$.RECORD = JSON.parse(OBJECT_EDIT.getBaseForEdition());
+	//APP.log("debug", "GETBASE");
+	//APP.log("debug", typeof ($.RECORD["attributes"]));
 	$.EMPTY_BUNDLE = OBJECT_EDIT.getBundleValueForEmptyOne();
 
 	$.uiRetrieveData();
@@ -560,10 +574,9 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 	//APP.log("debug", e.config);
 	var attribute = e.config.bundle_code.replace(/^ca_attribute_/,"");
 	APP.log("debug", attribute);
-		
+	APP.log("debug", typeof $.RECORD.attributes);
 	if (typeof $.RECORD.attributes[attribute] != "undefined") {
-//	if (typeof $.RECORD.attributes != "undefined") {	
-//	if (RECORD.attributes[attribute]) {	
+	//if (typeof $.RECORD.attributes != "undefined") {	
 		APP.log("debug","We have a previous value");
 		APP.log("debug","MERGING !");
 		var origin_values = $.RECORD.attributes[attribute];

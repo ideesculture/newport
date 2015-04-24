@@ -49,6 +49,10 @@
 			"urlForObjectSave" : {
 				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/item/ca_objects/id/ID",
 				"cache":"86400"
+			},
+			"urlForObjectSearch" : {
+				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_objects?q=<your_query>&pretty=1",
+				"cache":"86400"
 			}
 
 		},

@@ -9,7 +9,8 @@ var DATATYPECONTROLLERS = {
 	"Text":"edit_metadata_element_text",
 	"Url":"edit_metadata_element_url",
 	"Length":"edit_metadata_element_length",
-	"Weight":"edit_metadata_element_weight"
+	"Weight":"edit_metadata_element_weight",
+	"DateRange":"edit_metadata_element_daterange"
 };
 //APP.log("debug",CONFIG);
 
@@ -56,6 +57,23 @@ $.init = function() {
 						dataForDatatypeController
 					).getView();
 			} else {
+				APP.log("debug","UNSUPPORTED: ");
+				APP.log("debug",content.datatype);
+			
+				var value={};
+				if (typeof VALUES != 'undefined') {
+					// We have one value for the element, does this one take a locale ?
+					if ((typeof VALUES[APP.locale] != 'undefined') && (typeof VALUES[APP.locale][element] != 'undefined')) {
+						value = VALUES[APP.locale][element];
+					} else if (typeof VALUES[element] != 'undefined') {
+						value = VALUES[element];
+					}
+					
+				};
+
+				APP.log("debug","value:");
+				APP.log("debug",value);
+
 	    		var row = Alloy.createController("edit_metadata_element_unsupported", {
 					element:element,
 					content:content,
