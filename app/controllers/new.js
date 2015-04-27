@@ -56,7 +56,10 @@ $.init = function() {
 	// Initiating detail fetching for object
 	//OBJECT_DETAILS.init($.TABLE);
 	// Initiating edit model for object
-	//OBJECT_EDIT.init($.TABLE, CONFIG.obj_data.object_id);
+	var timestamp = new Date().getTime();
+	var edit_false_id = "new_"+ timestamp;
+	APP.log("debug", edit_false_id);
+	OBJECT_EDIT.init($.TABLE, edit_false_id);
 
 	// Credentials are inside app.json file
 	APP.ca_login=APP.Settings.CollectiveAccess.login;
@@ -97,7 +100,7 @@ $.init = function() {
 	CONFIG.base_edit_url_validity = APP.Settings.CollectiveAccess.urlForObjectEdit.cache;
 	*/
 
-//	$.objectRetrieveData();
+	$.objectRetrieveData();
 	
 	if(CONFIG.isChild === true) {
 		$.NavigationBar.showBack(function(_event) {
@@ -311,38 +314,12 @@ $.uiHandleData = function(_data) {
 	$.updateRightButtonSave();
 };
 
-$.objectRetrieveCallbackFunctions = function() {
-	$.RECORD = JSON.parse(OBJECT_EDIT.getBaseForEdition());
-	//APP.log("debug", "GETBASE");
-	//APP.log("debug", typeof ($.RECORD["attributes"]));
+
+$.objectRetrieveData = function() {
 	$.EMPTY_BUNDLE = OBJECT_EDIT.getBundleValueForEmptyOne();
 
 	$.uiRetrieveData();
-	// There's no objectHandleData as the data is handled inside uiHandleDate
-};
-
-$.objectRetrieveData = function() {
-	// TODO : reintroduce valid cache
-
-	OBJECT_EDIT.fetch({
-		url: CONFIG.base_edit_url,
-		authString: APP.authString,
-		cache: 0,
-		callback: function() {
-			$.objectRetrieveCallbackFunctions();
-			if(typeof _callback !== "undefined") {
-				_callback();
-			}
-		},
-		error: function() {
-			$.updateRightButtonRefresh();
-			var dialog = Ti.UI.createAlertDialog({
-					    message: 'Connexion failed. Please retry.',
-					    ok: 'OK',
-					    title: 'Error'
-					  }).show();
-		}
-	});		
+	
 }
 
 $.objectHandleData = function(_data) {
