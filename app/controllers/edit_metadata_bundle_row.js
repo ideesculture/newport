@@ -58,8 +58,8 @@ $.init = function() {
 					).getView();
 			} else {
 				APP.log("debug","UNSUPPORTED: ");
-				APP.log("debug",content.datatype);
-			
+				APP.log("debug",content);
+
 				var value={};
 				if (typeof VALUES != 'undefined') {
 					// We have one value for the element, does this one take a locale ?

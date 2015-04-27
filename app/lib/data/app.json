@@ -74,7 +74,7 @@
 		},
 		{
 			"title": "New",
-			"type": "edit",
+			"type": "new",
 			"image": "new_icon",
 			"tabletSupport": false,
 			"downTab" : false
