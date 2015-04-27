@@ -592,7 +592,7 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 		OBJECT_EDIT.insertTempAddition(e.config.element, new_values);
 	} else {
 		APP.log("debug","No previous value");
-		//WONT WORK FOR SURE
+
 		// Inserting into the temp table
 		var vals = {is_origin : 0, is_modified : 0, is_new : 1 };
 		vals[e.config.element] = e.value;
