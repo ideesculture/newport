@@ -1,0 +1,1 @@
+Newport is an initative built with Appcelerator Titanium framework to allow disconnected edition and addition to a CollectiveAccess database from an iPad native app. When we catch back the wifi signal, we can send the temporary edition data stored locally.

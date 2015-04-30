@@ -19,6 +19,7 @@ var OBJECT_EDIT = require("models/ca-object-edit")();
 var CONFIG = arguments[0];
 
 var FLAG_SAVE = false; 
+var edit_false_id; 
 
 // Pseudo constants
 var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "ca_places", "ca_collections", "ca_loans", "ca_movements"];			
@@ -27,10 +28,10 @@ var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "
 //Ti.App.EDIT = {};
 
 
-$.heading.text += " editing object #"+CONFIG.obj_data.object_id+" "+CONFIG.obj_data.display_label+" "+CONFIG.obj_data.idno;
+$.heading.text += " editing new manuscript ";
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
-$.TABLE = CONFIG.type;
+$.TABLE = "ca_objects";
 // List of all screen
 $.SCREENS = [];
 // Index of the screen we want to display, default -1 (first available)
@@ -54,10 +55,12 @@ $.init = function() {
 	// Initiating CA available UIs class
 	UI_MODEL.init();
 	// Initiating detail fetching for object
-	
-	OBJECT_DETAILS.init($.TABLE);
+	//OBJECT_DETAILS.init($.TABLE);
 	// Initiating edit model for object
-	OBJECT_EDIT.init($.TABLE, CONFIG.obj_data.object_id);
+	var timestamp = new Date().getTime();
+	edit_false_id = "new_"+ timestamp;
+	APP.log("debug", edit_false_id);
+	OBJECT_EDIT.init($.TABLE, edit_false_id);
 
 	// Credentials are inside app.json file
 	APP.ca_login=APP.Settings.CollectiveAccess.login;
@@ -90,13 +93,13 @@ $.init = function() {
 
 	// Loading object details
 	// Loading URL for object details, replacing ID by the current object_id
-	CONFIG.object_url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.obj_data.object_id);
+	/*CONFIG.object_url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.obj_data.object_id);
 	CONFIG.object_url_validity = APP.Settings.CollectiveAccess.urlForObjectDetails.cache;
 
 	// Loading URL for base object edition data, replacing ID by the current object_id
 	CONFIG.base_edit_url = APP.Settings.CollectiveAccess.urlForObjectEdit.url.replace(/ID/g,CONFIG.obj_data.object_id);
 	CONFIG.base_edit_url_validity = APP.Settings.CollectiveAccess.urlForObjectEdit.cache;
-
+	*/
 
 	$.objectRetrieveData();
 	
@@ -267,28 +270,18 @@ $.uiHandleData = function(_data) {
 							//APP.log("debug", typeof($.RECORD["attributes"]));
 							
 							
-							if( (typeof ($.RECORD["attributes"])) == "undefined"){
+							/*if( (typeof ($.RECORD["attributes"])) == "undefined"){
 								APP.log("debug", "no attributes defined");
 								$.RECORD["attributes"] = {} ; 
-								$.RECORD["attributes"][attribute] = {};
-
-								//tj problème de "undefined is not an objet" au round suivant! 
-								//ça va pas. 
-								APP.log("debug", "RECORD[attributes]:");
-								APP.log("debug", (typeof $.RECORD["attributes"]));
-								APP.log("debug", "RECORD[attributes][attribute]:");
-								APP.log("debug", (typeof $.RECORD["attributes"][attribute]));
-
-							}
-
+							}*/
 							//var values = $.RECORD["attributes"][attribute];
-							if ((typeof $.RECORD["attributes"][attribute]) == "undefined") {
+							//if ((typeof $.RECORD["attributes"][attribute]) == "undefined") {
 								// No value defined for this bundle, we need to define default options to agglomerate in edition buffer
 								//APP.log("debug", "IF UNDEFINED --------------------------------");
-								var values = $.EMPTY_BUNDLE;
-							} else {
+							var values = $.EMPTY_BUNDLE;
+							/*} else {
 								var values = $.RECORD["attributes"][attribute]; 
-							}
+							}*/
 
 							var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
 
@@ -322,38 +315,12 @@ $.uiHandleData = function(_data) {
 	$.updateRightButtonSave();
 };
 
-$.objectRetrieveCallbackFunctions = function() {
-	$.RECORD = JSON.parse(OBJECT_EDIT.getBaseForEdition());
-	//APP.log("debug", "GETBASE");
-	//APP.log("debug", typeof ($.RECORD["attributes"]));
+
+$.objectRetrieveData = function() {
 	$.EMPTY_BUNDLE = OBJECT_EDIT.getBundleValueForEmptyOne();
 
 	$.uiRetrieveData();
-	// There's no objectHandleData as the data is handled inside uiHandleDate
-};
-
-$.objectRetrieveData = function() {
-	// TODO : reintroduce valid cache
-
-	OBJECT_EDIT.fetch({
-		url: CONFIG.base_edit_url,
-		authString: APP.authString,
-		cache: 0,
-		callback: function() {
-			$.objectRetrieveCallbackFunctions();
-			if(typeof _callback !== "undefined") {
-				_callback();
-			}
-		},
-		error: function() {
-			$.updateRightButtonRefresh();
-			var dialog = Ti.UI.createAlertDialog({
-					    message: 'Connexion failed. Please retry.',
-					    ok: 'OK',
-					    title: 'Error'
-					  }).show();
-		}
-	});		
+	
 }
 
 $.objectHandleData = function(_data) {
@@ -381,7 +348,8 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 		APP.log("debug","------SAVE-----");
 
 		var itWorked = OBJECT_EDIT.saveChanges();
-
+		//APP.log("debug", "saveChanges worked");
+		
 		if(itWorked) {
 			//ici, essayer d'envoyer vers le serveur
 			if (Titanium.Network.networkType == Titanium.Network.NETWORK_WIFI )
@@ -483,96 +451,155 @@ $.updateRightButtonRefresh = function() {
 }
 
 $.sendDataToServer = function() {
+	APP.log("debug", "sendDataToServer"); 
 	var fieldToSave = {}; 
-	var remove_attributes = []; 
 	var attributes = {}; 
 	var temptab = []; 
 	var tempobj = {};
 	var json = {}; 
 	var row;
 	var id ="";
+	var id_of_object_created = ""; 
 	var attribut = ""; 
 	var data = OBJECT_EDIT.getSavedData(); 
 
 	if (data.length>0){
-		for(row in data){
-			json = {};
-			fieldToSave = data[row];
 
-			//saves the id and attribute name, to call them in the handleData function
-			id = fieldToSave.object_id;
-			attribut = fieldToSave.attribut;
 
-			//builds the object to be sent:
-			//1) remove_attributes
-			if(fieldToSave.is_modified){
-				remove_attributes[0] = fieldToSave.bundle_code;
-				json.remove_attributes = remove_attributes;
+		/******************************
+		FIRST REQUEST : CREATES THE NEW OBJECT IN THE DB
+		envoie le type
+		*************************/
+		//1) construction du json
+		json = {};
+		//builds the object to be sent
+		tempobj ={}; attributes = {}; 
+		//creates a manuscript
+		//it HAS to be changed!
+		//variable from an earlier screen asking for the object's type
+		tempobj.idno = edit_false_id; 	
+		tempobj.type_id= 249; 
+		json.intrinsic_fields = tempobj; 
+		//APP.log("debug", "json sent for object creation:");
+		//APP.log("debug", json);
+		
+		//2) sends the request
+		var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace("/id/ID","");
+		
+
+		var errorNew = function() {
+			var dialog = Ti.UI.createAlertDialog({
+			    message: 'ERROR when creating the new object in DB',
+			    ok: 'OK',
+			    title: 'Error'
+			  }).show();
+		}
+
+		var handleDataNew = function(_data){
+
+			//APP.log("debug", _data);
+			id_of_object_created= _data.object_id; 
+			APP.log("debug", "object was created! new id: ");
+			APP.log("debug", id_of_object_created);
+			//2) ajoute les attributs 
+			for(row in data){		
+				json = {};
+				fieldToSave = data[row];
+
+				//saves the id and attribute name, to call them in the handleData function
+				id = fieldToSave.object_id;
+				attribut = fieldToSave.attribut;
+
+				//builds the object to be sent
+				tempobj ={}; attributes = {}; 
+				tempobj["locale"]= "en_US"; 
+				tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
+				temptab[0]= tempobj; 
+				attributes[fieldToSave.bundle_code] = temptab; 
+				json.attributes = attributes; 
+
+
+				//alert(JSON.stringify(json)); 
+
+				/******************************
+				SENDS THE REQUEST 
+				*************************/
+				var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g, id_of_object_created);
+				
+				var error = function() {
+					var dialog = Ti.UI.createAlertDialog({
+					    message: 'ERROR. Couldn\'t send data to the server',
+					    ok: 'OK',
+					    title: 'Error'
+					  }).show();
+				}
+
+				var handleData = function( o1, o2){
+					//alert("go erase data: "+ o1 + " , "+ o2);
+					OBJECT_EDIT.cleanTempInsertTable(o1, o2);
+				}
+
+				var callback = function(){
+					var dialog = Ti.UI.createAlertDialog({
+					    message: 'whatever that means',
+					    ok: 'got it',
+					    title: 'CALLBACK'
+					  }).show();
+				}
+
+				HTTP.request({
+					timeout: 2000,
+					async:false,
+					headers: [{name: 'Authorization', value: APP.authString}],
+					type: "PUT",
+					format: "JSON",
+					data: json,
+					url: ca_url,
+					passthrough: callback,
+					success: handleData(id, attribut),
+					failure: error
+				});
+				
+
 			}
-			//2) attributes
-			tempobj ={}; attributes = {}; 
-			tempobj["locale"]= "en_US"; 
-			tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
-			temptab[0]= tempobj; 
-			attributes[fieldToSave.bundle_code] = temptab; 
-			json.attributes = attributes; 
-
-
-			//alert(JSON.stringify(json)); 
-
-			/******************************
-			SENDS THE REQUEST 
-			*************************/
-			var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g,fieldToSave.object_id);
-			
-			var error = function() {
-				var dialog = Ti.UI.createAlertDialog({
-				    message: 'ERROR. Couldn\'t send data to the server',
-				    ok: 'OK',
-				    title: 'Error'
-				  }).show();
-			}
-
-			var handleData = function( o1, o2){
-				//alert("go erase data: "+ o1 + " , "+ o2);
-				OBJECT_EDIT.cleanTempInsertTable(o1, o2);
-			}
-
-			var callback = function(){
-				var dialog = Ti.UI.createAlertDialog({
-				    message: 'whatever that means',
-				    ok: 'got it',
-				    title: 'CALLBACK'
-				  }).show();
-			}
-
-			HTTP.request({
-				timeout: 2000,
-				async:false,
-				headers: [{name: 'Authorization', value: APP.authString}],
-				type: "PUT",
-				format: "JSON",
-				data: json,
-				url: ca_url,
-				passthrough: callback,
-				success: handleData(id, attribut),
-				failure: error
-			});
 
 		}
+
+		var callbackNew = function(){
+			var dialog = Ti.UI.createAlertDialog({
+			    message: 'whatever that means',
+			    ok: 'got it',
+			    title: 'CALLBACK'
+			  }).show();
+		}
+
+		HTTP.request({
+			timeout: 2000,
+			async:false,
+			headers: [{name: 'Authorization', value: APP.authString}],
+			type: "PUT",
+			format: "JSON",
+			data: json,
+			url: ca_url,
+			passthrough: callbackNew,
+			success: handleDataNew,
+			failure: errorNew
+		});
+
+
+
 		var dialog = Ti.UI.createAlertDialog({
 			title: 'Save',
 		    message: 'Your modifications have been saved :)',
 		    ok: 'OK'
 		});
 		dialog.show();
-		//$.label.text = "Data has been sent to the server successfully :)";		
+		//new edit_false_id: just in case
+		edit_false_id = "new_"+ timestamp;
 	}
 	else
 	{
 		alert("no data :(");
-	//	$.label2.text = "Data export"; 
-	//	$.label.text = "There are no modifications to send to the server";
 	}
 }
 
@@ -583,34 +610,17 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 	//APP.log("debug", e.config);
 	var attribute = e.config.bundle_code.replace(/^ca_attribute_/,"");
 	APP.log("debug", attribute);
-	APP.log("debug", typeof $.RECORD.attributes);
-	if (typeof $.RECORD.attributes[attribute] != "undefined") {
-	//if (typeof $.RECORD.attributes != "undefined") {	
-		APP.log("debug","We have a previous value");
-		APP.log("debug","MERGING !");
-		var origin_values = $.RECORD.attributes[attribute];
-		//APP.log("debug",origin_values);
-		var new_values = origin_values;
-		new_values[e.config.i].bundle = attribute; 
-		new_values[e.config.i][e.config.element] = e.value;
-		new_values[e.config.i].is_origin = 0; 
-		new_values[e.config.i].is_modified = 1;
-		new_values[e.config.i].is_new = 0;
-		APP.log("debug",new_values);
-		// Inserting into the temp table
-		OBJECT_EDIT.insertTempAddition(e.config.element, new_values);
-	} else {
-		APP.log("debug","No previous value");
 
-		// Inserting into the temp table
-		var vals = {is_origin : 0, is_modified : 0, is_new : 1 };
-		vals[e.config.element] = e.value;
-		vals.bundle = attribute;
-		var new_values2 = [];
-		new_values2[0]=vals;
-		APP.log("debug",new_values2);
-		OBJECT_EDIT.insertTempAddition(e.config.element, new_values2);
-	}
+	//WONT WORK FOR SURE
+	// Inserting into the temp table
+	var vals = {is_origin : 0, is_modified : 0, is_new : 1 };
+	vals[e.config.element] = e.value;
+	vals.bundle = attribute;
+	var new_values2 = [];
+	new_values2[0]=vals;
+	APP.log("debug",new_values2);
+	OBJECT_EDIT.insertTempAddition(e.config.element, new_values2);
+
 	
 });
 
