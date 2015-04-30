@@ -359,16 +359,16 @@ function Model() {
 	//apparement, fait tout crasher
 	
 	this.cleanTempInsertTable = function (_id, _attribute){
-		APP.log("debug", "DEBUG cleanTempInsertTable");
-		APP.log("debug", _id);
-		APP.log("debug", _attribute);
+		APP.log("debug", "cleanTempInsertTable");
+		//APP.log("debug", _id);
+		//APP.log("debug", _attribute);
 		//cleans the _edit_temp_insert table
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
 		var request = "DELETE FROM ca_objects_edit_temp_insert WHERE object_id = ? AND attribute = ? ;";
 		db.execute(request, _id, _attribute);
 		db.execute("END TRANSACTION;");
-		APP.log("debug", "ok fini");
+		//APP.log("debug", "ok fini");
 
 	}
 

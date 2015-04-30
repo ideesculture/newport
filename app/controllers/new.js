@@ -480,8 +480,8 @@ $.sendDataToServer = function() {
 		tempobj.idno = edit_false_id; 	
 		tempobj.type_id= 249; 
 		json.intrinsic_fields = tempobj; 
-		APP.log("debug", "json sent for object creation:");
-		APP.log("debug", json);
+		//APP.log("debug", "json sent for object creation:");
+		//APP.log("debug", json);
 		
 		//2) sends the request
 		var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace("/id/ID","");
@@ -497,11 +497,11 @@ $.sendDataToServer = function() {
 
 		var handleDataNew = function(_data){
 
-			APP.log("debug", _data);
+			//APP.log("debug", _data);
 			id_of_object_created= _data.object_id; 
 			APP.log("debug", "object was created! new id: ");
 			APP.log("debug", id_of_object_created);
-					//2) ajoute les attributs 
+			//2) ajoute les attributs 
 			for(row in data){		
 				json = {};
 				fieldToSave = data[row];
@@ -594,13 +594,12 @@ $.sendDataToServer = function() {
 		    ok: 'OK'
 		});
 		dialog.show();
-		//$.label.text = "Data has been sent to the server successfully :)";		
+		//new edit_false_id: just in case
+		edit_false_id = "new_"+ timestamp;
 	}
 	else
 	{
 		alert("no data :(");
-	//	$.label2.text = "Data export"; 
-	//	$.label.text = "There are no modifications to send to the server";
 	}
 }
 
