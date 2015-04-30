@@ -270,7 +270,7 @@ function Model() {
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
 		
-		var request = "SELECT object_id, attribute, json FROM " + APP.CURRENT_TABLE + "_edit_updates WHERE object_id = "+APP.CURRENT_ID+" ;";
+		var request = "SELECT object_id, attribute, json FROM " + APP.CURRENT_TABLE + "_edit_updates WHERE object_id = '"+APP.CURRENT_ID+"' ;";
 		var data = db.execute(request);
 		db.execute("END TRANSACTION;");
 
@@ -350,8 +350,8 @@ function Model() {
 		data.close();
 		db.close();
 
-		APP.log("debug", "getSavedData OK");
-		//APP.log("debug", result);
+		APP.log("debug", "getSavedData OK, returns: ");
+		APP.log("debug", result);
 		return result;
 
 	}

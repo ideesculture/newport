@@ -270,6 +270,15 @@ $.uiHandleData = function(_data) {
 							if( (typeof ($.RECORD["attributes"])) == "undefined"){
 								APP.log("debug", "no attributes defined");
 								$.RECORD["attributes"] = {} ; 
+								$.RECORD["attributes"][attribute] = {};
+
+								//tj problème de "undefined is not an objet" au round suivant! 
+								//ça va pas. 
+								APP.log("debug", "RECORD[attributes]:");
+								APP.log("debug", (typeof $.RECORD["attributes"]));
+								APP.log("debug", "RECORD[attributes][attribute]:");
+								APP.log("debug", (typeof $.RECORD["attributes"][attribute]));
+
 							}
 
 							//var values = $.RECORD["attributes"][attribute];

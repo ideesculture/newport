@@ -19,6 +19,7 @@ var OBJECT_EDIT = require("models/ca-object-edit")();
 var CONFIG = arguments[0];
 
 var FLAG_SAVE = false; 
+var edit_false_id; 
 
 // Pseudo constants
 var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "ca_places", "ca_collections", "ca_loans", "ca_movements"];			
@@ -27,7 +28,7 @@ var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "
 //Ti.App.EDIT = {};
 
 
-$.heading.text += " editing new object ";
+$.heading.text += " editing new manuscript ";
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
 $.TABLE = "ca_objects";
@@ -57,7 +58,7 @@ $.init = function() {
 	//OBJECT_DETAILS.init($.TABLE);
 	// Initiating edit model for object
 	var timestamp = new Date().getTime();
-	var edit_false_id = "new_"+ timestamp;
+	edit_false_id = "new_"+ timestamp;
 	APP.log("debug", edit_false_id);
 	OBJECT_EDIT.init($.TABLE, edit_false_id);
 
@@ -347,7 +348,7 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 		APP.log("debug","------SAVE-----");
 
 		var itWorked = OBJECT_EDIT.saveChanges();
-		APP.log("debug", "saveChanges worked");
+		//APP.log("debug", "saveChanges worked");
 		
 		if(itWorked) {
 			//ici, essayer d'envoyer vers le serveur
@@ -458,6 +459,7 @@ $.sendDataToServer = function() {
 	var json = {}; 
 	var row;
 	var id ="";
+	var id_of_object_created = ""; 
 	var attribut = ""; 
 	var data = OBJECT_EDIT.getSavedData(); 
 
@@ -466,23 +468,25 @@ $.sendDataToServer = function() {
 
 		/******************************
 		FIRST REQUEST : CREATES THE NEW OBJECT IN THE DB
+		envoie le type
 		*************************/
 		//1) construction du json
-		fieldToSave = data[0]; 
-		APP.log("debug", fieldToSave);
-		attribut = fieldToSave.attribut;
+		json = {};
 		//builds the object to be sent
 		tempobj ={}; attributes = {}; 
-		tempobj["locale"]= "en_US"; 
-		tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
-		temptab[0]= tempobj; 
-		attributes[fieldToSave.bundle_code] = temptab; 
-		json.attributes = attributes; 
+		//creates a manuscript
+		//it HAS to be changed!
+		//variable from an earlier screen asking for the object's type
+		tempobj.idno = edit_false_id; 	
+		tempobj.type_id= 249; 
+		json.intrinsic_fields = tempobj; 
+		APP.log("debug", "json sent for object creation:");
+		APP.log("debug", json);
 		
 		//2) sends the request
 		var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace("/id/ID","");
-		alert(ca_url);
 		
+
 		var errorNew = function() {
 			var dialog = Ti.UI.createAlertDialog({
 			    message: 'ERROR when creating the new object in DB',
@@ -492,37 +496,13 @@ $.sendDataToServer = function() {
 		}
 
 		var handleDataNew = function(_data){
-			//alert("go erase data: "+ o1 + " , "+ o2);
-			//OBJECT_EDIT.cleanTempInsertTable(o1, o2);
-			id = _data; 
-			alert("object was created! new id: "+ id);
-		}
 
-		var callbackNew = function(){
-			var dialog = Ti.UI.createAlertDialog({
-			    message: 'whatever that means',
-			    ok: 'got it',
-			    title: 'CALLBACK'
-			  }).show();
-		}
-
-		HTTP.request({
-			timeout: 2000,
-			async:false,
-			headers: [{name: 'Authorization', value: APP.authString}],
-			type: "PUT",
-			format: "JSON",
-			data: json,
-			url: ca_url,
-			passthrough: callbackNew,
-			success: handleDataNew,
-			failure: errorNew
-		});
-
-
-		//2) ajoute les attributs restants
-		for(row in data){
-			if(row > 0){
+			APP.log("debug", _data);
+			id_of_object_created= _data.object_id; 
+			APP.log("debug", "object was created! new id: ");
+			APP.log("debug", id_of_object_created);
+					//2) ajoute les attributs 
+			for(row in data){		
 				json = {};
 				fieldToSave = data[row];
 
@@ -544,7 +524,7 @@ $.sendDataToServer = function() {
 				/******************************
 				SENDS THE REQUEST 
 				*************************/
-				var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g,fieldToSave.object_id);
+				var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g, id_of_object_created);
 				
 				var error = function() {
 					var dialog = Ti.UI.createAlertDialog({
@@ -579,9 +559,35 @@ $.sendDataToServer = function() {
 					success: handleData(id, attribut),
 					failure: error
 				});
+				
+
 			}
 
 		}
+
+		var callbackNew = function(){
+			var dialog = Ti.UI.createAlertDialog({
+			    message: 'whatever that means',
+			    ok: 'got it',
+			    title: 'CALLBACK'
+			  }).show();
+		}
+
+		HTTP.request({
+			timeout: 2000,
+			async:false,
+			headers: [{name: 'Authorization', value: APP.authString}],
+			type: "PUT",
+			format: "JSON",
+			data: json,
+			url: ca_url,
+			passthrough: callbackNew,
+			success: handleDataNew,
+			failure: errorNew
+		});
+
+
+
 		var dialog = Ti.UI.createAlertDialog({
 			title: 'Save',
 		    message: 'Your modifications have been saved :)',
