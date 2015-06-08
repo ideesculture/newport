@@ -18,7 +18,9 @@ $.init = function() {
 	$.objectName.text = CONFIG.display_label;
 
 	// Loading URL for object details, replacing ID by the current object_id
-	CONFIG.url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.object_id);
+	//CONFIG.url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.object_id);
+	CONFIG.url = "http://administrator:admin@aspi.idcultu.re/gestion/service.php/item/ca_objects/id/ID";
+	CONFIG.url =CONFIG.url.replace(/ID/g,CONFIG.object_id);
 	CONFIG.validity = APP.Settings.CollectiveAccess.urlForObjectDetails.cache;
 
 	OBJECT_DETAILS.init($.TABLE,CONFIG.object_id);

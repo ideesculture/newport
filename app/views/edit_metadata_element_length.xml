@@ -1,11 +1,12 @@
 <Alloy>
 	<View id="field">
-		<Label id="label"/>
+		<Label id="label"/>s	
 		<View id="fieldWithIcon">
-			<TextField id="textfield"/>
+			<TextField id="lengthfield"/>
 			<View id="iconContainer">
 				<Require type="widget" src="ti.ux.iconfont" icon="fa-arrows-h" size="20" color="white" id="icon"/>
 			</View>
 		</View>
+		<Label id="notes"/>
 	</View>
 </Alloy>

@@ -269,25 +269,16 @@ $.uiHandleData = function(_data) {
 							
 							if( (typeof ($.RECORD["attributes"])) == "undefined"){
 								APP.log("debug", "no attributes defined");
-								$.RECORD["attributes"] = {} ; 
-								$.RECORD["attributes"][attribute] = {};
-
-								//tj problème de "undefined is not an objet" au round suivant! 
-								//ça va pas. 
-								APP.log("debug", "RECORD[attributes]:");
-								APP.log("debug", (typeof $.RECORD["attributes"]));
-								APP.log("debug", "RECORD[attributes][attribute]:");
-								APP.log("debug", (typeof $.RECORD["attributes"][attribute]));
-
+									var values = $.EMPTY_BUNDLE;
 							}
-
-							//var values = $.RECORD["attributes"][attribute];
-							if ((typeof $.RECORD["attributes"][attribute]) == "undefined") {
-								// No value defined for this bundle, we need to define default options to agglomerate in edition buffer
-								//APP.log("debug", "IF UNDEFINED --------------------------------");
-								var values = $.EMPTY_BUNDLE;
-							} else {
-								var values = $.RECORD["attributes"][attribute]; 
+							else{
+								if ((typeof $.RECORD["attributes"][attribute]) == "undefined") {
+									// No value defined for this bundle, we need to define default options to agglomerate in edition buffer
+									//APP.log("debug", "IF UNDEFINED --------------------------------");
+									var values = $.EMPTY_BUNDLE;
+								} else {
+									var values = $.RECORD["attributes"][attribute]; 
+								}
 							}
 
 							var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);

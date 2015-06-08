@@ -113,18 +113,10 @@ function Model() {
 		if(_data.ok == true) {
 			var record = _data;
 			delete(record.ok);
+			APP.log("debug", "handleData:");
+			APP.log("debug", APP.CURRENT_ID);
 
-			var db = Ti.Database.open(DBNAME);
-			//db.execute("DELETE FROM " + _ca_table + "_edit_base;");
-			db.execute("BEGIN TRANSACTION;");
 			
-			APP.ca_modele_prop = new Array();
-			APP.ca_modele_values = {};
-			var ca_table = "ca_objects";
-			// emptying previous cached results
-			var request = "DELETE FROM " + APP.CURRENT_TABLE + "_edit_base WHERE id = ?;";
-			db.execute(request, APP.CURRENT_ID);
-
 			// expanding attribute informations for editing process tracking
 			for(var attribute in record.attributes) {
 				for(var value in attribute) {
@@ -139,7 +131,18 @@ function Model() {
 					}
 				}
 			}
-			//alert("ici");
+			APP.log("debug", JSON.stringify(record));
+
+			var db = Ti.Database.open(DBNAME);
+			//db.execute("DELETE FROM " + _ca_table + "_edit_base;");
+			db.execute("BEGIN TRANSACTION;");
+			
+			APP.ca_modele_prop = new Array();
+			APP.ca_modele_values = {};
+			var ca_table = "ca_objects";
+			// emptying previous cached results
+			var request = "DELETE FROM " + APP.CURRENT_TABLE + "_edit_base WHERE id = ?;";
+			db.execute(request, APP.CURRENT_ID);
 
 			// main difference at this step with ca_object_details is that we don't need thumbnail here
 			var request = "DELETE FROM " + APP.CURRENT_TABLE + "_edit_base where object_id = ?;";
@@ -158,6 +161,13 @@ function Model() {
 	};
 
 	this.getBaseForEdition = function() {
+
+		APP.log("debug", "getBaseForEdition");
+		//// TEMP SOLUTION
+		///// BECAUSE "TEXT" KILLED MY CODE
+		//// WE HAVE TO FIND SOMETHING BETTER !!!
+		APP.CURRENT_ID= APP.CURRENT_ID+".0";
+		APP.log("debug", APP.CURRENT_ID);
 		var db = Ti.Database.open(DBNAME), temp = {};
 		var request = "select object_id, json from " + APP.CURRENT_TABLE + "_edit_base where object_id="+APP.CURRENT_ID+" order by id desc limit 1";
 		var data = db.execute(request);
@@ -181,6 +191,8 @@ function Model() {
 
 		data.close();
 		db.close();
+		APP.log("debug", "resultat getBaseForEdition:");
+		APP.log("debug", result);
 		return result;
 	}
 
