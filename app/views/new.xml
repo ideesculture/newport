@@ -1,0 +1,41 @@
+<Alloy>
+	<View id="Wrapper" name="new">
+		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
+
+		<Label id="label_typechoice" text="What type of object do you want to create?"/>		
+		<ScrollView id="container">
+		
+			<TableView id="logs_table" height="280dp">
+				<TableViewRow id="type1" title="1" hasChild="true" />
+				<TableViewRow id="type2" title="2" hasChild="true" />
+				<TableViewRow id="type3" title="3" hasChild="true" />
+				<TableViewRow id="type4" title="4" hasChild="true" />
+				<TableViewRow id="type5" title="5" hasChild="true" />
+				<TableViewRow id="type6" title="6" hasChild="true" />
+			</TableView>
+			
+			<Label id="copyright" />
+			<Label id="version" />
+		</ScrollView>
+	</View>
+</Alloy>
+
+<!--Alloy>
+	<View id="Wrapper" name="Settings">
+		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
+		
+		<ScrollView id="container">			
+			<TableView id="logs_table" height="280dp">
+				<TableViewRow id="type1" title="Send Application Logs" hasChild="true" />
+				<TableViewRow id="flushlogs" title="Flush application logs" hasChild="true" />
+				<TableViewRow id="acknowledgements" title="Acknowledgements" hasChild="true" />
+				<TableViewRow id="devsummary" title="Development : fast info control" hasChild="true" />
+				<TableViewRow id="emptycache" title="Development : clear the local cache" hasChild="true" />
+				<TableViewRow id="send" title="Development : send modified data to the server" hasChild="true" />
+			</TableView>
+			
+			<Label id="copyright" />
+			<Label id="version" />
+		</ScrollView>
+	</View>
+</Alloy-->
