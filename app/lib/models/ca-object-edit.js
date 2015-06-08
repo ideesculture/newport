@@ -131,7 +131,6 @@ function Model() {
 					}
 				}
 			}
-			APP.log("debug", JSON.stringify(record));
 
 			var db = Ti.Database.open(DBNAME);
 			//db.execute("DELETE FROM " + _ca_table + "_edit_base;");
@@ -166,8 +165,20 @@ function Model() {
 		//// TEMP SOLUTION
 		///// BECAUSE "TEXT" KILLED MY CODE
 		//// WE HAVE TO FIND SOMETHING BETTER !!!
-		APP.CURRENT_ID= APP.CURRENT_ID+".0";
-		APP.log("debug", APP.CURRENT_ID);
+		if((APP.CURRENT_ID*1)>0){
+			APP.log("debug", "_____________________________________________");
+			APP.log("debug", "______________ID INTEGER_________");
+			APP.log("debug", APP.CURRENT_ID);
+			APP.log("debug", "_____________________________________________");
+			APP.CURRENT_ID= APP.CURRENT_ID+".0";
+		} else {
+			APP.log("debug", "_____________________________________________");
+			APP.log("debug", "______________ID TEXT_________");
+			APP.log("debug", APP.CURRENT_ID);
+			APP.log("debug", "_____________________________________________");
+		}
+		//APP.CURRENT_ID= APP.CURRENT_ID+".0";
+		//APP.log("debug", APP.CURRENT_ID);
 		var db = Ti.Database.open(DBNAME), temp = {};
 		var request = "select object_id, json from " + APP.CURRENT_TABLE + "_edit_base where object_id="+APP.CURRENT_ID+" order by id desc limit 1";
 		var data = db.execute(request);
@@ -191,8 +202,8 @@ function Model() {
 
 		data.close();
 		db.close();
-		APP.log("debug", "resultat getBaseForEdition:");
-		APP.log("debug", result);
+		//APP.log("debug", "resultat getBaseForEdition:");
+		//APP.log("debug", result);
 		return result;
 	}
 

@@ -28,7 +28,9 @@ var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "
 //Ti.App.EDIT = {};
 
 
-$.heading.text += " editing new manuscript ";
+
+$.heading.text += " editing new ";
+$.heading.text += CONFIG.type; 
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
 $.TABLE = "ca_objects";
