@@ -6,12 +6,14 @@
 		<ScrollView id="container">
 		
 			<TableView id="logs_table" height="280dp">
-				<TableViewRow id="type1" title="1" hasChild="true" />
-				<TableViewRow id="type2" title="2" hasChild="true" />
-				<TableViewRow id="type3" title="3" hasChild="true" />
-				<TableViewRow id="type4" title="4" hasChild="true" />
-				<TableViewRow id="type5" title="5" hasChild="true" />
-				<TableViewRow id="type6" title="6" hasChild="true" />
+				<TableViewRow id="type1" title="Fonds" hasChild="true" />
+				<TableViewRow id="type2" title="Section" hasChild="true" />
+				<TableViewRow id="type3" title="Series" hasChild="true" />
+				<TableViewRow id="type4" title="Sub-series" hasChild="true" />
+				<TableViewRow id="type5" title="Sub-sub-series" hasChild="true" />
+				<TableViewRow id="type6" title="Sub-sub-sub-series" hasChild="true" />
+				<TableViewRow id="type7" title="Item" hasChild="true" />
+				<TableViewRow id="type8" title="Manuscript" hasChild="true" />
 			</TableView>
 			
 			<Label id="copyright" />

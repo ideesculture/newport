@@ -35,9 +35,35 @@ $.init = function() {
 // Event listeners
 
 $.type1.addEventListener("click", function(_event) {
+	APP.addChild("new_step2", { type: "fonds" }, true);
+});
 
-	alert("type1 selected"); 
-	APP.addChild("new_step2", { type: "type1" }, true);
+$.type2.addEventListener("click", function(_event) {
+	APP.addChild("new_step2", { type: "section" }, true);
+});
+
+$.type3.addEventListener("click", function(_event) {
+	APP.addChild("new_step2", { type: "series" }, true);
+});
+
+$.type4.addEventListener("click", function(_event) {
+	APP.addChild("new_step2", { type: "subseries" }, true);
+});
+
+$.type5.addEventListener("click", function(_event) {
+	APP.addChild("new_step2", { type: "subsubseries" }, true);
+});
+
+$.type6.addEventListener("click", function(_event) {
+	APP.addChild("new_step2", { type: "subsubsubseries" }, true);
+});
+
+$.type7.addEventListener("click", function(_event) {
+	APP.addChild("new_step2", { type: "item" }, true);
+});
+
+$.type8.addEventListener("click", function(_event) {
+	APP.addChild("new_step2", { type: "manuscript" }, true);
 });
 
 
