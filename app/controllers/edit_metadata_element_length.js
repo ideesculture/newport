@@ -1,5 +1,5 @@
 /**
- * Controller for DateRange metadata
+ * Controller for length metadata
  * 
  * @class Controllers.text
  * @uses core
