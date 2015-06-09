@@ -162,20 +162,17 @@ function Model() {
 	this.getBaseForEdition = function() {
 
 		APP.log("debug", "getBaseForEdition");
-		//// TEMP SOLUTION
-		///// BECAUSE "TEXT" KILLED MY CODE
-		//// WE HAVE TO FIND SOMETHING BETTER !!!
 		if((APP.CURRENT_ID*1)>0){
-			APP.log("debug", "_____________________________________________");
-			APP.log("debug", "______________ID INTEGER_________");
-			APP.log("debug", APP.CURRENT_ID);
-			APP.log("debug", "_____________________________________________");
+			//APP.log("debug", "_____________________________________________");
+			//APP.log("debug", "______________ID INTEGER_________");
+			//APP.log("debug", APP.CURRENT_ID);
+			//APP.log("debug", "_____________________________________________");
 			APP.CURRENT_ID= APP.CURRENT_ID+".0";
 		} else {
-			APP.log("debug", "_____________________________________________");
-			APP.log("debug", "______________ID TEXT_________");
-			APP.log("debug", APP.CURRENT_ID);
-			APP.log("debug", "_____________________________________________");
+			//APP.log("debug", "_____________________________________________");
+			//APP.log("debug", "______________ID TEXT_________");
+			//APP.log("debug", APP.CURRENT_ID);
+			//APP.log("debug", "_____________________________________________");
 		}
 		//APP.CURRENT_ID= APP.CURRENT_ID+".0";
 		//APP.log("debug", APP.CURRENT_ID);

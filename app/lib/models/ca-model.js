@@ -86,7 +86,7 @@ function Model() {
 	this.handleData = function(_data, _url, _callback) {
 
 		APP.log("debug", "CA_MODEL.handleData");
-		//APP.log("debug", _data);
+		APP.log("debug", _data);
 		if(_data.ok == true) {
 			APP.log("debug", "connected");
 			var db = Ti.Database.open(DBNAME);
@@ -127,9 +127,31 @@ function Model() {
 								db.execute(request, ca_table, record_type, information_type, element_name, insert_date, content);
 		        			}
 		        		} else {
+		        			if(prop2 == "type_info") {
+
+		        				//inserting informations about the record type: numeric_id and display_label
+		        				var type_info_data = _data2[prop2];
+		        				for(var info in type_info_data){
+		        					if(info=="item_id"){
+		        						content=type_info_data[info];
+		        						var request = "INSERT INTO ca_models (id, ca_table, record_type, information_type, element_name, date, content) VALUES (NULL, ?, ?, ?, ?, ?, ?);";
+										db.execute(request, ca_table, record_type, information_type, info, insert_date, content) ;
+		        					
+		        					}
+		        					if(info=="display_label"){
+		        						content=type_info_data[info];
+		        						var request = "INSERT INTO ca_models (id, ca_table, record_type, information_type, element_name, date, content) VALUES (NULL, ?, ?, ?, ?, ?, ?);";
+										db.execute(request, ca_table, record_type, information_type, info, insert_date, content) ;
+		        					
+		        					}
+		        				}
+		        				
+
+		        			} else {
 		        			// Inserting non element properties
 			        		var request = "INSERT INTO ca_models (id, ca_table, record_type, information_type, date, content) VALUES (NULL, ?, ?, ?, ?, ?);";
 							db.execute(request, ca_table, record_type, information_type, insert_date, content);
+		        			}
 		        		}
 	        		} 
 		        }
@@ -210,17 +232,24 @@ function Model() {
 
 	this.getObjectTypes = function(){
 		var db = Ti.Database.open(DBNAME),
-			request = "select distinct record_type from ca_models",
-			types = [],
-			rec_type;
+			request = "SELECT DISTINCT record_type, element_name, content FROM CA_MODELS where information_type=\"type_info\"",
+			types = {}, rec_type_idno, rec_type_elt,rec_type_val;
 		var data = db.execute(request);
 
 		//builds a table of types from request results
 		if(data.getRowCount() > 0) {
 			var i = 0;
 			while (data.isValidRow()) {
-				rec_type = data.fieldByName("record_type");
-				types[i]= rec_type;
+				rec_type_idno = data.fieldByName("record_type");
+				rec_type_elt= data.fieldByName("element_name");
+				rec_type_val= data.fieldByName("content");
+				if (types[rec_type_idno] == null) {
+					var tempobj = {};
+				} else {
+					var tempobj = types[rec_type_idno];
+				}
+				tempobj[rec_type_elt]=rec_type_val;
+				types[rec_type_idno] = tempobj; 
 				data.next();
 				i++;
 			}

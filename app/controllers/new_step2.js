@@ -30,7 +30,7 @@ var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "
 
 
 $.heading.text += " editing new ";
-$.heading.text += CONFIG.type; 
+$.heading.text += CONFIG.type_info.display_label; 
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
 $.TABLE = "ca_objects";

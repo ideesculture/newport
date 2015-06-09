@@ -249,6 +249,8 @@ $.uiHandleData = function(_data) {
 	
 	// error handling if _data has not been rightly fetched back
 	if (typeof _data != "undefined") {
+		APP.log("debug", "UI HANDLE DATA");
+		APP.log("debug", _data);
 		if (typeof _data.content != "undefined") {
 			// If we have some content back
 			var screen_content = _data.content.screen_content;
@@ -263,8 +265,6 @@ $.uiHandleData = function(_data) {
 
 						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {							
 							// defining values from global var $.RECORD
-							//APP.log("debug", "trululu");
-							//APP.log("debug", typeof($.RECORD["attributes"]));
 							
 							
 							if( (typeof ($.RECORD["attributes"])) == "undefined"){

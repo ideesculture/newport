@@ -84,18 +84,19 @@ $.modelRetrieveCallbackFunctions = function () {
 	var data = [], title;
 
 	for(var rec_type in types) {
-		title = types[rec_type] ;
-		data.push(createRow(title));
+		title = types[rec_type].display_label ;
+		data.push(createRow(types[rec_type]));
 	}
 	$.types_table.setData(data);
  }
 
-function createRow(title) {
+function createRow(data) {
+	var title = data.display_label ;
     var tvr = Ti.UI.createTableViewRow({
         title : title
     });
 	tvr.addEventListener("click", function(_event) {
-		APP.addChild("new_step2", { type: title }, true);
+		APP.addChild("new_step2", { type_info: data }, true);
 	});
  
     return tvr;
