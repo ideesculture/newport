@@ -1,5 +1,6 @@
 "#Wrapper": {
-	layout: "vertical"
+	layout: "vertical",
+	top: "10dp"
 },
 "#container": {
 	top: "0dp",
@@ -9,8 +10,8 @@
 	layout: "vertical"
 },
 "TableView": {
-	right: "0dp",
-	left: "0dp",
+	right: "10dp",
+	left: "10dp",
 	top: "20dp",
 	separatorColor: "#EEE",
 	rowHeight: "45dp",
@@ -25,7 +26,7 @@
 	},
 	color: "#000",
 	selectedColor: "#000",
-	height: "45dp"
+	height: "45dp",
 },
 "label_typechoice": {
 	color: "#666",

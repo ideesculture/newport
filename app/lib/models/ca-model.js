@@ -207,6 +207,31 @@ function Model() {
 		
 		return result;
 	};
+
+	this.getObjectTypes = function(){
+		var db = Ti.Database.open(DBNAME),
+			request = "select distinct record_type from ca_models",
+			types = [],
+			rec_type;
+		var data = db.execute(request);
+
+		//builds a table of types from request results
+		if(data.getRowCount() > 0) {
+			var i = 0;
+			while (data.isValidRow()) {
+				rec_type = data.fieldByName("record_type");
+				types[i]= rec_type;
+				data.next();
+				i++;
+			}
+			var result = types; 
+		}else {
+			var result = false;
+		}
+		data.close();
+		db.close();	
+		return result;
+	}
 }
 
 module.exports = function() {
