@@ -6,14 +6,8 @@
 		<ScrollView id="container">
 		
 			<TableView id="types_table">
-				<!--TableViewRow id="type1" title="Fonds" hasChild="true" />
-				<TableViewRow id="type2" title="Section" hasChild="true" />
-				<TableViewRow id="type3" title="Series" hasChild="true" />
-				<TableViewRow id="type4" title="Sub-series" hasChild="true" />
-				<TableViewRow id="type5" title="Sub-sub-series" hasChild="true" />
-				<TableViewRow id="type6" title="Sub-sub-sub-series" hasChild="true" />
-				<TableViewRow id="type7" title="Item" hasChild="true" />
-				<TableViewRow id="type8" title="Manuscript" hasChild="true" /-->
+				<!-- this table is dynamically populated by new.js -->
+				
 			</TableView>
 			
 			<Label id="copyright" />
@@ -22,22 +16,3 @@
 	</View>
 </Alloy>
 
-<!--Alloy>
-	<View id="Wrapper" name="Settings">
-		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
-		
-		<ScrollView id="container">			
-			<TableView id="logs_table" height="280dp">
-				<TableViewRow id="type1" title="Send Application Logs" hasChild="true" />
-				<TableViewRow id="flushlogs" title="Flush application logs" hasChild="true" />
-				<TableViewRow id="acknowledgements" title="Acknowledgements" hasChild="true" />
-				<TableViewRow id="devsummary" title="Development : fast info control" hasChild="true" />
-				<TableViewRow id="emptycache" title="Development : clear the local cache" hasChild="true" />
-				<TableViewRow id="send" title="Development : send modified data to the server" hasChild="true" />
-			</TableView>
-			
-			<Label id="copyright" />
-			<Label id="version" />
-		</ScrollView>
-	</View>
-</Alloy-->

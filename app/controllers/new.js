@@ -17,7 +17,7 @@ $.init = function() {
 		$.container.remove($.logs_table);
 	}
 
-	////////////////MODEL //////////////////////////
+	////////////////MODEL CALL, TO POPULATE THE OBJECT TYPES LIST//////////////////////////
 
 	// loading url & cache validity from settings
 	CONFIG.validity = APP.Settings.CollectiveAccess.urlForHierarchy.cache;
@@ -30,6 +30,7 @@ $.init = function() {
 
 	$.copyright.text = APP.LEGAL.COPYRIGHT + " v" + APP.VERSION;
 	
+	//CODE TO SHOW OR HIDE THE NAVIGATION BAR
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
 
 	if(APP.Settings.useSlideMenu) {
@@ -77,7 +78,7 @@ $.modelRetrieveData = function(_force, _callback) {
 	});
 	
 };
-
+//dynamically generates the list of available object types
 $.modelRetrieveCallbackFunctions = function () {
 	var types = MODEL_MODEL.getObjectTypes(); 
 	var data = [], title;
@@ -100,39 +101,6 @@ function createRow(title) {
     return tvr;
 }
 
-
-// Event listeners
-
-
-/*
-$.type2.addEventListener("click", function(_event) {
-	APP.addChild("new_step2", { type: "section" }, true);
-});
-
-$.type3.addEventListener("click", function(_event) {
-	APP.addChild("new_step2", { type: "series" }, true);
-});
-
-$.type4.addEventListener("click", function(_event) {
-	APP.addChild("new_step2", { type: "subseries" }, true);
-});
-
-$.type5.addEventListener("click", function(_event) {
-	APP.addChild("new_step2", { type: "subsubseries" }, true);
-});
-
-$.type6.addEventListener("click", function(_event) {
-	APP.addChild("new_step2", { type: "subsubsubseries" }, true);
-});
-
-$.type7.addEventListener("click", function(_event) {
-	APP.addChild("new_step2", { type: "item" }, true);
-});
-
-$.type8.addEventListener("click", function(_event) {
-	APP.addChild("new_step2", { type: "manuscript" }, true);
-});
-*/
 
 // Kick off the init
 $.init();
