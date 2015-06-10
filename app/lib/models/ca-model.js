@@ -293,7 +293,7 @@ function Model() {
 		}
 		data.close();
 		db.close();	
-		APP.log("debug", result);
+		//APP.log("debug", result);
 		return result;
 
 	}

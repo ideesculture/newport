@@ -83,11 +83,14 @@ $.init = function() {
 	// Loading CA database model (metadatas & fields) & filling cache
 	CONFIG.model_url = APP.Settings.CollectiveAccess.urlForModel.url;
 	CONFIG.model_url_validity = APP.Settings.CollectiveAccess.urlForModel.cache;
-	$.modelRetrieveData();
 
 	// Loading CA screens & uis & filling cache
 	CONFIG.ui_url = APP.Settings.CollectiveAccess.urlForUis.url;
 	CONFIG.ui_url_validity = APP.Settings.CollectiveAccess.urlForUis.cache;
+
+	$.retrieveData();
+
+	
 
 
 	// uiRetrieveData is called from objectRetrieveCallbackFunctions : we need to have the values available before displaying bundles
@@ -102,8 +105,8 @@ $.init = function() {
 	CONFIG.base_edit_url = APP.Settings.CollectiveAccess.urlForObjectEdit.url.replace(/ID/g,CONFIG.obj_data.object_id);
 	CONFIG.base_edit_url_validity = APP.Settings.CollectiveAccess.urlForObjectEdit.cache;
 	*/
-
-	$.objectRetrieveData();
+	// objectRetrieveData is called from modelRetrieveCallbackFunctions : we need to have the metadata elements available before 
+	//$.objectRetrieveData();
 	
 	if(CONFIG.isChild === true) {
 		$.NavigationBar.showBack(function(_event) {
@@ -124,12 +127,16 @@ $.init = function() {
 	$.NavigationBar.text = "Archivio Teatro Regio";
 };
 
+$.retrieveData = function(_force, _callback){
+	$.modelRetrieveData(_force, _callback);
+}
+
 $.modelRetrieveCallbackFunctions = function () {
 	$.modelHandleData(MODEL_MODEL.getElementsByType(CONFIG.type_info.idno));
 };
 
 /**
- * Retrieves the data
+ * Retrieves the model data
  * @param {Object} _force Whether to force the request or not (ignores cached data)
  * @param {Object} _callback The function to run on data retrieval
  */
@@ -145,7 +152,7 @@ $.modelRetrieveData = function(_force, _callback) {
 			authString: APP.authString,
 			cache: 0,
 			callback: function() {
-				$.modelRetrieveCallbackFunctions();	
+				$.modelRetrieveCallbackFunctions();
 
 				if(typeof _callback !== "undefined") {
 					_callback();
@@ -167,9 +174,9 @@ $.modelRetrieveData = function(_force, _callback) {
  * @param {Object} _data The returned data
  */
 $.modelHandleData = function(_data) {
-	var rows=[];
-	var totalHeight = 0;
-	var i = 0;
+	CONFIG.elements= _data; 
+	APP.log("debug", CONFIG.elements);
+	$.objectRetrieveData();
 };
 
 $.uiRetrieveCallbackFunctions = function() {
@@ -265,35 +272,29 @@ $.uiHandleData = function(_data) {
 
 						// If the bundle described in the screen corresponds to sthg in the model, display it
 						var attribute = bundle_code.replace(/^ca_attribute_/,"");
+						APP.log("debug", "ATTRIBUT:");
+						APP.log("debug", attribute);
 
-						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {							
-							// defining values from global var $.RECORD
-							//APP.log("debug", "trululu");
-							//APP.log("debug", typeof($.RECORD["attributes"]));
-							
-							
-							/*if( (typeof ($.RECORD["attributes"])) == "undefined"){
-								APP.log("debug", "no attributes defined");
-								$.RECORD["attributes"] = {} ; 
-							}*/
-							//var values = $.RECORD["attributes"][attribute];
-							//if ((typeof $.RECORD["attributes"][attribute]) == "undefined") {
-								// No value defined for this bundle, we need to define default options to agglomerate in edition buffer
-								//APP.log("debug", "IF UNDEFINED --------------------------------");
-							var values = $.EMPTY_BUNDLE;
-							/*} else {
-								var values = $.RECORD["attributes"][attribute]; 
-							}*/
+						//this test is not so useful because it doesn't filter metadatas by object type
+						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {	
+							if(CONFIG.elements.indexOf(attribute)== -1){
+								APP.log("debug", "attribute not found");
+							}		
+							else {
+								APP.log("debug", CONFIG.elements[CONFIG.elements.indexOf(attribute)]);
+								APP.log("debug", "attribute found");
+								var values = $.EMPTY_BUNDLE;
 
-							var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
+								var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
 
-							var row = Alloy.createController("edit_metadata_bundle", {
-								bundle_code:bundle_code,
-								content:element_data,
-								values:values,
-								newport_id:{0:i}
-							}).getView();
-							rows.push(row);
+								var row = Alloy.createController("edit_metadata_bundle", {
+									bundle_code:bundle_code,
+									content:element_data,
+									values:values,
+									newport_id:{0:i}
+								}).getView();
+								rows.push(row);
+							}
 						}
 					} 
 				};	
