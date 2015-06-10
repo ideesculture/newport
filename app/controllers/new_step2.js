@@ -125,7 +125,7 @@ $.init = function() {
 };
 
 $.modelRetrieveCallbackFunctions = function () {
-	$.modelHandleData(MODEL_MODEL.getModelFirstLevelInfo());
+	$.modelHandleData(MODEL_MODEL.getElementsByType(CONFIG.type_info.idno));
 };
 
 /**

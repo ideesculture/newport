@@ -158,13 +158,14 @@ $.modelRetrieveData = function(_force, _callback) {
 };
 
 /**
- * Handles the data return
+ * Handles the data returned by the model
  * @param {Object} _data The returned data
  */
 $.modelHandleData = function(_data) {
 	var rows=[];
 	var totalHeight = 0;
 	var i = 0;
+	
 };
 
 $.uiRetrieveCallbackFunctions = function() {

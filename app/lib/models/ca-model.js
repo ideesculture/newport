@@ -86,7 +86,7 @@ function Model() {
 	this.handleData = function(_data, _url, _callback) {
 
 		APP.log("debug", "CA_MODEL.handleData");
-		APP.log("debug", _data);
+		//APP.log("debug", _data);
 		if(_data.ok == true) {
 			APP.log("debug", "connected");
 			var db = Ti.Database.open(DBNAME);
@@ -138,6 +138,12 @@ function Model() {
 										db.execute(request, ca_table, record_type, information_type, info, insert_date, content) ;
 		        					
 		        					}
+		        					if(info=="idno"){
+		        						content=type_info_data[info];
+		        						var request = "INSERT INTO ca_models (id, ca_table, record_type, information_type, element_name, date, content) VALUES (NULL, ?, ?, ?, ?, ?, ?);";
+										db.execute(request, ca_table, record_type, information_type, info, insert_date, content) ;
+		        					
+		        					}
 		        					if(info=="display_label"){
 		        						content=type_info_data[info];
 		        						var request = "INSERT INTO ca_models (id, ca_table, record_type, information_type, element_name, date, content) VALUES (NULL, ?, ?, ?, ?, ?, ?);";
@@ -170,6 +176,8 @@ function Model() {
 	 * Retrieves first level info
 	 */
 	this.getModelFirstLevelInfo = function() {
+		APP.log("debug", "getModelFirstLevelInfo");
+		APP.log("debug",  APP.ca_modele_prop);
 		return APP.ca_modele_prop;
 	};
 
@@ -261,7 +269,39 @@ function Model() {
 		db.close();	
 		return result;
 	}
+
+	this.getElementsByType = function(type_name){
+		APP.log("debug", "GETELEMENTSBYTYPE");
+		//THERE IS A BUG SOMEWHERE IN HEREEE
+		var db = Ti.Database.open(DBNAME),
+				request = "SELECT DISTINCT element_name FROM CA_MODELS where information_type=\"elements\" and record_type=\""+ type_name + "\" ",
+				elements = [], i=0;
+		var data = db.execute(request);
+
+
+		if(data.getRowCount() > 0) {
+			
+			while (data.isValidRow()) {
+				elements[i]= data.fieldByName("element_name");
+				data.next();
+				i++;
+			}
+			var result = elements;
+		}
+		else {
+			var result = false;
+		}
+		data.close();
+		db.close();	
+		APP.log("debug", result);
+		return result;
+
+	}
+
+
+
 }
+
 
 module.exports = function() {
 	return new Model();
