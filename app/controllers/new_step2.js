@@ -232,7 +232,11 @@ $.uiRetrieveData = function(_force, _callback) {
 $.uiHandleData = function(_data) {
 	//APP.openLoading();
 	
+	//////////////////////////////////////////////////////////////////////////
+	////////////////SCREENS TOP MENU SECTION//////////////////////////////////
+
 	// If the list of the screens is not initiated, populate it from the model
+	//informations : Screen names and labels
 	if($.SCREENS.length == 0) {
 		$.SCREENS = UI_MODEL.getAllScreensForUI($.TABLE,$.UI_CODE);
 	}
@@ -254,15 +258,39 @@ $.uiHandleData = function(_data) {
 			$.screenButtonsScrollView.add(labelMargin);
 		}		
 	}
+	//////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
 
 	var rows=[];
 
 	var i = 0;
+
+	//////////////////////////////////////////////////////////////////////////
+	////////////////////////BUNDLES SECTION///////////////////////////////////
 	
 	// error handling if _data has not been rightly fetched back
 	if (typeof _data != "undefined") {
+		APP.log("debug", "UI HANDLE DATA DATA:")
+		//APP.log("debug", _data);
 		if (typeof _data.content != "undefined") {
 			// If we have some content back
+
+			//NOT FINISHED: FILTER SCREENS
+			//TO FINISH
+			if (typeof _data.content.typeRestrictions != "undefined") {
+				var type_restrictions = _data.content.typeRestrictions;
+				APP.log("debug", type_restrictions);
+				if(type_restrictions[CONFIG.type_info.item_id]== null){
+					alert("no!");
+				}
+				else{
+					alert(type_restrictions[CONFIG.type_info.item_id]);
+				}
+			} else {
+				alert("type restrictions undefined");
+			}
+			//END OF FILTER SCREENS
+
 			var screen_content = _data.content.screen_content;
 			for(var bundle in screen_content) {
 				var bundle_code = screen_content[bundle].bundle_code;
@@ -272,6 +300,7 @@ $.uiHandleData = function(_data) {
 
 						// If the bundle described in the screen corresponds to sthg in the model, display it
 						var attribute = bundle_code.replace(/^ca_attribute_/,"");
+					
 						APP.log("debug", "ATTRIBUT:");
 						APP.log("debug", attribute);
 
@@ -296,13 +325,23 @@ $.uiHandleData = function(_data) {
 								rows.push(row);
 							}
 						}
-					} 
+					} else {
+						var attribute = bundle_code;
+						APP.log("debug", "INTRINSIC FIELD");
+						APP.log("debug", attribute);
+						//TODO:
+						//DISPLAY INTRINSIC FIELDS
+					}
+					 
 				};	
 				i++;
 			};
 		}
 	}
-		
+	//////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+
+
 	$.bundles.removeAllChildren();
 	$.bundles.setData(rows);
 	for(var x=0; x<rows.length; x++) {

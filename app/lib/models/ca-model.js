@@ -181,6 +181,7 @@ function Model() {
 		return APP.ca_modele_prop;
 	};
 
+	//it does not work: no type limitation!
 	this.hasElementInfo = function(_ca_table, _element_name) {
 		APP.log("debug", "CA-MODEL.hasElementInfo");
 
