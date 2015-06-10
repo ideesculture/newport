@@ -272,8 +272,6 @@ function Model() {
 	}
 
 	this.getElementsByType = function(type_name){
-		APP.log("debug", "GETELEMENTSBYTYPE");
-		//THERE IS A BUG SOMEWHERE IN HEREEE
 		var db = Ti.Database.open(DBNAME),
 				request = "SELECT DISTINCT element_name FROM CA_MODELS where information_type=\"elements\" and record_type=\""+ type_name + "\" ",
 				elements = [], i=0;
@@ -294,7 +292,6 @@ function Model() {
 		}
 		data.close();
 		db.close();	
-		//APP.log("debug", result);
 		return result;
 
 	}

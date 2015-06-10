@@ -175,7 +175,7 @@ $.modelRetrieveData = function(_force, _callback) {
  */
 $.modelHandleData = function(_data) {
 	CONFIG.elements= _data; 
-	APP.log("debug", CONFIG.elements);
+	//APP.log("debug", CONFIG.elements);
 	$.objectRetrieveData();
 };
 
@@ -237,25 +237,48 @@ $.uiHandleData = function(_data) {
 
 	// If the list of the screens is not initiated, populate it from the model
 	//informations : Screen names and labels
-	if($.SCREENS.length == 0) {
-		$.SCREENS = UI_MODEL.getAllScreensForUI($.TABLE,$.UI_CODE);
-	}
-	
-	// Create a label for each screen and add it to $.screenButtonsScrollView
+	//PROBLEM: WE NEED INFORMATIONS ABOUT TYPE RESTRICTION HERE
+
+	//if($.SCREENS.length == 0) {
+	$.SCREENS = UI_MODEL.getAllScreensWithContentForUI($.TABLE,$.UI_CODE);
+	//}
+
+	// Create a label for each screen defined for this object type, and add it to $.screenButtonsScrollView
 	var labels= [];
 	if ($.screenButtonsScrollView.children.length == 0) {
 		for(var index in $.SCREENS) {
-			var labelMargin = Ti.UI.createView();
-			$.addClass(labelMargin,"buttonMargin");
-			var label = Ti.UI.createLabel({
-			    color: '#000',
-			    text: $.SCREENS[index].preferred_labels,
-			    textAlign: 'center',
-			    code:$.SCREENS[index].code
-			});
-			$.addClass(label,"button");
-			labelMargin.add(label);
-			$.screenButtonsScrollView.add(labelMargin);
+			if(typeof ($.SCREENS[index].content!= "undefined")) {
+				if ((typeof $.SCREENS[index].content.typeRestrictions) != "undefined") {
+					var type_restrictions = $.SCREENS[index].content.typeRestrictions;
+					if(type_restrictions[CONFIG.type_info.item_id]!= null){
+						var labelMargin = Ti.UI.createView();
+						$.addClass(labelMargin,"buttonMargin");
+						var label = Ti.UI.createLabel({
+						    color: '#000',
+						    text: $.SCREENS[index].preferred_labels,
+						    textAlign: 'center',
+						    code:$.SCREENS[index].code
+						});
+						$.addClass(label,"button");
+						labelMargin.add(label);
+						$.screenButtonsScrollView.add(labelMargin);
+					}
+				} else {
+					var labelMargin = Ti.UI.createView();
+					$.addClass(labelMargin,"buttonMargin");
+					var label = Ti.UI.createLabel({
+					    color: '#000',
+					    text: $.SCREENS[index].preferred_labels,
+					    textAlign: 'center',
+					    code:$.SCREENS[index].code
+					});
+					$.addClass(label,"button");
+					labelMargin.add(label);
+					$.screenButtonsScrollView.add(labelMargin);
+				}
+
+			}
+			
 		}		
 	}
 	//////////////////////////////////////////////////////////////////////////
@@ -274,9 +297,8 @@ $.uiHandleData = function(_data) {
 		//APP.log("debug", _data);
 		if (typeof _data.content != "undefined") {
 			// If we have some content back
-
-			//NOT FINISHED: FILTER SCREENS
-			//TO FINISH
+			//FILTER SCREENS patern. Has been moved on the right place
+			/*
 			if (typeof _data.content.typeRestrictions != "undefined") {
 				var type_restrictions = _data.content.typeRestrictions;
 				APP.log("debug", type_restrictions);
@@ -287,10 +309,10 @@ $.uiHandleData = function(_data) {
 					alert(type_restrictions[CONFIG.type_info.item_id]);
 				}
 			} else {
-				alert("type restrictions undefined");
-			}
+				alert("type restrictions undefined => yes");
+			}*/
 			//END OF FILTER SCREENS
-
+			APP.log("debug", _data.content);
 			var screen_content = _data.content.screen_content;
 			for(var bundle in screen_content) {
 				var bundle_code = screen_content[bundle].bundle_code;
