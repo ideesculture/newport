@@ -31,7 +31,8 @@ function Model() {
 		INFO2 = _info2;
 		//alert("info1 :"+ INFO1 + "  info2: "+ INFO2);
 		var db = Ti.Database.open(DBNAME);
-				//var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, object_id INTEGER, parent_id INTEGER, idno TEXT, display_label TEXT, date TEXT, created TEXT, info1 TEXT, info2 TEXT);";
+
+		//ONLY FOR DEBUG
 		//db.execute("DROP TABLE ca_objects ;");
 		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, object_id INTEGER, parent_id INTEGER, idno TEXT, display_label TEXT, date TEXT, created TEXT, info1 TEXT, info2 TEXT);";
 		db.execute(request);
@@ -106,6 +107,8 @@ function Model() {
 		var _ca_table = table;
 		APP.log("debug", "CA_HIERARCHY.handleData");
 		if(_data.ok == true) {
+			//APP.log("debug", "hierarchy handleData");
+			//APP.log("debug", _data);
 			var db = Ti.Database.open(DBNAME);
 			//db.execute("DELETE FROM " + _ca_table + ";");
 			db.execute("BEGIN TRANSACTION;");

@@ -21,12 +21,15 @@ var CONFIG = arguments[0];
 var FLAG_SAVE = false; 
 
 // Pseudo constants
-var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "ca_places", "ca_collections", "ca_loans", "ca_movements"];			
+var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "ca_places", "ca_collections", "ca_loans", "ca_movements"];		
+
+//type id
+var type_id = CONFIG.obj_data.info1;	
 
 // Initializes original values and target buffer where modified values will go
 //Ti.App.EDIT = {};
-
-
+//To do later: print object type
+alert(CONFIG.obj_data);
 $.heading.text += " editing object #"+CONFIG.obj_data.object_id+" "+CONFIG.obj_data.display_label+" "+CONFIG.obj_data.idno;
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
@@ -78,16 +81,11 @@ $.init = function() {
 	// Loading CA database model (metadatas & fields) & filling cache
 	CONFIG.model_url = APP.Settings.CollectiveAccess.urlForModel.url;
 	CONFIG.model_url_validity = APP.Settings.CollectiveAccess.urlForModel.cache;
-	$.modelRetrieveData();
+	//$.modelRetrieveData();
 
 	// Loading CA screens & uis & filling cache
 	CONFIG.ui_url = APP.Settings.CollectiveAccess.urlForUis.url;
 	CONFIG.ui_url_validity = APP.Settings.CollectiveAccess.urlForUis.cache;
-
-
-	// uiRetrieveData is called from objectRetrieveCallbackFunctions : we need to have the values available before displaying bundles
-	//$.uiRetrieveData();
-
 	// Loading object details
 	// Loading URL for object details, replacing ID by the current object_id
 	CONFIG.object_url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.obj_data.object_id);
@@ -98,7 +96,12 @@ $.init = function() {
 	CONFIG.base_edit_url_validity = APP.Settings.CollectiveAccess.urlForObjectEdit.cache;
 
 
-	$.objectRetrieveData();
+	$.retrieveData();
+
+
+	// uiRetrieveData is called from objectRetrieveCallbackFunctions : we need to have the values available before displaying bundles
+	//$.uiRetrieveData();
+	//$.objectRetrieveData();
 	
 	if(CONFIG.isChild === true) {
 		$.NavigationBar.showBack(function(_event) {
@@ -119,8 +122,12 @@ $.init = function() {
 	$.NavigationBar.text = "Archivio Teatro Regio";
 };
 
+$.retrieveData = function(_force, _callback){
+	$.modelRetrieveData(_force, _callback);
+}
+
 $.modelRetrieveCallbackFunctions = function () {
-	$.modelHandleData(MODEL_MODEL.getModelFirstLevelInfo());
+	$.modelHandleData(MODEL_MODEL.getElementsByType(type_id));
 };
 
 /**
@@ -160,12 +167,17 @@ $.modelRetrieveData = function(_force, _callback) {
 /**
  * Handles the data returned by the model
  * @param {Object} _data The returned data
- */
+
 $.modelHandleData = function(_data) {
 	var rows=[];
 	var totalHeight = 0;
 	var i = 0;
 	
+}; */
+$.modelHandleData = function(_data) {
+	CONFIG.elements= _data; 
+	//APP.log("debug", CONFIG.elements);
+	$.objectRetrieveData();
 };
 
 $.uiRetrieveCallbackFunctions = function() {
@@ -222,28 +234,49 @@ $.uiHandleData = function(_data) {
 	//APP.openLoading();
 	
 	// If the list of the screens is not initiated, populate it from the model
-	if($.SCREENS.length == 0) {
-		$.SCREENS = UI_MODEL.getAllScreensForUI($.TABLE,$.UI_CODE);
-	}
+	//if($.SCREENS.length == 0) {
+	$.SCREENS = UI_MODEL.getAllScreensWithContentForUI($.TABLE,$.UI_CODE);
+	//}
 	
-	// Create a label for each screen and add it to $.screenButtonsScrollView
+	// Create a label for each screen allowed for the object type and add it to $.screenButtonsScrollView
 	var labels= [];
 	if ($.screenButtonsScrollView.children.length == 0) {
 		for(var index in $.SCREENS) {
-			var labelMargin = Ti.UI.createView();
-			$.addClass(labelMargin,"buttonMargin");
-			var label = Ti.UI.createLabel({
-			    color: '#000',
-			    text: $.SCREENS[index].preferred_labels,
-			    textAlign: 'center',
-			    code:$.SCREENS[index].code
-			});
-			$.addClass(label,"button");
-			labelMargin.add(label);
-			$.screenButtonsScrollView.add(labelMargin);
+			if(typeof ($.SCREENS[index].content!= "undefined")) {
+				if ((typeof $.SCREENS[index].content.typeRestrictions) != "undefined") {
+					var type_restrictions = $.SCREENS[index].content.typeRestrictions;
+					if(type_restrictions[type_id]!= null){
+						alert(type_restrictions[type_id]);
+						var labelMargin = Ti.UI.createView();
+						$.addClass(labelMargin,"buttonMargin");
+						var label = Ti.UI.createLabel({
+						    color: '#000',
+						    text: $.SCREENS[index].preferred_labels,
+						    textAlign: 'center',
+						    code:$.SCREENS[index].code
+						});
+						$.addClass(label,"button");
+						labelMargin.add(label);
+						$.screenButtonsScrollView.add(labelMargin);
+					}
+				} else {
+					var labelMargin = Ti.UI.createView();
+					$.addClass(labelMargin,"buttonMargin");
+					var label = Ti.UI.createLabel({
+					    color: '#000',
+					    text: $.SCREENS[index].preferred_labels,
+					    textAlign: 'center',
+					    code:$.SCREENS[index].code
+					});
+					$.addClass(label,"button");
+					labelMargin.add(label);
+					$.screenButtonsScrollView.add(labelMargin);
+				}
+
+			}
+			
 		}		
 	}
-
 	var rows=[];
 
 	var i = 0;
