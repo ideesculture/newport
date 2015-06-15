@@ -47,7 +47,7 @@ $.retrieveData = function() {
 					}
 				},
 				error: function() {
-					/*var dialog = Ti.UI.createAlertDialog({
+					/*var dialog = Ti.UI.createDialog({
 					    message: 'Connexion failed. Please retry.',
 					    ok: 'OK',
 					    title: 'Error'

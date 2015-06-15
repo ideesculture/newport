@@ -296,6 +296,40 @@ function Model() {
 
 	}
 
+	this.getElementsByTypeId = function(type_id){
+
+		var db = Ti.Database.open(DBNAME),
+		request1 = "SELECT DISTINCT record_type FROM ca_models WHERE information_type=\"type_info\" AND element_name=\"item_id\" AND content=\""+ type_id+"\" limit 1",	
+				elements = [], i=0;
+		db.execute("BEGIN TRANSACTION;");
+		var data = db.execute(request1);
+		if(data.getRowCount() > 0) {
+			var type_name = data.fieldByName("record_type");
+			alert(type_name);
+			var request2 = "SELECT DISTINCT element_name FROM CA_MODELS where information_type=\"elements\" and record_type=\""+ type_name + "\" ";
+			var data2 = db.execute(request2);
+
+			if(data2.getRowCount() > 0) {
+				
+				while (data2.isValidRow()) {
+					elements[i]= data2.fieldByName("element_name");
+					data2.next();
+					i++;
+				}
+				var result = elements;
+			}
+			data2.close();
+		}
+		else {
+			var result = false;
+		}
+		db.execute("END TRANSACTION;");
+		data.close();
+		db.close();	
+		return result;
+
+	}
+
 
 
 }

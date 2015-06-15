@@ -29,7 +29,7 @@ var type_id = CONFIG.obj_data.info1;
 // Initializes original values and target buffer where modified values will go
 //Ti.App.EDIT = {};
 //To do later: print object type
-alert(CONFIG.obj_data);
+//alert(CONFIG.obj_data);
 $.heading.text += " editing object #"+CONFIG.obj_data.object_id+" "+CONFIG.obj_data.display_label+" "+CONFIG.obj_data.idno;
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
@@ -127,7 +127,7 @@ $.retrieveData = function(_force, _callback){
 }
 
 $.modelRetrieveCallbackFunctions = function () {
-	$.modelHandleData(MODEL_MODEL.getElementsByType(type_id));
+	$.modelHandleData(MODEL_MODEL.getElementsByTypeId(type_id));
 };
 
 /**
@@ -176,6 +176,7 @@ $.modelHandleData = function(_data) {
 }; */
 $.modelHandleData = function(_data) {
 	CONFIG.elements= _data; 
+	alert(CONFIG.elements);
 	//APP.log("debug", CONFIG.elements);
 	$.objectRetrieveData();
 };
@@ -246,7 +247,7 @@ $.uiHandleData = function(_data) {
 				if ((typeof $.SCREENS[index].content.typeRestrictions) != "undefined") {
 					var type_restrictions = $.SCREENS[index].content.typeRestrictions;
 					if(type_restrictions[type_id]!= null){
-						alert(type_restrictions[type_id]);
+						//alert(type_restrictions[type_id]);
 						var labelMargin = Ti.UI.createView();
 						$.addClass(labelMargin,"buttonMargin");
 						var label = Ti.UI.createLabel({
@@ -284,7 +285,7 @@ $.uiHandleData = function(_data) {
 	// error handling if _data has not been rightly fetched back
 	if (typeof _data != "undefined") {
 		APP.log("debug", "UI HANDLE DATA");
-		APP.log("debug", _data);
+		//APP.log("debug", _data);
 		if (typeof _data.content != "undefined") {
 			// If we have some content back
 			var screen_content = _data.content.screen_content;
@@ -297,10 +298,28 @@ $.uiHandleData = function(_data) {
 						// If the bundle described in the screen corresponds to sthg in the model, display it
 						var attribute = bundle_code.replace(/^ca_attribute_/,"");
 
-						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {							
+						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {	
+							if(CONFIG.elements.indexOf(attribute)== -1){
+								APP.log("debug", "attribute not found");
+							}		
+							else {
+								APP.log("debug", CONFIG.elements[CONFIG.elements.indexOf(attribute)]);
+								APP.log("debug", "attribute found");
+								var values = $.EMPTY_BUNDLE;
+
+								var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
+
+								var row = Alloy.createController("edit_metadata_bundle", {
+									bundle_code:bundle_code,
+									content:element_data,
+									values:values,
+									newport_id:{0:i}
+								}).getView();
+								rows.push(row);
+							}						
 							// defining values from global var $.RECORD
 							
-							
+							/*
 							if( (typeof ($.RECORD["attributes"])) == "undefined"){
 								APP.log("debug", "no attributes defined");
 									var values = $.EMPTY_BUNDLE;
@@ -324,6 +343,7 @@ $.uiHandleData = function(_data) {
 								newport_id:{0:i}
 							}).getView();
 							rows.push(row);
+							*/
 						}
 					} 
 				};	
