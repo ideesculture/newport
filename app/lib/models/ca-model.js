@@ -305,7 +305,7 @@ function Model() {
 		var data = db.execute(request1);
 		if(data.getRowCount() > 0) {
 			var type_name = data.fieldByName("record_type");
-			alert(type_name);
+			//alert(type_name);
 			var request2 = "SELECT DISTINCT element_name FROM CA_MODELS where information_type=\"elements\" and record_type=\""+ type_name + "\" ";
 			var data2 = db.execute(request2);
 

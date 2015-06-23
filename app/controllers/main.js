@@ -29,15 +29,18 @@ $.init = function() {
 	//APP.dropDatabase();
 		
 	// loading url & cache validity from settings
-	//CONFIG.url = APP.Settings.CollectiveAccess.urlForHierarchy.url;
+	CONFIG.url = APP.Settings.CollectiveAccess.urlForHierarchy.url;
+	//APP.log("debug", "### "+ APP.Settings.CollectiveAccess.urlForHierarchy.url);
 	CONFIG.url = "http://aspi.idcultu.re/gestion/service.php/find/ca_objects?q=*&source={\"bundles\":{\"created\": {\"returnAsArray\":true},\"parent_id\":{},\"ca_objects.type_id\":{},\"ca_objects.dimensions_in_mm\":{}}}";
+	//APP.log("debug", "###2 "+ CONFIG.url);
+	//alert("yo");
 	CONFIG.validity = APP.Settings.CollectiveAccess.urlForHierarchy.cache;
 	//DOESNT BRING THE RIGHT VALUE... 
 	//CACHE ISSUE
 	var info1 = APP.Settings.CollectiveAccess.urlForHierarchy.info1;
 	info1= "ca_objects.type_id";
-	APP.log("debug", "trululu info1");
-	APP.log("debug", info1);
+	//APP.log("debug", "trululu info1");
+	//APP.log("debug", info1);
 	var info2 = APP.Settings.CollectiveAccess.urlForHierarchy.info2;
 
 	// Initiating CA db model class

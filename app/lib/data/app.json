@@ -33,7 +33,7 @@
 				"cache":"86400"
 			},
 			"urlForHierarchy" : {
-				"url":"http://aspi.idcultu.re/gestion/service.php/find/ca_objects?q=*&source={\"bundles\":{\"created\": {\"returnAsArray\":true},\"parent_id\":{},\"ca_objects.date.dates_value\":{},\"ca_objects.dimensions_in_mm\":{}}}",
+				"url":"http://aspi.idcultu.re/gestion/service.php/find/ca_objects?q=*&source={\"bundles\":{\"created\": {\"returnAsArray\":true},\"parent_id\":{},\"ca_objects.type_id\":{},\"ca_objects.date.dates_value\":{},\"ca_objects.dimensions_in_mm\":{}}}",
 				"cache":"86400",
 				"info1":"ca_objects.date.dates_value",
 				"info2":"ca_objects.dimensions_in_mm"

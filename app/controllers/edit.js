@@ -176,7 +176,7 @@ $.modelHandleData = function(_data) {
 }; */
 $.modelHandleData = function(_data) {
 	CONFIG.elements= _data; 
-	alert(CONFIG.elements);
+	//alert(CONFIG.elements);
 	//APP.log("debug", CONFIG.elements);
 	$.objectRetrieveData();
 };
