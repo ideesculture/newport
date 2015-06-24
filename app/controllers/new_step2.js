@@ -542,11 +542,10 @@ $.sendDataToServer = function() {
 		//it HAS to be changed!
 		//variable from an earlier screen asking for the object's type
 		tempobj.idno = edit_false_id; 	
-		alert(CONFIG.type_info);
-		tempobj.type_id= CONFIG.type_info[item_id]; 
+		//alert(CONFIG.type_info);
+		tempobj.type_id= CONFIG.type_info.item_id; 
 		json.intrinsic_fields = tempobj; 
 		APP.log("debug", "json sent for object creation:");
-		APP.log("debug", CONFIG.type_info[item_id];
 		APP.log("debug", json);
 		
 		//2) sends the request
