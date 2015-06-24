@@ -51,7 +51,7 @@ $.init = function() {
 
 	// loading url & cache validity from settings
 	CONFIG.validity = APP.Settings.CollectiveAccess.urlForHierarchy.cache;
-
+	alert(CONFIG.type_info);
 	// Initiating CA db model class
 	MODEL_MODEL.init($.TABLE);
 	// Initiating CA available UIs class
@@ -542,10 +542,12 @@ $.sendDataToServer = function() {
 		//it HAS to be changed!
 		//variable from an earlier screen asking for the object's type
 		tempobj.idno = edit_false_id; 	
-		tempobj.type_id= 249; 
+		alert(CONFIG.type_info);
+		tempobj.type_id= CONFIG.type_info[item_id]; 
 		json.intrinsic_fields = tempobj; 
-		//APP.log("debug", "json sent for object creation:");
-		//APP.log("debug", json);
+		APP.log("debug", "json sent for object creation:");
+		APP.log("debug", CONFIG.type_info[item_id];
+		APP.log("debug", json);
 		
 		//2) sends the request
 		var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace("/id/ID","");

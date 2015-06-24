@@ -95,6 +95,7 @@ function createRow(data) {
     var tvr = Ti.UI.createTableViewRow({
         title : title
     });
+    APP.log("debug", data);
 	tvr.addEventListener("click", function(_event) {
 		APP.addChild("new_step2", { type_info: data }, true);
 	});
