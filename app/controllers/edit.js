@@ -290,10 +290,10 @@ $.uiHandleData = function(_data) {
 		if (typeof _data.content != "undefined") {
 			APP.log("debug", "not undefined!"); 
 			
-			if($.SCREEN == "media"){
+			/*if($.SCREEN == "media"){
 				alert('Media!');
 				APP.log("debug", _data.content);
-			}
+			}*/
 			// If we have some content back
 			var screen_content = _data.content.screen_content;
 			for(var bundle in screen_content) {

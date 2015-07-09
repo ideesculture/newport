@@ -8,10 +8,11 @@
 				</View>
 			</View>
     		<View id="bundleItemElements">
-    			<!-- Here come the fields -->
+    			<ImageView id="imageView" image="/images/cadre-plus-ipad.png" />
 			</View>	
 			<View id="addNewButtonView">
-				<Button id="addNewButton" title="+ add new ..."/>
+				<Button id="addNewButton" title="+ take a picture"/>
+				<Button id="addFileButton" title="+ upload a picture"/>
 			</View>		
 		</View>
 	</View>

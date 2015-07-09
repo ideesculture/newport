@@ -20,6 +20,13 @@
 	layout: "absolute",
 	backgroundColor:"white"
 },
+"#imageView":{
+	backgroundColor:'#FFF',
+	color:"black",
+	width: "460dp",
+	height: "480dp",
+	bottom: 10
+},
 "#bundleItemName": {
 	top:"0dp",
 	left: "10dp",
