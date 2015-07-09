@@ -47,8 +47,8 @@ $.init = function() {
 	$.textArea.font={fontSize:20};
 	$.closeButton.font= { fontSize:24, fontFamily:"GillSans" };
 	$.label2.font={ fontSize:20, fontFamily:"Avenir-MediumOblique" };
-	$.label2.text=CONFIG.obj_data.info1;
-	$.label3.text=CONFIG.obj_data.info2;
+	$.label2.text=CONFIG.obj_data.info2;
+	$.label3.text=CONFIG.obj_data.info1;
 	$.label3.font=$.label2.font
 	$.editButton.setBackgroundColor(APP.Settings.colors.primary); 
 	//$.wrapperView.add(backgroundView);

@@ -25,7 +25,8 @@ exports.request = function(_params) {
 	if(Ti.Network.online) {
 		var xhr = Ti.Network.createHTTPClient();
 
-		xhr.timeout = _params.timeout ? _params.timeout : 10000;
+		//xhr.timeout = _params.timeout ? _params.timeout : 10000;
+		xhr.timeout = 100000; 
 
 		/**
 		 * Data return

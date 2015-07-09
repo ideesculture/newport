@@ -51,7 +51,7 @@ $.init = function() {
 
 	// loading url & cache validity from settings
 	CONFIG.validity = APP.Settings.CollectiveAccess.urlForHierarchy.cache;
-	alert(CONFIG.type_info);
+	//alert(CONFIG.type_info);
 	// Initiating CA db model class
 	MODEL_MODEL.init($.TABLE);
 	// Initiating CA available UIs class

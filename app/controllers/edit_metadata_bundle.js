@@ -14,11 +14,13 @@ var DATATYPECONTROLLERS = {
 
 $.init = function() {
 	$.bundleItemName.text = CONFIG.content.name;
-	$.addNewButton.title = "+ Add new "+CONFIG.content.name.toLowerCase();
+	
 	$.bundleItemName.bak = {height : 0};
 	//APP.log("debug","CONFIG.newport_id");
 	//APP.log("debug",CONFIG.newport_id);
 
+
+	$.addNewButton.title = "+ Add new "+CONFIG.content.name.toLowerCase();
 	// by default the panel bundleItemElements is not deployed (invisible)
 	$.bundleItemElements.height = 1;
 	$.bundleItemElements.visible = false;

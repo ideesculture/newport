@@ -31,8 +31,8 @@ $.init = function() {
 	// loading url & cache validity from settings
 	CONFIG.url = APP.Settings.CollectiveAccess.urlForHierarchy.url;
 	//APP.log("debug", "### "+ APP.Settings.CollectiveAccess.urlForHierarchy.url);
-	CONFIG.url = "http://aspi.idcultu.re/gestion/service.php/find/ca_objects?q=*&source={\"bundles\":{\"created\": {\"returnAsArray\":true},\"parent_id\":{},\"ca_objects.type_id\":{},\"ca_objects.dimensions_in_mm\":{}}}";
-	//APP.log("debug", "###2 "+ CONFIG.url);
+	//CONFIG.url = "http://nogent.idcultu.re/gestion/service.php/find/ca_objects?q=*&source={\"bundles\":{\"created\": {\"returnAsArray\":true},\"parent_id\":{},\"ca_objects.type_id\":{},\"ca_objects.dimensions_in_mm\":{}}}";
+	APP.log("debug", "###2 "+ CONFIG.url);
 	//alert("yo");
 	CONFIG.validity = APP.Settings.CollectiveAccess.urlForHierarchy.cache;
 	//DOESNT BRING THE RIGHT VALUE... 
