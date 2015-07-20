@@ -51,7 +51,7 @@
 				"cache":"86400"
 			},
 			"urlForObjectSearch" : {
-				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_objects?q=<your_query>*&source={\"bundles\":{\"created\": {\"returnAsArray\":true},\"parent_id\":{},\"ca_objects.type_id\":{},\"ca_objects.date.dates_value\":{},\"ca_objects.dimensions_in_mm\":{}}}",
+				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_objects?q=<your_query>*&source={\"bundles\":{\"ca_objects.type_id\":{},\"ca_objects.date.dates_value\":{},\"ca_objects.dimensions_in_mm\":{}}}",
 				"cache":"86400",
 				"info1" : "ca_objects.type_id",
 				"info2":"ca_objects.dimensions_in_mm"

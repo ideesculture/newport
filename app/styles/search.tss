@@ -75,7 +75,7 @@
 "#objectBlocks":{
 	layout: "horizontal",
 	width:Ti.UI.FILL,
-	height:"auto",
+	height:Ti.UI.SIZE,
 	visible:"true"	
 },
 ".cell":{

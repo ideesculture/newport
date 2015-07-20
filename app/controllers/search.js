@@ -38,34 +38,30 @@ $.init = function() {
 
 };
 
-$.search = function(e){
-	if(e.value.length >= 3) {
-
-		var JSONresult = HIERARCHY_MODEL.getSearchedRecords($.TABLE, e.value);
-		var result = JSON.parse(JSONresult);
-		alert(result);
-		$.handleData(result);
-		
-	}
-}
-
 $.handleData = function(_data) {
 	// If we have data to display...
-	alert(typeof _data);
-	if( typeof _data === 'object'){
-		if (Object.keys(_data).length > 0) {
-			APP.log("debug", "handle Data");
-			APP.log("debug", _data);
+	if( typeof _data.results === 'object'){
+		//APP.log("debug", "_data.results is an object!!!");
+		//APP.log("debug", _data);
+		//APP.log("debug",Object.keys(_data.results));
+
+		if (Object.keys(_data.results).length > 0) {
 			$.objectBlocks.removeAllChildren();
 			/*while($.objectBlocks.children !== null){
 				$.objectBlocks.remove($.objectBlocks.children[0]);
 			}*/
-			var last_object_no = Object.keys(_data).length;
+
+			//Sets a max amount of results temporarily
+			//otherwise it's too long and bad
+			//we have to find a way to make it better
+			var last_object_no = 0;
+			Object.keys(_data.results).length <= 20? last_object_no = Object.keys(_data.results).length : last_object_no = 20; 
 			var object_no =0;
-			for(var object in _data) {
+
+			for(var object in _data.results) {
 				object_no++;
-				var object_data = _data[object];
-				APP.log("debug", "SEARCH.JS DATA OBJECT:::");
+				var object_data = _data.results[object];
+				object_data["info1"] = object_data["ca_objects.type_id"];
 				APP.log("debug", object_data);
 				var object_block = Alloy.createController("search_object_block", object_data).getView();
 				$.objectBlocks.add(object_block);
@@ -78,12 +74,29 @@ $.handleData = function(_data) {
 		} 
 	}
 	else {
-		APP.log("debug", "_data is not an object!!!");
+		APP.log("debug", "_data.results is not an object!!!");
 		$.objectBlocks.removeAllChildren();
 	}
 
 };
 
+$.search = function(e){
+	var _url = APP.Settings.CollectiveAccess.urlForObjectSearch.url.replace(/<your_query>/g, e.value);
+
+	if(e.value.length >= 3) {
+		if (Titanium.Network.networkType !== Titanium.Network.NETWORK_WIFI ) {
+			var result = HIERARCHY_MODEL.getSearchedRecordsLocally($.TABLE, e.value);
+		} else {
+			var result = HIERARCHY_MODEL.getSearchedRecords($.TABLE, e.value, _url, $.handleData);
+		}
+		/**********************************************************************************/
+		/**************** PROBLEME ICIIIIIiIIIIIIIIiiiiIIIIIII ****************************/
+		//alert(result);
+
+		//$.handleData(result);
+		
+	}
+};
 
 // Kick off the init
 $.init();
