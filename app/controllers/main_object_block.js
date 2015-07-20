@@ -103,7 +103,8 @@ $.handleData = function(_data) {
 			obj_data: CONFIG.obj_data,		
 			container: CONFIG.modal	
 		}
-
+		APP.log("debug", "MAIN OBJECT BLOCK OBJECT INFO:::");
+		APP.log("debug", CONFIG.obj_data);
 	    var modal_view_iicon = Alloy.createController('main_modal_infoicon_details',modal_info_iicon);
 	    CONFIG.modal.add(modal_view_iicon.getView());
 		CONFIG.modal.open({

@@ -42,7 +42,8 @@ $.init = function() {
 	$.label1.font={ fontSize:34 };
 	$.label1.text="Objet : "+CONFIG.obj_data.idno;
 	$.textArea.value=CONFIG.obj_data.display_label;
-
+	APP.log("debug", "MAIN MODAL INFOICON DETAILS OBJECT INFO:::");
+	APP.log("debug", CONFIG.obj_data);
 
 	$.textArea.font={fontSize:20};
 	$.closeButton.font= { fontSize:24, fontFamily:"GillSans" };

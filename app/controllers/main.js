@@ -246,6 +246,8 @@ $.handleObjectsData = function(_data) {
 				obj_data : _data[object],
 				modal : myModal
 			};
+			APP.log("debug", "MAIN OBJECT INFO:::");
+			APP.log("debug", _data[object]);
 			var object_block = Alloy.createController("main_object_block", object_data).getView();
 			$.objectBlocks.add(object_block);
 			if (object_no == last_object_no) {

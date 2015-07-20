@@ -258,34 +258,82 @@ function Model() {
 	}
 
 	///////////////////////////////////////////////////////////
-	//search 
+	//search locally 
 	///////////////////////////////////////////////////////////
 	this.getSearchedRecords = function(_ca_table, _text) {
-		APP.log("debug", "CA-HIERARCHY.getLastRecords");
 
-		var db = Ti.Database.open(DBNAME);
-
-		var request = "SELECT idno, object_id, display_label FROM "+_ca_table+" WHERE display_label LIKE '%"+_text+"%' ;";
+		APP.log("debug", "CA-HIERARCHY.getSearchedRecords");
 		var	temp = {};
-		var data = db.execute(request);
-		var fieldnumber = 0, linenumber = 1;
+		//calls CA WS and brings back data
+		if (Titanium.Network.networkType == Titanium.Network.NETWORK_WIFI ){
+			// do a search with the WS 
+			//var result = {};
+			var ca_url = APP.Settings.CollectiveAccess.urlForObjectSearch.url.replace(/<your_query>/g, _text);
 
 
-		while (data.isValidRow()) {
-			temp[linenumber] = {};
-			while (fieldnumber < data.getFieldCount()) {
-				temp[linenumber][data.fieldName(fieldnumber)] = data.field(fieldnumber);
-				fieldnumber++;
+			var error = function() {
+				var dialog = Ti.UI.createAlertDialog({
+				    message: 'searching locally',
+				    ok: 'OK',
+				    title: 'Error'
+				  }).show();
+
 			}
-			linenumber++;
-			fieldnumber = 0;
-			data.next();
-		}
 
-		data.close();
-		db.close();
-		
-		return temp;
+			var callback = function(){
+				var dialog = Ti.UI.createAlertDialog({
+				    message: 'whatever that means',
+				    ok: 'got it',
+				    title: 'CALLBACK'
+				  }).show();
+
+			}
+
+			var handleData = function( _data){
+				APP.log("debug", "YOLO LOULOU LELE");
+				APP.log("debug",_data["results"]);
+				var yolo = _data["results"];
+				return yolo; 
+			}			
+
+			HTTP.request({
+				timeout: 2000,
+				async:false,
+				headers: [{name: 'Authorization', value: APP.authString}],
+				type: "GET",
+				format: "JSON",
+				url: ca_url,
+				passthrough: callback,
+				success: handleData,
+				failure: error
+			});
+		}
+		//if no connection is available, searches in the local db
+		else 
+		{
+			var db = Ti.Database.open(DBNAME);
+
+			var request = "SELECT idno, object_id, display_label, info1, info2 FROM "+_ca_table+" WHERE display_label LIKE '"+_text+"%' ;";
+			
+			var data = db.execute(request);
+			var fieldnumber = 0, linenumber = 1;
+
+
+			while (data.isValidRow()) {
+				temp[linenumber] = {};
+				while (fieldnumber < data.getFieldCount()) {
+					temp[linenumber][data.fieldName(fieldnumber)] = data.field(fieldnumber);
+					fieldnumber++;
+				}
+				linenumber++;
+				fieldnumber = 0;
+				data.next();
+			}
+
+			data.close();
+			db.close();
+			return temp;
+		}
 		
 	}
 
