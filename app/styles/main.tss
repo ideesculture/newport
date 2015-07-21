@@ -8,7 +8,7 @@
 },
 "#mainview": {
 	left:0,
-	backgroundColor: "#FFF",
+	backgroundColor: "#eee",
 	layout: "vertical",
 	showVerticalScrollIndicator: true,
 	width:Ti.UI.FILL,
@@ -83,7 +83,7 @@
 	width: Ti.UI.FILL,
 	layout: "vertical",
 	top:10,
-	visible:"true"	
+	visible:"true"
 },
 "#folderItemsBlocks":{
 	top:10,
@@ -139,7 +139,7 @@
 	layout: "horizontal",
 	width:Ti.UI.FILL,
 	height:"auto",
-	visible:"true"	
+	visible:"true"
 },
 "#objectsList":{
 	height: Ti.UI.SIZE,
@@ -196,7 +196,7 @@
 	textAlign:"center"
 },
 "#rightbar":{
-	width:230, 
+	width:230,
 	backgroundColor:"black",
 	font: {
 		fontSize: 14,
@@ -263,11 +263,11 @@
 },
 
 ".arrowButttons": {
-	font: { fontSize:80, fontFamily:"ChalkboardSE-Regular" }	
+	font: { fontSize:80, fontFamily:"ChalkboardSE-Regular" }
 },
 "#leftButtton": {
-	font: { fontSize:80, fontFamily:"ChalkboardSE-Regular" }	
+	font: { fontSize:80, fontFamily:"ChalkboardSE-Regular" }
 },
 "#rightButtton": {
-	font: { fontSize:80, fontFamily:"ChalkboardSE-Regular" }	
+	font: { fontSize:80, fontFamily:"ChalkboardSE-Regular" }
 }
