@@ -6,7 +6,8 @@
 	left: 20,
 	layout: "vertical",
 	borderColor:"#eee",
-	borderWidth:1
+	borderWidth:1,
+	backgroundColor: "white"
 },
 "#cellimage":{
 	backgroundColor: "white",
