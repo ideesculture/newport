@@ -71,6 +71,7 @@
 			"title": "Main",
 			"type": "main",
 			"image": "home_icon",
+			"icon":"home",
 			"tabletSupport": false,
 			"downTab" : false
 		},
@@ -78,6 +79,7 @@
 			"title": "New",
 			"type": "new",
 			"image": "new_icon",
+			"icon":"new",
 			"tabletSupport": false,
 			"downTab" : false
 		},
@@ -85,6 +87,7 @@
 			"title": "Search",
 			"type": "search",
 			"image": "search_icon",
+			"icon":"search",
 			"tabletSupport": false,
 			"downTab" : false
 		},
@@ -92,6 +95,7 @@
 			"title": "Storage locations",
 			"type": "login",
 			"image": "storage_location_icon",
+			"icon":"crosshairs",
 			"tabletSupport": false,
 			"downTab" : false
 		},
@@ -99,6 +103,7 @@
 			"title": "Settings",
 			"type": "settings",
 			"image": "settings_icon",
+			"icon":"cog",
 			"tabletSupport": false,
 			"downTab" : false
 		},
@@ -106,9 +111,10 @@
 			"title": "Login",
 			"type": "login",
 			"image": "museum_mode",
+			"icon":"compress",
 			"tabletSupport": false,
 			"downTab" : true
 		}
-		
+
 	]
 }
