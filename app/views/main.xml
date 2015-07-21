@@ -1,7 +1,7 @@
 <Alloy>
     <View id="Wrapper" name="Text">
-		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
-    	
+		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Newport"/>
+
     	<View id="container">
     		<ScrollView id="mainview" >
     			<View id="breadcrumb">
@@ -14,7 +14,7 @@
 		  				<View class="foldersTitle">
 	  						<Label class="label" text="Folders" />
 						</View>
-	  					
+
 		  				<View id="foldersButtons">
 		  					<View id="foldersButtonsList">
 		  						<Require type="widget" src="ti.ux.iconfont" icon="fa-th-large" left="12" size="36" color="#aaa" class="faIcon"/>
@@ -61,7 +61,7 @@
 							<Label class="objectName" text="Object 1" />
 			    			<View class="objectRow2">
 			    				<Label class="objectInfo" text="Item" />
-			    				
+
 			    				<View class="objectRow2Right">
 			    					<Label class="infoIcon" text="i" />
 			    				</View>
@@ -70,10 +70,10 @@
 					</View>
 					<View id="objectsList">
 						<!-- objects created by main_object_row.js  -->
-					</View>					
+					</View>
 		        </View>
 			</ScrollView>
-			
+
 	    	<ScrollView id="rightbar">
 	    		<View id="rightbarContainer">
 					<Label text="Last Modified" id="rightbarTitle"></Label>
