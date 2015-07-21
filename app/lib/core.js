@@ -241,9 +241,9 @@ var APP = {
 		Ti.App.addEventListener("close", APP.exitObserver);
 		Ti.App.addEventListener("resumed", APP.resumeObserver);
 
-		if(OS_ANDROID) {
+		/*if(OS_ANDROID) {
 			APP.MainWindow.addEventListener("androidback", APP.backButtonObserver);
-		}
+		}*/
 
 		// Determine device characteristics
 		APP.determineDevice();
@@ -459,8 +459,8 @@ var APP = {
 		});
 
 		// Add a handler for the tabs (make sure we remove existing ones first)
-		APP.Tabs.Wrapper.removeEventListener("click", APP.handleTabClick);
-		APP.Tabs.Wrapper.addEventListener("click", APP.handleTabClick);
+		//APP.Tabs.Wrapper.removeEventListener("click", APP.handleTabClick);
+		//APP.Tabs.Wrapper.addEventListener("click", APP.handleTabClick);
 	},
 	/**
 	 * Builds a slide menu
@@ -475,7 +475,7 @@ var APP = {
 		});
 
 		// Remove the TabGroup
-		APP.GlobalWrapper.remove(APP.Tabs.Wrapper);
+		//APP.GlobalWrapper.remove(APP.Tabs.Wrapper);
 
 		// Move everything down to take up the TabGroup space
 		APP.ContentWrapper.bottom = "0dp";
@@ -505,8 +505,8 @@ var APP = {
 		APP.Tabs.clear();
 
 		// Undo removal of TabGroup
-		APP.GlobalWrapper.remove(APP.Tabs.Wrapper);
-		APP.GlobalWrapper.add(APP.Tabs.Wrapper);
+		//APP.GlobalWrapper.remove(APP.Tabs.Wrapper);
+		//APP.GlobalWrapper.add(APP.Tabs.Wrapper);
 		APP.ContentWrapper.bottom = "60dp";
 
 		APP.currentStack = -1;
@@ -966,7 +966,7 @@ var APP = {
 		APP.cancelLoading = true;
 
 		if(APP.loadingOpen) {
-			
+
 			APP.GlobalWrapper.remove(APP.Loading);
 
 			APP.loadingOpen = false;
