@@ -1,11 +1,15 @@
 var APP = require("core");
-
+var CONFIG = arguments[0];
+var COMMONS = require("ca-commons");
 
 
 
 $.init = function() {
 	$.bundleItemName.text = "Medias";
-
+	if (CONFIG.image_file){
+		var image_file=COMMONS.getRemoteFile(CONFIG.image_file);
+		$.imageView.image = image_file; 
+	}
 }
 // Folding bundle 
 $.bundleItem.addEventListener("click", function(_event) {

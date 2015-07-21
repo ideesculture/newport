@@ -348,11 +348,22 @@ $.uiHandleData = function(_data) {
 							}
 						}
 					} else {
-						var attribute = bundle_code;
-						APP.log("debug", "INTRINSIC FIELD");
-						APP.log("debug", attribute);
-						//TODO:
-						//DISPLAY INTRINSIC FIELDS
+
+						if (bundle_code == "ca_object_representations") 
+						{
+							var row = Alloy.createController("edit_media_photo", {
+								bundle_code:bundle_code,
+							}).getView();
+							rows.push(row);
+						}
+						else 
+						{
+							var attribute = bundle_code;
+							APP.log("debug", "INTRINSIC FIELD");
+							APP.log("debug", attribute);
+							//TODO:
+							//DISPLAY INTRINSIC FIELDS
+						}
 					}
 					 
 				};	
@@ -532,17 +543,14 @@ $.sendDataToServer = function() {
 
 		/******************************
 		FIRST REQUEST : CREATES THE NEW OBJECT IN THE DB
-		envoie le type
+		sends the object's type
 		*************************/
-		//1) construction du json
+		//1) builds the json
 		json = {};
 		//builds the object to be sent
 		tempobj ={}; attributes = {}; 
-		//creates a manuscript
-		//it HAS to be changed!
-		//variable from an earlier screen asking for the object's type
+
 		tempobj.idno = edit_false_id; 	
-		//alert(CONFIG.type_info);
 		tempobj.type_id= CONFIG.type_info.item_id; 
 		json.intrinsic_fields = tempobj; 
 		APP.log("debug", "json sent for object creation:");
@@ -583,8 +591,6 @@ $.sendDataToServer = function() {
 				attributes[fieldToSave.bundle_code] = temptab; 
 				json.attributes = attributes; 
 
-
-				//alert(JSON.stringify(json)); 
 
 				/******************************
 				SENDS THE REQUEST 
@@ -654,17 +660,35 @@ $.sendDataToServer = function() {
 
 
 		var dialog = Ti.UI.createAlertDialog({
-			title: 'Save',
-		    message: 'Your modifications have been saved :)',
-		    ok: 'OK'
+			title: 'Success',
+		    message: 'Your new object has been saved. What do you want to do?',
+		    buttonNames: ['Create another new object', 'Go back to the main page'],
+		});
+		dialog.addEventListener('click', function(e){
+			if (e.index === 0){
+				// back to first "new" screen, for a fresh new procedure
+				//opens "new"
+				Ti.API.info('ANOTHER NEW OBJECT');
+				APP.addChild("new", {}, true);
+			}
+			else
+			{
+				if (e.index == 1) {
+				// go back to the main page
+				//opens "main"
+					Ti.API.info('BACK TO MAIN PAGE');
+					APP.addChild("main", {}, true);
+				}
+			}
 		});
 		dialog.show();
-		//new edit_false_id: just in case
-		edit_false_id = "new_"+ timestamp;
+
+		//new edit_false_id: just in case-- has to be replaced by something better.
+		//edit_false_id = "new_"+ timestamp;
 	}
 	else
 	{
-		alert("no data :(");
+		alert("we found no attributes to save. Please check that you filled some fields before saving.");
 	}
 }
 
@@ -676,7 +700,6 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 	var attribute = e.config.bundle_code.replace(/^ca_attribute_/,"");
 	APP.log("debug", attribute);
 
-	//WONT WORK FOR SURE
 	// Inserting into the temp table
 	var vals = {is_origin : 0, is_modified : 0, is_new : 1 };
 	vals[e.config.element] = e.value;

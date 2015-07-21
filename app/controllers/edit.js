@@ -127,6 +127,7 @@ $.retrieveData = function(_force, _callback){
 }
 
 $.modelRetrieveCallbackFunctions = function () {
+	
 	$.modelHandleData(MODEL_MODEL.getElementsByTypeId(type_id));
 };
 
@@ -175,6 +176,8 @@ $.modelHandleData = function(_data) {
 	
 }; */
 $.modelHandleData = function(_data) {
+	//APP.log("debug", "modelHandleData data");
+	//APP.log("debug", _data);
 	CONFIG.elements= _data; 
 	//alert(CONFIG.elements);
 	//APP.log("debug", CONFIG.elements);
@@ -306,25 +309,30 @@ $.uiHandleData = function(_data) {
 						var attribute = bundle_code.replace(/^ca_attribute_/,"");
 
 						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {	
-							if(CONFIG.elements.indexOf(attribute)== -1){
-								APP.log("debug", "this attribute is undefined for the object's type.");
-							}		
-							else {
-								APP.log("debug", CONFIG.elements[CONFIG.elements.indexOf(attribute)]);
-								APP.log("debug", "attribute found");
-								var values = $.EMPTY_BUNDLE;
 
-								var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
+							if(typeof Array.isArray(CONFIG.elements)){
+								//APP.log("debug", "CONFIG.elements IS AN ARRAY");
+								//APP.log("debug", CONFIG.elements);
+								if(CONFIG.elements.indexOf(attribute)== -1){
+									APP.log("debug", "this attribute is undefined for the object's type.");
+								}		
+								else {
+									APP.log("debug", CONFIG.elements[CONFIG.elements.indexOf(attribute)]);
+									APP.log("debug", "attribute found");
+									var values = $.EMPTY_BUNDLE;
+
+									var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
 
 
-								var row = Alloy.createController("edit_metadata_bundle", {
-									bundle_code:bundle_code,
-									content:element_data,
-									values:values,
-									newport_id:{0:i}
-								}).getView();
-								rows.push(row);
-							}						
+									var row = Alloy.createController("edit_metadata_bundle", {
+										bundle_code:bundle_code,
+										content:element_data,
+										values:values,
+										newport_id:{0:i}
+									}).getView();
+									rows.push(row);
+								}	
+							} else { APP.log("debug", "CONFIG.elements is not an array !");}					
 							// defining values from global var $.RECORD
 							
 							/*
@@ -356,9 +364,13 @@ $.uiHandleData = function(_data) {
 					} 
 					else {
 						if (bundle_code == "ca_object_representations") {
-							var row = Alloy.createController("edit_media_photo", {
-								bundle_code:bundle_code,
-							}).getView();
+							var obj_data = {};
+							obj_data.bundle_code = bundle_code ; 
+
+							if(CONFIG.obj_data.image_file){
+								obj_data.image_file = CONFIG.obj_data.image_file ;
+							}
+							var row = Alloy.createController("edit_media_photo", obj_data ).getView();
 							rows.push(row);
 
 						}

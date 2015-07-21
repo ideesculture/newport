@@ -23,9 +23,12 @@
 "#imageView":{
 	backgroundColor:'#FFF',
 	color:"black",
-	width: "460dp",
-	height: "480dp",
-	bottom: 10
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	top: "10dp", 
+	bottom: "10dp", 
+	left: "10dp", 
+	right: "10dp"
 },
 "#bundleItemName": {
 	top:"0dp",
@@ -53,10 +56,15 @@
 },
 "#bundleItemElements": {
 	//height:"1dp",
-	height:Ti.UI.SIZE,
-	layout:"vertical"
+	//height:Ti.UI.SIZE,
+	top: "20dp",
+	width: "400dp",
+	height: "400dp",
+	layout:"vertical", 
+	backgroundColor: "#EEE"
 },
 "#addNewButtonView": {
+	top: "10dp",
 	height:"20dp",
 	left:"10dp",
 	width:"auto",

@@ -18,8 +18,8 @@ var maxheight = Ti.Platform.displayCaps.platformHeight;
 	    top: 47
 	});*/
 
-APP.log("debug","main_modal_infoicon_details CONFIG");
-APP.log("debug",CONFIG);
+//APP.log("debug","main_modal_infoicon_details CONFIG");
+//APP.log("debug",CONFIG);
 $.init = function() {
 
 
@@ -29,7 +29,7 @@ $.init = function() {
 	OBJECT_DETAILS.init($.TABLE);
 
 	// Fetching details in order to update "Some info about the item" and "Even some more info"
-	APP.log("debug",OBJECT_DETAILS.getDetails(CONFIG.obj_data.object_id));	
+	//APP.log("debug",OBJECT_DETAILS.getDetails(CONFIG.obj_data.object_id));	
 
 	if(OS_IOS && APP.Device.versionMajor >= 7) {
 		Ti.API.log("debug","IOS 7 ou +");
@@ -42,13 +42,15 @@ $.init = function() {
 	$.label1.font={ fontSize:34 };
 	$.label1.text="Objet : "+CONFIG.obj_data.idno;
 	$.textArea.value=CONFIG.obj_data.display_label;
-
+	APP.log("debug", "MAIN MODAL INFOICON DETAILS OBJECT INFO:::");
+	APP.log("debug", CONFIG.obj_data);
 
 	$.textArea.font={fontSize:20};
 	$.closeButton.font= { fontSize:24, fontFamily:"GillSans" };
 	$.label2.font={ fontSize:20, fontFamily:"Avenir-MediumOblique" };
-	$.label2.text=CONFIG.obj_data.info2;
-	$.label3.text=CONFIG.obj_data.info1;
+	//$.label2.text=CONFIG.obj_data.info2;
+	$.label2.text= ""; 
+	$.label3.text=CONFIG.obj_data.info2;
 	$.label3.font=$.label2.font
 	$.editButton.setBackgroundColor(APP.Settings.colors.primary); 
 	//$.wrapperView.add(backgroundView);
