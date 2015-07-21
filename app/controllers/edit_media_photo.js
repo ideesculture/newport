@@ -9,7 +9,10 @@ $.init = function() {
 	if (CONFIG.image_file){
 		var image_file=COMMONS.getRemoteFile(CONFIG.image_file);
 		$.imageView.image = image_file; 
+	} else {
+		$.imageView.image = "/images/cadre-plus-ipad.png";
 	}
+
 }
 // Folding bundle 
 $.bundleItem.addEventListener("click", function(_event) {

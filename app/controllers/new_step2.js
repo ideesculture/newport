@@ -19,7 +19,6 @@ var OBJECT_EDIT = require("models/ca-object-edit")();
 var CONFIG = arguments[0];
 
 var FLAG_SAVE = false; 
-var edit_false_id; 
 
 // Pseudo constants
 var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "ca_places", "ca_collections", "ca_loans", "ca_movements"];			
@@ -57,12 +56,15 @@ $.init = function() {
 	// Initiating CA available UIs class
 	UI_MODEL.init();
 	// Initiating detail fetching for object
+	CONFIG.obj_data = {}; 
+	//alert(CONFIG.type_info);
+	CONFIG.obj_data.info1 = CONFIG.type_info.item_id;
 	//OBJECT_DETAILS.init($.TABLE);
 	// Initiating edit model for object
 	var timestamp = new Date().getTime();
-	edit_false_id = "new_"+ timestamp;
-	APP.log("debug", edit_false_id);
-	OBJECT_EDIT.init($.TABLE, edit_false_id);
+	CONFIG.obj_data.false_id = "new_"+ timestamp;
+	APP.log("debug", CONFIG.obj_data.false_id);
+	OBJECT_EDIT.init($.TABLE, CONFIG.obj_data.false_id);
 
 	// Credentials are inside app.json file
 	APP.ca_login=APP.Settings.CollectiveAccess.login;
@@ -98,11 +100,11 @@ $.init = function() {
 
 	// Loading object details
 	// Loading URL for object details, replacing ID by the current object_id
-	/*CONFIG.object_url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.obj_data.object_id);
+	/*CONFIG.object_url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.obj_data.false_id);
 	CONFIG.object_url_validity = APP.Settings.CollectiveAccess.urlForObjectDetails.cache;
 
 	// Loading URL for base object edition data, replacing ID by the current object_id
-	CONFIG.base_edit_url = APP.Settings.CollectiveAccess.urlForObjectEdit.url.replace(/ID/g,CONFIG.obj_data.object_id);
+	CONFIG.base_edit_url = APP.Settings.CollectiveAccess.urlForObjectEdit.url.replace(/ID/g,CONFIG.obj_data.false_id);
 	CONFIG.base_edit_url_validity = APP.Settings.CollectiveAccess.urlForObjectEdit.cache;
 	*/
 	// objectRetrieveData is called from modelRetrieveCallbackFunctions : we need to have the metadata elements available before 
@@ -293,7 +295,7 @@ $.uiHandleData = function(_data) {
 	
 	// error handling if _data has not been rightly fetched back
 	if (typeof _data != "undefined") {
-		APP.log("debug", "UI HANDLE DATA DATA:")
+		//APP.log("debug", "UI HANDLE DATA DATA:")
 		//APP.log("debug", _data);
 		if (typeof _data.content != "undefined") {
 			// If we have some content back
@@ -312,7 +314,7 @@ $.uiHandleData = function(_data) {
 				alert("type restrictions undefined => yes");
 			}*/
 			//END OF FILTER SCREENS
-			APP.log("debug", _data.content);
+			//APP.log("debug", _data.content);
 			var screen_content = _data.content.screen_content;
 			for(var bundle in screen_content) {
 				var bundle_code = screen_content[bundle].bundle_code;
@@ -534,7 +536,6 @@ $.sendDataToServer = function() {
 	var json = {}; 
 	var row;
 	var id ="";
-	var id_of_object_created = ""; 
 	var attribut = ""; 
 	var data = OBJECT_EDIT.getSavedData(); 
 
@@ -550,7 +551,7 @@ $.sendDataToServer = function() {
 		//builds the object to be sent
 		tempobj ={}; attributes = {}; 
 
-		tempobj.idno = edit_false_id; 	
+		tempobj.idno = CONFIG.obj_data.false_id; 	
 		tempobj.type_id= CONFIG.type_info.item_id; 
 		json.intrinsic_fields = tempobj; 
 		APP.log("debug", "json sent for object creation:");
@@ -571,9 +572,10 @@ $.sendDataToServer = function() {
 		var handleDataNew = function(_data){
 
 			//APP.log("debug", _data);
-			id_of_object_created= _data.object_id; 
+			CONFIG.obj_data.object_id = _data.object_id; 
+			CONFIG.obj_data.display_label = ""; 
 			APP.log("debug", "object was created! new id: ");
-			APP.log("debug", id_of_object_created);
+			APP.log("debug", CONFIG.obj_data.object_id);
 			//2) ajoute les attributs 
 			for(row in data){		
 				json = {};
@@ -595,7 +597,7 @@ $.sendDataToServer = function() {
 				/******************************
 				SENDS THE REQUEST 
 				*************************/
-				var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g, id_of_object_created);
+				var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g, CONFIG.obj_data.object_id);
 				
 				var error = function() {
 					var dialog = Ti.UI.createAlertDialog({
@@ -662,10 +664,10 @@ $.sendDataToServer = function() {
 		var dialog = Ti.UI.createAlertDialog({
 			title: 'Success',
 		    message: 'Your new object has been saved. What do you want to do?',
-		    buttonNames: ['Create another new object', 'Go back to the main page'],
+		    buttonNames: [ 'Stay on this object for further edition', 'Create another new object', 'Go back to the main page'],
 		});
 		dialog.addEventListener('click', function(e){
-			if (e.index === 0){
+			if (e.index === 1){
 				// back to first "new" screen, for a fresh new procedure
 				//opens "new"
 				Ti.API.info('ANOTHER NEW OBJECT');
@@ -673,18 +675,26 @@ $.sendDataToServer = function() {
 			}
 			else
 			{
-				if (e.index == 1) {
+				if (e.index == 2) {
 				// go back to the main page
 				//opens "main"
 					Ti.API.info('BACK TO MAIN PAGE');
 					APP.addChild("main", {}, true);
 				}
+				else 
+				{
+					if (e.index == 0) {
+						// stay on this object
+						//opens "main"
+						APP.log("debug", "NEW TO EDIT :::");
+						APP.log("debug", CONFIG),
+						APP.addChild("edit", CONFIG , true);
+					}
+				}
 			}
 		});
 		dialog.show();
 
-		//new edit_false_id: just in case-- has to be replaced by something better.
-		//edit_false_id = "new_"+ timestamp;
 	}
 	else
 	{
