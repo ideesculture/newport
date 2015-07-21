@@ -199,7 +199,8 @@ function Model() {
 
 		data.close();
 		db.close();
-		
+		APP.log("debug", "LAST RECORDS :::");
+		APP.log("debug", temp);
 		return temp;
 		
 	}
