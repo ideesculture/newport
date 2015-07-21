@@ -364,9 +364,13 @@ $.uiHandleData = function(_data) {
 					} 
 					else {
 						if (bundle_code == "ca_object_representations") {
-							var row = Alloy.createController("edit_media_photo", {
-								bundle_code:bundle_code,
-							}).getView();
+							var obj_data = {};
+							obj_data.bundle_code = bundle_code ; 
+
+							if(CONFIG.obj_data.thumbnail_url){
+								obj_data.thumbnail_url = CONFIG.obj_data.thumbnail_url ;
+							}
+							var row = Alloy.createController("edit_media_photo", obj_data ).getView();
 							rows.push(row);
 
 						}

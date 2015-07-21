@@ -65,6 +65,8 @@ $.handleData = function(_data) {
 	
 	if(_data.thumbnail_url) {
 		APP.log("debug",_data.thumbnail_url);
+		CONFIG.obj_data["thumbnail_url"] = _data.thumbnail_url;
+		
 		var image_file=COMMONS.getRemoteFile(_data.thumbnail_url);
 		APP.log("debug",image_file);
 		$.cellimage.image = image_file;
@@ -99,6 +101,7 @@ $.handleData = function(_data) {
 		if(APP.SlideMenuOpen) {
 			APP.closeMenu();
 		}
+
 		var modal_info_iicon = {
 			obj_data: CONFIG.obj_data,		
 			container: CONFIG.modal	
