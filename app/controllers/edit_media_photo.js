@@ -6,8 +6,8 @@ var COMMONS = require("ca-commons");
 
 $.init = function() {
 	$.bundleItemName.text = "Medias";
-	if (CONFIG.thumbnail_url){
-		var image_file=COMMONS.getRemoteFile(CONFIG.thumbnail_url);
+	if (CONFIG.image_file){
+		var image_file=COMMONS.getRemoteFile(CONFIG.image_file);
 		$.imageView.image = image_file; 
 	}
 }

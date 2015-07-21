@@ -367,8 +367,8 @@ $.uiHandleData = function(_data) {
 							var obj_data = {};
 							obj_data.bundle_code = bundle_code ; 
 
-							if(CONFIG.obj_data.thumbnail_url){
-								obj_data.thumbnail_url = CONFIG.obj_data.thumbnail_url ;
+							if(CONFIG.obj_data.image_file){
+								obj_data.image_file = CONFIG.obj_data.image_file ;
 							}
 							var row = Alloy.createController("edit_media_photo", obj_data ).getView();
 							rows.push(row);

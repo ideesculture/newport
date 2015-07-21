@@ -84,6 +84,7 @@ function Model() {
 	 */
 	this.handleData = function(_data, _url, _callback) {
 		var _ca_table = table;
+		var temp_obj_representations = {};
 		if(_data.ok == true) {
 			var record = _data;
 			delete(record.ok);
@@ -100,6 +101,7 @@ function Model() {
 			
 			// Storing JSON result in SQLite
 			var thumbnail_url = "";
+			temp_obj_representations = record.representations ;
 			for(var related in record.representations) {
 				if (record.representations[related].is_primary == "1") {
 					thumbnail_url = record.representations[related].urls.preview170;
@@ -111,7 +113,8 @@ function Model() {
 			db.execute("END TRANSACTION;");
 			db.close();
 		}
-
+		APP.log("debug", "REPRESENTATIONS : : :");
+		APP.log("debug",temp_obj_representations);
 		if(_callback) {
 			_callback();
 		}
