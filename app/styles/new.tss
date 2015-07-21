@@ -1,11 +1,13 @@
 "#Wrapper": {
 	layout: "vertical",
-	top: "10dp"
+	contentWidth: Ti.UI.FILL,
+	width: Ti.UI.SIZE,
+	backgroundColor: "#EEE"
 },
 "#container": {
 	top: "0dp",
 	backgroundColor: "#EEE",
-	contentWidth: "auto",
+	contentWidth: Ti.UI.FILL,
 	contentHeight: "auto",
 	layout: "vertical"
 },
@@ -28,15 +30,12 @@
 	selectedColor: "#000",
 	height: "45dp",
 },
-"label_typechoice": {
-	color: "#666",
+"#label_typechoice": {
 	font: {
-		fontSize: "14dp",
+		fontSize: "18dp",
 		fontFamily: "HelveticaNeue"
 	},
-	top: "25dp",
-	left: "15dp",
-	right: "15dp",
+	top: "20dp",
 	height: Ti.UI.SIZE,
 	textAlign: "left"
 },
