@@ -348,11 +348,22 @@ $.uiHandleData = function(_data) {
 							}
 						}
 					} else {
-						var attribute = bundle_code;
-						APP.log("debug", "INTRINSIC FIELD");
-						APP.log("debug", attribute);
-						//TODO:
-						//DISPLAY INTRINSIC FIELDS
+
+						if (bundle_code == "ca_object_representations") 
+						{
+							var row = Alloy.createController("edit_media_photo", {
+								bundle_code:bundle_code,
+							}).getView();
+							rows.push(row);
+						}
+						else 
+						{
+							var attribute = bundle_code;
+							APP.log("debug", "INTRINSIC FIELD");
+							APP.log("debug", attribute);
+							//TODO:
+							//DISPLAY INTRINSIC FIELDS
+						}
 					}
 					 
 				};	
@@ -659,17 +670,21 @@ $.sendDataToServer = function() {
 				//opens "new"
 				Ti.API.info('ANOTHER NEW OBJECT');
 				APP.addChild("new", {}, true);
-			else if (e.index == 1) {
+			}
+			else
+			{
+				if (e.index == 1) {
 				// go back to the main page
 				//opens "main"
-				Ti.API.info('BACK TO MAIN PAGE');
-				APP.addChild("main", {}, true);
+					Ti.API.info('BACK TO MAIN PAGE');
+					APP.addChild("main", {}, true);
+				}
 			}
 		});
 		dialog.show();
 
 		//new edit_false_id: just in case-- has to be replaced by something better.
-		edit_false_id = "new_"+ timestamp;
+		//edit_false_id = "new_"+ timestamp;
 	}
 	else
 	{

@@ -311,8 +311,8 @@ $.uiHandleData = function(_data) {
 						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {	
 
 							if(typeof Array.isArray(CONFIG.elements)){
-								APP.log("debug", "CONFIG.elements IS AN ARRAY");
-								APP.log("debug", CONFIG.elements);
+								//APP.log("debug", "CONFIG.elements IS AN ARRAY");
+								//APP.log("debug", CONFIG.elements);
 								if(CONFIG.elements.indexOf(attribute)== -1){
 									APP.log("debug", "this attribute is undefined for the object's type.");
 								}		
