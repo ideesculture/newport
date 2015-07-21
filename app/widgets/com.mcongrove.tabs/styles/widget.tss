@@ -11,7 +11,7 @@
 	top: "0dp",
 	height: "1dp",
 	width: Ti.UI.FILL,
-	backgroundColor: "#000",
+	backgroundColor: "white",
 	opacity: 0.2
 },
 "#IndicatorContainer": {
