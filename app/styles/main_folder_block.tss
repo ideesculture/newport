@@ -5,11 +5,11 @@
 	bottom: 10,
 	left: 20,
 	layout: "vertical",
-	borderColor:"black",
+	borderColor:"#eee",
 	borderWidth:1
 },
 "#cellimage":{
-	backgroundColor: "#dddddd",
+	backgroundColor: "white",
 	top:"5dp",
 	left:"5dp",
 	right:"5dp"

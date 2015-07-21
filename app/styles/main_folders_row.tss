@@ -1,7 +1,7 @@
 "#foldersItem": {
 	height: "40dp",
-	borderColor: "#000",
-	backgroundColor:"#ddd",
+	borderColor: "#eee",
+	backgroundColor:"white",
 	borderWidth: "1dp",
 	width: Ti.UI.FILL,
 	layout: "absolute"
