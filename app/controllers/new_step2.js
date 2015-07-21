@@ -651,7 +651,7 @@ $.sendDataToServer = function() {
 		var dialog = Ti.UI.createAlertDialog({
 			title: 'Success',
 		    message: 'Your new object has been saved. What do you want to do?',
-		    buttonNames: ['Create another new object','Keep on editing this object', 'Go back to the main page'],
+		    buttonNames: ['Create another new object', 'Go back to the main page'],
 		});
 		dialog.addEventListener('click', function(e){
 			if (e.index === 0){
@@ -659,15 +659,10 @@ $.sendDataToServer = function() {
 				//opens "new"
 				Ti.API.info('ANOTHER NEW OBJECT');
 				APP.addChild("new", {}, true);
-
-			} else if (e.index == 1) {
-				// keep on editing this object
-				//opens "edit"? Can we do that? 
-				
-				
-			} else if (e.index == 2) {
+			else if (e.index == 1) {
 				// go back to the main page
 				//opens "main"
+				Ti.API.info('BACK TO MAIN PAGE');
 				APP.addChild("main", {}, true);
 			}
 		});
@@ -678,7 +673,7 @@ $.sendDataToServer = function() {
 	}
 	else
 	{
-		alert("we found no attributes to save. Please check that you filled some fields before saving the new object.");
+		alert("we found no attributes to save. Please check that you filled some fields before saving.");
 	}
 }
 
