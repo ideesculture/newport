@@ -81,6 +81,7 @@ $.modelRetrieveData = function(_force, _callback) {
 //dynamically generates the list of available object types
 $.modelRetrieveCallbackFunctions = function () {
 	var types = MODEL_MODEL.getObjectTypes(); 
+	//alert(types);
 	var data = [], title;
 
 	for(var rec_type in types) {

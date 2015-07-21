@@ -33,7 +33,8 @@ var type_id = CONFIG.obj_data.info1;
 $.heading.text += " editing object #"+CONFIG.obj_data.object_id+" "+CONFIG.obj_data.display_label+" "+CONFIG.obj_data.idno;
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
-$.TABLE = CONFIG.type;
+//$.TABLE = CONFIG.type;
+$.TABLE = "ca_objects";
 // List of all screen
 $.SCREENS = [];
 // Index of the screen we want to display, default -1 (first available)
@@ -189,6 +190,7 @@ $.uiRetrieveCallbackFunctions = function() {
 	//alert($.SCREEN);
 	APP.log("debug", "uiRetrieveCallbackFunctions");
 	$.UI_CODE = UI_MODEL.getFirstAvailableUIForTable($.TABLE).code;
+	APP.log("debug", $.UI_CODE);
 	// Fetching defaulft (aka first) available screen for this UI
 	if($.SCREEN == "") {
 		$.uiHandleData(UI_MODEL.getFirstAvailableScreenWithContentForUI($.TABLE,$.UI_CODE));	
@@ -380,7 +382,7 @@ $.uiHandleData = function(_data) {
 			};
 		}
 		else {
-
+			APP.log("debug", "typeof _data.content = undefined");
 		}
 	}
 		
