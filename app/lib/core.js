@@ -416,6 +416,7 @@ var APP = {
 				id: i,
 				title: APP.Nodes[i].title,
 				image: UTIL.fileExists(imageFolder + APP.Nodes[i].image + ".png") ? imageFolder + APP.Nodes[i].image + ".png" : null,
+				icon: APP.Nodes[i].icon,
 				controller: APP.Nodes[i].type.toLowerCase(),
 				menuHeader: APP.Nodes[i].menuHeader,
 				downTab: APP.Nodes[i].downTab
@@ -578,17 +579,16 @@ var APP = {
 	 * Handles the click event on a menu item
 	 * @param {Object} _event The event
 	 */
-	handleMenuClick: function(_event) {
-		if(typeof _event.row.id !== "undefined" && typeof _event.row.id == "number") {
-			APP.closeSettings();
+	 handleMenuClick: function(_event) {
+		if(typeof _event.source.idno !== "undefined" && typeof _event.source.idno == "number") {
+ 			APP.closeSettings();
+ 			APP.handleNavigation(_event.source.idno-1);
+ 		} else if(typeof _event.source.idno !== "undefined" && _event.source.idno == "settings") {
+ 			APP.openSettings();
+ 		}
 
-			APP.handleNavigation(_event.row.id);
-		} else if(typeof _event.row.id !== "undefined" && _event.row.id == "settings") {
-			APP.openSettings();
-		}
-
-		APP.toggleMenu();
-	},
+ 		APP.toggleMenu();
+ 	},
 	/**
 	 * Global event handler to change screens
 	 * @param {String} _id The ID (index) of the tab being opened
