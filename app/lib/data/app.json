@@ -79,7 +79,7 @@
 			"title": "New",
 			"type": "new",
 			"image": "new_icon",
-			"icon":"new",
+			"icon":"file-text",
 			"tabletSupport": false,
 			"downTab" : false
 		},
