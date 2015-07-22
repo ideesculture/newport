@@ -57,7 +57,7 @@
 				"info2":"ca_objects.dimensions_in_mm"
 			},
 			"urlForEntitySearch" : {
-				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_entities?q=<your_query>*",
+				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_entities?q=<your_query>*&source={\"bundles\": { \"ca_entities.type_id\":{}}}",
 				"cache":"86400"
 			}
 
