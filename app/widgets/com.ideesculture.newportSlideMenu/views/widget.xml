@@ -1,6 +1,6 @@
 <Alloy>
 	<View id="Wrapper">
-		<TableView id="Nodes" />
-		<TableView id="DownNodes" />
+		<View id="Nodes" />
+		<View id="DownNodes" />
 	</View>
 </Alloy>
