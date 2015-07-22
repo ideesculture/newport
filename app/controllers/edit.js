@@ -460,21 +460,17 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
  	if ($.hasChanged == true) {
 		APP.log("debug","------SAVE-----");
 
+		//moves the modifications to _edit_temp_insert table
 		var itWorked = OBJECT_EDIT.saveChanges();
 
 		if(itWorked) {
-			//ici, essayer d'envoyer vers le serveur
+			//sends the modifs to server and erases them from _edit_temp_insert table
 			if (Titanium.Network.networkType == Titanium.Network.NETWORK_WIFI )
 			{
-				$.sendDataToServer();
-				/*var dialog = Ti.UI.createAlertDialog({
-					title: 'Save',
-				    message: 'Your modifications have been saved :)',
-				    ok: 'OK'
-				});
-				dialog.show();*/
+				OBJECT_EDIT.sendDataToServer();
 
 			}
+			//or keeps the data in the local table
 			else
 			{
 				var dialog = Ti.UI.createAlertDialog({
@@ -656,6 +652,8 @@ $.sendDataToServer = function() {
 	}
 }
 
+//UPDATES STORAGE FUNCTION
+//when the content of a field has changed, the new content is stored id _edit_updates
 Ti.App.addEventListener('event_haschanged', function(e) { 
 	
 	$.hasChanged = true;

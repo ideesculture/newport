@@ -28,13 +28,13 @@ function Model() {
 		//cleans the db: delete all tables
 		// you don't have to do that
 		//if you dont change their structures
-		var request = "DROP TABLE IF EXISTS " + _ca_table + "_edit_base ;";
+		/*var request = "DROP TABLE IF EXISTS " + _ca_table + "_edit_base ;";
 		db.execute(request);
 		var request = "DROP TABLE IF EXISTS " + _ca_table + "_edit_updates ;";
 		db.execute(request);
 		var request = "DROP TABLE IF EXISTS " + _ca_table + "_edit_temp_insert ;";
 		db.execute(request);
-		
+		*/
 
 		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_base (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id TEXT, json TEXT);";
 		db.execute(request);
@@ -60,7 +60,7 @@ function Model() {
 	};
 
 	/**
-	 * Fetches the remote data
+	 * Fetches the remote data about the object
 	 * @param {Object} _params The request paramaters to send
 	 * @param {String} _params.url The URL to retrieve data from
 	 * @param {Function} _params.callback The function to run on data retrieval
@@ -272,16 +272,16 @@ function Model() {
 	}
 
 	//marche pas
-	this.cleanEditUpdatesTable = function (){
+	this.cleanEditUpdatesTable = function() {
 		//cleans the _edit_updates table
-		APP.log("debug", "DEBUG cleanEditUpdatesTable");
+		APP.log("debug", "cleanEditUpdatesTable");
 
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
 		var request = "DELETE FROM " + APP.CURRENT_TABLE + "_edit_updates ;";
 		db.execute(request);
 		db.execute("END TRANSACTION;");
-		APP.log("debug", "fini");
+		db.close();
 	}
 
 	this.saveChanges = function() {
@@ -313,21 +313,15 @@ function Model() {
 				db.execute("END TRANSACTION;");
 				data.next();
 			}
-		result = true; 
-		/*db.execute("BEGIN TRANSACTION;");
-		var request = "DELETE FROM " + _ca_table + "_edit_updates ;"; 
-		db.execute(request);
-		var request = "VACUUM;"; 
-		db.execute(request);
-		
-		db.execute("END TRANSACTION;");*/
+			result = true; 
+			this.cleanEditUpdatesTable();
 		} else {
 			result = false;
 		}
 		db.close();
 
-
 		return result; 
+
 	}
 
 	//returns an array of objects, containing the name and value of the modified attributes to save in the server
@@ -380,31 +374,107 @@ function Model() {
 	
 	this.cleanTempInsertTable = function (_id, _attribute){
 		APP.log("debug", "cleanTempInsertTable");
-		//APP.log("debug", _id);
-		//APP.log("debug", _attribute);
-		//cleans the _edit_temp_insert table
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
 		var request = "DELETE FROM ca_objects_edit_temp_insert WHERE object_id = ? AND attribute = ? ;";
 		db.execute(request, _id, _attribute);
 		db.execute("END TRANSACTION;");
+		db.close(); 
 		//APP.log("debug", "ok fini");
 
 	}
 
-	/*
-	this.cleanTempInsertTable = function (){
-		//cleans the _edit_temp_insert table
-		var db = Ti.Database.open(DBNAME);
-		db.execute("BEGIN TRANSACTION;");
-		var request = "DELETE FROM ca_objects_edit_temp_insert;";
-		db.execute(request);
-		var request = "VACUUM;"; 
-		db.execute(request);
-		db.execute("END TRANSACTION;");
+	this.sendDataToServer = function() {
+		var fieldToSave = {}; 
+		var remove_attributes = []; 
+		var attributes = {}; 
+		var temptab = []; 
+		var tempobj = {};
+		var json = {}; 
+		var row;
+		var id ="";
+		var attribut = ""; 
+		var data = this.getSavedData(); 
 
-	}*/
+		if (data.length>0){
+			for(row in data){
+				json = {};
+				fieldToSave = data[row];
 
+				//saves the id and attribute name, to call them in the handleData function
+				id = fieldToSave.object_id;
+				attribut = fieldToSave.attribut;
+
+				//builds the object to be sent:
+				//1) remove_attributes
+				if(fieldToSave.is_modified){
+					remove_attributes[0] = fieldToSave.bundle_code;
+					json.remove_attributes = remove_attributes;
+				}
+				//2) attributes
+				tempobj ={}; attributes = {}; 
+				tempobj["locale"]= "en_US"; 
+				tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
+				temptab[0]= tempobj; 
+				attributes[fieldToSave.bundle_code] = temptab; 
+				json.attributes = attributes; 
+
+
+				//alert(JSON.stringify(json)); 
+
+				/******************************
+				SENDS THE REQUEST 
+				*************************/
+				var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g,fieldToSave.object_id);
+				
+				var error = function() {
+					var dialog = Ti.UI.createAlertDialog({
+					    message: 'ERROR. Couldn\'t send data to the server',
+					    ok: 'OK',
+					    title: 'Error'
+					  }).show();
+				}
+
+				var handleAnswer = function( o1, o2){
+					//alert("go erase data: "+ o1 + " , "+ o2);
+					APP.log("debug", "cleanTempInsertTable");
+					var db = Ti.Database.open(DBNAME);
+					db.execute("BEGIN TRANSACTION;");
+					var request = "DELETE FROM ca_objects_edit_temp_insert WHERE object_id = ? AND attribute = ? ;";
+					db.execute(request, o1, o2);
+					db.execute("END TRANSACTION;");
+					db.close(); 
+				}
+
+				HTTP.request({
+					timeout: 2000,
+					async:false,
+					headers: [{name: 'Authorization', value: APP.authString}],
+					type: "PUT",
+					format: "JSON",
+					data: json,
+					url: ca_url,
+					passthrough: null,
+					success: handleAnswer(id, attribut),
+					failure: error
+				});
+
+			}
+			
+			var dialog = Ti.UI.createAlertDialog({
+				title: 'Save',
+			    message: 'Your modifications have been saved :)',
+			    ok: 'OK'
+			});
+			dialog.show();
+		}
+		else
+		{
+			alert("no data :(");
+
+		}
+
+	}
 
 }
 
