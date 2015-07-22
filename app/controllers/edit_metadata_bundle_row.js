@@ -10,7 +10,8 @@ var DATATYPECONTROLLERS = {
 	"Url":"edit_metadata_element_url",
 	"Length":"edit_metadata_element_length",
 	"Weight":"edit_metadata_element_weight",
-	"DateRange":"edit_metadata_element_daterange"
+	"DateRange":"edit_metadata_element_daterange",
+	"Entities":"edit_metadata_related_entities"
 };
 //APP.log("debug",CONFIG);
 

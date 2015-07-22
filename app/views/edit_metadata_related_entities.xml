@@ -1,0 +1,9 @@
+<Alloy>
+	<View id="field">
+		<Label id="label"/>s	
+		<View id="field">
+			<TextField id="entityfield"/>
+		</View>
+		<Label id="notes"/>
+	</View>
+</Alloy>

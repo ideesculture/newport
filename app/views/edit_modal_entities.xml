@@ -1,0 +1,20 @@
+<Alloy>
+	<View id="wrapperView">
+		
+		<View id="backgroundView" backgroundColor='#000' opacity='0' top='100' left='30'></View>
+		<View id="insideView">
+			<View id="topcontainerView" width ="Ti.UI.FILL" backgroundColor="#111" color="white" bottom='0'>
+				<View id="topLeft" width="60%" height="100%" left="10" top="0">
+					<Label id="label1" text='Object 1' textAlign="Ti.UI.TEXT_ALIGNMENT_LEFT" top="10" left="10" width="Ti.UI.SIZE" height="Ti.UI.SIZE" color="#ddd"></Label>
+					<TextArea id="textArea" backgroundColor="transparent" textAlign='left' left="10" top="60" width="420" height="70" color="#ddd" value="Here we have a short description\nlorem ipsum dolor sit amet\nconsectur adipisici elit sed eiusmod\ntempor incidunt ut"></TextArea>
+				</View>
+				<View id="topRight" width="36%" height="100%" right="10" top="0" textAlign="Ti.UI.TEXT_ALIGNMENT_RIGHT" layout="vertical"></View>
+					<Button id="closeButton" title='X' color="#aaa" right="0" top="20" height="10"></Button>
+					<Label id="label2" text='Some info about the item' textAlign="Ti.UI.TEXT_ALIGNMENT_RIGHT" right="10" width="Ti.UI.SIZE" height="Ti.UI.SIZE" color="#ddd" right="10" top="52"></Label>
+					<Label id="label3" text='Even some more info' textAlign="Ti.UI.TEXT_ALIGNMENT_RIGHT" right="10" width="Ti.UI.SIZE" height="Ti.UI.SIZE" color="#ddd" right="10"  top="74"></Label>
+					<Button id="editButton" color="#fff" title='Edit' width="100" height="34" right="10" top="124"></Button>
+			</View>
+		</View>
+
+	</View>
+</Alloy>

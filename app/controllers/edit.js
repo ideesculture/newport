@@ -293,12 +293,7 @@ $.uiHandleData = function(_data) {
 		APP.log("debug", "UI HANDLE DATA");
 		//APP.log("debug", _data);
 		if (typeof _data.content != "undefined") {
-			APP.log("debug", "not undefined!"); 
-			
-			/*if($.SCREEN == "media"){
-				alert('Media!');
-				APP.log("debug", _data.content);
-			}*/
+			//APP.log("debug", "not undefined!"); 
 			// If we have some content back
 			var screen_content = _data.content.screen_content;
 			for(var bundle in screen_content) {
@@ -313,8 +308,6 @@ $.uiHandleData = function(_data) {
 						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {	
 
 							if(typeof Array.isArray(CONFIG.elements)){
-								//APP.log("debug", "CONFIG.elements IS AN ARRAY");
-								//APP.log("debug", CONFIG.elements);
 								if(CONFIG.elements.indexOf(attribute)== -1){
 									APP.log("debug", "this attribute is undefined for the object's type.");
 								}		
@@ -324,7 +317,7 @@ $.uiHandleData = function(_data) {
 									var values = $.EMPTY_BUNDLE;
 
 									var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
-
+									//alert(element_data);
 
 									var row = Alloy.createController("edit_metadata_bundle", {
 										bundle_code:bundle_code,
@@ -334,7 +327,11 @@ $.uiHandleData = function(_data) {
 									}).getView();
 									rows.push(row);
 								}	
-							} else { APP.log("debug", "CONFIG.elements is not an array !");}					
+							} 
+							else 
+							{ 
+								APP.log("debug", "CONFIG.elements is not an array !");
+							}					
 							// defining values from global var $.RECORD
 							
 							/*
@@ -375,6 +372,27 @@ $.uiHandleData = function(_data) {
 							var row = Alloy.createController("edit_media_photo", obj_data ).getView();
 							rows.push(row);
 
+						}
+						if (bundle_code == "ca_entities") {
+							var values = $.EMPTY_BUNDLE;
+							var temp_objet = {};
+							temp_objet.datatype = "Entity";
+							temp_objet["display_label"] = "related entities";
+							temp_objet["element_code"] = bundle_code ; 
+							var element_data = { "elements_in_set" : temp_objet , "name" : "related entity" };
+
+
+							var row = Alloy.createController("edit_metadata_bundle", {
+								bundle_code:bundle_code,
+								content:element_data,
+								values:values,
+								newport_id:{0:i}
+							}).getView();
+							rows.push(row);
+						}
+						else {
+							APP.log("debug", "NON SUPPORTE: ");
+							APP.log("debug", bundle_code);
 						}
 					}
 				};	
