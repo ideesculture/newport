@@ -1,11 +1,14 @@
 /**
  * The slide menu widget
- * 
+ *
  * @class Widgets.com.ideesculture.newportSlideMenu
  */
 var sections = [];
 var nodes = [];
+// Variable to store the default color of the icon
 var color;
+// Variable to set the color of the icon in an active state
+var activeColor;
 var selected;
 
 /**
@@ -17,7 +20,8 @@ var selected;
 $.init = function(_params) {
 	nodes = [];
 	downNodes = [];
-	color = typeof _params.color !== "undefined" ? _params.color : "#327B9F";
+	color = typeof _params.color !== "undefined" ? _params.color : "white";
+	activeColor = typeof _params.activeColor !== "undefined" ? _params.activeColor : "blue";
 
 	for(var i = 0; i < _params.nodes.length; i++) {
 
@@ -32,9 +36,6 @@ $.init = function(_params) {
 		if(_params.nodes[i].icon) {
 			var args= {icon:'fa-'+_params.nodes[i].icon, left:'12', size:'50', height:'60', left:'15', color:'white', class:"faIcon", idno:_params.nodes[i].id+1 };
 			var iconblock = Widget.createWidget('ti.ux.iconfont','widget', args).getView();
-			Ti.API.info("##iconblock");
-			Ti.API.info(iconblock);
-
 			if (_params.nodes[i].downTab == false) {
 				iconblock.addEventListener("click", handleClick);
 				$.Nodes.add(iconblock);
@@ -53,6 +54,10 @@ $.init = function(_params) {
 function handleClick(_event) {
 	if(typeof _event.source.idno !== "undefined") {
 		$.setIndex(_event.source.idno - 1);
+		for (i = _event.source.parent.children.length; i > 0; i--){
+	        _event.source.parent.children[i - 1].setColor("white");
+	    };
+		_event.source.setColor(color);
 	}
 };
 
