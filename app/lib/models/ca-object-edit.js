@@ -387,6 +387,7 @@ function Model() {
 	this.sendDataToServer = function() {
 		var fieldToSave = {}; 
 		var remove_attributes = []; 
+		var remove_relationships = [];
 		var attributes = {}; 
 		var temptab = []; 
 		var tempobj = {};
@@ -405,21 +406,38 @@ function Model() {
 				id = fieldToSave.object_id;
 				attribut = fieldToSave.attribut;
 
-				//builds the object to be sent:
-				//1) remove_attributes
-				if(fieldToSave.is_modified){
-					remove_attributes[0] = fieldToSave.bundle_code;
-					json.remove_attributes = remove_attributes;
+				if (attribut == "ca_entities"){
+					//needs a different json!!!
+
+					if(fieldToSave.is_modified){
+						remove_relationships[0] = fieldToSave.bundle_code;
+						json.remove_relationships = remove_relationships;
+					}
+					tempobj ={}; attributes = {}; 
+					tempobj["entity_id"]= fieldToSave.valeur; 
+					//temporaire: type fixé à 79 = individu
+					tempobj["type_id"]= 79; 
+					temptab[0]= tempobj; 
+					attributes[fieldToSave.bundle_code] = temptab; 
+					json.related = attributes;
 				}
-				//2) attributes
-				tempobj ={}; attributes = {}; 
-				tempobj["locale"]= "en_US"; 
-				tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
-				temptab[0]= tempobj; 
-				attributes[fieldToSave.bundle_code] = temptab; 
-				json.attributes = attributes; 
-
-
+				else
+				{
+					//builds the object to be sent:
+					//1) remove_attributes
+					if(fieldToSave.is_modified){
+						remove_attributes[0] = fieldToSave.bundle_code;
+						json.remove_attributes = remove_attributes;
+					}
+					//2) attributes
+					tempobj ={}; attributes = {}; 
+					tempobj["locale"]= "en_US"; 
+					tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
+					temptab[0]= tempobj; 
+					attributes[fieldToSave.bundle_code] = temptab; 
+					json.attributes = attributes; 
+				}
+				APP.log("debug", JSON.stringify(json));
 				//alert(JSON.stringify(json)); 
 
 				/******************************
