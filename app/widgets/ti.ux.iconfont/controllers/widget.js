@@ -11,7 +11,7 @@ var fontawesome = require(WPATH('IconicFont')).IconicFont({
 function initUI(){
 
 	WTools.setTiProps(args, $.iconLbl);
-	
+
 	$.init(args);
 
 	WTools.cleanArgs(args);
@@ -24,7 +24,7 @@ $.getCharMap = function(){
 };
 
 $.setIcon = function(codename){
-	$.iconLbl.text = fontawesome.icon(codename);	
+	$.iconLbl.text = fontawesome.icon(codename);
 };
 
 $.init = function(argsInit){
@@ -35,12 +35,14 @@ $.init = function(argsInit){
 	};
 
 	if(argsInit.iconColor) $.iconLbl.color = args.iconColor;
-	
+
 	if(argsInit.icon) {
 		$.iconLbl.text = fontawesome.icon(args.icon);
+	}
+	if(args.idno) {
+		$.iconLbl.idno = args.idno;
 	}
 };
 
 
 initUI();
-
