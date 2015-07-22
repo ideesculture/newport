@@ -582,7 +582,9 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 
 		// Inserting into the temp table
 		var vals = {is_origin : 0, is_modified : 0, is_new : 1 };
+		APP.log("debug", e.config.element); 
 		vals[e.config.element] = e.value;
+
 		vals.bundle = attribute;
 		var new_values2 = [];
 		new_values2[0]=vals;

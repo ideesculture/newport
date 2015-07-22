@@ -13,7 +13,6 @@ var HTTP = require("http");
 var HIERARCHY_MODEL = require("models/ca-objects-hierarchy")();
 
 var CONFIG = arguments[0];
-
 var value ="";
 
 $.TABLE = "ca_entities";
@@ -42,18 +41,35 @@ $.handleData = function(_data) {
 	// If we have data to display...
 	if( typeof _data.results === 'object'){
 		//APP.log("debug", _data.results);
-		var i = 0;
+		//var i = 0;
 		for (var entity in _data.results ) {
-			APP.log("debug", "resultat "+ i);
+			//APP.log("debug", "resultat "+ i);
 			var entity_row = Alloy.createController("edit_related_entity_result", _data.results[entity]).getView();
 			$.entitiesResearchResults.add(entity_row);
-			i++;
+			entity_row.addEventListener('click', function() {
+				$.entitiesResearchResults.removeAllChildren(); 
+			});
+			//i++;
 		};
 	}else 
 	{ 
 		APP.log("debug","no results :("); 
 	}
 }
+
+Ti.App.addEventListener('event_entitySelected', function(e) { 
+	$.entitiesResearchResults.removeAllChildren(); 
+
+	//in value we want the id of the entity
+	CONFIG.content = e.config; 
+
+	//HERE we have to save infos about the related entity
+			Ti.App.fireEvent('event_haschanged', {
+    		name: 'bar',
+    		config: CONFIG,
+    		value: e.value
+		});
+});
 
 
 $.search = function(e){
@@ -87,27 +103,7 @@ $.update = function () {
  * HANDLERS
  */
 
-var leavingFocus = function(_field) {
-	//if (_field.hasChanged == "true") return false;
-	if (_field.value != _field.valuebak) {
-		_field.backgroundColor = APP.Settings.colors.primary;
-		Ti.App.fireEvent('event_haschanged', {
-    		name: 'bar',
-    		config: CONFIG,
-    		value: _field.value
-		});
-		//_field.valuebak = _field.value;
-		_field.backgroundColor = APP.Settings.colors.secondary;
-	} else {
-		_field.backgroundColor = "white";
-	}
 
-};
-
-$.entityfield.addEventListener('blur', function() {
-	// leaving focus from area
-	leavingFocus($.entityfield);
-});
 
 $.init();
 

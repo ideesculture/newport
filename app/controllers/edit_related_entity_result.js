@@ -7,9 +7,22 @@ $.init = function() {
 
 	$.label.text=CONFIG.display_label; 
 
-	APP.log("debug", CONFIG.display_label); 
-
 
 }
+
+var selected = function(_field) {
+
+	Ti.App.fireEvent('event_entitySelected', {
+		name: 'selected',
+		config: CONFIG,
+		value: CONFIG.entity_id
+	});
+
+};
+
+$.entityRow.addEventListener('click', function() {
+	APP.log("fire ! ! !");
+	selected($.entityRow);
+});
 
 $.init();

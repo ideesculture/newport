@@ -2,7 +2,7 @@
 	layout:"vertical",
 	textAlign:"left",
 	height:Ti.UI.SIZE,
-	width:Ti.UI.SIZE,
+	width:Ti.UI.FILL,
 	top:10,
 	bottom:20, 
 	backgroundColor: "#eee"
