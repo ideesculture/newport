@@ -3,7 +3,7 @@
 },
 "#container": {
 	top: "0dp",
-	backgroundColor: "#FFF",
+	backgroundColor: "#eee",
 	layout: "vertical",
 	showVerticalScrollIndicator: true
 },
@@ -52,6 +52,7 @@
 },
 ".bundleItems": {
 	width: Ti.UI.FILL,
+	backgroundColor: "#eee",
 	layout: "vertical"
 },
 "#screenButtonsScrollView": {
@@ -70,7 +71,7 @@
 },
 ".buttonMargin": {
 	width:Ti.UI.SIZE,
-	borderColor:"transparent",	
+	borderColor:"transparent",
 	borderWidth:1,
 	left:10,
 	top:4,
@@ -79,7 +80,7 @@
 	backgroundColor:Alloy.Globals.secondaryColor
 },
 ".buttonMarginSelected": {
-	borderColor:"white",	
+	borderColor:"white",
 	backgroundColor:Alloy.Globals.primaryColor
 },
 ".button": {
