@@ -21,3 +21,8 @@
  * Social module
  * @hide
  */
+
+var OS_IOS = true;
+var OS_ANDROID = false;
+var OS_MOBILEWEB = false;
+var OS_WINDOWS = false;
