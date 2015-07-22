@@ -2,18 +2,27 @@
 	width: "80dp",
 	top: "0dp",
 	left: "-80dp",
-	backgroundColor: "#000"
+	backgroundColor: "black"
 },
 "#Nodes": {
-	top: "0dp",
-	backgroundColor: "#000",
+	top: "4dp",
+	backgroundColor: "transparent",
 	separatorStyle:Ti.UI.iPhone.TableViewSeparatorStyle.SINGLE_LINE,
-	separatorColor: '#000', 
-	height:"650dp"
+	separatorColor: 'gray',
+	height:"650dp",
+	layout:"vertical"
 },
 "#DownNodes": {
 	bottom: "20dp",
-	separatorColor: '#000', 
+	separatorColor: 'white',
 	height:Ti.UI.SIZE,
-	separatorStyle:Ti.UI.iPhone.TableViewSeparatorStyle.SINGLE_LINE	
+	separatorStyle:Ti.UI.iPhone.TableViewSeparatorStyle.SINGLE_LINE,
+	separatorColor: 'gray'
+},
+".faIcon": {
+	top: "0dp",
+	width:"80dp",
+	height:"70dp",
+	backgroundcolor:"yellow",
+	color: "white"
 }
