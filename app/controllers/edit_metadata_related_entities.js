@@ -61,12 +61,18 @@ Ti.App.addEventListener('event_entitySelected', function(e) {
 	$.entitiesResearchResults.removeAllChildren(); 
 
 	//in value we want the id of the entity
-	CONFIG.content = e.config; 
+	APP.log("debug", "config.content:");
+	APP.log("debug", CONFIG.content);
+	APP.log("debug", "e.config:");
+	APP.log("debug", e.config);
+	var laconfig = CONFIG; 
+	laconfig.content = e.config; 
 	$.entityfield.value = e.config.display_label;
+
 	//HERE we have to save infos about the related entity
 	Ti.App.fireEvent('event_haschanged', {
 		name: 'bar',
-		config: CONFIG,
+		config: laconfig,
 		value: e.value
 	});
 });
