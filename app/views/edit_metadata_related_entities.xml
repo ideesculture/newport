@@ -1,7 +1,7 @@
 <Alloy>
 	<View id="field">
 		<Label id="label"/>s	
-		<View id="field">
+		<View id="fieldWithoutIcon">
 			<TextField id="entityfield"/>
 		</View>
 		<Label id="notes"/>

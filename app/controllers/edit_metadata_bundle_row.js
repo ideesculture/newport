@@ -32,6 +32,7 @@ $.init = function() {
 
 			if(content.datatype in DATATYPECONTROLLERS) {
 	    		// does exist
+	    		APP.log("debug", content.datatype +" est bien dans DATATYPECONTROLLERS");
 
 	    		var dataForDatatypeController = {
 	    			bundle_code:CONFIG.bundle_code,
@@ -51,7 +52,7 @@ $.init = function() {
 					dataForDatatypeController.value = value;
 				};
 
-				APP.log("debug","element "+element+" value "+value+" ("+content.datatype+")");
+				APP.log("debug","element "+element+" value "+value+" ("+ content.datatype+ ")");
 
 				var row = Alloy.createController(
 						DATATYPECONTROLLERS[content.datatype], 

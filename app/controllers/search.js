@@ -89,11 +89,6 @@ $.search = function(e){
 		} else {
 			var result = HIERARCHY_MODEL.getSearchedRecords($.TABLE, e.value, _url, $.handleData);
 		}
-		/**********************************************************************************/
-		/**************** PROBLEME ICIIIIIiIIIIIIIIiiiiIIIIIII ****************************/
-		//alert(result);
-
-		//$.handleData(result);
 		
 	}
 };

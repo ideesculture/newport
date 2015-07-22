@@ -8,13 +8,14 @@ var DATATYPECONTROLLERS = {
 	"Text":"edit_metadata_element_text",
 	"Url":"edit_metadata_element_url",
 	"Length":"edit_metadata_element_length",
-	"Weight":"edit_metadata_element_weight"
+	"Weight":"edit_metadata_element_weight",
+	"Entities":"edit_metadata_related_entities"
 };
 //APP.log("debug",CONFIG);
 
 $.init = function() {
 	$.bundleItemName.text = CONFIG.content.name;
-	
+	//APP.log("debug", CONFIG.content.elements_in_set);
 	$.bundleItemName.bak = {height : 0};
 	//APP.log("debug","CONFIG.newport_id");
 	//APP.log("debug",CONFIG.newport_id);

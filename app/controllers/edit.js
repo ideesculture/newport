@@ -332,33 +332,6 @@ $.uiHandleData = function(_data) {
 							{ 
 								APP.log("debug", "CONFIG.elements is not an array !");
 							}					
-							// defining values from global var $.RECORD
-							
-							/*
-							if( (typeof ($.RECORD["attributes"])) == "undefined"){
-								APP.log("debug", "no attributes defined");
-									var values = $.EMPTY_BUNDLE;
-							}
-							else{
-								if ((typeof $.RECORD["attributes"][attribute]) == "undefined") {
-									// No value defined for this bundle, we need to define default options to agglomerate in edition buffer
-									//APP.log("debug", "IF UNDEFINED --------------------------------");
-									var values = $.EMPTY_BUNDLE;
-								} else {
-									var values = $.RECORD["attributes"][attribute]; 
-								}
-							}
-
-							var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
-
-							var row = Alloy.createController("edit_metadata_bundle", {
-								bundle_code:bundle_code,
-								content:element_data,
-								values:values,
-								newport_id:{0:i}
-							}).getView();
-							rows.push(row);
-							*/
 						}
 					} 
 					else {
@@ -376,10 +349,12 @@ $.uiHandleData = function(_data) {
 						if (bundle_code == "ca_entities") {
 							var values = $.EMPTY_BUNDLE;
 							var temp_objet = {};
-							temp_objet.datatype = "Entity";
-							temp_objet["display_label"] = "related entities";
+							temp_objet["datatype"] = "Entities";
+							temp_objet["display_label"] = "related entity";
 							temp_objet["element_code"] = bundle_code ; 
-							var element_data = { "elements_in_set" : temp_objet , "name" : "related entity" };
+							var temp_objet2 = {};
+							temp_objet2[bundle_code] = temp_objet; 
+							var element_data = { "elements_in_set" : temp_objet2 , "name" : "related entities" };
 
 
 							var row = Alloy.createController("edit_metadata_bundle", {
