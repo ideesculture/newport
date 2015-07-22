@@ -29,43 +29,21 @@ $.init = function(_params) {
 			selectedBackgroundColor: color
 		});
 
-		if(_params.nodes[i].image) {
-			var icon = Ti.UI.createImageView({
-				image: _params.nodes[i].image,
-				width: "80dp",
-				height: "60dp",
-				top: "0dp",
-				left: "0dp",
-				touchEnabled: false,
-				preventDefaultImage: true,
-				backgroundColor: "darkgray"
-			});
+		if(_params.nodes[i].icon) {
+			var args= {icon:'fa-'+_params.nodes[i].icon, left:'12', size:'50', height:'60', left:'15', color:'white', class:"faIcon", idno:_params.nodes[i].id+1 };
+			var iconblock = Widget.createWidget('ti.ux.iconfont','widget', args).getView();
+			Ti.API.info("##iconblock");
+			Ti.API.info(iconblock);
 
-			tab.add(icon);
+			if (_params.nodes[i].downTab == false) {
+				iconblock.addEventListener("click", handleClick);
+				$.Nodes.add(iconblock);
+			} else {
+				iconblock.addEventListener("click", handleDownClick);
+				$.DownNodes.add(iconblock);
+			}
 		}
-
-		// depending on downTab true or false, node goes up or down in the slideMenu
-		if(_params.nodes[i].downTab) {
-			downNodes.push(tab);
-		} else {
-			nodes.push(tab);
-		}
-		
 	}
-
-	if(nodes.length > 0) {
-		$.Nodes.setData(nodes);
-	}
-
-	if(downNodes.length > 0) {
-		$.DownNodes.setData(downNodes);
-	}
-
-	// We have to remove before adding to make sure we're not duplicating
-	$.Nodes.removeEventListener("click", handleClick);
-	$.Nodes.addEventListener("click", handleClick);
-	$.DownNodes.removeEventListener("click", handleDownClick);
-	$.DownNodes.addEventListener("click", handleDownClick);
 };
 
 /**
@@ -73,8 +51,8 @@ $.init = function(_params) {
  * @param {Object} _event The event
  */
 function handleClick(_event) {
-	if(typeof _event.index !== "undefined") {
-		$.setIndex(_event.index);
+	if(typeof _event.source.idno !== "undefined") {
+		$.setIndex(_event.source.idno - 1);
 	}
 };
 
@@ -83,8 +61,8 @@ function handleClick(_event) {
  * @param {Object} _event The event
  */
 function handleDownClick(_event) {
-	if(typeof _event.index !== "undefined") {
-		$.setDownIndex(_event.index);
+	if(typeof _event.source.idno !== "undefined") {
+		$.setDownIndex(_event.source.idno - 1);
 	}
 };
 
@@ -101,8 +79,9 @@ $.clear = function() {
  * @param {Object} _index The index of the item to show as active
  */
 $.setDownIndex = function(_index) {
-	$.DownNodes.selectRow(_index);
-	$.selected = _index;
+	//$.DownNodes.selectRow(_index);
+	Ti.API.log("debug","setDownIndex");
+	//$.selected = _index;
 };
 
 /**
@@ -110,10 +89,11 @@ $.setDownIndex = function(_index) {
  * @param {Object} _index The index of the item to show as active
  */
 $.setIndex = function(_index) {
-	$.Nodes.selectRow(_index);
+	Ti.API.log("debug","setIndex");
+	//$.Nodes.selectRow(_index);
 };
 
 // Move the UI down if iOS7+
 if(OS_IOS && parseInt(Ti.Platform.version.split(".")[0], 10) >= 7) {
-	$.Nodes.top = "20dp";
+	$.Nodes.top = "24dp";
 }
