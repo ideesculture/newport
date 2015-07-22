@@ -99,7 +99,8 @@ function Model() {
 	};
 
 	/**
-	 * Handles the data return
+	 * Handles the data return for OBJECTS
+	 * some mechanism is missing for entities, occurrences and so on !
 	 * @param {Object} _data The returned data
 	 * @param {String} _url The URL of the remote source
 	 * @param {Function} _callback The function to run on data retrieval

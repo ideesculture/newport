@@ -38,9 +38,17 @@ $.init = function() {
 };
 
 $.handleData = function(_data) {
+	$.entitiesResearchResults.removeAllChildren(); 
 	// If we have data to display...
 	if( typeof _data.results === 'object'){
-		APP.log("debug", _data.results);
+		//APP.log("debug", _data.results);
+		var i = 0;
+		for (var entity in _data.results ) {
+			APP.log("debug", "resultat "+ i);
+			var entity_row = Alloy.createController("edit_related_entity_result", _data.results[entity]).getView();
+			$.entitiesResearchResults.add(entity_row);
+			i++;
+		};
 	}else 
 	{ 
 		APP.log("debug","no results :("); 
@@ -54,11 +62,13 @@ $.search = function(e){
 	if(e.value.length >= 3) {
 		if (Titanium.Network.networkType !== Titanium.Network.NETWORK_WIFI ) {
 			var result = HIERARCHY_MODEL.getSearchedRecordsLocally($.TABLE, e.value);
+
 		} else {
 			var result = HIERARCHY_MODEL.getSearchedRecords($.TABLE, e.value, _url, $.handleData);
 		}
-		
+		return result; 
 	}
+
 };
 
 

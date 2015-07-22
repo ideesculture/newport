@@ -4,6 +4,7 @@
 		<View id="fieldWithoutIcon">
 			<TextField id="entityfield"/>
 		</View>
+		<View id="entitiesResearchResults"></View>
 		<Label id="notes"/>
 	</View>
 </Alloy>
