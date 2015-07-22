@@ -10,7 +10,8 @@ var DATATYPECONTROLLERS = {
 	"Url":"edit_metadata_element_url",
 	"Length":"edit_metadata_element_length",
 	"Weight":"edit_metadata_element_weight",
-	"DateRange":"edit_metadata_element_daterange"
+	"DateRange":"edit_metadata_element_daterange",
+	"Entities":"edit_metadata_related_entities"
 };
 //APP.log("debug",CONFIG);
 
@@ -31,6 +32,7 @@ $.init = function() {
 
 			if(content.datatype in DATATYPECONTROLLERS) {
 	    		// does exist
+	    		APP.log("debug", content.datatype +" est bien dans DATATYPECONTROLLERS");
 
 	    		var dataForDatatypeController = {
 	    			bundle_code:CONFIG.bundle_code,
@@ -50,7 +52,7 @@ $.init = function() {
 					dataForDatatypeController.value = value;
 				};
 
-				APP.log("debug","element "+element+" value "+value+" ("+content.datatype+")");
+				APP.log("debug","element "+element+" value "+value+" ("+ content.datatype+ ")");
 
 				var row = Alloy.createController(
 						DATATYPECONTROLLERS[content.datatype], 

@@ -293,12 +293,7 @@ $.uiHandleData = function(_data) {
 		APP.log("debug", "UI HANDLE DATA");
 		//APP.log("debug", _data);
 		if (typeof _data.content != "undefined") {
-			APP.log("debug", "not undefined!"); 
-			
-			/*if($.SCREEN == "media"){
-				alert('Media!');
-				APP.log("debug", _data.content);
-			}*/
+			//APP.log("debug", "not undefined!"); 
 			// If we have some content back
 			var screen_content = _data.content.screen_content;
 			for(var bundle in screen_content) {
@@ -313,8 +308,6 @@ $.uiHandleData = function(_data) {
 						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {	
 
 							if(typeof Array.isArray(CONFIG.elements)){
-								//APP.log("debug", "CONFIG.elements IS AN ARRAY");
-								//APP.log("debug", CONFIG.elements);
 								if(CONFIG.elements.indexOf(attribute)== -1){
 									APP.log("debug", "this attribute is undefined for the object's type.");
 								}		
@@ -324,7 +317,7 @@ $.uiHandleData = function(_data) {
 									var values = $.EMPTY_BUNDLE;
 
 									var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
-
+									//alert(element_data);
 
 									var row = Alloy.createController("edit_metadata_bundle", {
 										bundle_code:bundle_code,
@@ -334,34 +327,11 @@ $.uiHandleData = function(_data) {
 									}).getView();
 									rows.push(row);
 								}	
-							} else { APP.log("debug", "CONFIG.elements is not an array !");}					
-							// defining values from global var $.RECORD
-							
-							/*
-							if( (typeof ($.RECORD["attributes"])) == "undefined"){
-								APP.log("debug", "no attributes defined");
-									var values = $.EMPTY_BUNDLE;
-							}
-							else{
-								if ((typeof $.RECORD["attributes"][attribute]) == "undefined") {
-									// No value defined for this bundle, we need to define default options to agglomerate in edition buffer
-									//APP.log("debug", "IF UNDEFINED --------------------------------");
-									var values = $.EMPTY_BUNDLE;
-								} else {
-									var values = $.RECORD["attributes"][attribute]; 
-								}
-							}
-
-							var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
-
-							var row = Alloy.createController("edit_metadata_bundle", {
-								bundle_code:bundle_code,
-								content:element_data,
-								values:values,
-								newport_id:{0:i}
-							}).getView();
-							rows.push(row);
-							*/
+							} 
+							else 
+							{ 
+								APP.log("debug", "CONFIG.elements is not an array !");
+							}					
 						}
 					} 
 					else {
@@ -375,6 +345,29 @@ $.uiHandleData = function(_data) {
 							var row = Alloy.createController("edit_media_photo", obj_data ).getView();
 							rows.push(row);
 
+						}
+						if (bundle_code == "ca_entities") {
+							var values = $.EMPTY_BUNDLE;
+							var temp_objet = {};
+							temp_objet["datatype"] = "Entities";
+							temp_objet["display_label"] = "related entity";
+							temp_objet["element_code"] = bundle_code ; 
+							var temp_objet2 = {};
+							temp_objet2[bundle_code] = temp_objet; 
+							var element_data = { "elements_in_set" : temp_objet2 , "name" : "related entities" };
+
+
+							var row = Alloy.createController("edit_metadata_bundle", {
+								bundle_code:bundle_code,
+								content:element_data,
+								values:values,
+								newport_id:{0:i}
+							}).getView();
+							rows.push(row);
+						}
+						else {
+							APP.log("debug", "NON SUPPORTE: ");
+							APP.log("debug", bundle_code);
 						}
 					}
 				};	
@@ -460,21 +453,17 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
  	if ($.hasChanged == true) {
 		APP.log("debug","------SAVE-----");
 
+		//moves the modifications to _edit_temp_insert table
 		var itWorked = OBJECT_EDIT.saveChanges();
 
 		if(itWorked) {
-			//ici, essayer d'envoyer vers le serveur
+			//sends the modifs to server and erases them from _edit_temp_insert table
 			if (Titanium.Network.networkType == Titanium.Network.NETWORK_WIFI )
 			{
-				$.sendDataToServer();
-				/*var dialog = Ti.UI.createAlertDialog({
-					title: 'Save',
-				    message: 'Your modifications have been saved :)',
-				    ok: 'OK'
-				});
-				dialog.show();*/
+				OBJECT_EDIT.sendDataToServer();
 
 			}
+			//or keeps the data in the local table
 			else
 			{
 				var dialog = Ti.UI.createAlertDialog({
@@ -562,100 +551,9 @@ $.updateRightButtonRefresh = function() {
 	});
 }
 
-$.sendDataToServer = function() {
-	var fieldToSave = {}; 
-	var remove_attributes = []; 
-	var attributes = {}; 
-	var temptab = []; 
-	var tempobj = {};
-	var json = {}; 
-	var row;
-	var id ="";
-	var attribut = ""; 
-	var data = OBJECT_EDIT.getSavedData(); 
 
-	if (data.length>0){
-		for(row in data){
-			json = {};
-			fieldToSave = data[row];
-
-			//saves the id and attribute name, to call them in the handleData function
-			id = fieldToSave.object_id;
-			attribut = fieldToSave.attribut;
-
-			//builds the object to be sent:
-			//1) remove_attributes
-			if(fieldToSave.is_modified){
-				remove_attributes[0] = fieldToSave.bundle_code;
-				json.remove_attributes = remove_attributes;
-			}
-			//2) attributes
-			tempobj ={}; attributes = {}; 
-			tempobj["locale"]= "en_US"; 
-			tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
-			temptab[0]= tempobj; 
-			attributes[fieldToSave.bundle_code] = temptab; 
-			json.attributes = attributes; 
-
-
-			//alert(JSON.stringify(json)); 
-
-			/******************************
-			SENDS THE REQUEST 
-			*************************/
-			var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g,fieldToSave.object_id);
-			
-			var error = function() {
-				var dialog = Ti.UI.createAlertDialog({
-				    message: 'ERROR. Couldn\'t send data to the server',
-				    ok: 'OK',
-				    title: 'Error'
-				  }).show();
-			}
-
-			var handleData = function( o1, o2){
-				//alert("go erase data: "+ o1 + " , "+ o2);
-				OBJECT_EDIT.cleanTempInsertTable(o1, o2);
-			}
-
-			var callback = function(){
-				var dialog = Ti.UI.createAlertDialog({
-				    message: 'whatever that means',
-				    ok: 'got it',
-				    title: 'CALLBACK'
-				  }).show();
-			}
-
-			HTTP.request({
-				timeout: 2000,
-				async:false,
-				headers: [{name: 'Authorization', value: APP.authString}],
-				type: "PUT",
-				format: "JSON",
-				data: json,
-				url: ca_url,
-				passthrough: callback,
-				success: handleData(id, attribut),
-				failure: error
-			});
-
-		}
-		var dialog = Ti.UI.createAlertDialog({
-			title: 'Save',
-		    message: 'Your modifications have been saved :)',
-		    ok: 'OK'
-		});
-		dialog.show();
-		//$.label.text = "Data has been sent to the server successfully :)";		
-	}
-	else
-	{
-		alert("no data :(");
-	//	$.label2.text = "Data export"; 
-	//	$.label.text = "There are no modifications to send to the server";
-	}
-}
-
+//UPDATES STORAGE FUNCTION
+//when the content of a field has changed, the new content is stored id _edit_updates
 Ti.App.addEventListener('event_haschanged', function(e) { 
 	
 	$.hasChanged = true;
@@ -684,7 +582,9 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 
 		// Inserting into the temp table
 		var vals = {is_origin : 0, is_modified : 0, is_new : 1 };
+		APP.log("debug", e.config.element); 
 		vals[e.config.element] = e.value;
+
 		vals.bundle = attribute;
 		var new_values2 = [];
 		new_values2[0]=vals;

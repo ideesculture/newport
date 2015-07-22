@@ -1,0 +1,75 @@
+"#field":{
+	layout:"vertical",
+	textAlign:"left",
+	height:Ti.UI.SIZE,
+	width:Ti.UI.FILL,
+	top:10,
+	bottom:20, 
+	backgroundColor: "#eee"
+},
+"#fieldWithoutIcon":{
+	layout:"horizontal",	
+	height:Ti.UI.SIZE,
+	width:Ti.UI.SIZE,
+	left: 10,
+	right: 10,
+	borderColor:Alloy.Globals.fieldsColor,
+	borderWidth:1,
+	borderRadius:8,
+	backgroundColor:Alloy.Globals.fieldsColor
+},
+"#entitiesResearchResults":{
+	layout:"horizontal",	
+	height:Ti.UI.SIZE,
+	width:Ti.UI.SIZE,
+	backgroundColor:"white", 
+	borderWidth:1,
+	borderRadius:8,
+	left: 10,
+	right: 10,
+	top: 10,
+	bottom: 10,
+}
+
+"#icon": {
+	backgroundColor:Alloy.Globals.fieldsColor,
+	width:Ti.UI.SIZE
+},
+"#label": {
+	left:10,
+	bottom: 10,
+	color: 'black',
+	top:4,
+	height: 16,
+	font: {
+		fontSize: 13,
+		fontFamily: "HelveticaNeue"
+	}
+},
+"#notes": {
+	left:10,
+	color: 'black',
+	top:6,
+	height: 16,
+	font: {
+		fontSize: 15,
+		fontFamily: "HelveticaNeue"
+	}
+},
+"#entityfield": {
+	top: 1, 
+	left:1,
+	right:1,
+	bottom:1,
+	width:300,
+	color: 'black',
+	height: 40,
+	backgroundColor: 'white',
+	borderColor:Alloy.Globals.fieldsColor,
+	borderWidth:1,
+	borderRadius:8,
+	keyboardType: Titanium.UI.KEYBOARD_DEFAULT,
+	returnKeyType: Titanium.UI.RETURNKEY_DEFAULT,
+	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE
+}
