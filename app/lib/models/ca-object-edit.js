@@ -476,6 +476,137 @@ function Model() {
 
 	}
 
+	this.sendDataToServerForNewObject = function(CONFIG_NEW) {
+		APP.log("debug", "sendDataToServerForNewObject"); 
+		var fieldToSave = {}; 
+		var attributes = {}; 
+		var temptab = []; 
+		var tempobj = {};
+		var json = {}; 
+		var row;
+		var id ="";
+		var attribut = ""; 
+		var data = this.getSavedData(); 
+
+		if (data.length>0){
+
+			/******************************
+			FIRST REQUEST : CREATES THE NEW OBJECT IN THE DB
+			sends the object's type and false id
+			*************************/
+			//1) builds the json
+			json = {};
+			//builds the object to be sent
+			tempobj ={}; attributes = {}; 
+
+			tempobj.idno = CONFIG_NEW.obj_data.false_id; 	
+			tempobj.type_id= CONFIG_NEW.type_info.item_id; 
+			json.intrinsic_fields = tempobj; 
+			APP.log("debug", "json sent for object creation:");
+			APP.log("debug", json);
+			
+			//2) sends the first request. In the "success" param, a loop sends the other requests to save attributes.
+			var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace("/id/ID","");
+
+			var errorNew = function() {
+				var dialog = Ti.UI.createAlertDialog({
+				    message: 'ERROR when creating the new object in DB',
+				    ok: 'OK',
+				    title: 'Error'
+				  }).show();
+				return false; 
+			}
+
+			var handleDataNew = function(_data){
+				//OBJECT WAS CREATED
+
+				//REQUESTS FOR OBJECT's ATTRIBUTES ARE SENT HERE
+				//APP.log("debug", _data);
+				CONFIG_NEW.obj_data.object_id = _data.object_id; 
+				CONFIG_NEW.obj_data.display_label = ""; 
+				APP.log("debug", "object was created! new id: ");
+				APP.log("debug", CONFIG_NEW.obj_data.object_id);
+
+				for(row in data){		
+					json = {};
+					fieldToSave = data[row];
+
+					//saves the id and attribute name, to call them in the handleData function
+					id = fieldToSave.object_id;
+					attribut = fieldToSave.attribut;
+
+					//builds the object to be sent
+					tempobj ={}; attributes = {}; 
+					tempobj["locale"]= "en_US"; 
+					tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
+					temptab[0]= tempobj; 
+					attributes[fieldToSave.bundle_code] = temptab; 
+					json.attributes = attributes; 
+
+
+					/******************************
+					SENDS THE REQUEST 
+					*************************/
+					var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g, CONFIG_NEW.obj_data.object_id);
+					
+					var error = function() {
+						var dialog = Ti.UI.createAlertDialog({
+						    message: 'ERROR. Couldn\'t send data to the server',
+						    ok: 'OK',
+						    title: 'Error'
+						  }).show();
+					}
+
+					var handleDataNewStep2 = function( o1, o2){
+						//alert("go erase data: "+ o1 + " , "+ o2);
+						APP.log("debug", "cleanTempInsertTable");
+						var db = Ti.Database.open(DBNAME);
+						db.execute("BEGIN TRANSACTION;");
+						var request = "DELETE FROM ca_objects_edit_temp_insert WHERE object_id = ? AND attribute = ? ;";
+						db.execute(request, o1, o2);
+						db.execute("END TRANSACTION;");
+						db.close(); 
+					}
+
+
+					HTTP.request({
+						timeout: 2000,
+						async:false,
+						headers: [{name: 'Authorization', value: APP.authString}],
+						type: "PUT",
+						format: "JSON",
+						data: json,
+						url: ca_url,
+						passthrough: null,
+						success: handleDataNewStep2(id, attribut),
+						failure: error
+					});
+
+				}
+
+			}
+
+			HTTP.request({
+				timeout: 2000,
+				async:false,
+				headers: [{name: 'Authorization', value: APP.authString}],
+				type: "PUT",
+				format: "JSON",
+				data: json,
+				url: ca_url,
+				passthrough: null,
+				success: handleDataNew,
+				failure: errorNew
+			});
+
+			return true; 
+		}
+		else
+		{
+			return false; 
+		}
+	}
+
 }
 
 module.exports = function() {

@@ -431,13 +431,10 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 			//ici, essayer d'envoyer vers le serveur
 			if (Titanium.Network.networkType == Titanium.Network.NETWORK_WIFI )
 			{
-				$.sendDataToServer();
-				/*var dialog = Ti.UI.createAlertDialog({
-					title: 'Save',
-				    message: 'Your modifications have been saved :)',
-				    ok: 'OK'
-				});
-				dialog.show();*/
+				var dataWasSentSuccessfully = OBJECT_EDIT.sendDataToServerForNewObject(CONFIG);
+				if (dataWasSentSuccessfully) {
+					$.byeByeUserChoice();
+				}
 
 			}
 			else
@@ -448,6 +445,8 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 				    ok: 'OK'
 				});
 				dialog.show();
+				//go back to main page
+				// or ask the user: edit another new object, or go back to main page
 			}
 
 		} else alert ("echec");
@@ -527,179 +526,41 @@ $.updateRightButtonRefresh = function() {
 	});
 }
 
-$.sendDataToServer = function() {
-	APP.log("debug", "sendDataToServer"); 
-	var fieldToSave = {}; 
-	var attributes = {}; 
-	var temptab = []; 
-	var tempobj = {};
-	var json = {}; 
-	var row;
-	var id ="";
-	var attribut = ""; 
-	var data = OBJECT_EDIT.getSavedData(); 
+$.byeByeUserChoice = function() {
 
-	if (data.length>0){
-
-
-		/******************************
-		FIRST REQUEST : CREATES THE NEW OBJECT IN THE DB
-		sends the object's type
-		*************************/
-		//1) builds the json
-		json = {};
-		//builds the object to be sent
-		tempobj ={}; attributes = {}; 
-
-		tempobj.idno = CONFIG.obj_data.false_id; 	
-		tempobj.type_id= CONFIG.type_info.item_id; 
-		json.intrinsic_fields = tempobj; 
-		APP.log("debug", "json sent for object creation:");
-		APP.log("debug", json);
-		
-		//2) sends the request
-		var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace("/id/ID","");
-		
-
-		var errorNew = function() {
-			var dialog = Ti.UI.createAlertDialog({
-			    message: 'ERROR when creating the new object in DB',
-			    ok: 'OK',
-			    title: 'Error'
-			  }).show();
+	var dialog = Ti.UI.createAlertDialog({
+		title: 'Success',
+	    message: 'Your new object has been saved. What do you want to do?',
+	    buttonNames: [ 'Stay on this object for further edition', 'Create another new object', 'Go back to the main page'],
+	});
+	dialog.addEventListener('click', function(e){
+		if (e.index === 1){
+			// back to first "new" screen, for a fresh new procedure
+			//opens "new"
+			Ti.API.info('ANOTHER NEW OBJECT');
+			APP.addChild("new", {}, true);
 		}
-
-		var handleDataNew = function(_data){
-
-			//APP.log("debug", _data);
-			CONFIG.obj_data.object_id = _data.object_id; 
-			CONFIG.obj_data.display_label = ""; 
-			APP.log("debug", "object was created! new id: ");
-			APP.log("debug", CONFIG.obj_data.object_id);
-			//2) ajoute les attributs 
-			for(row in data){		
-				json = {};
-				fieldToSave = data[row];
-
-				//saves the id and attribute name, to call them in the handleData function
-				id = fieldToSave.object_id;
-				attribut = fieldToSave.attribut;
-
-				//builds the object to be sent
-				tempobj ={}; attributes = {}; 
-				tempobj["locale"]= "en_US"; 
-				tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
-				temptab[0]= tempobj; 
-				attributes[fieldToSave.bundle_code] = temptab; 
-				json.attributes = attributes; 
-
-
-				/******************************
-				SENDS THE REQUEST 
-				*************************/
-				var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g, CONFIG.obj_data.object_id);
-				
-				var error = function() {
-					var dialog = Ti.UI.createAlertDialog({
-					    message: 'ERROR. Couldn\'t send data to the server',
-					    ok: 'OK',
-					    title: 'Error'
-					  }).show();
-				}
-
-				var handleData = function( o1, o2){
-					//alert("go erase data: "+ o1 + " , "+ o2);
-					OBJECT_EDIT.cleanTempInsertTable(o1, o2);
-				}
-
-				var callback = function(){
-					var dialog = Ti.UI.createAlertDialog({
-					    message: 'whatever that means',
-					    ok: 'got it',
-					    title: 'CALLBACK'
-					  }).show();
-				}
-
-				HTTP.request({
-					timeout: 2000,
-					async:false,
-					headers: [{name: 'Authorization', value: APP.authString}],
-					type: "PUT",
-					format: "JSON",
-					data: json,
-					url: ca_url,
-					passthrough: callback,
-					success: handleData(id, attribut),
-					failure: error
-				});
-				
-
+		else
+		{
+			if (e.index == 2) {
+			// go back to the main page
+			//opens "main"
+				Ti.API.info('BACK TO MAIN PAGE');
+				APP.addChild("main", {}, true);
 			}
-
-		}
-
-		var callbackNew = function(){
-			var dialog = Ti.UI.createAlertDialog({
-			    message: 'whatever that means',
-			    ok: 'got it',
-			    title: 'CALLBACK'
-			  }).show();
-		}
-
-		HTTP.request({
-			timeout: 2000,
-			async:false,
-			headers: [{name: 'Authorization', value: APP.authString}],
-			type: "PUT",
-			format: "JSON",
-			data: json,
-			url: ca_url,
-			passthrough: callbackNew,
-			success: handleDataNew,
-			failure: errorNew
-		});
-
-
-
-		var dialog = Ti.UI.createAlertDialog({
-			title: 'Success',
-		    message: 'Your new object has been saved. What do you want to do?',
-		    buttonNames: [ 'Stay on this object for further edition', 'Create another new object', 'Go back to the main page'],
-		});
-		dialog.addEventListener('click', function(e){
-			if (e.index === 1){
-				// back to first "new" screen, for a fresh new procedure
-				//opens "new"
-				Ti.API.info('ANOTHER NEW OBJECT');
-				APP.addChild("new", {}, true);
-			}
-			else
+			else 
 			{
-				if (e.index == 2) {
-				// go back to the main page
-				//opens "main"
-					Ti.API.info('BACK TO MAIN PAGE');
-					APP.addChild("main", {}, true);
-				}
-				else 
-				{
-					if (e.index == 0) {
-						// stay on this object
-						//opens "main"
-						APP.log("debug", "NEW TO EDIT :::");
-						APP.log("debug", CONFIG),
-						APP.addChild("edit", CONFIG , true);
-					}
+				if (e.index == 0) {
+					// stay on this object
+					//opens "edit"
+					APP.log("debug", "STAY ON THIS OBJECT FOR FURTHER MODIFS");
+					APP.log("debug", CONFIG),
+					APP.addChild("edit", CONFIG , true);
 				}
 			}
-		});
-		dialog.show();
-
-	}
-	else
-	{
-		alert("we found no attributes to save. Please check that you filled some fields before saving.");
-	}
+		}
+	});
+	dialog.show();
 }
 
 Ti.App.addEventListener('event_haschanged', function(e) { 
