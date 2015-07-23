@@ -23,6 +23,5 @@
 	top: "0dp",
 	width:"80dp",
 	height:"70dp",
-	backgroundcolor:"yellow",
 	color: "white"
 }
