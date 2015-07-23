@@ -1,6 +1,6 @@
 /**
  * Controller for the edit screen
- * 
+ *
  * @class Controllers.edit
  * @uses core
  */
@@ -18,20 +18,19 @@ var OBJECT_EDIT = require("models/ca-object-edit")();
 
 var CONFIG = arguments[0];
 
-var FLAG_SAVE = false; 
+var FLAG_SAVE = false;
 
 // Pseudo constants
-var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "ca_places", "ca_collections", "ca_loans", "ca_movements"];		
+var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "ca_places", "ca_collections", "ca_loans", "ca_movements"];
 
 //type id
-var type_id = CONFIG.obj_data.info1;	
+var type_id = CONFIG.obj_data.info1;
 
 // Initializes original values and target buffer where modified values will go
 //Ti.App.EDIT = {};
 //To do later: print object type
 //alert(CONFIG.obj_data);
-$.heading.text += " editing object #"+CONFIG.obj_data.object_id+" "+CONFIG.obj_data.display_label+" "+CONFIG.obj_data.idno;
-
+//$.heading.text += " editing object #"+CONFIG.obj_data.object_id+" "+CONFIG.obj_data.display_label+" "+CONFIG.obj_data.idno;
 // Temporary fixing the table we"re editing, need to come through CONFIG after
 //$.TABLE = CONFIG.type;
 $.TABLE = "ca_objects";
@@ -58,7 +57,7 @@ $.init = function() {
 	// Initiating CA available UIs class
 	UI_MODEL.init();
 	// Initiating detail fetching for object
-	
+
 	OBJECT_DETAILS.init($.TABLE);
 	// Initiating edit model for object
 	OBJECT_EDIT.init($.TABLE, CONFIG.obj_data.object_id);
@@ -66,19 +65,17 @@ $.init = function() {
 	// Credentials are inside app.json file
 	APP.ca_login=APP.Settings.CollectiveAccess.login;
 	APP.ca_password=APP.Settings.CollectiveAccess.password;
-	
-	$.heading.color = APP.Settings.colors.hsb.primary.b > 70 ? "#000" : APP.Settings.colors.primary;
-	
+
 	// Defining global variables for styling
 	Alloy.Globals.primaryColor =  APP.Settings.colors.primary;
 	Alloy.Globals.secondaryColor = APP.Settings.colors.secondary;
 	Alloy.Globals.fieldsColor = APP.Settings.colors.secondary;
-	
+
 	$.screenButtonsScrollView.setBackgroundColor(APP.Settings.colors.primary);
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
-		
+
 	APP.authString = 'Basic ' +Titanium.Utils.base64encode(APP.ca_login+':'+APP.ca_password);
-	
+
 	// Loading CA database model (metadatas & fields) & filling cache
 	CONFIG.model_url = APP.Settings.CollectiveAccess.urlForModel.url;
 	CONFIG.model_url_validity = APP.Settings.CollectiveAccess.urlForModel.cache;
@@ -103,7 +100,7 @@ $.init = function() {
 	// uiRetrieveData is called from objectRetrieveCallbackFunctions : we need to have the values available before displaying bundles
 	//$.uiRetrieveData();
 	//$.objectRetrieveData();
-	
+
 	if(CONFIG.isChild === true) {
 		$.NavigationBar.showBack(function(_event) {
 			APP.removeChild();
@@ -117,10 +114,11 @@ $.init = function() {
 			$.NavigationBar.showSettings(function(_event) {
 				//APP.openSettings();
 			});
-		}		
+		}
 	}
-	
-	$.NavigationBar.text = "Archivio Teatro Regio";
+
+
+
 };
 
 $.retrieveData = function(_force, _callback){
@@ -128,7 +126,7 @@ $.retrieveData = function(_force, _callback){
 }
 
 $.modelRetrieveCallbackFunctions = function () {
-	
+
 	$.modelHandleData(MODEL_MODEL.getElementsByTypeId(type_id));
 };
 
@@ -141,7 +139,7 @@ $.modelRetrieveData = function(_force, _callback) {
 	if(COMMONS.isCacheValid(CONFIG.model_url,CONFIG.model_url_validity)) {
 		APP.log("debug","ca-model cache is valid");
 	} else {
-		APP.log("debug","ca-model cache is invalid");		
+		APP.log("debug","ca-model cache is invalid");
 	};
 
 		MODEL_MODEL.fetch({
@@ -149,7 +147,7 @@ $.modelRetrieveData = function(_force, _callback) {
 			authString: APP.authString,
 			cache: 0,
 			callback: function() {
-				$.modelRetrieveCallbackFunctions();	
+				$.modelRetrieveCallbackFunctions();
 
 				if(typeof _callback !== "undefined") {
 					_callback();
@@ -163,7 +161,7 @@ $.modelRetrieveData = function(_force, _callback) {
 				}
 			}
 		});
-	
+
 };
 
 /**
@@ -174,12 +172,12 @@ $.modelHandleData = function(_data) {
 	var rows=[];
 	var totalHeight = 0;
 	var i = 0;
-	
+
 }; */
 $.modelHandleData = function(_data) {
 	//APP.log("debug", "modelHandleData data");
 	//APP.log("debug", _data);
-	CONFIG.elements= _data; 
+	CONFIG.elements= _data;
 	//alert(CONFIG.elements);
 	//APP.log("debug", CONFIG.elements);
 	$.objectRetrieveData();
@@ -193,9 +191,9 @@ $.uiRetrieveCallbackFunctions = function() {
 	APP.log("debug", $.UI_CODE);
 	// Fetching defaulft (aka first) available screen for this UI
 	if($.SCREEN == "") {
-		$.uiHandleData(UI_MODEL.getFirstAvailableScreenWithContentForUI($.TABLE,$.UI_CODE));	
+		$.uiHandleData(UI_MODEL.getFirstAvailableScreenWithContentForUI($.TABLE,$.UI_CODE));
 	} else {
-		$.uiHandleData(UI_MODEL.getContentForScreen($.TABLE,$.UI_CODE,$.SCREEN)); 
+		$.uiHandleData(UI_MODEL.getContentForScreen($.TABLE,$.UI_CODE,$.SCREEN));
 	}
 };
 
@@ -205,7 +203,7 @@ $.uiRetrieveData = function(_force, _callback) {
 	/*Ti.App.EDIT = {};
 	Ti.App.EDIT.VALUES = {};
 	Ti.App.EDIT.BUFFER = {};*/
-	
+
 	if(COMMONS.isCacheValid(CONFIG.ui_url,CONFIG.ui_url_validity)) {
 		$.uiRetrieveCallbackFunctions();
 	} else {
@@ -239,12 +237,12 @@ $.uiRetrieveData = function(_force, _callback) {
 
 $.uiHandleData = function(_data) {
 	//APP.openLoading();
-	
+
 	// If the list of the screens is not initiated, populate it from the model
 	//if($.SCREENS.length == 0) {
 	$.SCREENS = UI_MODEL.getAllScreensWithContentForUI($.TABLE,$.UI_CODE);
 	//}
-	
+
 	// Create a label for each screen allowed for the object type and add it to $.screenButtonsScrollView
 	var labels= [];
 	if ($.screenButtonsScrollView.children.length == 0) {
@@ -281,19 +279,19 @@ $.uiHandleData = function(_data) {
 				}
 
 			}
-			
-		}		
+
+		}
 	}
 	var rows=[];
 
 	var i = 0;
-	
+
 	// error handling if _data has not been rightly fetched back
 	if (typeof _data != "undefined") {
 		APP.log("debug", "UI HANDLE DATA");
 		//APP.log("debug", _data);
 		if (typeof _data.content != "undefined") {
-			//APP.log("debug", "not undefined!"); 
+			//APP.log("debug", "not undefined!");
 			// If we have some content back
 			var screen_content = _data.content.screen_content;
 			for(var bundle in screen_content) {
@@ -305,12 +303,12 @@ $.uiHandleData = function(_data) {
 						// If the bundle described in the screen corresponds to sthg in the model, display it
 						var attribute = bundle_code.replace(/^ca_attribute_/,"");
 
-						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {	
+						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {
 
 							if(typeof Array.isArray(CONFIG.elements)){
 								if(CONFIG.elements.indexOf(attribute)== -1){
 									APP.log("debug", "this attribute is undefined for the object's type.");
-								}		
+								}
 								else {
 									APP.log("debug", CONFIG.elements[CONFIG.elements.indexOf(attribute)]);
 									APP.log("debug", "attribute found");
@@ -326,18 +324,18 @@ $.uiHandleData = function(_data) {
 										newport_id:{0:i}
 									}).getView();
 									rows.push(row);
-								}	
-							} 
-							else 
-							{ 
+								}
+							}
+							else
+							{
 								APP.log("debug", "CONFIG.elements is not an array !");
-							}					
+							}
 						}
-					} 
+					}
 					else {
 						if (bundle_code == "ca_object_representations") {
 							var obj_data = {};
-							obj_data.bundle_code = bundle_code ; 
+							obj_data.bundle_code = bundle_code ;
 
 							if(CONFIG.obj_data.image_file){
 								obj_data.image_file = CONFIG.obj_data.image_file ;
@@ -351,9 +349,9 @@ $.uiHandleData = function(_data) {
 							var temp_objet = {};
 							temp_objet["datatype"] = "Entities";
 							temp_objet["display_label"] = "related entity";
-							temp_objet["element_code"] = bundle_code ; 
+							temp_objet["element_code"] = bundle_code ;
 							var temp_objet2 = {};
-							temp_objet2[bundle_code] = temp_objet; 
+							temp_objet2[bundle_code] = temp_objet;
 							var element_data = { "elements_in_set" : temp_objet2 , "name" : "related entities" };
 
 
@@ -370,7 +368,7 @@ $.uiHandleData = function(_data) {
 							APP.log("debug", bundle_code);
 						}
 					}
-				};	
+				};
 				i++;
 			};
 		}
@@ -378,7 +376,7 @@ $.uiHandleData = function(_data) {
 			APP.log("debug", "typeof _data.content = undefined");
 		}
 	}
-		
+
 	$.bundles.removeAllChildren();
 	$.bundles.setData(rows);
 	for(var x=0; x<rows.length; x++) {
@@ -425,7 +423,7 @@ $.objectRetrieveData = function() {
 					    title: 'Error'
 					  }).show();
 		}
-	});		
+	});
 }
 
 $.objectHandleData = function(_data) {
@@ -440,9 +438,9 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 
 	setTimeout(function() {
 				$.uiRetrieveData();
-				
+
 		   	},500);
-	
+
 	//_event.source.code => ce qu'on veut
 });
 
@@ -486,13 +484,13 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 		dialog.show();
 	}
  }
-$.updateRightButtonSave = function() {	
+$.updateRightButtonSave = function() {
 	if(!FLAG_SAVE){
-		FLAG_SAVE =true; 
+		FLAG_SAVE =true;
 		$.NavigationBar.showRight({
 			image: "/images/check.png",
 
-			callback: function() {		
+			callback: function() {
 
 				var dialog = Ti.UI.createAlertDialog({
 				    cancel: 2,
@@ -506,12 +504,12 @@ $.updateRightButtonSave = function() {
 						Ti.API.info('The cancel button was clicked');
 					} else if (e.index == 1) {
 						// Revert = reload ui data
-						OBJECT_EDIT.cleanEditUpdatesTable(); 
+						OBJECT_EDIT.cleanEditUpdatesTable();
 						$.objectRetrieveData();
-						
+
 					} else if (e.index == 0) {
 						// Save
-						save();	
+						save();
 					}
 				});
 				dialog.show();
@@ -530,7 +528,7 @@ $.updateRightButtonRefresh = function() {
 				authString: APP.authString,
 				cache: 0,
 				callback: function() {
-					$.modelRetrieveCallbackFunctions();	
+					$.modelRetrieveCallbackFunctions();
 
 					if(typeof _callback !== "undefined") {
 						_callback();
@@ -554,7 +552,7 @@ $.updateRightButtonRefresh = function() {
 
 //UPDATES STORAGE FUNCTION
 //when the content of a field has changed, the new content is stored id _edit_updates
-Ti.App.addEventListener('event_haschanged', function(e) { 
+Ti.App.addEventListener('event_haschanged', function(e) {
 	$.hasChanged = true;
 	APP.log("debug", "DEBUG Ti.App.addEventListener");
 	//APP.log("debug", e.config);
@@ -562,15 +560,15 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 	APP.log("debug", attribute);
 	APP.log("debug", typeof $.RECORD.attributes);
 	if (typeof $.RECORD.attributes[attribute] != "undefined") {
-	//if (typeof $.RECORD.attributes != "undefined") {	
+	//if (typeof $.RECORD.attributes != "undefined") {
 		APP.log("debug","We have a previous value");
 		APP.log("debug","MERGING !");
 		var origin_values = $.RECORD.attributes[attribute];
 		//APP.log("debug",origin_values);
 		var new_values = origin_values;
-		new_values[e.config.i].bundle = attribute; 
+		new_values[e.config.i].bundle = attribute;
 		new_values[e.config.i][e.config.element] = e.value;
-		new_values[e.config.i].is_origin = 0; 
+		new_values[e.config.i].is_origin = 0;
 		new_values[e.config.i].is_modified = 1;
 		new_values[e.config.i].is_new = 0;
 		APP.log("debug",new_values);
@@ -581,7 +579,7 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 
 		// Inserting into the temp table
 		var vals = {is_origin : 0, is_modified : 0, is_new : 1 };
-		APP.log("debug", e.config.element); 
+		APP.log("debug", e.config.element);
 		vals[e.config.element] = e.value;
 		vals.bundle = attribute;
 		//"related" entities/occus/places/... need a type id
@@ -595,7 +593,7 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 		APP.log("debug",new_values2);
 		OBJECT_EDIT.insertTempAddition(e.config.element, new_values2);
 	}
-	
+
 });
 
 $.init();
