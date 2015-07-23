@@ -1,6 +1,6 @@
 /**
  * The navigation bar widget
- * 
+ *
  * @class Widgets.com.mcongrove.navigationBar
  */
 
@@ -31,8 +31,8 @@ if(CONFIG.image) {
 		right: "58dp",
 		height: "46dp",
 		font: {
-			fontSize: "18dp",
-			fontFamily: "HelveticaNeue-Medium"
+			fontSize: "24dp",
+			fontFamily: "GillSans-Light"
 		},
 		color: theme == "white" ? "#FFF" : "#000",
 		textAlign: "center",

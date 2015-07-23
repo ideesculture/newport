@@ -93,7 +93,6 @@ $.init = function() {
 	CONFIG.base_edit_url = APP.Settings.CollectiveAccess.urlForObjectEdit.url.replace(/ID/g,CONFIG.obj_data.object_id);
 	CONFIG.base_edit_url_validity = APP.Settings.CollectiveAccess.urlForObjectEdit.cache;
 
-
 	$.retrieveData();
 
 
@@ -117,7 +116,11 @@ $.init = function() {
 		}
 	}
 
-
+	//$.NavigationBar.text = "Archivio Teatro Regio";
+	APP.log("debug","$.NavigationBar.text");
+	APP.log("debug",$.NavigationBar.text);
+	$.NavigationBar.setTitle("Editing "+CONFIG.obj_data.display_label+" ("+CONFIG.obj_data.idno+")");
+	//APP.log("debug",$.NavigationBar.text);
 
 };
 
