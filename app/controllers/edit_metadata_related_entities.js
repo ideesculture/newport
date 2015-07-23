@@ -34,6 +34,7 @@ $.init = function() {
 	$.entityfield.value = value;
 	$.notes.text = "";
 	$.entityfield.addEventListener('change', $.search);
+	max_results = 3; 
 };
 
 $.handleData = function(_data) {
@@ -79,6 +80,7 @@ $.handleData = function(_data) {
 Ti.App.addEventListener('event_entitySelected', function(e) { 
 	$.entitiesResearchResults.removeAllChildren(); 
 	$.moreResultsButton.hide(); 
+	max_results = 3; 
 	//in value we want the id of the entity
 	/*APP.log("debug", "config.content:");
 	APP.log("debug", CONFIG.content);
