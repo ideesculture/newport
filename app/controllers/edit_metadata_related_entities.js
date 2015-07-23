@@ -30,7 +30,6 @@ $.init = function() {
 	$.moreResultsButton.hide(); 
 	// Field title
 	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j; 
-	$.notes.text= " "
 	$.entityfield.value = value;
 
 	$.entityfield.addEventListener('change', $.search);
@@ -60,7 +59,7 @@ $.handleData = function(_data) {
 			});
 		}
 
-		if(max <_data.results.length){
+		if( max < _data.results.length){
 			$.moreResultsButton.show();
 		}
 	}else 
@@ -72,7 +71,7 @@ $.handleData = function(_data) {
 
 Ti.App.addEventListener('event_entitySelected', function(e) { 
 	$.entitiesResearchResults.removeAllChildren(); 
-
+	$.moreResultsButton.hide(); 
 	//in value we want the id of the entity
 	/*APP.log("debug", "config.content:");
 	APP.log("debug", CONFIG.content);

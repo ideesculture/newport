@@ -58,12 +58,17 @@
 },
 "#moreResultsButton": {
 	left:10,
-	color: 'black',
-	backgroundColor: 'blue',
-	top:6,
-	height: 16,
+	color: Alloy.Globals.fieldsColor,
+	backgroundColor: 'white',
+	borderRadius:8,
+	borderWidth:5,
+	borderColor: Alloy.Globals.fieldsColor,
+	top:5,
+	bottom: 10,
+	height: 40,
+	width: 180,
 	font: {
-		fontSize: 15,
+		fontSize: 14,
 		fontFamily: "HelveticaNeue"
 	}
 },

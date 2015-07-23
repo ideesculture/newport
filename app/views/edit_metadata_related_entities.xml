@@ -7,6 +7,5 @@
 		<View id="entitiesResearchResults">		
 		</View>
 		<Button id="moreResultsButton" title="+ see more results"/>
-		<Label id="notes"/>
 	</View>
 </Alloy>
