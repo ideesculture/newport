@@ -34,7 +34,7 @@ $.init = function(_params) {
 		});
 
 		if(_params.nodes[i].icon) {
-			var args= {icon:'fa-'+_params.nodes[i].icon, left:'12', size:'50', height:'60', left:'15', color:'white', class:"faIcon", idno:_params.nodes[i].id+1 };
+			var args= {icon:'fa-'+_params.nodes[i].icon, size:'50', height:'60', left:'15', color:'white', class:"faIcon", idno:_params.nodes[i].id+1 };
 			var iconblock = Widget.createWidget('ti.ux.iconfont','widget', args).getView();
 			if (_params.nodes[i].downTab == false) {
 				iconblock.addEventListener("click", handleClick);
