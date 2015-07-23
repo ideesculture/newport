@@ -32,7 +32,7 @@ if(CONFIG.image) {
 		height: "46dp",
 		font: {
 			fontSize: "24dp",
-			fontFamily: "GillSans-Light"
+			fontFamily: "DINAlternate-Bold"
 		},
 		color: theme == "white" ? "#FFF" : "#000",
 		textAlign: "center",
@@ -46,7 +46,6 @@ if(CONFIG.image) {
  */
 $.addNavigation = function(_view) {
 	navigation = _view;
-
 	$.Wrapper.add(navigation);
 };
 
