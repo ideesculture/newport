@@ -23,7 +23,11 @@
 	left: "10dp",
 	color: '#000',
 	width:"auto",
-	height:"40dp"
+	height:"40dp",
+	font: {
+		fontSize: "18dp",
+		fontFamily: "DINAlternate-Bold"
+	}
 },
 "#bundleItemRight": {
 	layout: "horizontal",
