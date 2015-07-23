@@ -14,6 +14,7 @@ var HIERARCHY_MODEL = require("models/ca-objects-hierarchy")();
 
 var CONFIG = arguments[0];
 var value ="";
+var max_results = 3; 
 
 $.TABLE = "ca_entities";
 
@@ -31,21 +32,22 @@ $.init = function() {
 	// Field title
 	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j; 
 	$.entityfield.value = value;
-
+	$.notes.text = "";
 	$.entityfield.addEventListener('change', $.search);
 };
 
 $.handleData = function(_data) {
 	//afficher une barre de chargement par dessus les résultats?? 
-	//$.entitiesResearchResults.hide();
+	APP.openLoading();
+	$.notes.text = "";
 	$.moreResultsButton.hide(); 
 	$.entitiesResearchResults.removeAllChildren(); 
 	// If we have data to display...
 	if( typeof _data.results === 'object'){
 		//APP.log("debug", _data.results);
 		var max = 0, entity_nb;
-		if(_data.results.length>15){
-			max = 15 ;
+		if(_data.results.length> max_results){
+			max = 3;
 		}
 		else {
 			max = _data.results.length;
@@ -61,12 +63,17 @@ $.handleData = function(_data) {
 
 		if( max < _data.results.length){
 			$.moreResultsButton.show();
+			max_results = (max_results + 10); 
+			$.moreResultsButton.addEventListener("click", function(_event) {
+				$.handleData(_data); 
+			}); 
 		}
 	}else 
 	{ 
+		$.notes.text = "no results";
 		APP.log("debug","no results :("); 
 	}
-	//$.entitiesResearchResults.show();
+	APP.closeLoading();
 }
 
 Ti.App.addEventListener('event_entitySelected', function(e) { 
