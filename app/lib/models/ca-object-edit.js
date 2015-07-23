@@ -28,19 +28,19 @@ function Model() {
 		//cleans the db: delete all tables
 		// you don't have to do that
 		//if you dont change their structures
-		/*var request = "DROP TABLE IF EXISTS " + _ca_table + "_edit_base ;";
+		var request = "DROP TABLE IF EXISTS " + _ca_table + "_edit_base ;";
 		db.execute(request);
 		var request = "DROP TABLE IF EXISTS " + _ca_table + "_edit_updates ;";
 		db.execute(request);
 		var request = "DROP TABLE IF EXISTS " + _ca_table + "_edit_temp_insert ;";
 		db.execute(request);
-		*/
+		
 
 		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_base (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id TEXT, json TEXT);";
 		db.execute(request);
 		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_updates (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id TEXT, attribute TEXT, json TEXT);";
 		db.execute(request);
-		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_temp_insert (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id TEXT, attribute TEXT, bundle_code TEXT, value TEXT, is_modified INTEGER, is_new INTEGER);";
+		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_temp_insert (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id TEXT, attribute TEXT, bundle_code TEXT, type_id TEXT, value TEXT, is_modified INTEGER, is_new INTEGER);";
 		db.execute(request);
 
 		//cleans update table so that it exclusively contains the fresh new modifications
@@ -286,7 +286,7 @@ function Model() {
 
 	this.saveChanges = function() {
 		APP.log("debug", "SAVE-CHANGES");
-		var attribut, valeur, result, is_modified, is_new, bundle_code;
+		var attribut, valeur, result, is_modified, is_new, bundle_code, type_id;
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
 		
@@ -306,10 +306,17 @@ function Model() {
 				is_modified = otmp[0].is_modified;
 				is_new = otmp[0].is_new; 
 				bundle_code = otmp[0].bundle;
+				if(otmp[0].type_id){
+					type_id = otmp[0].type_id;
+				}
+				else 
+				{
+					type_id="false";
+				}
 				//Send to db
 				db.execute("BEGIN TRANSACTION;");
-				var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_temp_insert (id, object_id, attribute, value, is_modified, is_new, bundle_code) VALUES (NULL, ?, ?, ?, ?, ?, ?);";
-				db.execute(request, APP.CURRENT_ID, attribut, valeur, is_modified, is_new, bundle_code); 
+				var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_temp_insert (id, object_id, attribute, value, is_modified, is_new, bundle_code, type_id) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);";
+				db.execute(request, APP.CURRENT_ID, attribut, valeur, is_modified, is_new, bundle_code, type_id); 
 				db.execute("END TRANSACTION;");
 				data.next();
 			}
@@ -329,12 +336,12 @@ function Model() {
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
 		//removing previous temp values
-		var request = "SELECT object_id, attribute, value, is_new, is_modified, bundle_code FROM ca_objects_edit_temp_insert ;";
+		var request = "SELECT object_id, attribute, value, is_new, is_modified, bundle_code, type_id FROM ca_objects_edit_temp_insert ;";
 		var data = db.execute(request);
 		db.execute("END TRANSACTION;");
 		
 		var content = new Array() ; 
-		var valeur, attribut, object_id, is_new, is_modified, bundle_code; 
+		var valeur, attribut, object_id, is_new, is_modified, bundle_code, type_id; 
 		if(data.getRowCount() > 0) { 
 			var i = 0;
 			while (data.isValidRow()) {
@@ -351,6 +358,10 @@ function Model() {
 				otemp.is_modified = is_modified; 
 				otemp.bundle_code = bundle_code; 
 				otemp.object_id = object_id; 
+				if(data.fieldByName("type_id")){
+					type_id=data.fieldByName("type_id");
+					otemp.type_id = type_id; 
+				}
 				content[i] = otemp; 
 				data.next();
 				i++;
@@ -416,7 +427,7 @@ function Model() {
 					tempobj ={}; attributes = {}; 
 					tempobj["entity_id"]= fieldToSave.valeur; 
 					//temporaire: type fixé à 79 = individu
-					tempobj["type_id"]= 79; 
+					tempobj["type_id"]= fieldToSave.type_id; 
 					temptab[0]= tempobj; 
 					attributes[fieldToSave.bundle_code] = temptab; 
 					json.related = attributes;

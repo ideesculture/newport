@@ -14,6 +14,7 @@ var HIERARCHY_MODEL = require("models/ca-objects-hierarchy")();
 
 var CONFIG = arguments[0];
 var value ="";
+var max_results = 3; 
 
 $.TABLE = "ca_entities";
 
@@ -27,46 +28,69 @@ $.init = function() {
 	var info1 = APP.Settings.CollectiveAccess.urlForHierarchy.info1;
 	var info2 = APP.Settings.CollectiveAccess.urlForHierarchy.info2;
 	HIERARCHY_MODEL.init($.TABLE, info1, info2);
-
+	$.moreResultsButton.hide(); 
 	// Field title
 	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j; 
-	$.notes.text= " "
 	$.entityfield.value = value;
-
+	$.notes.text = "";
 	$.entityfield.addEventListener('change', $.search);
+	max_results = 3; 
 };
 
 $.handleData = function(_data) {
+	//afficher une barre de chargement par dessus les résultats?? 
+	APP.openLoading();
+	$.notes.text = "";
+	$.moreResultsButton.hide(); 
 	$.entitiesResearchResults.removeAllChildren(); 
 	// If we have data to display...
 	if( typeof _data.results === 'object'){
 		//APP.log("debug", _data.results);
-		//var i = 0;
-		for (var entity in _data.results ) {
+		var max = 0, entity_nb;
+		if(_data.results.length> max_results){
+			max = 3;
+		}
+		else {
+			max = _data.results.length;
+		}
+		for (entity_nb = 0; entity_nb < max;  entity_nb ++ ) {
 			//APP.log("debug", "resultat "+ i);
-			var entity_row = Alloy.createController("edit_related_entity_result", _data.results[entity]).getView();
+			var entity_row = Alloy.createController("edit_related_entity_result", _data.results[entity_nb]).getView();
 			$.entitiesResearchResults.add(entity_row);
 			entity_row.addEventListener('click', function() {
 				$.entitiesResearchResults.removeAllChildren(); 
 			});
-			//i++;
-		};
+		}
+
+		if( max < _data.results.length){
+			$.moreResultsButton.show();
+			max_results = (max_results + 10); 
+			$.moreResultsButton.addEventListener("click", function(_event) {
+				$.handleData(_data); 
+			}); 
+		}
 	}else 
 	{ 
+		$.notes.text = "no results";
 		APP.log("debug","no results :("); 
 	}
+	APP.closeLoading();
 }
 
 Ti.App.addEventListener('event_entitySelected', function(e) { 
 	$.entitiesResearchResults.removeAllChildren(); 
-
+	$.moreResultsButton.hide(); 
+	max_results = 3; 
 	//in value we want the id of the entity
-	APP.log("debug", "config.content:");
+	/*APP.log("debug", "config.content:");
 	APP.log("debug", CONFIG.content);
 	APP.log("debug", "e.config:");
-	APP.log("debug", e.config);
+	APP.log("debug", e.config);*/
 	var laconfig = CONFIG; 
+	e.config.type_id = e.config["ca_entities.type_id"];
 	laconfig.content = e.config; 
+
+	//fills the field with selected entity's display label
 	$.entityfield.value = e.config.display_label;
 
 	//HERE we have to save infos about the related entity

@@ -21,7 +21,7 @@
 "#entitiesResearchResults":{
 	layout:"horizontal",	
 	height:Ti.UI.SIZE,
-	width:Ti.UI.SIZE,
+	width:Ti.UI.FILL,
 	backgroundColor:"white", 
 	borderWidth:1,
 	borderRadius:8,
@@ -51,11 +51,29 @@
 	color: 'black',
 	top:6,
 	height: 16,
+	bottom: 10,
 	font: {
 		fontSize: 15,
 		fontFamily: "HelveticaNeue"
 	}
 },
+"#moreResultsButton": {
+	left:10,
+	color: Alloy.Globals.fieldsColor,
+	backgroundColor: 'white',
+	borderRadius:8,
+	borderWidth:3,
+	borderColor: Alloy.Globals.fieldsColor,
+	top:5,
+	bottom: 10,
+	height: 40,
+	width: 150,
+	font: {
+		fontSize: 14,
+		fontFamily: "HelveticaNeue"
+	}
+},
+
 "#entityfield": {
 	top: 1, 
 	left:1,
