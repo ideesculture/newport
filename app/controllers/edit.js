@@ -555,7 +555,6 @@ $.updateRightButtonRefresh = function() {
 //UPDATES STORAGE FUNCTION
 //when the content of a field has changed, the new content is stored id _edit_updates
 Ti.App.addEventListener('event_haschanged', function(e) { 
-	
 	$.hasChanged = true;
 	APP.log("debug", "DEBUG Ti.App.addEventListener");
 	//APP.log("debug", e.config);
@@ -584,8 +583,13 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 		var vals = {is_origin : 0, is_modified : 0, is_new : 1 };
 		APP.log("debug", e.config.element); 
 		vals[e.config.element] = e.value;
-
 		vals.bundle = attribute;
+		//"related" entities/occus/places/... need a type id
+		if(e.config.content){
+			if(e.config.content.type_id){
+				vals.type_id = e.config.content.type_id;
+			}
+		}
 		var new_values2 = [];
 		new_values2[0]=vals;
 		APP.log("debug",new_values2);

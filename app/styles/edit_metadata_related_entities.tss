@@ -56,6 +56,18 @@
 		fontFamily: "HelveticaNeue"
 	}
 },
+"#moreResultsButton": {
+	left:10,
+	color: 'black',
+	backgroundColor: 'blue',
+	top:6,
+	height: 16,
+	font: {
+		fontSize: 15,
+		fontFamily: "HelveticaNeue"
+	}
+},
+
 "#entityfield": {
 	top: 1, 
 	left:1,
