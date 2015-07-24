@@ -284,6 +284,16 @@ function Model() {
 		db.close();
 	}
 
+	this.saveSpecificChanges = function(attribut, valeur, is_modified, is_new, bundle_code, type_id) {
+		var db = Ti.Database.open(DBNAME);
+		db.execute("BEGIN TRANSACTION;");
+		var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_temp_insert (id, object_id, attribute, value, is_modified, is_new, bundle_code, type_id) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);";
+		db.execute(request, APP.CURRENT_ID, attribut, valeur, is_modified, is_new, bundle_code, type_id); 
+		db.execute("END TRANSACTION;");
+		db.close();
+		return true; 
+	}
+
 	this.saveChanges = function() {
 		APP.log("debug", "SAVE-CHANGES");
 		var attribut, valeur, result, is_modified, is_new, bundle_code, type_id;
@@ -432,21 +442,35 @@ function Model() {
 					attributes[fieldToSave.bundle_code] = temptab; 
 					json.related = attributes;
 				}
-				else
+				else 
 				{
-					//builds the object to be sent:
-					//1) remove_attributes
-					if(fieldToSave.is_modified){
-						remove_attributes[0] = fieldToSave.bundle_code;
-						json.remove_attributes = remove_attributes;
+					//WE HAVE TO DO SMTG BETTER 
+					//AND INTRINSIC FIELDS!!!
+					if (attribut == "preferred_labels"){
+						//needs a different json!!!
+						tempobj ={};
+						tempobj["locale"]= "en_US"; 
+						tempobj[fieldToSave.bundle_code]= fieldToSave.valeur; 
+						
+						temptab[0]= tempobj; 
+						json.preferred_labels = temptab;
+					}	
+					else
+					{
+						//builds the object to be sent:
+						//1) remove_attributes
+						if(fieldToSave.is_modified){
+							remove_attributes[0] = fieldToSave.bundle_code;
+							json.remove_attributes = remove_attributes;
+						}
+						//2) attributes
+						tempobj ={}; attributes = {}; 
+						tempobj["locale"]= "en_US"; 
+						tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
+						temptab[0]= tempobj; 
+						attributes[fieldToSave.bundle_code] = temptab; 
+						json.attributes = attributes; 
 					}
-					//2) attributes
-					tempobj ={}; attributes = {}; 
-					tempobj["locale"]= "en_US"; 
-					tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
-					temptab[0]= tempobj; 
-					attributes[fieldToSave.bundle_code] = temptab; 
-					json.attributes = attributes; 
 				}
 				APP.log("debug", JSON.stringify(json));
 				//alert(JSON.stringify(json)); 
