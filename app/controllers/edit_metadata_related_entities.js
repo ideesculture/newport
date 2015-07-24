@@ -35,12 +35,13 @@ $.init = function() {
 	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j; 
 	$.entityfield.value = value;
 	$.notes.text = "";
-	$.entityfield.addEventListener('change', $.search);
+	//$.entityfield.addEventListener('change', $.search);
 	max_results = 3; 
+	$.searchButton.addEventListener("click", $.search); 
 };
 
 $.fire = function(_data) {
-	$.entitiesResearchResults.removeAllChildren(); 
+	$.entitiesResearchResults.setData([]); 
 	$.entitiesResearchResultsContainer.hide(); 
 	$.moreResultsButton.hide(); 
 	max_results = 3; 
@@ -72,7 +73,6 @@ function createRow(data) {
     });
 
     tvr.addEventListener('click', function() {
-		APP.log("fire ! ! !");
 		$.fire(data); 
 	});
  
@@ -81,11 +81,11 @@ function createRow(data) {
 
 $.handleData = function(_data) {
 	//afficher une barre de chargement par dessus les résultats?? 
-	APP.openLoading();
 	$.notes.text = "";
 	var table = [];
 	$.moreResultsButton.hide(); 
-	$.entitiesResearchResults.removeAllChildren(); 
+	$.entitiesResearchResults.data = []; 
+	//$.entitiesResearchResults.removeAllChildren(); 
 	// If we have data to display...
 	if( typeof _data.results === 'object'){
 		//APP.log("debug", _data.results);
@@ -96,48 +96,50 @@ $.handleData = function(_data) {
 		else {
 			max = _data.results.length;
 		}
-
+		 
 		for (entity_nb = 0; entity_nb < max;  entity_nb ++ ) {
-			//APP.log("debug", "resultat "+ i);
+			APP.log("debug", "resultat "+ entity_nb);
 			table.push(createRow(_data.results[entity_nb]));
-		/*	entity_row.addEventListener('click', function() {
-				$.entitiesResearchResults.removeAllChildren(); 
-			});*/
 		}
 		$.entitiesResearchResults.setData(table);
+		$.entitiesResearchResultsContainer.show();
+		$.entitiesResearchResults.show();
+
 		if( max < _data.results.length){
 			$.moreResultsButton.show();
 
 			if(!clickWasOnceDone){
 				clickwasOnceDone = true; 
 				$.moreResultsButton.addEventListener("click", function(_event) {
-						max_results = (max_results + 10); 
+						max_results = _data.results.length; 
 						$.handleData(_data); 
 				});
 			}
 		}
-	}else 
+	}
+	else 
 	{ 
+		$.entitiesResearchResultsContainer.hide(); 
 		$.notes.text = "no results";
-		APP.log("debug","no results :("); 
 	}
 	APP.closeLoading();
 }
 
 
 $.search = function(e){
-	$.entitiesResearchResultsContainer.show(); 
-	var _url = APP.Settings.CollectiveAccess.urlForEntitySearch.url.replace(/<your_query>/g, e.value);
+	APP.openLoading();
+	$.entitiesResearchResultsContainer.hide(); 
+	var _url = APP.Settings.CollectiveAccess.urlForEntitySearch.url.replace(/<your_query>/g, $.entityfield.value);
 	max_results = 3; 
-	if(e.value.length >= 3) {
-		if (Titanium.Network.networkType !== Titanium.Network.NETWORK_WIFI ) {
-			var result = HIERARCHY_MODEL.getSearchedRecordsLocally($.TABLE, e.value);
+	//if(e.value.length >= 3) {
+	if (Titanium.Network.networkType !== Titanium.Network.NETWORK_WIFI ) {
+		var result = HIERARCHY_MODEL.getSearchedRecordsLocally($.TABLE, e.value);
 
-		} else {
-			var result = HIERARCHY_MODEL.getSearchedRecords($.TABLE, e.value, _url, $.handleData);
-		}
-		return result; 
+	} else {
+		var result = HIERARCHY_MODEL.getSearchedRecords($.TABLE, e.value, _url, $.handleData);
 	}
+	return result; 
+
 
 };
 
