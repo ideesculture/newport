@@ -35,6 +35,15 @@ $.init = function() {
 		    CONFIG.container.close();
 	});
 
+	$.open.addEventListener('click',function () {
+		APP.addChild("edit", {
+			type: "ca_objects",
+			obj_data : CONFIG.obj_data,
+			isChild: true
+		}, false, true);
+		CONFIG.container.close();
+	});
+
 
 }
 
