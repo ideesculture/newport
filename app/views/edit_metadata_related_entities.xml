@@ -4,7 +4,9 @@
 		<View id="fieldWithoutIcon">
 			<TextField id="entityfield"/>
 		</View>
-		<View id="entitiesResearchResults">		
+		<View id="entitiesResearchResultsContainer">	
+			<TableView id="entitiesResearchResults">		
+			</TableView>
 		</View>
 		<Button id="moreResultsButton" title="+ see more results"/>
 		<Label id="notes"/>

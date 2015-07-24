@@ -15,6 +15,7 @@ var HIERARCHY_MODEL = require("models/ca-objects-hierarchy")();
 var CONFIG = arguments[0];
 var value ="";
 var max_results = 3; 
+var clickWasOnceDone = false; 
 
 $.TABLE = "ca_entities";
 
@@ -29,6 +30,7 @@ $.init = function() {
 	var info2 = APP.Settings.CollectiveAccess.urlForHierarchy.info2;
 	HIERARCHY_MODEL.init($.TABLE, info1, info2);
 	$.moreResultsButton.hide(); 
+	$.entitiesResearchResultsContainer.hide(); 
 	// Field title
 	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j; 
 	$.entityfield.value = value;
@@ -37,10 +39,51 @@ $.init = function() {
 	max_results = 3; 
 };
 
+$.fire = function(_data) {
+	$.entitiesResearchResults.removeAllChildren(); 
+	$.entitiesResearchResultsContainer.hide(); 
+	$.moreResultsButton.hide(); 
+	max_results = 3; 
+	//in value we want the id of the entity
+	/*APP.log("debug", "config.content:");
+	APP.log("debug", CONFIG.content);
+	APP.log("debug", "e.config:");
+	APP.log("debug", e.config);*/
+	var laconfig = CONFIG; 
+	_data.type_id = _data["ca_entities.type_id"];
+	laconfig.content = _data; 
+
+	//fills the field with selected entity's display label
+	$.entityfield.value = _data.display_label;
+
+	//HERE we have to save infos about the related entity
+	Ti.App.fireEvent('event_haschanged', {
+		name: 'bar',
+		config: laconfig,
+		value: _data.entity_id
+	});
+
+}
+
+function createRow(data) {
+	var title = data.display_label ;
+    var tvr = Ti.UI.createTableViewRow({
+        title : title
+    });
+
+    tvr.addEventListener('click', function() {
+		APP.log("fire ! ! !");
+		$.fire(data); 
+	});
+ 
+    return tvr;
+}
+
 $.handleData = function(_data) {
 	//afficher une barre de chargement par dessus les résultats?? 
 	APP.openLoading();
 	$.notes.text = "";
+	var table = [];
 	$.moreResultsButton.hide(); 
 	$.entitiesResearchResults.removeAllChildren(); 
 	// If we have data to display...
@@ -48,26 +91,30 @@ $.handleData = function(_data) {
 		//APP.log("debug", _data.results);
 		var max = 0, entity_nb;
 		if(_data.results.length> max_results){
-			max = 3;
+			max = max_results;
 		}
 		else {
 			max = _data.results.length;
 		}
+
 		for (entity_nb = 0; entity_nb < max;  entity_nb ++ ) {
 			//APP.log("debug", "resultat "+ i);
-			var entity_row = Alloy.createController("edit_related_entity_result", _data.results[entity_nb]).getView();
-			$.entitiesResearchResults.add(entity_row);
-			entity_row.addEventListener('click', function() {
+			table.push(createRow(_data.results[entity_nb]));
+		/*	entity_row.addEventListener('click', function() {
 				$.entitiesResearchResults.removeAllChildren(); 
-			});
+			});*/
 		}
-
+		$.entitiesResearchResults.setData(table);
 		if( max < _data.results.length){
 			$.moreResultsButton.show();
-			max_results = (max_results + 10); 
-			$.moreResultsButton.addEventListener("click", function(_event) {
-				$.handleData(_data); 
-			}); 
+
+			if(!clickWasOnceDone){
+				clickwasOnceDone = true; 
+				$.moreResultsButton.addEventListener("click", function(_event) {
+						max_results = (max_results + 10); 
+						$.handleData(_data); 
+				});
+			}
 		}
 	}else 
 	{ 
@@ -77,34 +124,11 @@ $.handleData = function(_data) {
 	APP.closeLoading();
 }
 
-Ti.App.addEventListener('event_entitySelected', function(e) { 
-	$.entitiesResearchResults.removeAllChildren(); 
-	$.moreResultsButton.hide(); 
-	max_results = 3; 
-	//in value we want the id of the entity
-	/*APP.log("debug", "config.content:");
-	APP.log("debug", CONFIG.content);
-	APP.log("debug", "e.config:");
-	APP.log("debug", e.config);*/
-	var laconfig = CONFIG; 
-	e.config.type_id = e.config["ca_entities.type_id"];
-	laconfig.content = e.config; 
-
-	//fills the field with selected entity's display label
-	$.entityfield.value = e.config.display_label;
-
-	//HERE we have to save infos about the related entity
-	Ti.App.fireEvent('event_haschanged', {
-		name: 'bar',
-		config: laconfig,
-		value: e.value
-	});
-});
-
 
 $.search = function(e){
+	$.entitiesResearchResultsContainer.show(); 
 	var _url = APP.Settings.CollectiveAccess.urlForEntitySearch.url.replace(/<your_query>/g, e.value);
-
+	max_results = 3; 
 	if(e.value.length >= 3) {
 		if (Titanium.Network.networkType !== Titanium.Network.NETWORK_WIFI ) {
 			var result = HIERARCHY_MODEL.getSearchedRecordsLocally($.TABLE, e.value);
@@ -128,11 +152,6 @@ $.validate = function () {
 $.update = function () {
 
 };
-
-/*
- * HANDLERS
- */
-
 
 
 $.init();

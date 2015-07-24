@@ -1,7 +1,0 @@
-<Alloy>
-	<View id="entityRow">
-		<View id="entityRowContent">
-			<Label id="label"/>
-		</View>		
-	</View>
-</Alloy>

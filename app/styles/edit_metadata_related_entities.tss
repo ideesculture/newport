@@ -18,7 +18,7 @@
 	borderRadius:8,
 	backgroundColor:Alloy.Globals.fieldsColor
 },
-"#entitiesResearchResults":{
+"#entitiesResearchResultsContainer":{
 	layout:"horizontal",	
 	height:Ti.UI.SIZE,
 	width:Ti.UI.FILL,
@@ -29,8 +29,17 @@
 	right: 10,
 	top: 10,
 	bottom: 10,
-}
-
+},
+"#entitiesResearchResults":{
+	layout:"horizontal",	
+	height:Ti.UI.SIZE,
+	width:Ti.UI.FILL,
+	backgroundColor:'white', 
+	left: 10,
+	right: 10,
+	top: 5,
+	bottom: 5
+},
 "#icon": {
 	backgroundColor:Alloy.Globals.fieldsColor,
 	width:Ti.UI.SIZE
@@ -73,7 +82,27 @@
 		fontFamily: "HelveticaNeue"
 	}
 },
-
+"#entityRow": {
+	height:Ti.UI.SIZE,
+	width:Ti.UI.SIZE,
+	top: 10,
+	bottom: 10, 
+	left: 5, 
+	right: 5,
+	backgroundColor: "#eee",
+	borderColor: "#000",
+	borderWidth: "1dp",
+	borderRadius:5,
+},
+"#entityRowContent": {
+	height:Ti.UI.SIZE,
+	layout:"vertical",
+	left:"10dp",
+	width:Ti.UI.SIZE,
+	right:"10dp",
+	top: 6, 
+	bottom: 6
+},
 "#entityfield": {
 	top: 1, 
 	left:1,
