@@ -98,7 +98,7 @@ $.handleData = function(_data) {
 		}
 		 
 		for (entity_nb = 0; entity_nb < max;  entity_nb ++ ) {
-			APP.log("debug", "resultat "+ entity_nb);
+			//APP.log("debug", "resultat "+ entity_nb);
 			table.push(createRow(_data.results[entity_nb]));
 		}
 		$.entitiesResearchResults.setData(table);

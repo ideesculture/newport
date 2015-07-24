@@ -24,7 +24,7 @@ function Model() {
 	 * @param {Number} _id The UID of the component
 	 */
 	this.init = function(_ca_table, _info1, _info2) {
-		APP.log("debug", "CA_HIERARCHY.init(" + _ca_table + ")");
+		//APP.log("debug", "CA_HIERARCHY.init(" + _ca_table + ")");
 
 		this.TABLE = _ca_table;
 		INFO1 = _info1;
@@ -42,7 +42,7 @@ function Model() {
 
 
 	this.clear = function(_ca_table) {
-		APP.log("debug", "CA_HIERARCHY.clear(" + _ca_table + ")");
+		//APP.log("debug", "CA_HIERARCHY.clear(" + _ca_table + ")");
 
 		this.TABLE = _ca_table;
 		var db = Ti.Database.open(DBNAME);
@@ -60,11 +60,11 @@ function Model() {
 	 * @param {Number} _params.cache The length of time to consider cached data 'warm'
 	 */
 	this.fetch = function(_params) {
-		APP.log("debug", "CA_HIERARCHY.fetch");
+		//APP.log("debug", "CA_HIERARCHY.fetch");
 		//APP.log("trace", UTIL.jsonStringify(_params));
 
 		var isStale = UTIL.isStale(_params.url, _params.cache);
-		Ti.API.log("url:"+_params.url);
+		//Ti.API.log("url:"+_params.url);
 		if(isStale) {
 			if(_params.cache !== 0 && isStale !== "new") {
 				_params.callback();
@@ -107,7 +107,7 @@ function Model() {
 	 */
 	this.handleData = function(_data, _url, _callback) {
 		var _ca_table = table;
-		APP.log("debug", "CA_HIERARCHY.handleData");
+		//APP.log("debug", "CA_HIERARCHY.handleData");
 		if(_data.ok == true) {
 			//APP.log("debug", "hierarchy handleData");
 			//APP.log("debug", _data);
@@ -134,15 +134,15 @@ function Model() {
 		        		var request = "INSERT INTO " + _ca_table + " (id, ca_table, object_id, parent_id, idno, display_label, created, info1, info2) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
 						db.execute(request, _ca_table, record["object_id"], record["parent_id"], record["idno"], record["display_label"], record["created"]["timestamp"], record[INFO1], record[INFO2]);
 
-						Ti.API.log("debug","#tuguduuu : "+this);
+						//Ti.API.log("debug","#tuguduuu : "+this);
 		
 
 		        		last = prop2;
 	        		} 
 		        }
 		    }
-		    Ti.API.log("last");
-		    Ti.API.log(last);
+		   // Ti.API.log("last");
+		    //Ti.API.log(last);
 
 			db.execute("INSERT OR REPLACE INTO updates (url, time) VALUES(" + UTIL.escapeString(_url) + ", " + new Date().getTime() + ");");
 			db.execute("END TRANSACTION;");
@@ -162,7 +162,7 @@ function Model() {
 	};
 
 	this.nbLines = function(_ca_table) {
-		APP.log("debug", "CA-HIERARCHY.nbLines");
+		//APP.log("debug", "CA-HIERARCHY.nbLines");
 
 		var db = Ti.Database.open(DBNAME),
 			//request = "select ca_table, object_id, parent_id, idno, display_label, date, created from ca_models where ca_table like '"+_ca_table,
@@ -177,7 +177,7 @@ function Model() {
 	};
 
 	this.getLastRecords = function(_ca_table) {
-		APP.log("debug", "CA-HIERARCHY.getLastRecords");
+	//	APP.log("debug", "CA-HIERARCHY.getLastRecords");
 
 		var db = Ti.Database.open(DBNAME),
 			//request = "select ca_table, object_id, parent_id, idno, display_label, date, created from ca_models where ca_table like '"+_ca_table,
@@ -200,14 +200,14 @@ function Model() {
 
 		data.close();
 		db.close();
-		APP.log("debug", "LAST RECORDS :::");
-		APP.log("debug", temp);
+		//APP.log("debug", "LAST RECORDS :::");
+		//APP.log("debug", temp);
 		return temp;
 		
 	}
 
 	this.getChildrenFoldersInside = function(_ca_table, id) {
-		APP.log("debug", "CA-HIERARCHY.getChildrenFoldersInside");
+	//	APP.log("debug", "CA-HIERARCHY.getChildrenFoldersInside");
 		var db = Ti.Database.open(DBNAME), temp = {};
 		var parent_criteria = "is NULL";
 		if (id) parent_criteria = "="+id;
@@ -232,7 +232,7 @@ function Model() {
 	}
 
 	this.getObjectsInside = function(_ca_table, id) {
-		APP.log("debug", "CA-HIERARCHY.getObjectsInside");
+	//	APP.log("debug", "CA-HIERARCHY.getObjectsInside");
 		var db = Ti.Database.open(DBNAME), temp = {};
 		var parent_criteria = "is NULL";
 		if (id) parent_criteria = "="+id;
@@ -265,7 +265,7 @@ function Model() {
 	///////////////////////////////////////////////////////////
 	this.getSearchedRecordsLocally = function(_ca_table, _text) {
 
-		APP.log("debug", "CA-HIERARCHY.getSearchedRecords");
+	//	APP.log("debug", "CA-HIERARCHY.getSearchedRecords");
 
 		//if no connection is available, searches in the local DB
 		

@@ -9,7 +9,7 @@ var CONFIG = arguments[0];
 var MOMENT = require('alloy/moment');  
 
 var created = MOMENT.unix(CONFIG.created).format("dddd D, MMMM YYYY");
-APP.log("debug","Adding lastmodified block: "+CONFIG.label1+" ("+created+")");
+//APP.log("debug","Adding lastmodified block: "+CONFIG.label1+" ("+created+")");
 
 // Adding recent items to right panel
 //var view = Alloy.createController("main_lastmodified_block_folderrow", {id:43}).getView();
