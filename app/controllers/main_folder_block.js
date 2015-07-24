@@ -12,6 +12,11 @@ var COMMONS = require("ca-commons");
 // Fixing the table we"re working on, eventually to come through CONFIG after
 $.TABLE = "ca_objects";
 
+var 	myModal = Ti.UI.createWindow({
+	    title           : 'My Modal',
+	    backgroundColor : 'transparent'
+	});
+
 $.init = function() {	
 	APP.log("debug","Adding folder block ("+CONFIG.object_id+")");
 	$.objectInfo.text = CONFIG.idno;
@@ -76,7 +81,7 @@ $.handleData = function(_data) {
 	$.objectInfo.text = _data.idno;
 }
 
-$.cellimage.addEventListener('click',function(e) {
+$.cellimage.addEventListener('singletap',function(e) {
 	APP.log("debug", "adding new child (main.js): "+CONFIG.object_id);
 	var child_info = {
 		id: CONFIG.object_id,
@@ -84,6 +89,29 @@ $.cellimage.addEventListener('click',function(e) {
 	}
 	APP.addChild("main", child_info, false, false);
 	APP.breadcrumb.push(child_info);
+});
+$.cellimage.addEventListener('longpress', function(e) {
+	APP.log("debug","$.cellimage.addEventListener LONGPRESS : : :");
+	// if menu opened, close it
+	if(APP.SlideMenuOpen) {
+		APP.closeMenu();
+	}
+	var tempobj = { 
+		id: CONFIG.object_id,
+		display_label: CONFIG.display_label 
+	};
+	var modal_info = {
+		obj_data: tempobj,	
+		container: myModal
+	}
+	if (file) {
+		modal_info.image_file = file;
+	}
+    var modal_view = Alloy.createController('main_folder_longpress_modal',modal_info);
+    myModal.add(modal_view.getView());
+	myModal.open({
+    	animate : true
+	});
 });
 
 $.init();

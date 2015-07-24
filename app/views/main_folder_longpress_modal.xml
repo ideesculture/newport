@@ -1,0 +1,18 @@
+<Alloy>
+	<View id="wrapperView">
+		
+		<View id="backgroundView" backgroundColor='#000' opacity='0.5' top='47'></View>
+		<View id="insideView">
+			<Label id="someLabel"></Label>
+
+			<ScrollableView id="optionscontainerView">	
+				<View id="container2">
+					<TableView id="optionsTable">
+						<TableViewRow id="moveTo" title="Move to" hasChild="true" />
+						<TableViewRow id="rename" title="Rename" hasChild="true" />
+					</TableView>
+				</View>
+			</ScrollableView>
+		</View>
+	</View>
+</Alloy>

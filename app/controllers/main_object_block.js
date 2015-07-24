@@ -74,12 +74,13 @@ $.handleData = function(_data) {
 	}
 	$.objectInfo.text = _data.idno;
 
-	$.cellimage.addEventListener('click',function(e) {
+	$.cellimage.addEventListener('singletap',function(e) {
 		APP.log("debug","$.cellimage.addEventListener");
 		// if menu opened, close it
 		if(APP.SlideMenuOpen) {
 			APP.closeMenu();
 		}
+
 		var modal_info = {
 			obj_data: CONFIG.obj_data,		
 			container: CONFIG.modal	
@@ -93,8 +94,30 @@ $.handleData = function(_data) {
 	    	animate : true
 		});
 	});
+	
+	$.cellimage.addEventListener('longpress',function(e) {
+		APP.log("debug","$.cellimage.addEventListener");
+		// if menu opened, close it
+		if(APP.SlideMenuOpen) {
+			APP.closeMenu();
+		}
 
-	$.infoicon.addEventListener('click',function(e) {
+		var modal_info = {
+			obj_data: CONFIG.obj_data,		
+			container: CONFIG.modal	
+		}
+		if (image_file) {
+			modal_info.image_file = image_file;
+		}
+	    var modal_view = Alloy.createController('main_object_longpress_modal',modal_info);
+	    CONFIG.modal.add(modal_view.getView());
+		CONFIG.modal.open({
+	    	animate : true
+		});
+	});
+
+
+	$.infoicon.addEventListener('singletap',function(e) {
 		//APP.log("debug","$.infoIcon.addEventListener");
 		// if menu opened, close it
 		if(APP.SlideMenuOpen) {
