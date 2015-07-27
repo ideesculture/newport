@@ -83,7 +83,7 @@ $.fire = function(_data) {
 
 	//fills the field with selected entity's display label
 	$.entityfield.value = _data.display_label;
-
+	clickWasOnceDone = false; 
 	//HERE we have to save infos about the related entity
 	Ti.App.fireEvent('event_haschanged', {
 		name: 'bar',
@@ -214,12 +214,12 @@ $.search = function(e){
 	var _url = APP.Settings.CollectiveAccess.urlForEntitySearch.url.replace(/<your_query>/g, $.entityfield.value);
 	max_results = 3; 
 	//if(e.value.length >= 3) {
-	//if (Titanium.Network.networkType !== Titanium.Network.NETWORK_WIFI ) {
+	if (Titanium.Network.networkType !== Titanium.Network.NETWORK_WIFI ) {
 		var result = ENTITY_MODEL.getSearchedRecordsLocally($.TABLE, $.entityfield.value, $.handleLocalData);
 
-	//} else {
-	//	var result = ENTITY_MODEL.getSearchedRecords($.TABLE, e.value, _url, $.handleData);
-	//}
+	} else {
+		var result = ENTITY_MODEL.getSearchedRecords($.TABLE, e.value, _url, $.handleData);
+	}
 	return result; 
 
 
