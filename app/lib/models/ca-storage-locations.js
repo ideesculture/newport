@@ -31,9 +31,7 @@ function Model() {
 		var db = Ti.Database.open(DBNAME);
 
 		//ONLY FOR DEBUG
-		//db.execute("DROP TABLE ca_objects ;");
 		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, object_id INTEGER, parent_id INTEGER, idno TEXT, display_label TEXT, date TEXT, created TEXT);";
-		db.execute(request);
 		db.close();
 	};
 
@@ -116,7 +114,7 @@ function Model() {
 			APP.ca_modele_values = {};
 			var _data2;
 			var last = 0;
-			var ca_table = "ca_objects";
+			var ca_table = "ca_storage_locations";
 			var record_type;
 			
 			// Browsing data

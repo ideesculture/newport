@@ -68,6 +68,26 @@ $.init = function() {
 		CONFIG.container.close();
 	});
 
+	$.moveTo.addEventListener('click', function() {
+		APP.log("debug","MOVE TO");
+		// if menu opened, close it
+		if(APP.SlideMenuOpen) {
+			APP.closeMenu();
+		}
+
+		var modal_info = {
+			obj_data: CONFIG.obj_data,		
+			container: myModal
+		}
+
+	    var modal_view = Alloy.createController('main_modal_moveTo',modal_info);
+	    myModal.add(modal_view.getView());
+		myModal.open({
+	    	animate : true
+		});
+		CONFIG.container.close();
+	});
+
 
 }
 

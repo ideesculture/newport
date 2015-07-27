@@ -1,6 +1,5 @@
 /**
  * Controller for entities
- * START VERSION - DOES NOT WORK PROPERLY
  * 
  * @class Controllers.text
  * @uses core
@@ -165,7 +164,6 @@ $.handleLocalData = function(_data) {
 	//$.entitiesResearchResults.removeAllChildren(); 
 	// If we have data to display...
 	if( typeof _data == 'object'){
-		APP.log("debug", 'if is won ! !');
 		var max = 0, entity_nb = 0, i=0;
 
 		for(entity_nb in _data)	i++;

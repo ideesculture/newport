@@ -1,0 +1,16 @@
+<Alloy>
+	<View id="wrapperView">		
+		<View id="backgroundView" backgroundColor='#000' opacity='0.5' top='47'></View>
+		<View id="insideView">
+			<Label id="someLabel" text="Select a storage location: "></Label>
+
+			<ScrollableView id="tablecontainerView">	
+				<View id="container2">
+					<TableView id="storageLocationsTable">
+					</TableView>
+					<Button id="saveButton" title="Move object"/>
+				</View>
+			</ScrollableView>
+		</View>
+	</View>
+</Alloy>

@@ -1,0 +1,64 @@
+"#insideView":{
+	layout:"vertical",
+	textAlign:"left",
+	height:600,
+	width:500,
+	top:300,
+	bottom:20, 
+	backgroundColor: "#eee"
+}, 
+"#newlabelfield": {
+	top:5, 
+	left:10,
+	right:20,
+	bottom:7,
+	width:300,
+	color: 'black',
+	height: 40,
+	backgroundColor: 'white',
+	keyboardType: Titanium.UI.KEYBOARD_DEFAULT,
+	returnKeyType: Titanium.UI.RETURNKEY_DEFAULT,
+	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE
+},
+"#saveButton": {
+	top:20,
+	bottom: 7,
+	left:180,
+	right:10,
+	color: Alloy.Globals.fieldsColor,
+	backgroundColor: 'white',
+	borderRadius:8,
+	borderWidth:3,
+	borderColor: 'black',
+	height: 40,
+	width: 100,
+	font: {
+		fontSize: 16,
+		fontFamily: "HelveticaNeue"
+	}
+},
+"#backgroundView":{
+	backgroundColor:'black',
+	opacity:0.5,
+	top:47
+},
+"#container2":{
+	layout:"vertical", 
+	height: 500, 
+	width: 480
+},
+"#someLabel":{
+	left:15,
+	bottom: 2,
+	color: Alloy.Globals.fieldsColor,
+	backgroundColor: '#eee',
+	top:10,
+	height: 50,
+	width:300,
+	font: {
+		fontSize: 20,
+		fontWeight: 'bold',
+		fontFamily: "HelveticaNeue"
+	}
+}
