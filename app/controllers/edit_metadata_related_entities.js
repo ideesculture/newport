@@ -11,6 +11,8 @@ var DATE = require("alloy/moment");
 var BUFFER = require("ca-editbuffer");
 var HTTP = require("http");
 var HIERARCHY_MODEL = require("models/ca-objects-hierarchy")();
+var ENTITY_MODEL = require("models/ca-entities")();
+var COMMONS = require("ca-commons");
 
 var CONFIG = arguments[0];
 var value ="";
@@ -26,9 +28,9 @@ $.init = function() {
 	};
 
 	// Initiating CA db model class
-	var info1 = APP.Settings.CollectiveAccess.urlForHierarchy.info1;
-	var info2 = APP.Settings.CollectiveAccess.urlForHierarchy.info2;
-	HIERARCHY_MODEL.init($.TABLE, info1, info2);
+	//var info1 = APP.Settings.CollectiveAccess.urlForHierarchy.info1;
+	//var info2 = APP.Settings.CollectiveAccess.urlForHierarchy.info2;
+	ENTITY_MODEL.init($.TABLE);
 	$.moreResultsButton.hide(); 
 	$.entitiesResearchResultsContainer.hide(); 
 	// Field title
@@ -37,6 +39,27 @@ $.init = function() {
 	$.notes.text = "";
 	//$.entityfield.addEventListener('change', $.search);
 	max_results = 3; 
+
+	APP.ca_login="administrator";
+	APP.ca_password="admin";
+	APP.authString = 'Basic ' +Titanium.Utils.base64encode(APP.ca_login+':'+APP.ca_password);
+	CONFIG.url = APP.Settings.CollectiveAccess.urlForEntityInfos.url;
+	//ENTITY_MODEL.fetch();
+	if(!COMMONS.isCacheValid(CONFIG.url,CONFIG.validity)) {
+		ENTITY_MODEL.fetch({
+			url: CONFIG.url,
+			authString: APP.authString,
+			cache: 0,
+			callback: null,
+			error: function() {
+				var dialog = Ti.UI.createAlertDialog({
+				    message: 'ERROR while updating entities list: Connexion failed. The list of entities may be outdated.',
+				    ok: 'OK',
+				    title: 'Error'
+				  }).show();
+			}
+		});
+	}
 	$.searchButton.addEventListener("click", $.search); 
 };
 
@@ -51,7 +74,11 @@ $.fire = function(_data) {
 	APP.log("debug", "e.config:");
 	APP.log("debug", e.config);*/
 	var laconfig = CONFIG; 
-	_data.type_id = _data["ca_entities.type_id"];
+
+	//problem with local search, field is called "type_id" 
+	if(_data["ca_entities.type_id"]){
+		_data.type_id = _data["ca_entities.type_id"];
+	}
 	laconfig.content = _data; 
 
 	//fills the field with selected entity's display label
@@ -81,6 +108,7 @@ function createRow(data) {
 
 $.handleData = function(_data) {
 	//afficher une barre de chargement par dessus les résultats?? 
+	APP.log("debug", _data.results);
 	$.notes.text = "";
 	var table = [];
 	$.moreResultsButton.hide(); 
@@ -98,7 +126,7 @@ $.handleData = function(_data) {
 		}
 		 
 		for (entity_nb = 0; entity_nb < max;  entity_nb ++ ) {
-			//APP.log("debug", "resultat "+ entity_nb);
+			//APP.log("debug", "resultat "+ );
 			table.push(createRow(_data.results[entity_nb]));
 		}
 		$.entitiesResearchResults.setData(table);
@@ -125,6 +153,57 @@ $.handleData = function(_data) {
 	APP.closeLoading();
 }
 
+$.handleLocalData = function(_data) {
+	//afficher une barre de chargement par dessus les résultats?? 
+	//APP.log("debug", _data);
+	APP.log("debug", typeof _data);
+	APP.log("debug", _data.length);
+	$.notes.text = "";
+	var table = [];
+	$.moreResultsButton.hide(); 
+	$.entitiesResearchResults.data = []; 
+	//$.entitiesResearchResults.removeAllChildren(); 
+	// If we have data to display...
+	if( typeof _data == 'object'){
+		APP.log("debug", 'if is won ! !');
+		var max = 0, entity_nb;
+	/*	if(_data.length> max_results){
+			max = max_results;
+		}
+		else {
+			max = _data.length;
+		}
+		 
+		for (entity_nb = 0; entity_nb < max;  entity_nb ++ ) {*/
+		for(entity_nb in _data){
+			//APP.log("debug", "resultat "+ entity_nb);
+			APP.log("debug", _data[entity_nb]);
+			table.push(createRow(_data[entity_nb]));
+		}
+		$.entitiesResearchResults.setData(table);
+		$.entitiesResearchResultsContainer.show();
+		$.entitiesResearchResults.show();
+
+		if( max < _data.length){
+			$.moreResultsButton.show();
+
+			if(!clickWasOnceDone){
+				clickwasOnceDone = true; 
+				$.moreResultsButton.addEventListener("click", function(_event) {
+						max_results = _data.length; 
+						$.handleData(_data); 
+				});
+			}
+		}
+	}
+	else 
+	{ 
+		$.entitiesResearchResultsContainer.hide(); 
+		$.notes.text = "no results";
+	}
+	APP.closeLoading();
+}
+
 
 $.search = function(e){
 	APP.openLoading();
@@ -132,12 +211,12 @@ $.search = function(e){
 	var _url = APP.Settings.CollectiveAccess.urlForEntitySearch.url.replace(/<your_query>/g, $.entityfield.value);
 	max_results = 3; 
 	//if(e.value.length >= 3) {
-	if (Titanium.Network.networkType !== Titanium.Network.NETWORK_WIFI ) {
-		var result = HIERARCHY_MODEL.getSearchedRecordsLocally($.TABLE, e.value);
+	//if (Titanium.Network.networkType !== Titanium.Network.NETWORK_WIFI ) {
+		var result = ENTITY_MODEL.getSearchedRecordsLocally($.TABLE, $.entityfield.value, $.handleLocalData);
 
-	} else {
-		var result = HIERARCHY_MODEL.getSearchedRecords($.TABLE, e.value, _url, $.handleData);
-	}
+	//} else {
+	//	var result = ENTITY_MODEL.getSearchedRecords($.TABLE, e.value, _url, $.handleData);
+	//}
 	return result; 
 
 

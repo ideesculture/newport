@@ -59,6 +59,10 @@
 			"urlForEntitySearch" : {
 				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_entities?q=<your_query>*&source={\"bundles\": { \"ca_entities.type_id\":{}}}",
 				"cache":"86400"
+			},
+			"urlForEntityInfos" : {
+				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_entities?q=*&source={\"bundles\": { \"created\": {\"returnAsArray\":true},\"ca_entities.type_id\":{}}}",
+				"cache":"86400"
 			}
 
 		},
