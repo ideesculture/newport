@@ -130,12 +130,12 @@ function Model() {
 		        		var request = "INSERT INTO " + ca_table + " (id, ca_table, entity_id, idno, display_label, type_id, created) VALUES (NULL, ?, ?, ?, ?, ?, ?);";
 						db.execute(request, ca_table, record["entity_id"], record["id"], record["display_label"], record["ca_entities.type_id"], record["created"]["timestamp"]);
 
-						Ti.API.log("debug","#tuguduuu entity in da base: ");
-						Ti.API.log("debug", record["entity_id"]);
-						Ti.API.log("debug", record["id"]);
-						Ti.API.log("debug", record["display_label"]);
-						Ti.API.log("debug", record["ca_entities.type_id"]);
-						Ti.API.log("debug", record["created"]["timestamp"]);
+						//Ti.API.log("debug","#tuguduuu entity in da base: " + record["display_label"] );
+						//Ti.API.log("debug", record["entity_id"]);
+						//Ti.API.log("debug", record["id"]);
+						//Ti.API.log("debug", record["display_label"]);
+						//Ti.API.log("debug", record["ca_entities.type_id"]);
+						//Ti.API.log("debug", record["created"]["timestamp"]);
 		
 
 		        		last = prop2;

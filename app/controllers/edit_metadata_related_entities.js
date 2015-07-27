@@ -166,32 +166,35 @@ $.handleLocalData = function(_data) {
 	// If we have data to display...
 	if( typeof _data == 'object'){
 		APP.log("debug", 'if is won ! !');
-		var max = 0, entity_nb;
-	/*	if(_data.length> max_results){
+		var max = 0, entity_nb = 0, i=0;
+
+		for(entity_nb in _data)	i++;
+		APP.log("debug", i + " lines ...");
+		if(i > max_results){
 			max = max_results;
 		}
 		else {
-			max = _data.length;
+			max = i;
 		}
-		 
-		for (entity_nb = 0; entity_nb < max;  entity_nb ++ ) {*/
-		for(entity_nb in _data){
-			//APP.log("debug", "resultat "+ entity_nb);
-			APP.log("debug", _data[entity_nb]);
+		entity_nb = 1;
+		for (entity_nb = 1; entity_nb <= max;  entity_nb ++ ) {
+		//for(entity_nb in _data){
+			APP.log("debug", "resultat "+ entity_nb);
+			//APP.log("debug", _data[entity_nb]);
 			table.push(createRow(_data[entity_nb]));
 		}
 		$.entitiesResearchResults.setData(table);
 		$.entitiesResearchResultsContainer.show();
 		$.entitiesResearchResults.show();
 
-		if( max < _data.length){
+		if( max < i ){  // max = max_results < i
 			$.moreResultsButton.show();
 
 			if(!clickWasOnceDone){
 				clickwasOnceDone = true; 
 				$.moreResultsButton.addEventListener("click", function(_event) {
-						max_results = _data.length; 
-						$.handleData(_data); 
+						max_results = i; 
+						$.handleLocalData(_data); 
 				});
 			}
 		}
