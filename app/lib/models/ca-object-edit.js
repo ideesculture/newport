@@ -447,6 +447,26 @@ function Model() {
 					//WE HAVE TO DO SMTG BETTER 
 					//AND INTRINSIC FIELDS!!!
 					if (attribut == "preferred_labels"){
+						//managing to delete only the 'preferred_labels'
+						//1) get the secondary labels of the object - not needed for aspi, for there are no secondary labels
+						/*Asks the web? or search in the local db (edit_base) and parse the json? 
+						//first test: printing the json (looking for "secondary labels" )
+						var db = Ti.Database.open(DBNAME);
+						db.execute("BEGIN TRANSACTION;");
+						//removing previous temp values
+						var request = "SELECT json FROM ca_objects_edit_base WHERE object_id = ?;";
+						var data_json = db.execute(request, id);
+						db.execute("END TRANSACTION;");
+						APP.log("debug", "json stored in edit_base :::");
+						APP.log("debug", data_json);
+						data_json.close();
+						db.close();*/
+						//2) add the 'remove_all_labels' option to the json
+						json.remove_all_labels = true;
+
+						//3) add the secondary labels of the object to the json - not needed for aspi, for there are no secondary labels
+
+						//4) add the new value for preferred_labels
 						//needs a different json!!!
 						tempobj ={};
 						tempobj["locale"]= "en_US"; 

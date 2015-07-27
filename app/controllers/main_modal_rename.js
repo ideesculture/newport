@@ -23,7 +23,7 @@ $.init = function() {
 			if (Titanium.Network.networkType == Titanium.Network.NETWORK_WIFI )
 			{
 				OBJECT_EDIT.sendDataToServer();
-
+				CONFIG.container.close();
 			}
 			//or keeps the data in the local table
 			else
@@ -35,7 +35,10 @@ $.init = function() {
 				});
 				dialog.show();
 			}
+			
+
 		} else alert ("echec");
+		CONFIG.container.close();
  	}); 
 };
 
