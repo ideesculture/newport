@@ -42,4 +42,8 @@ $.init = function() {
  	}); 
 };
 
+$.backgroundView.addEventListener('click', function () {
+	    CONFIG.container.close();
+});
+
 $.init(); 

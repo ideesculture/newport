@@ -28,21 +28,22 @@ $.recursive = function(originalTable, newTable, parent_id, currentKey, margin){
 		//APP.log("debug", "location_id: " + originalTable[row].location_id);
 		if(originalTable[row].parent_id == parent_id){
 			//alert("loop"); 
-			//APP.log("debug", "adding line: ");
-			//APP.log("debug", currentKey);
-			//APP.log("debug", originalTable[row].display_label );
+			APP.log("debug", "adding line: ");
+			APP.log("debug", currentKey);
+			APP.log("debug", originalTable[row].display_label );
 			tempObj.display_label = originalTable[row].display_label; 
 			tempObj.margin = margin; 
-			newTable[currentKey] = tempObj; 
+			tempObj.location_id = originalTable[row].location_id; 
+			tempObj.type_id = originalTable[row]["ca_storage_locations.type_id"];
+			//newTable[currentKey] = tempObj; 
+			newTable.push(tempObj); 
 			tempObj = {}; 
 			currentKey ++; 
 
 			//originalTable[row].parent_id = -1; 
            // APP.log("debug",newTable);
-			$.recursive(originalTable, newTable, originalTable[row].location_id, currentKey, (margin+20));
-		}
-		else {
-			//APP.log("debug", 'non'); 
+			$.recursive(originalTable, newTable, originalTable[row].location_id, currentKey, (margin+30));
+
 		}
 	}
 }
@@ -77,15 +78,18 @@ $.init = function() {
 		if( typeof _data == 'object'){
 
 			var tableToDisplay = $.ordersData(_data);
-			APP.log("debug", "tableToDisplay: : :");
-			APP.log("debug", tableToDisplay);
+			//APP.log("debug", "tableToDisplay: : :");
+			//APP.log("debug", tableToDisplay);
 			//var i = 10; 
 			for(storage_loc_nb in tableToDisplay){
 
 			    tvr = Ti.UI.createTableViewRow({
 			       // title : title, 
 			        //backgroundColor: 'yellow',
-			        layout: 'horizontal'//, 
+			        layout: 'horizontal', 
+			        location_id: tableToDisplay[storage_loc_nb].location_id,
+			        type_id: tableToDisplay[storage_loc_nb].type_id,
+			        display_label:tableToDisplay[storage_loc_nb].display_label
 			       //left: i
 			    });
 
@@ -111,7 +115,24 @@ $.init = function() {
 				tvr.add(label1);
 
 			    tvr.addEventListener('click', function() {
-					alert(this.backgroundColor); 
+					//here do something
+					//dialog: 'move object to storage location blabla?  move / cancel'
+					var dialog = Ti.UI.createAlertDialog({
+					    cancel: 1,
+					    buttonNames: ['Move', 'Cancel'],
+					    message: 'Move object to storage location "' + this.display_label + '" ? ',
+					    title: 'Move object'
+					});
+					dialog.addEventListener('click', function(e){
+						if (e.index === e.source.cancel){
+							// Cancel
+							Ti.API.info('The cancel button was clicked');
+						} else {
+							alert("move object");
+						} 
+					});
+					dialog.show();
+
 				});
 
 				table.push(tvr); 
@@ -139,7 +160,9 @@ $.init = function() {
 	}
 };
 
-
+$.backgroundView.addEventListener('click', function () {
+	    CONFIG.container.close();
+});
 
 
 
