@@ -13,6 +13,9 @@ $.TABLE = "ca_objects";
 
 $.init = function() {
 	// Initiating edit model for object
+
+	APP.log("debug", "main modal rename");
+	APP.log("debug", CONFIG.obj_data);
 	OBJECT_EDIT.init($.TABLE, CONFIG.obj_data.object_id);
 	$.saveButton.addEventListener('click', function () {
 		//moves the modifications to _edit_temp_insert table
