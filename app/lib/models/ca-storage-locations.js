@@ -126,7 +126,7 @@ function Model() {
 		    	if(prop != "ok") {
 		        	for (var prop2 in _data2) {
 						var record = _data2[prop2];
-		        		Ti.API.log("debug", record);
+		        		//Ti.API.log("debug", record);
 		        		
 		        		var request = "INSERT INTO " + _ca_table + " (id, ca_table, location_id, parent_id, idno, display_label, type_id, created) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);";
 						db.execute(request, _ca_table, record["location_id"], record["parent_id"], record["idno"], record["display_label"], record["ca_storage_locations.type_id"], record["created"]["timestamp"]);

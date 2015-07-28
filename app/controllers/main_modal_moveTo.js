@@ -53,8 +53,28 @@ $.ordersData = function(_data){
 }
 $.moveObject = function(id, type_id){
 	APP.log("debug", "move");
-	APP.log("debug", id);
-	APP.log("debug", type_id);
+	var itWorked = OBJECT_EDIT.saveSpecificChanges("ca_storage_locations", id, 1, 0, "ca_storage_locations", type_id);
+	if(itWorked) {
+		//sends the modifs to server and erases them from _edit_temp_insert table
+		if (Titanium.Network.networkType == Titanium.Network.NETWORK_WIFI )
+		{
+			OBJECT_EDIT.sendDataToServer();
+			CONFIG.container.close();
+		}
+		//or keeps the data in the local table
+		else
+		{
+			var dialog = Ti.UI.createAlertDialog({
+				title: 'No signal',
+			    message: 'Your item will be uploaded as soon a wi-fi will be available',
+			    ok: 'OK'
+			});
+			dialog.show();
+		}
+		
+
+	} else alert ("echec");
+	CONFIG.container.close();
 }
 
 $.init = function() {
@@ -132,7 +152,7 @@ $.init = function() {
 							// Cancel
 							Ti.API.info('The cancel button was clicked');
 						} else {
-							alert("move object : " + tvr.location_id);
+							//alert("move object : " + tvr.location_id);
 							$.moveObject(tvr.location_id, tvr.type_id);
 						} 
 					});
