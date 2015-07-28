@@ -31,7 +31,9 @@ function Model() {
 		var db = Ti.Database.open(DBNAME);
 
 		//ONLY FOR DEBUG
-		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, object_id INTEGER, parent_id INTEGER, idno TEXT, display_label TEXT, date TEXT, created TEXT);";
+		db.execute("DROP TABLE IF EXISTS " + _ca_table + " ;");
+		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, location_id INTEGER, parent_id INTEGER, idno TEXT, display_label TEXT, date TEXT, created TEXT);";
+		db.execute(request); 
 		db.close();
 	};
 
@@ -126,8 +128,8 @@ function Model() {
 						var record = _data2[prop2];
 		        		Ti.API.log("debug", record);
 		        		
-		        		var request = "INSERT INTO " + _ca_table + " (id, ca_table, object_id, parent_id, idno, display_label, created) VALUES (NULL, ?, ?, ?, ?, ?, ?);";
-						db.execute(request, _ca_table, record["object_id"], record["parent_id"], record["idno"], record["display_label"], record["created"]["timestamp"]);
+		        		var request = "INSERT INTO " + _ca_table + " (id, ca_table, location_id, parent_id, idno, display_label, created) VALUES (NULL, ?, ?, ?, ?, ?, ?);";
+						db.execute(request, _ca_table, record["location_id"], record["parent_id"], record["idno"], record["display_label"], record["created"]["timestamp"]);
 
 						//Ti.API.log("debug","#tuguduuu : "+this);
 		
@@ -160,8 +162,8 @@ function Model() {
 		//APP.log("debug", "CA-HIERARCHY.nbLines");
 
 		var db = Ti.Database.open(DBNAME),
-			//request = "select ca_table, object_id, parent_id, idno, display_label, date, created from ca_models where ca_table like '"+_ca_table,
-			request = "select count(object_id) as nb from "+_ca_table+" where ca_table like '"+_ca_table+"' group by 1",
+			//request = "select ca_table, location_id, parent_id, idno, display_label, date, created from ca_models where ca_table like '"+_ca_table,
+			request = "select count(location_id) as nb from "+_ca_table+" where ca_table like '"+_ca_table+"' group by 1",
 			temp = [];
 		var data = db.execute(request);
 		var result = data.getRowCount();
@@ -175,8 +177,8 @@ function Model() {
 	//	APP.log("debug", "CA-HIERARCHY.getLastRecords");
 
 		var db = Ti.Database.open(DBNAME),
-			//request = "select ca_table, object_id, parent_id, idno, display_label, date, created from ca_models where ca_table like '"+_ca_table,
-			request = "select cao4.object_id as id4, cao4.display_label as label4, cao3.object_id as id3, cao3.display_label as label3, cao2.object_id as id2, cao2.display_label as label2, cao1.object_id as id1, cao1.display_label as label1, cao1.created from "+_ca_table+" as cao1 left join "+_ca_table+" as cao2 on cao2.object_id=cao1.parent_id left join "+_ca_table+" as cao3 on cao3.object_id=cao2.parent_id left join "+_ca_table+" as cao4 on cao4.object_id=cao3.parent_id order by cao1.created desc limit 4",
+			//request = "select ca_table, location_id, parent_id, idno, display_label, date, created from ca_models where ca_table like '"+_ca_table,
+			request = "select cao4.location_id as id4, cao4.display_label as label4, cao3.location_id as id3, cao3.display_label as label3, cao2.location_id as id2, cao2.display_label as label2, cao1.location_id as id1, cao1.display_label as label1, cao1.created from "+_ca_table+" as cao1 left join "+_ca_table+" as cao2 on cao2.location_id=cao1.parent_id left join "+_ca_table+" as cao3 on cao3.location_id=cao2.parent_id left join "+_ca_table+" as cao4 on cao4.location_id=cao3.parent_id order by cao1.created desc limit 4",
 			temp = {};
 		var data = db.execute(request);
 		var fieldnumber = 0, linenumber = 1;
@@ -206,7 +208,7 @@ function Model() {
 		var db = Ti.Database.open(DBNAME), temp = {};
 		var parent_criteria = "is NULL";
 		if (id) parent_criteria = "="+id;
-		var request = "select cao1.object_id, cao1.display_label, count(cao2.object_id) as contains from "+_ca_table+" as cao1 left join "+_ca_table+" as cao2 on cao1.object_id=cao2.parent_id where cao1.parent_id "+parent_criteria+" group by cao1.object_id having contains > 0 order by cao1.display_label ";
+		var request = "select cao1.location_id, cao1.display_label, count(cao2.location_id) as contains from "+_ca_table+" as cao1 left join "+_ca_table+" as cao2 on cao1.location_id=cao2.parent_id where cao1.parent_id "+parent_criteria+" group by cao1.location_id having contains > 0 order by cao1.display_label ";
 		var data = db.execute(request);
 		var fieldnumber = 0, linenumber = 1;
 
@@ -231,7 +233,7 @@ function Model() {
 		var db = Ti.Database.open(DBNAME), temp = {};
 		var parent_criteria = "is NULL";
 		if (id) parent_criteria = "="+id;
-		var request = "select cao1.object_id, cao1.display_label, cao1.idno, cao1.info1 , cao1.info2 from "+_ca_table+" as cao1 left join "+_ca_table+" as cao2 on cao1.object_id=cao2.parent_id where cao1.parent_id "+parent_criteria+" and cao2.object_id is null order by cao1.display_label";
+		var request = "select cao1.location_id, cao1.display_label, cao1.idno, cao1.info1 , cao1.info2 from "+_ca_table+" as cao1 left join "+_ca_table+" as cao2 on cao1.location_id=cao2.parent_id where cao1.parent_id "+parent_criteria+" and cao2.location_id is null order by cao1.display_label";
 		var data = db.execute(request);
 		var fieldnumber = 0, linenumber = 1;
 
@@ -266,7 +268,8 @@ function Model() {
 		
 		var db = Ti.Database.open(DBNAME);
 
-		var request = "SELECT idno, object_id, display_label FROM "+_ca_table+" WHERE display_label LIKE '"+_text+"%' ;";
+		var request = "SELECT id, ca_table, location_id, parent_id, idno, display_label FROM "+_ca_table+" WHERE display_label LIKE '"+_text+"%' ;";
+
 		var data = db.execute(request);
 		var fieldnumber = 0, linenumber = 1;
 
@@ -285,6 +288,7 @@ function Model() {
 		data.close();
 		db.close();
 		return this.temp;
+
 	};
 
 	///////////////////////////////////////////////////////////
