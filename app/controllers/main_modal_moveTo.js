@@ -33,15 +33,41 @@ $.init = function() {
 
 		var storage_loc_nb, title, tvr, table = []; 
 		if( typeof _data == 'object'){
+			var i = 10; 
 			for(storage_loc_nb in _data){
 				title = _data[storage_loc_nb].display_label ;
 			    tvr = Ti.UI.createTableViewRow({
-			        title : title
+			       // title : title, 
+			        backgroundColor: 'yellow',
+			        layout: 'horizontal', 
+			        left: i
 			    });
+			    var margin = Titanium.UI.createView({
+			        width: i,
+			        height: 50,  
+			        layout: 'vertical',
+			        backgroundColor: "blue"
+			    });
+			    tvr.add(margin); 
+
+			    var label1 = Ti.UI.createLabel({
+				  color: 'black',
+				  backgroundColor: 'white',
+				  font: { fontSize: 18 },
+				  text: title,
+				  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+				  top: 15,
+				  left: 5, 
+				  width: Ti.UI.SIZE, 
+				  height: Ti.UI.SIZE
+				});
+				tvr.add(label1);
+
 			    tvr.addEventListener('click', function() {
-					alert(this.title); 
+					alert(this.left); 
 				});
 				table.push(tvr); 
+				i += 10; 
 			}
 			$.storageLocationsTable.setData(table);
 		}
