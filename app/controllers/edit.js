@@ -315,6 +315,8 @@ $.uiHandleData = function(_data) {
 								else {
 									APP.log("debug", CONFIG.elements[CONFIG.elements.indexOf(attribute)]);
 									APP.log("debug", "attribute found");
+
+									//problem here: values always empty?!?
 									var values = $.EMPTY_BUNDLE;
 
 									var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
@@ -329,52 +331,69 @@ $.uiHandleData = function(_data) {
 									rows.push(row);
 								}
 							}
-							else
-							{
-								APP.log("debug", "CONFIG.elements is not an array !");
-							}
 						}
 					}
 					else {
-						if (bundle_code == "ca_object_representations") {
-							var obj_data = {};
-							obj_data.bundle_code = bundle_code ;
+						switch(bundle_code){
+							case "ca_object_representations":
+								var obj_data = {};
+								obj_data.bundle_code = bundle_code ;
 
-							if(CONFIG.obj_data.image_file){
-								obj_data.image_file = CONFIG.obj_data.image_file ;
-							}
-							var row = Alloy.createController("edit_media_photo", obj_data ).getView();
-							rows.push(row);
+								if(CONFIG.obj_data.image_file){
+									obj_data.image_file = CONFIG.obj_data.image_file ;
+								}
+								var row = Alloy.createController("edit_media_photo", obj_data ).getView();
+								rows.push(row);
+								break; 
 
-						}
-						if (bundle_code == "ca_entities") {
-							var values = $.EMPTY_BUNDLE;
-							var temp_objet = {};
-							temp_objet["datatype"] = "Entities";
-							temp_objet["display_label"] = "related entity";
-							temp_objet["element_code"] = bundle_code ;
-							var temp_objet2 = {};
-							temp_objet2[bundle_code] = temp_objet;
-							var element_data = { "elements_in_set" : temp_objet2 , "name" : "related entities" };
+							case "ca_entities":
+								var values = $.EMPTY_BUNDLE;
+								var temp_objet = {};
+								temp_objet["datatype"] = "Entities";
+								temp_objet["display_label"] = "related entity";
+								temp_objet["element_code"] = bundle_code ;
+								var temp_objet2 = {};
+								temp_objet2[bundle_code] = temp_objet;
+								var element_data = { "elements_in_set" : temp_objet2 , "name" : "related entities" };
 
+								var row = Alloy.createController("edit_metadata_bundle", {
+									bundle_code:bundle_code,
+									content:element_data,
+									values:values,
+									newport_id:{0:i}
+								}).getView();
+								rows.push(row);
+								break; 
 
-							var row = Alloy.createController("edit_metadata_bundle", {
-								bundle_code:bundle_code,
-								content:element_data,
-								values:values,
-								newport_id:{0:i}
-							}).getView();
-							rows.push(row);
-						}
-						else {
-							APP.log("debug", "NON SUPPORTE: ");
-							APP.log("debug", bundle_code);
-						}
-					}
-				};
+							case "ca_storage_locations":
+								var values = $.EMPTY_BUNDLE;
+								var temp_objet = {};
+								temp_objet["datatype"] = "StorageLocations";
+								temp_objet["display_label"] = "related storage location";
+								temp_objet["element_code"] = bundle_code ;
+								var temp_objet2 = {};
+								temp_objet2[bundle_code] = temp_objet;
+								var element_data = { "elements_in_set" : temp_objet2 , "name" : "related storage locations" };
+
+								var row = Alloy.createController("edit_metadata_bundle", {
+									bundle_code:bundle_code,
+									content:element_data,
+									values:values,
+									newport_id:{0:i}
+								}).getView();
+								rows.push(row);
+								break; 
+
+							default: 
+								APP.log("debug", "NON SUPPORTE: ");
+								APP.log("debug", bundle_code);
+								break; 
+						}//END SWITCH
+					}//END ELSE (if bundle_code.substring= attribute, else switch)
+				};//END IF i<50
 				i++;
-			};
-		}
+			};//END For bundles in screen content
+		}//END if typeof data != undefined
 		else {
 			APP.log("debug", "typeof _data.content = undefined");
 		}

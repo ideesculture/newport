@@ -1,21 +1,21 @@
 
 
-
 var APP = require("core");
 var UTIL = require("utilities");
 var DATE = require("alloy/moment");
 var BUFFER = require("ca-editbuffer");
 var HTTP = require("http");
-//var HIERARCHY_MODEL = require("models/ca-objects-hierarchy")();
-var STORAGE_LOCATIONS_MODEL = require("models/ca-storage-locations")();
-var OBJECT_EDIT = require("models/ca-object-edit")();
 var COMMONS = require("ca-commons");
+var STORAGE_LOCATIONS_MODEL = require("models/ca-storage-locations")();
+
 
 var CONFIG = arguments[0];
 var value ="";
-
-
 $.TABLE = "ca_storage_locations";
+
+
+///////////////////////////////////////// UTILITAIRES ////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //recursive function: parse unorganized data, gives back a table with info ready to be displayed
 $.recursive = function(originalTable, newTable, parent_id, currentKey, margin){
@@ -51,31 +51,9 @@ $.ordersData = function(_data){
 	$.recursive(_data, cleanTable, parent_id, currentKey, margin);
 	return cleanTable; 
 }
-$.moveObject = function(id, type_id){
-	APP.log("debug", "move");
-	var itWorked = OBJECT_EDIT.saveSpecificChanges("ca_storage_locations", id, 1, 0, "ca_storage_locations", type_id);
-	if(itWorked) {
-		//sends the modifs to server and erases them from _edit_temp_insert table
-		if (Titanium.Network.networkType == Titanium.Network.NETWORK_WIFI )
-		{
-			OBJECT_EDIT.sendDataToServer();
-			CONFIG.container.close();
-		}
-		//or keeps the data in the local table
-		else
-		{
-			var dialog = Ti.UI.createAlertDialog({
-				title: 'No signal',
-			    message: 'Your item will be uploaded as soon a wi-fi will be available',
-			    ok: 'OK'
-			});
-			dialog.show();
-		}
-		
 
-	} else alert ("echec");
-	CONFIG.container.close();
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $.init = function() {
 
@@ -83,14 +61,13 @@ $.init = function() {
 	STORAGE_LOCATIONS_MODEL.init($.TABLE);
 	STORAGE_LOCATIONS_MODEL.clear($.TABLE);
 
-	//starting model for objects - for saving new relation. 
-	OBJECT_EDIT.init("ca_objects", CONFIG.obj_data.object_id);
-
 	//setting parameters for storage-location FETCH
 	APP.ca_login="administrator";
 	APP.ca_password="admin";
 	APP.authString = 'Basic ' +Titanium.Utils.base64encode(APP.ca_login+':'+APP.ca_password);
 	CONFIG.url = APP.Settings.CollectiveAccess.urlForStorageLocations.url;
+
+
 
 	//this function is called after storage-location-model "fetch". It prints the hierarchy in a table and waits for a click. 
 	var handleData = function () {
@@ -102,9 +79,6 @@ $.init = function() {
 		if( typeof _data == 'object'){
 
 			var tableToDisplay = $.ordersData(_data);
-			//APP.log("debug", "tableToDisplay: : :");
-			//APP.log("debug", tableToDisplay);
-			//var i = 10; 
 			for(storage_loc_nb in tableToDisplay){
 
 			    tvr = Ti.UI.createTableViewRow({
@@ -138,29 +112,11 @@ $.init = function() {
 				});
 				tvr.add(label1);
 
-			    tvr.addEventListener('click', function() {
-					//here do something
-					//dialog: 'move object to storage location blabla?  move / cancel'
-					var dialog = Ti.UI.createAlertDialog({
-					    cancel: 1,
-					    buttonNames: ['Move', 'Cancel'],
-					    location_id: this.location_id, 
-					    type_id: this.type_id,
-					    message: 'Move object to storage location "' + this.display_label + '" ? ',
-					    title: 'Move object'
-					});
-					dialog.addEventListener('click', function(e){
-						if (e.index === e.source.cancel){
-							// Cancel
-							Ti.API.info('The cancel button was clicked');
-						} else {
-							//alert("move object : " + tvr.location_id);
-							//problem HERE.
-							$.moveObject(this.location_id, this.type_id);
-						} 
-					});
-					dialog.show();
-
+				tvr.addEventListener('click', function() {
+					//alert(this.display_label);
+					$.value.text=this.display_label;
+					$.value.visible = true; 
+					//$.tablecontainerView.visible = false; 
 				});
 
 				table.push(tvr); 
@@ -168,6 +124,7 @@ $.init = function() {
 			$.storageLocationsTable.setData(table);
 		}
 	}
+
 
 
 	//fetch: brings back storage locations data from the server and fills the ca-storage-locations table.
@@ -187,11 +144,6 @@ $.init = function() {
 		});
 	}
 };
-
-$.backgroundView.addEventListener('click', function () {
-	    CONFIG.container.close();
-});
-
 
 
 $.init();

@@ -32,7 +32,6 @@ $.init = function() {
 		$.backgroundView.setTop('67');
 	}
 
-
 	$.someLabel.text="Objet : "+CONFIG.obj_data.display_label;
 
 	$.backgroundView.addEventListener('click', function () {
