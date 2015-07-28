@@ -6,8 +6,9 @@ var UTIL = require("utilities");
 var DATE = require("alloy/moment");
 var BUFFER = require("ca-editbuffer");
 var HTTP = require("http");
-var HIERARCHY_MODEL = require("models/ca-objects-hierarchy")();
+//var HIERARCHY_MODEL = require("models/ca-objects-hierarchy")();
 var STORAGE_LOCATIONS_MODEL = require("models/ca-storage-locations")();
+var OBJECT_EDIT = require("models/ca-object-edit")();
 var COMMONS = require("ca-commons");
 
 var CONFIG = arguments[0];
@@ -16,25 +17,17 @@ var value ="";
 
 $.TABLE = "ca_storage_locations";
 
-
+//recursive function: parse unorganized data, gives back a table with info ready to be displayed
 $.recursive = function(originalTable, newTable, parent_id, currentKey, margin){
 	//APP.log("debug", "recursive");
 	var tempObj = {}; 
-	//APP.log("debug", "current Key " + currentKey);
 
 	for(var row in originalTable){
-		
-		//APP.log("debug", "parent id: " + originalTable[row].parent_id);
-		//APP.log("debug", "location_id: " + originalTable[row].location_id);
 		if(originalTable[row].parent_id == parent_id){
-			//alert("loop"); 
-			APP.log("debug", "adding line: ");
-			APP.log("debug", currentKey);
-			APP.log("debug", originalTable[row].display_label );
 			tempObj.display_label = originalTable[row].display_label; 
 			tempObj.margin = margin; 
 			tempObj.location_id = originalTable[row].location_id; 
-			tempObj.type_id = originalTable[row]["ca_storage_locations.type_id"];
+			tempObj.type_id = originalTable[row].type_id;
 			//newTable[currentKey] = tempObj; 
 			newTable.push(tempObj); 
 			tempObj = {}; 
@@ -47,7 +40,7 @@ $.recursive = function(originalTable, newTable, parent_id, currentKey, margin){
 		}
 	}
 }
-
+//creates the table, calls "recursive" which fills it with the right data, gives it back to handleData which populates the list of storage locations
 $.ordersData = function(_data){
 	//APP.log("debug", "ordersData");
 	//APP.log("debug", _data);
@@ -58,17 +51,28 @@ $.ordersData = function(_data){
 	$.recursive(_data, cleanTable, parent_id, currentKey, margin);
 	return cleanTable; 
 }
+$.moveObject = function(id, type_id){
+	APP.log("debug", "move");
+	APP.log("debug", id);
+	APP.log("debug", type_id);
+}
 
 $.init = function() {
 
+	//starting model for storage locations
 	STORAGE_LOCATIONS_MODEL.init($.TABLE);
 	STORAGE_LOCATIONS_MODEL.clear($.TABLE);
 
+	//starting model for objects
+	OBJECT_EDIT.init("ca_objects", CONFIG.obj_data.object_id);
+
+	//setting parameters for storage-location FETCH
 	APP.ca_login="administrator";
 	APP.ca_password="admin";
 	APP.authString = 'Basic ' +Titanium.Utils.base64encode(APP.ca_login+':'+APP.ca_password);
 	CONFIG.url = APP.Settings.CollectiveAccess.urlForStorageLocations.url;
 
+	//this function is called after storage-location-model "fetch". It prints the hierarchy in a table and waits for a click. 
 	var handleData = function () {
 
 		var _data = STORAGE_LOCATIONS_MODEL.getSearchedRecordsLocally($.TABLE , "");
@@ -128,7 +132,8 @@ $.init = function() {
 							// Cancel
 							Ti.API.info('The cancel button was clicked');
 						} else {
-							alert("move object");
+							alert("move object : " + tvr.location_id);
+							$.moveObject(tvr.location_id, tvr.type_id);
 						} 
 					});
 					dialog.show();
@@ -143,6 +148,7 @@ $.init = function() {
 	}
 
 
+	//fetch: brings back storage locations data from the server and fills the ca-storage-locations table.
 	if(!COMMONS.isCacheValid(CONFIG.url,CONFIG.validity)) {
 		STORAGE_LOCATIONS_MODEL.fetch({
 			url: CONFIG.url,

@@ -32,7 +32,7 @@ function Model() {
 
 		//ONLY FOR DEBUG
 		db.execute("DROP TABLE IF EXISTS " + _ca_table + " ;");
-		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, location_id INTEGER, parent_id INTEGER, idno TEXT, display_label TEXT, date TEXT, created TEXT);";
+		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, location_id INTEGER, parent_id INTEGER, idno TEXT, display_label TEXT, date TEXT, type_id INTEGER, created TEXT);";
 		db.execute(request); 
 		db.close();
 	};
@@ -128,8 +128,8 @@ function Model() {
 						var record = _data2[prop2];
 		        		Ti.API.log("debug", record);
 		        		
-		        		var request = "INSERT INTO " + _ca_table + " (id, ca_table, location_id, parent_id, idno, display_label, created) VALUES (NULL, ?, ?, ?, ?, ?, ?);";
-						db.execute(request, _ca_table, record["location_id"], record["parent_id"], record["idno"], record["display_label"], record["created"]["timestamp"]);
+		        		var request = "INSERT INTO " + _ca_table + " (id, ca_table, location_id, parent_id, idno, display_label, type_id, created) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);";
+						db.execute(request, _ca_table, record["location_id"], record["parent_id"], record["idno"], record["display_label"], record["ca_storage_locations.type_id"], record["created"]["timestamp"]);
 
 						//Ti.API.log("debug","#tuguduuu : "+this);
 		
@@ -173,60 +173,6 @@ function Model() {
 		return result;
 	};
 
-	this.getLastRecords = function(_ca_table) {
-	//	APP.log("debug", "CA-HIERARCHY.getLastRecords");
-
-		var db = Ti.Database.open(DBNAME),
-			//request = "select ca_table, location_id, parent_id, idno, display_label, date, created from ca_models where ca_table like '"+_ca_table,
-			request = "select cao4.location_id as id4, cao4.display_label as label4, cao3.location_id as id3, cao3.display_label as label3, cao2.location_id as id2, cao2.display_label as label2, cao1.location_id as id1, cao1.display_label as label1, cao1.created from "+_ca_table+" as cao1 left join "+_ca_table+" as cao2 on cao2.location_id=cao1.parent_id left join "+_ca_table+" as cao3 on cao3.location_id=cao2.parent_id left join "+_ca_table+" as cao4 on cao4.location_id=cao3.parent_id order by cao1.created desc limit 4",
-			temp = {};
-		var data = db.execute(request);
-		var fieldnumber = 0, linenumber = 1;
-
-
-		while (data.isValidRow()) {
-			temp[linenumber] = {};
-			while (fieldnumber < data.getFieldCount()) {
-				temp[linenumber][data.fieldName(fieldnumber)] = data.field(fieldnumber);
-				fieldnumber++;
-			}
-			linenumber++;
-			fieldnumber = 0;
-			data.next();
-		}
-
-		data.close();
-		db.close();
-		//APP.log("debug", "LAST RECORDS :::");
-		//APP.log("debug", temp);
-		return temp;
-		
-	}
-
-	this.getChildrenFoldersInside = function(_ca_table, id) {
-	//	APP.log("debug", "CA-HIERARCHY.getChildrenFoldersInside");
-		var db = Ti.Database.open(DBNAME), temp = {};
-		var parent_criteria = "is NULL";
-		if (id) parent_criteria = "="+id;
-		var request = "select cao1.location_id, cao1.display_label, count(cao2.location_id) as contains from "+_ca_table+" as cao1 left join "+_ca_table+" as cao2 on cao1.location_id=cao2.parent_id where cao1.parent_id "+parent_criteria+" group by cao1.location_id having contains > 0 order by cao1.display_label ";
-		var data = db.execute(request);
-		var fieldnumber = 0, linenumber = 1;
-
-		while (data.isValidRow()) {
-			temp[linenumber] = {};
-			while (fieldnumber < data.getFieldCount()) {
-				temp[linenumber][data.fieldName(fieldnumber)] = data.field(fieldnumber);
-				fieldnumber++;
-			}
-			linenumber++;
-			fieldnumber = 0;
-			data.next();
-		}
-
-		data.close();
-		db.close();
-		return temp;
-	}
 
 	this.getObjectsInside = function(_ca_table, id) {
 	//	APP.log("debug", "CA-HIERARCHY.getObjectsInside");
@@ -268,7 +214,7 @@ function Model() {
 		
 		var db = Ti.Database.open(DBNAME);
 
-		var request = "SELECT id, ca_table, location_id, parent_id, idno, display_label FROM "+_ca_table+" WHERE display_label LIKE '"+_text+"%' ;";
+		var request = "SELECT id, ca_table, location_id, parent_id, idno, display_label, type_id FROM "+_ca_table+" WHERE display_label LIKE '"+_text+"%' ;";
 
 		var data = db.execute(request);
 		var fieldnumber = 0, linenumber = 1;
@@ -291,41 +237,7 @@ function Model() {
 
 	};
 
-	///////////////////////////////////////////////////////////
-	//search remotely 
-	///////////////////////////////////////////////////////////
 
-	this.getSearchedRecords = function(_ca_table, _text, _url, _success_function) {
-		// do a search with the WS 
-
-		var error = function() {
-			var dialog = Ti.UI.createAlertDialog({
-			    message: 'HTTP request error, please retry',
-			    ok: 'OK',
-			    title: 'Error'
-			  }).show();
-		}
-/*
-		var handleData = function( _data){
-			APP.log("debug", "this.temp");
-			this.temp = _data["results"];
-			APP.log("debug", this.temp);
-			return this.temp; 
-		}			
-*/
-		HTTP.request({
-			timeout: 2000,
-			async: false,
-			headers: [{name: 'Authorization', value: APP.authString}],
-			type: "GET",
-			format: "JSON",
-			url: _url,
-			passthrough: null,
-			success: _success_function,
-			failure: error
-		});
-		
-	}
 
 }
 
