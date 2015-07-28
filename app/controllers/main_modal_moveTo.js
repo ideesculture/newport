@@ -144,6 +144,8 @@ $.init = function() {
 					var dialog = Ti.UI.createAlertDialog({
 					    cancel: 1,
 					    buttonNames: ['Move', 'Cancel'],
+					    location_id: this.location_id, 
+					    type_id: this.type_id,
 					    message: 'Move object to storage location "' + this.display_label + '" ? ',
 					    title: 'Move object'
 					});
@@ -153,7 +155,8 @@ $.init = function() {
 							Ti.API.info('The cancel button was clicked');
 						} else {
 							//alert("move object : " + tvr.location_id);
-							$.moveObject(tvr.location_id, tvr.type_id);
+							//problem HERE.
+							$.moveObject(this.location_id, this.type_id);
 						} 
 					});
 					dialog.show();
@@ -161,7 +164,6 @@ $.init = function() {
 				});
 
 				table.push(tvr); 
-				//i += 10; 
 			}
 			$.storageLocationsTable.setData(table);
 		}
