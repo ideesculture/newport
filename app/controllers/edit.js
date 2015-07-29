@@ -579,12 +579,11 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 	APP.log("debug", "DEBUG Ti.App.addEventListener");
 	//APP.log("debug", e.config);
 	var attribute = e.config.bundle_code.replace(/^ca_attribute_/,"");
-	APP.log("debug", attribute);
-	APP.log("debug", typeof $.RECORD.attributes);
+
 	if (typeof $.RECORD.attributes[attribute] != "undefined") {
 	//if (typeof $.RECORD.attributes != "undefined") {
 		APP.log("debug","We have a previous value");
-		APP.log("debug","MERGING !");
+	//	APP.log("debug","MERGING !");
 		var origin_values = $.RECORD.attributes[attribute];
 		//APP.log("debug",origin_values);
 		var new_values = origin_values;
@@ -596,17 +595,22 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 		APP.log("debug",new_values);
 		// Inserting into the temp table
 		OBJECT_EDIT.insertTempAddition(e.config.element, new_values);
+
 	} else {
 		APP.log("debug","No previous value");
 
+		//APP.log("debug",e); 
 		// Inserting into the temp table
 		var vals = {is_origin : 0, is_modified : 0, is_new : 1 };
-		APP.log("debug", e.config.element);
+
 		vals[e.config.element] = e.value;
 		vals.bundle = attribute;
 		//"related" entities/occus/places/... need a type id
 		if(e.config.content){
+			//APP.log("debug", "e.config.content");
+
 			if(e.config.content.type_id){
+				//APP.log("debug", "e.config.type_id!");
 				vals.type_id = e.config.content.type_id;
 			}
 		}
