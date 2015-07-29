@@ -295,6 +295,8 @@ $.uiHandleData = function(_data) {
 		//APP.log("debug", _data);
 		if (typeof _data.content != "undefined") {
 			//APP.log("debug", "not undefined!");
+			APP.log("debug", "$.RECORD.attributes: (looking for VALUES)");
+			APP.log("debug", $.RECORD.attributes); 
 			// If we have some content back
 			var screen_content = _data.content.screen_content;
 			for(var bundle in screen_content) {
@@ -314,10 +316,18 @@ $.uiHandleData = function(_data) {
 								}
 								else {
 									APP.log("debug", CONFIG.elements[CONFIG.elements.indexOf(attribute)]);
-									APP.log("debug", "attribute found");
-
-									//problem here: values always empty?!?
+									APP.log("debug", "attribute found in config.elements");
 									var values = $.EMPTY_BUNDLE;
+									if($.RECORD.attributes){
+										APP.log("debug", "$.RECORD.attributes OK")
+										if($.RECORD.attributes[attribute]){
+												APP.log("debug", "attribute found in $.RECORD");
+												APP.log("debug",$.RECORD.attributes[attribute] );
+												values = $.RECORD.attributes[attribute];
+												
+										}
+									} 
+									APP.log("debug", values);
 
 									var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
 									//alert(element_data);
