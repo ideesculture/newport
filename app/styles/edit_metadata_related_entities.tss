@@ -61,7 +61,7 @@
 	}
 },
 "#notes": {
-	left:10,
+	left:40,
 	color: 'black',
 	top:6,
 	height: 16,

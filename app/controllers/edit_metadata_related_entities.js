@@ -17,6 +17,11 @@ var CONFIG = arguments[0];
 var value ="";
 var max_results = 3; 
 var clickWasOnceDone = false; 
+var newEntityEventId; 
+var 	myModal = Ti.UI.createWindow({
+	    title           : 'My Modal',
+	    backgroundColor : 'transparent'
+	});
 
 $.TABLE = "ca_entities";
 
@@ -91,7 +96,6 @@ $.fire = function(_data) {
 	});
 
 }
-
 function createRow(data) {
 	var title = data.display_label ;
     var tvr = Ti.UI.createTableViewRow({
@@ -103,6 +107,24 @@ function createRow(data) {
 	});
  
     return tvr;
+}
+
+$.createNewEntity = function(){
+	$.notes.removeEventListener('click', $.listen);
+	//alert("hello"); 
+	var modal_info = {
+			display_label : $.entityfield.value,
+			container: myModal
+	}
+	var modal_view = Alloy.createController('edit_modal_entities',modal_info);
+    myModal.add(modal_view.getView());
+	myModal.open({
+    	animate : true
+	});
+}
+
+$.listen = function(){
+	$.createNewEntity();
 }
 
 $.handleData = function(_data) {
@@ -147,7 +169,8 @@ $.handleData = function(_data) {
 	else 
 	{ 
 		$.entitiesResearchResultsContainer.hide(); 
-		$.notes.text = "no results";
+		$.notes.text = "no results. Create " + $.entityfield.value + " ? ";
+		newEntityEventId = $.notes.addEventListener("click", $.listen );
 	}
 	APP.closeLoading();
 }
