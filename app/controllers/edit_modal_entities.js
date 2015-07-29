@@ -53,15 +53,19 @@ $.handleTypesData = function(_data){
 	        entity_data : entity_types[type]
 	    });
 	    tvr.addEventListener("click", function(_event) {
-	    	alert(this.title);
+	    	//alert(this.title);
 			ENTITY_DATA.type_info = {}; 
 			ENTITY_DATA.type_info = this.entity_data; 
+			this.backgroundColor = "blue";
 		});
 		data.push(tvr); 
 	}
 	$.typestable.setData(data);
 }
-
+$.success = function(){
+	alert("entité créée!");
+	CONFIG.container.close(); 
+}
 
 $.init = function() {
 	$.someLabel.text = "New entity: "; 
@@ -71,6 +75,10 @@ $.init = function() {
 	CONFIG.url = APP.Settings.CollectiveAccess.urlForEntityModel.url;
 	ENTITY_MODEL.init($.TABLE);
 	ENTITY_MODEL.getEntityTypes( CONFIG.url, $.handleTypesData);
+
+	$.saveButton.addEventListener("click", function(_event) {
+		ENTITY_MODEL.createsNewEntity( $.labelfield.value, ENTITY_DATA.type_info.item_id , $.success ); 
+	});
 };
 
 $.backgroundView.addEventListener('click', function () {

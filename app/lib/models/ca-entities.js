@@ -267,6 +267,55 @@ function Model() {
 		});
 	}
 
+	this.createsNewEntity = function(display_label, type_info, success_function ){
+		APP.log("debug", "newEntity ! ! !"); 
+
+		/******************************
+		sends the object's type and false id
+		*************************/
+		//1) builds the json:
+		//INTRINSIC FIELDS (id, type_id)
+		var json = {}, tempobj = {}, templabel = {}, temptab = [];
+		var timestamp = new Date().getTime();
+		tempobj.idno = "new_"+timestamp;
+		tempobj.type_id= type_info; 
+		json.intrinsic_fields = tempobj; 
+		//PREFERRED LABELS (locale, surname)
+		//To improve
+		templabel.locale = "en_US";
+		templabel.surname = display_label; 
+		temptab[0] = templabel;
+		json.preferred_labels = temptab; 
+
+		APP.log("debug", "json sent for entity creation:");
+		APP.log("debug", json);
+		
+		//2) sends the request
+		var ca_url = APP.Settings.CollectiveAccess.urlForEntitySave.url.replace("/id/ID","");
+		var errorNew = function() {
+			var dialog = Ti.UI.createAlertDialog({
+			    message: 'ERROR when creating the new object in DB',
+			    ok: 'OK',
+			    title: 'Error'
+			  }).show();
+			return false; 
+		}
+		
+		HTTP.request({
+			timeout: 2000,
+			async:false,
+			headers: [{name: 'Authorization', value: APP.authString}],
+			type: "PUT",
+			format: "JSON",
+			data: json,
+			url: ca_url,
+			passthrough: null,
+			success: success_function,
+			failure: errorNew
+		});
+
+	}
+
 }
 
 
