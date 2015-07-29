@@ -62,8 +62,24 @@ $.handleTypesData = function(_data){
 	}
 	$.typestable.setData(data);
 }
-$.success = function(){
-	alert("entité créée!");
+$.success = function(_data){
+	//Data only contains "ok: true" + entity_id
+	//alert("entité créée: " + _data.entity_id);
+	var laconfig = CONFIG.config; 
+	var tempObj = {};
+	tempObj.type_id = ENTITY_DATA.type_info.item_id;
+	laconfig.content = tempObj; 
+	//APP.log("debug", laconfig);
+	Ti.App.fireEvent('event_haschanged', {
+		name: 'grilloo',
+		config: laconfig,
+		value: _data.entity_id
+	});
+	Ti.App.fireEvent('entityCreated', {
+		name: 'lalala',
+		config: laconfig,
+		value: $.labelfield.value
+	});
 	CONFIG.container.close(); 
 }
 

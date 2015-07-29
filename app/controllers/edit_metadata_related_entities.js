@@ -113,12 +113,13 @@ $.createNewEntity = function(){
 	//alert("hello"); 
 	var modal_info = {
 			display_label : $.entityfield.value,
-			container: myModal
+			container: myModal, 
+			config: CONFIG
 	}
 	var modal_view = Alloy.createController('edit_modal_entities',modal_info);
     myModal.add(modal_view.getView());
 	myModal.open({
-    	animate : true
+    	animate : true, 
 	});
 }
 
@@ -246,6 +247,10 @@ $.search = function(e){
 
 };
 
+Ti.App.addEventListener('entityCreated', function(e) {
+	$.notes.text = "Entity created!";
+	$.entityfield.value = e.value; 
+});
 
 
 
