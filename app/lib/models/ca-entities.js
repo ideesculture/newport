@@ -33,7 +33,7 @@ function Model() {
 		//ONLY FOR DEBUG
 		db.execute("BEGIN TRANSACTION;");
 		db.execute("DROP TABLE IF EXISTS ca_entities ;");
-		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, entity_id INTEGER, idno TEXT, display_label TEXT, type_id INTEGER, created TEXT);";
+		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, entity_id INTEGER, idno TEXT, display_label TEXT, type_id INTEGER, created TEXT, json TEXT);";
 		db.execute(request);
 		db.execute("END TRANSACTION;");
 		db.close();

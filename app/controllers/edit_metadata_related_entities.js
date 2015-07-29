@@ -223,7 +223,8 @@ $.handleLocalData = function(_data) {
 	else 
 	{ 
 		$.entitiesResearchResultsContainer.hide(); 
-		$.notes.text = "no results";
+		$.notes.text = "no results. Create " + $.entityfield.value + " ? ";
+		newEntityEventId = $.notes.addEventListener("click", $.listen );
 	}
 	APP.closeLoading();
 }
