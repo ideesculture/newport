@@ -6,10 +6,10 @@
 			<View id="fieldsView">
 				
 				<TableView id="typestable">
-					<TableViewRow id="ind" title="Individual"/>
+					<!--<TableViewRow id="ind" title="Individual"/>
 					<TableViewRow id="org" title="Organization"/>
 					<TableViewRow id="church" title="Church"/>
-					<TableViewRow id="fakeyy" title="Another hardcoded type"/>
+					<TableViewRow id="fakeyy" title="Another hardcoded type"/>-->
 				</TableView>
 				<TextField id="labelfield"/>
 			</View>

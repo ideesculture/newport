@@ -78,18 +78,7 @@ $.modelRetrieveData = function(_force, _callback) {
 	});
 	
 };
-//dynamically generates the list of available object types
-$.modelRetrieveCallbackFunctions = function () {
-	var types = MODEL_MODEL.getObjectTypes(); 
-	//alert(types);
-	var data = [], title;
 
-	for(var rec_type in types) {
-		title = types[rec_type].display_label ;
-		data.push(createRow(types[rec_type]));
-	}
-	$.types_table.setData(data);
- }
 
 function createRow(data) {
 	var title = data.display_label ;
@@ -103,6 +92,19 @@ function createRow(data) {
  
     return tvr;
 }
+//dynamically generates the list of available object types
+$.modelRetrieveCallbackFunctions = function () {
+	var types = MODEL_MODEL.getObjectTypes(); 
+	//alert(types);
+	var data = [], title;
+
+	for(var rec_type in types) {
+		title = types[rec_type].display_label ;
+		data.push(createRow(types[rec_type]));
+	}
+	$.types_table.setData(data);
+ }
+
 
 
 // Kick off the init

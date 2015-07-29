@@ -227,14 +227,7 @@ function Model() {
 			    title: 'Error'
 			  }).show();
 		}
-/*
-		var handleData = function( _data){
-			APP.log("debug", "this.temp");
-			this.temp = _data["results"];
-			APP.log("debug", this.temp);
-			return this.temp; 
-		}			
-*/
+
 		HTTP.request({
 			timeout: 2000,
 			async: false,
@@ -248,8 +241,35 @@ function Model() {
 		});
 		
 	}
+	
+	//makes the request to get model information & calls handleTypesData
+	this.getEntityTypes = function(_url, _success_function){
+
+		var error = function() {
+			var dialog = Ti.UI.createAlertDialog({
+			    message: 'HTTP request error, please retry',
+			    ok: 'OK',
+			    title: 'Error'
+			  }).show();
+		}
+
+		HTTP.request({
+			timeout: 30000,
+			async:false,
+			headers: [{name: 'Authorization', value: APP.authString}],
+			type: "GET",
+			format: "JSON",
+			url: _url,
+			passthrough: null,
+			success: _success_function,
+			//success: this.echoData,
+			failure: error
+		});
+	}
 
 }
+
+
 
 module.exports = function() {
 	return new Model();

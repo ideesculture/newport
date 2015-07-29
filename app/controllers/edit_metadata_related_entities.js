@@ -32,8 +32,7 @@ $.init = function() {
 	};
 
 	// Initiating CA db model class
-	//var info1 = APP.Settings.CollectiveAccess.urlForHierarchy.info1;
-	//var info2 = APP.Settings.CollectiveAccess.urlForHierarchy.info2;
+
 	ENTITY_MODEL.init($.TABLE);
 	$.moreResultsButton.hide(); 
 	$.entitiesResearchResultsContainer.hide(); 
