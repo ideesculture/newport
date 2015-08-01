@@ -1,6 +1,6 @@
 /**
  * Controller for the typechoice screen
- * 
+ *
  * @class Controllers.new_typechoice
  * @uses core
  */
@@ -24,12 +24,12 @@ $.init = function() {
 		// Initiating CA db model class
 	MODEL_MODEL.init("ca_objects");
 	// Loading CA database model (metadatas & fields) & filling cache
-	CONFIG.model_url = APP.Settings.CollectiveAccess.urlForModel.url;
+	CONFIG.model_url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForModel.url;
 	CONFIG.model_url_validity = APP.Settings.CollectiveAccess.urlForModel.cache;
 	$.modelRetrieveData();
 
 	$.copyright.text = APP.LEGAL.COPYRIGHT + " v" + APP.VERSION;
-	
+
 	//CODE TO SHOW OR HIDE THE NAVIGATION BAR
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
 
@@ -54,7 +54,7 @@ $.modelRetrieveData = function(_force, _callback) {
 	if(COMMONS.isCacheValid(CONFIG.model_url,CONFIG.model_url_validity)) {
 		APP.log("debug","ca-model cache is valid");
 	} else {
-		APP.log("debug","ca-model cache is invalid");		
+		APP.log("debug","ca-model cache is invalid");
 	};
 
 	MODEL_MODEL.fetch({
@@ -62,7 +62,7 @@ $.modelRetrieveData = function(_force, _callback) {
 		authString: APP.authString,
 		cache: 0,
 		callback: function() {
-			$.modelRetrieveCallbackFunctions();	
+			$.modelRetrieveCallbackFunctions();
 
 			if(typeof _callback !== "undefined") {
 				_callback();
@@ -76,11 +76,11 @@ $.modelRetrieveData = function(_force, _callback) {
 			}
 		}
 	});
-	
+
 };
 //dynamically generates the list of available object types
 $.modelRetrieveCallbackFunctions = function () {
-	var types = MODEL_MODEL.getObjectTypes(); 
+	var types = MODEL_MODEL.getObjectTypes();
 	//alert(types);
 	var data = [], title;
 
@@ -100,7 +100,7 @@ function createRow(data) {
 	tvr.addEventListener("click", function(_event) {
 		APP.addChild("new_step2", { type_info: data }, true);
 	});
- 
+
     return tvr;
 }
 

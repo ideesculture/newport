@@ -1,6 +1,6 @@
 /**
  * Controller for the main view
- * 
+ *
  * @class Controllers.main
  * @uses core
  */
@@ -27,15 +27,15 @@ $.TABLE = "ca_objects";
 $.init = function() {
 
 	//APP.dropDatabase();
-		
+
 	// loading url & cache validity from settings
-	CONFIG.url = APP.Settings.CollectiveAccess.urlForHierarchy.url;
+	CONFIG.url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForHierarchy.url;
 	//APP.log("debug", "### "+ APP.Settings.CollectiveAccess.urlForHierarchy.url);
 	//CONFIG.url = "http://nogent.idcultu.re/gestion/service.php/find/ca_objects?q=*&source={\"bundles\":{\"created\": {\"returnAsArray\":true},\"parent_id\":{},\"ca_objects.type_id\":{},\"ca_objects.dimensions_in_mm\":{}}}";
 	APP.log("debug", "###2 "+ CONFIG.url);
 	//alert("yo");
 	CONFIG.validity = APP.Settings.CollectiveAccess.urlForHierarchy.cache;
-	//DOESNT BRING THE RIGHT VALUE... 
+	//DOESNT BRING THE RIGHT VALUE...
 	//CACHE ISSUE
 	var info1 = APP.Settings.CollectiveAccess.urlForHierarchy.info1;
 	info1= "ca_objects.type_id";
@@ -45,14 +45,14 @@ $.init = function() {
 
 	// Initiating CA db model class
 	HIERARCHY_MODEL.init($.TABLE, info1, info2);
-	
+
 	// Saving current value of controller
 	if (APP.Settings.defaultdisplay.topfolders == "main_folder_block") {
 		$.toggleFoldersDisplay();
 	}
 
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
-	
+
 
 
 	// Handling breadcrumb
@@ -61,7 +61,7 @@ $.init = function() {
 		// Changing home button & adding listener
 		$.breadcrumb_home.color = APP.Settings.colors.primary;
 		/*for(i=0;i<APP.breadcrumb.length;i++) {
-			
+
 		};*/
 		$.breadcrumb_home.addEventListener('click',function(e) {
 			APP.openLoading();
@@ -113,13 +113,13 @@ $.init = function() {
 	}
 
 	$.retrieveData();
-		
+
 	if(CONFIG.isChild === true) {
 		$.NavigationBar.showBack(function(_event) {
 			APP.removeChild();
 		});
 	}
-	
+
 	if(APP.Settings.useSlideMenu) {
 		$.NavigationBar.showMenu(function(_event) {
 			APP.toggleMenu();
@@ -129,9 +129,9 @@ $.init = function() {
 			APP.openSettings();
 		});
 	}
-	
+
 	$.NavigationBar.text = "Archivio Teatro Regio";
-	
+
 	// Setting main view to full screen width
 	$.mainview.width = maxwidth;
 
@@ -146,7 +146,7 @@ $.retrieveCallbackFunctions = function() {
 	// Handling right side last modified records
 	$.handleLastModifiedData(HIERARCHY_MODEL.getLastRecords($.TABLE));
 	$.updateRightButtonShowLast();
-	
+
 }
 
 /**
@@ -203,8 +203,8 @@ $.handleLastModifiedData = function(_data) {
 	// Adding recent items to right panel
 	for(var lastModified in _data) {
 		var lastmodified_block_view = Alloy.createController("main_lastmodified_block", _data[lastModified]).getView();
-		$.rightbarContainer.add(lastmodified_block_view);	
-	}	
+		$.rightbarContainer.add(lastmodified_block_view);
+	}
 };
 
 $.handleFoldersData = function(_data) {
@@ -229,14 +229,14 @@ $.handleFoldersData = function(_data) {
 	// If we don't have any data to display, removing container
 	} else {
 		$.mainview.remove($.foldersView);
-	};	
+	};
 };
 
 $.handleObjectsData = function(_data) {
 	// If we have data to display...
 	// Adding top objects to top block, those having no parent_id
-	
-	
+
+
 	if (Object.keys(_data).length > 0) {
 		var last_object_no = Object.keys(_data).length;
 		var object_no =0;
@@ -255,7 +255,7 @@ $.handleObjectsData = function(_data) {
    					//$.NavigationBar.title.text = "loaded";
 				},500);
 			}
-		}	
+		}
 	} else {
 		$.mainview.remove($.objectsView);
 	}
@@ -278,23 +278,23 @@ $.objectsButtons.addEventListener('click',function(e) {
 
 $.toggleFoldersDisplay = function() {
 	var initial = $.folderItemsList.visible;
-	// Depending on "initial" status, reveal other buttons... 
-	$.foldersButtonsList.width = initial ? 0 : Ti.UI.SIZE;	
+	// Depending on "initial" status, reveal other buttons...
+	$.foldersButtonsList.width = initial ? 0 : Ti.UI.SIZE;
 	$.foldersButtonsList.visible = initial ? false : true;
 	$.foldersButtonsBlocks.width = initial ? Ti.UI.SIZE : 0;
 	$.foldersButtonsBlocks.visible = initial ? true : false;
-	// ... and switch view	
+	// ... and switch view
 	$.folderItemsList.height = initial ? 0 : Ti.UI.FILL;
 	$.folderItemsList.visible = initial ? false : true;
 	$.folderItemsBlocks.visible = initial ? true : false;
 	// ... and save back as default display
 	APP.Settings.defaultdisplay.topfolders = initial ? "main_folder_block" : "main_folders_row";
-	
+
 }
 
 $.toggleObjectsDisplay = function() {
 	var initial = $.objectBlocks.visible;
-	// Depending on "initial" status, reveal other buttons... 
+	// Depending on "initial" status, reveal other buttons...
 	if (initial) {
 		$.objectsButtonsList.animate({width:0, visible : false, duration:300});
 		$.objectsButtonsBlocks.animate({width : Ti.UI.SIZE, visible : true , duration:300});
@@ -302,7 +302,7 @@ $.toggleObjectsDisplay = function() {
 		$.objectsButtonsList.animate({width: Ti.UI.SIZE, visible : true, duration:300});
 		$.objectsButtonsBlocks.animate({width : 0, visible : false, duration:300});
 	}
-	// ... and switch view	
+	// ... and switch view
 	//$.objectBlocks.height = initial ? 0 : Ti.UI.FILL;
 	$.objectBlocks.animate({height : (initial ? 0 : Ti.UI.FILL), visible : (initial ? false : true), duration:300});
 	$.objectsList.animate({visible : (initial ? true : false), duration:300});

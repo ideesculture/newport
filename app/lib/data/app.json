@@ -23,9 +23,10 @@
 			"login":"administrator",
 			"pass":"admin",
 			"locale":"en_US",
+			"urlBase":"http://administrator:admin@127.0.0.1/gestion/service.php",
 			"urlForLogin": "http://aspi.idcultu.re/gestion/service.php/find/ca_objects?q=zzzzzzzz",
 			"urlForModel": {
-				"url":"http://administrator:admin@aspi.idcultu.re/gestion/service.php/model/ca_objects",
+				"url":"model/ca_objects",
 				"cache":"86400"
 			},
 			"urlForUis" : {
@@ -33,7 +34,7 @@
 				"cache":"86400"
 			},
 			"urlForHierarchy" : {
-				"url":"http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_objects?q=*&source={\"bundles\":{\"created\": {\"returnAsArray\":true},\"parent_id\":{},\"ca_objects.type_id\":{},\"ca_objects.date.dates_value\":{},\"ca_objects.dimensions_in_mm\":{}}}",
+				"url":"find/ca_objects?q=*&source={\"bundles\":{\"created\": {\"returnAsArray\":true},\"parent_id\":{},\"ca_objects.type_id\":{},\"ca_objects.date.dates_value\":{},\"ca_objects.dimensions_in_mm\":{}}}",
 				"cache":"86400",
 				"info1" : "ca_objects.type_id",
 				"info2":"ca_objects.dates_value"
