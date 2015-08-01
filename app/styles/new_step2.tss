@@ -3,7 +3,7 @@
 },
 "#container": {
 	top: "0dp",
-	backgroundColor: "#FFF",
+	backgroundColor:"#EEEEEE",
 	layout: "vertical",
 	showVerticalScrollIndicator: true
 },
