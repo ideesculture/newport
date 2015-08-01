@@ -25,5 +25,17 @@
 	top:10
 },
 ".folderIcon":{
-	width: 20
+},
+"#foldersItemCount":{
+	color:"white",
+	font: {
+		fontSize: 12,
+		fontFamily: "AvenirNext-Bold"
+	},
+},
+"#foldersItemBadge":{
+	backgroundColor:"#64B1EF",
+	borderRadius:8,
+	width:22,
+	height:18
 }

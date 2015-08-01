@@ -1,6 +1,6 @@
 /**
  * Controller for a last modified block in the right panel
- * 
+ *
  * @class Controllers.text
  * @uses core
  */
@@ -15,7 +15,10 @@ var 	myModal = Ti.UI.createWindow({
 APP.log("debug","Adding folder row ("+CONFIG.object_id+")");
 
 $.foldersItemName.text = CONFIG.display_label;
-$.foldersItemCount.text = "("+CONFIG.contains+")";
+$.foldersItemCount.text = CONFIG.contains;
+Ti.API.log("debug","CONFIG.contains.SIZE");
+Ti.API.log("debug",CONFIG.contains.SIZE);
+//$.foldersItemCount.width = CONFIG.contains.SIZE * 7 + 10;
 
 $.foldersItem.addEventListener('singletap',function(e) {
 	APP.openLoading();
