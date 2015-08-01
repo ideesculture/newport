@@ -67,21 +67,20 @@ $.init = function() {
 			APP.openLoading();
 			setTimeout(function() {
 				APP.closeLoading();
+				APP.breadcrumb = [];
 				APP.removeAllChildren();
 		   	},100);
 			APP.breadcrumb.pop();
 		});
-		var breadcrumb_separator=Ti.UI.createLabel({
-			text: ">",
-			left:10
-		});
+		Ti.API.log("debug","APP.breadcrumb.length");
+		Ti.API.log("debug",APP.breadcrumb.length);
 		// Adding ancestors to breadcrumb
 		for(var step in APP.breadcrumb) {
-			$.breadcrumb.add(breadcrumb_separator);
+			Ti.API.log("debug","step");
+			Ti.API.log("debug",step);
 			if (step < APP.breadcrumb.length -1) {
 				var breadcrumb_label=Ti.UI.createLabel({
 					text: APP.breadcrumb[step].display_label,
-					left:10,
 					color:APP.Settings.colors.primary
 				});
 				// Calculating how many removeChild we have to execute : going from last to current
@@ -95,14 +94,21 @@ $.init = function() {
 						APP.breadcrumb.pop();
 					});
 				};
+				$.breadcrumb.add(Ti.UI.createLabel({
+					text: " > "
+				}));
+				$.breadcrumb.add(breadcrumb_label);
 			} else {
 				var breadcrumb_label=Ti.UI.createLabel({
 					text: APP.breadcrumb[step].display_label,
-					left:10,
 					color:"black"
 				});
+				$.breadcrumb.add(Ti.UI.createLabel({
+					text: " > "
+				}));
+				$.breadcrumb.add(breadcrumb_label);
 			}
-			$.breadcrumb.add(breadcrumb_label);
+
 		};
 		// Adding current level to breadcrumb
 		/*var breadcrumb_label=Ti.UI.createLabel({
