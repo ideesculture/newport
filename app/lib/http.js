@@ -1,6 +1,6 @@
 /**
  * HTTP request class
- * 
+ *
  * @class http
  */
 
@@ -22,11 +22,15 @@
 exports.request = function(_params) {
 	Ti.API.debug("HTTP.request " + _params.url);
 
-	if(Ti.Network.online) {
+	// Test if local URL to avoid online status check
+	Ti.API.debug("HTTP.request " + _params.url.indexOf("127.0.0.1"));
+	var isLocal = (_params.url.indexOf("127.0.0.1") > -1 ? true : false);
+
+	if(Ti.Network.online || isLocal) {
 		var xhr = Ti.Network.createHTTPClient();
 
 		//xhr.timeout = _params.timeout ? _params.timeout : 10000;
-		xhr.timeout = 100000; 
+		xhr.timeout = 100000;
 
 		/**
 		 * Data return
