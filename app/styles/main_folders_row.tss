@@ -1,5 +1,5 @@
 "#foldersItem": {
-	height: "40dp",
+	height: "42dp",
 	borderColor: "#eee",
 	backgroundColor:"white",
 	borderWidth: "1dp",
@@ -9,7 +9,7 @@
 "#foldersItemName": {
 	left: 10,
 	font: {
-		fontSize: 14,
+		fontSize: 16,
 		fontFamily: "HelveticaNeue"
 	}
 },
@@ -19,7 +19,7 @@
 	width: Ti.UI.SIZE,
 	height:Ti.UI.FILL,
 	font: {
-		fontSize: 14,
+		fontSize: 16,
 		fontFamily: "HelveticaNeue"
 	},
 	top:10
