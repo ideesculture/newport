@@ -1,27 +1,19 @@
 <Alloy autoStyle="true">
     <View id="Wrapper" name="Text">
 		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
-    	
+
     	<View id="container">
-			<Label id="heading" text="Home >" />
-	  		
+            <View id="headingWrapper">
+	             <Label id="heading" text="Home >" />
+            </View>
 	  		<View id="bundleView">
-	  			<View class="bundleTop">
-	  				<View class="bundleTitle">
-  						<Label class="label" text="bundle" />
-					</View>
-  					
-	  				<View class="bundleButtons">
-	  					<Label class="bundleItemName" text="&gt; Basic Info" />
-	  				</View>
-	  			</View>
 		        <ScrollView id="screenButtonsScrollView" platform="ios">
 		        </ScrollView>
 	    		<ScrollView class="bundleItems" id="bundles">
 	    			<!--
 					<View class="bundleItem">
 	    				<Label class="bundleItemName" text="Item" />
-	    				
+
 	    				<View class="bundleItemRight">
 	    					<ImageView class="downArrowIcon" image="/icons/black/ca_arrow_down.png"></ImageView>
 	    				</View>

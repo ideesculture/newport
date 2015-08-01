@@ -28,7 +28,7 @@ var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "
 
 
 
-$.heading.text += " editing new ";
+$.heading.text = "New ";
 $.heading.text += CONFIG.type_info.display_label;
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
@@ -69,8 +69,6 @@ $.init = function() {
 	// Credentials are inside app.json file
 	APP.ca_login=APP.Settings.CollectiveAccess.login;
 	APP.ca_password=APP.Settings.CollectiveAccess.password;
-
-	$.heading.color = APP.Settings.colors.hsb.primary.b > 70 ? "#000" : APP.Settings.colors.primary;
 
 	// Defining global variables for styling
 	Alloy.Globals.primaryColor =  APP.Settings.colors.primary;
