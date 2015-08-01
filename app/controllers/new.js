@@ -60,7 +60,7 @@ $.modelRetrieveData = function(_force, _callback) {
 	MODEL_MODEL.fetch({
 		url: CONFIG.model_url,
 		authString: APP.authString,
-		cache: 0,
+		cache: CONFIG.model_url_validity,
 		callback: function() {
 			$.modelRetrieveCallbackFunctions();
 
