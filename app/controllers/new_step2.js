@@ -1,6 +1,6 @@
 /**
  * Controller for the edit screen
- * 
+ *
  * @class Controllers.edit
  * @uses core
  */
@@ -18,10 +18,10 @@ var OBJECT_EDIT = require("models/ca-object-edit")();
 
 var CONFIG = arguments[0];
 
-var FLAG_SAVE = false; 
+var FLAG_SAVE = false;
 
 // Pseudo constants
-var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "ca_places", "ca_collections", "ca_loans", "ca_movements"];			
+var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "ca_places", "ca_collections", "ca_loans", "ca_movements"];
 
 // Initializes original values and target buffer where modified values will go
 //Ti.App.EDIT = {};
@@ -29,7 +29,7 @@ var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "
 
 
 $.heading.text += " editing new ";
-$.heading.text += CONFIG.type_info.display_label; 
+$.heading.text += CONFIG.type_info.display_label;
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
 $.TABLE = "ca_objects";
@@ -56,7 +56,7 @@ $.init = function() {
 	// Initiating CA available UIs class
 	UI_MODEL.init();
 	// Initiating detail fetching for object
-	CONFIG.obj_data = {}; 
+	CONFIG.obj_data = {};
 	//alert(CONFIG.type_info);
 	CONFIG.obj_data.info1 = CONFIG.type_info.item_id;
 	//OBJECT_DETAILS.init($.TABLE);
@@ -69,21 +69,21 @@ $.init = function() {
 	// Credentials are inside app.json file
 	APP.ca_login=APP.Settings.CollectiveAccess.login;
 	APP.ca_password=APP.Settings.CollectiveAccess.password;
-	
+
 	$.heading.color = APP.Settings.colors.hsb.primary.b > 70 ? "#000" : APP.Settings.colors.primary;
-	
+
 	// Defining global variables for styling
 	Alloy.Globals.primaryColor =  APP.Settings.colors.primary;
 	Alloy.Globals.secondaryColor = APP.Settings.colors.secondary;
 	Alloy.Globals.fieldsColor = APP.Settings.colors.secondary;
-	
+
 	$.screenButtonsScrollView.setBackgroundColor(APP.Settings.colors.primary);
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
-		
+
 	APP.authString = 'Basic ' +Titanium.Utils.base64encode(APP.ca_login+':'+APP.ca_password);
-	
+
 	// Loading CA database model (metadatas & fields) & filling cache
-	CONFIG.model_url = APP.Settings.CollectiveAccess.urlForModel.url;
+	CONFIG.model_url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForModel.url;
 	CONFIG.model_url_validity = APP.Settings.CollectiveAccess.urlForModel.cache;
 
 	// Loading CA screens & uis & filling cache
@@ -92,7 +92,7 @@ $.init = function() {
 
 	$.retrieveData();
 
-	
+
 
 
 	// uiRetrieveData is called from objectRetrieveCallbackFunctions : we need to have the values available before displaying bundles
@@ -107,9 +107,9 @@ $.init = function() {
 	CONFIG.base_edit_url = APP.Settings.CollectiveAccess.urlForObjectEdit.url.replace(/ID/g,CONFIG.obj_data.false_id);
 	CONFIG.base_edit_url_validity = APP.Settings.CollectiveAccess.urlForObjectEdit.cache;
 	*/
-	// objectRetrieveData is called from modelRetrieveCallbackFunctions : we need to have the metadata elements available before 
+	// objectRetrieveData is called from modelRetrieveCallbackFunctions : we need to have the metadata elements available before
 	//$.objectRetrieveData();
-	
+
 	if(CONFIG.isChild === true) {
 		$.NavigationBar.showBack(function(_event) {
 			APP.removeChild();
@@ -123,9 +123,9 @@ $.init = function() {
 			$.NavigationBar.showSettings(function(_event) {
 				//APP.openSettings();
 			});
-		}		
+		}
 	}
-	
+
 	$.NavigationBar.text = "Archivio Teatro Regio";
 };
 
@@ -146,7 +146,7 @@ $.modelRetrieveData = function(_force, _callback) {
 	if(COMMONS.isCacheValid(CONFIG.model_url,CONFIG.model_url_validity)) {
 		APP.log("debug","ca-model cache is valid");
 	} else {
-		APP.log("debug","ca-model cache is invalid");		
+		APP.log("debug","ca-model cache is invalid");
 	};
 
 		MODEL_MODEL.fetch({
@@ -168,7 +168,7 @@ $.modelRetrieveData = function(_force, _callback) {
 				}
 			}
 		});
-	
+
 };
 
 /**
@@ -176,7 +176,7 @@ $.modelRetrieveData = function(_force, _callback) {
  * @param {Object} _data The returned data
  */
 $.modelHandleData = function(_data) {
-	CONFIG.elements= _data; 
+	CONFIG.elements= _data;
 	//APP.log("debug", CONFIG.elements);
 	$.objectRetrieveData();
 };
@@ -187,9 +187,9 @@ $.uiRetrieveCallbackFunctions = function() {
 	$.UI_CODE = UI_MODEL.getFirstAvailableUIForTable($.TABLE).code;
 	// Fetching defaulft (aka first) available screen for this UI
 	if($.SCREEN == "") {
-		$.uiHandleData(UI_MODEL.getFirstAvailableScreenWithContentForUI($.TABLE,$.UI_CODE));	
+		$.uiHandleData(UI_MODEL.getFirstAvailableScreenWithContentForUI($.TABLE,$.UI_CODE));
 	} else {
-		$.uiHandleData(UI_MODEL.getContentForScreen($.TABLE,$.UI_CODE,$.SCREEN)); 
+		$.uiHandleData(UI_MODEL.getContentForScreen($.TABLE,$.UI_CODE,$.SCREEN));
 	}
 };
 
@@ -199,7 +199,7 @@ $.uiRetrieveData = function(_force, _callback) {
 	/*Ti.App.EDIT = {};
 	Ti.App.EDIT.VALUES = {};
 	Ti.App.EDIT.BUFFER = {};*/
-	
+
 	if(COMMONS.isCacheValid(CONFIG.ui_url,CONFIG.ui_url_validity)) {
 		$.uiRetrieveCallbackFunctions();
 	} else {
@@ -233,7 +233,7 @@ $.uiRetrieveData = function(_force, _callback) {
 
 $.uiHandleData = function(_data) {
 	//APP.openLoading();
-	
+
 	//////////////////////////////////////////////////////////////////////////
 	////////////////SCREENS TOP MENU SECTION//////////////////////////////////
 
@@ -280,8 +280,8 @@ $.uiHandleData = function(_data) {
 				}
 
 			}
-			
-		}		
+
+		}
 	}
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
@@ -292,7 +292,7 @@ $.uiHandleData = function(_data) {
 
 	//////////////////////////////////////////////////////////////////////////
 	////////////////////////BUNDLES SECTION///////////////////////////////////
-	
+
 	// error handling if _data has not been rightly fetched back
 	if (typeof _data != "undefined") {
 		//APP.log("debug", "UI HANDLE DATA DATA:")
@@ -324,15 +324,15 @@ $.uiHandleData = function(_data) {
 
 						// If the bundle described in the screen corresponds to sthg in the model, display it
 						var attribute = bundle_code.replace(/^ca_attribute_/,"");
-					
+
 						APP.log("debug", "ATTRIBUT:");
 						APP.log("debug", attribute);
 
 						//this test is not so useful because it doesn't filter metadatas by object type
-						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {	
+						if (MODEL_MODEL.hasElementInfo("ca_objects", attribute) > 0) {
 							if(CONFIG.elements.indexOf(attribute)== -1){
 								APP.log("debug", "attribute not found");
-							}		
+							}
 							else {
 								APP.log("debug", CONFIG.elements[CONFIG.elements.indexOf(attribute)]);
 								APP.log("debug", "attribute found");
@@ -351,14 +351,14 @@ $.uiHandleData = function(_data) {
 						}
 					} else {
 
-						if (bundle_code == "ca_object_representations") 
+						if (bundle_code == "ca_object_representations")
 						{
 							var row = Alloy.createController("edit_media_photo", {
 								bundle_code:bundle_code,
 							}).getView();
 							rows.push(row);
 						}
-						else 
+						else
 						{
 							var attribute = bundle_code;
 							APP.log("debug", "INTRINSIC FIELD");
@@ -367,8 +367,8 @@ $.uiHandleData = function(_data) {
 							//DISPLAY INTRINSIC FIELDS
 						}
 					}
-					 
-				};	
+
+				};
 				i++;
 			};
 		}
@@ -397,7 +397,7 @@ $.objectRetrieveData = function() {
 	$.EMPTY_BUNDLE = OBJECT_EDIT.getBundleValueForEmptyOne();
 
 	$.uiRetrieveData();
-	
+
 }
 
 $.objectHandleData = function(_data) {
@@ -411,9 +411,9 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 
 	setTimeout(function() {
 				$.uiRetrieveData();
-				
+
 		   	},500);
-	
+
 	//_event.source.code => ce qu'on veut
 });
 
@@ -426,7 +426,7 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 
 		var itWorked = OBJECT_EDIT.saveChanges();
 		//APP.log("debug", "saveChanges worked");
-		
+
 		if(itWorked) {
 			//ici, essayer d'envoyer vers le serveur
 			if (Titanium.Network.networkType == Titanium.Network.NETWORK_WIFI )
@@ -461,13 +461,13 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 		dialog.show();
 	}
  }
-$.updateRightButtonSave = function() {	
+$.updateRightButtonSave = function() {
 	if(!FLAG_SAVE){
-		FLAG_SAVE =true; 
+		FLAG_SAVE =true;
 		$.NavigationBar.showRight({
 			image: "/images/check.png",
 
-			callback: function() {		
+			callback: function() {
 
 				var dialog = Ti.UI.createAlertDialog({
 				    cancel: 2,
@@ -481,12 +481,12 @@ $.updateRightButtonSave = function() {
 						Ti.API.info('The cancel button was clicked');
 					} else if (e.index == 1) {
 						// Revert = reload ui data
-						OBJECT_EDIT.cleanEditUpdatesTable(); 
+						OBJECT_EDIT.cleanEditUpdatesTable();
 						$.objectRetrieveData();
-						
+
 					} else if (e.index == 0) {
 						// Save
-						save();	
+						save();
 					}
 				});
 				dialog.show();
@@ -505,7 +505,7 @@ $.updateRightButtonRefresh = function() {
 				authString: APP.authString,
 				cache: 0,
 				callback: function() {
-					$.modelRetrieveCallbackFunctions();	
+					$.modelRetrieveCallbackFunctions();
 
 					if(typeof _callback !== "undefined") {
 						_callback();
@@ -548,7 +548,7 @@ $.byeByeUserChoice = function() {
 				Ti.API.info('BACK TO MAIN PAGE');
 				APP.addChild("main", {}, true);
 			}
-			else 
+			else
 			{
 				if (e.index == 0) {
 					// stay on this object
@@ -563,8 +563,8 @@ $.byeByeUserChoice = function() {
 	dialog.show();
 }
 
-Ti.App.addEventListener('event_haschanged', function(e) { 
-	
+Ti.App.addEventListener('event_haschanged', function(e) {
+
 	$.hasChanged = true;
 	APP.log("debug", "DEBUG Ti.App.addEventListener");
 	//APP.log("debug", e.config);
@@ -580,7 +580,7 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 	APP.log("debug",new_values2);
 	OBJECT_EDIT.insertTempAddition(e.config.element, new_values2);
 
-	
+
 });
 
 $.init();

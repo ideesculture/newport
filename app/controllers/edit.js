@@ -77,7 +77,7 @@ $.init = function() {
 	APP.authString = 'Basic ' +Titanium.Utils.base64encode(APP.ca_login+':'+APP.ca_password);
 
 	// Loading CA database model (metadatas & fields) & filling cache
-	CONFIG.model_url = APP.Settings.CollectiveAccess.urlForModel.url;
+	CONFIG.model_url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForModel.url;
 	CONFIG.model_url_validity = APP.Settings.CollectiveAccess.urlForModel.cache;
 	//$.modelRetrieveData();
 
