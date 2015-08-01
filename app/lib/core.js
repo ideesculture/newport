@@ -500,7 +500,7 @@ var APP = {
 	 * Re-builds the app with newly downloaded JSON configration file
 	 */
 	rebuild: function() {
-		APP.log("debug", "APP.rebuild");
+		Ti.API.log("debug", "APP.rebuild");
 
 		APP.SlideMenu.clear();
 		APP.Tabs.clear();
