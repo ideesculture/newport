@@ -30,7 +30,7 @@
 				"cache":"86400"
 			},
 			"urlForUis" : {
-				"url":"http://administrator:admin@aspi.idcultu.re/gestion/service-uis.php/ca_objects",
+				"url":"http://administrator:admin@127.0.0.1/gestion/service-uis.php/ca_objects",
 				"cache":"86400"
 			},
 			"urlForHierarchy" : {
