@@ -1,1 +1,0 @@
-module.exports={"dependencies":{"com.mcongrove.detailNavigation":"1.1","com.mcongrove.loading":"1.0","com.mcongrove.navigationBar":"1.1","com.ideesculture.newportSlideMenu":"1.1","com.mcongrove.tabs":"1.2","com.mcongrove.toast":"1.1","nl.fokkezb.pullToRefresh":"1.5.1","ti.ux.iconfont":"*"}};
