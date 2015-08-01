@@ -26,10 +26,9 @@ var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "
 // Initializes original values and target buffer where modified values will go
 //Ti.App.EDIT = {};
 
-
-
-$.heading.text += " editing new ";
+$.heading.text = "New ";
 $.heading.text += CONFIG.type_info.display_label;
+$.NavigationBar.text = "New "+CONFIG.type_info.display_label;
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
 $.TABLE = "ca_objects";

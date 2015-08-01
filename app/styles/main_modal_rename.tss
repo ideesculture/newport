@@ -1,19 +1,14 @@
-"#backgroundView":{
-	backgroundColor:'black',
-	opacity:0.5,
-	top:47
-},
 "#insideView":{
 	layout:"vertical",
 	textAlign:"left",
-	height:350,
-	width:500,
+	height:200,
+	width:320,
 	top:300,
 	bottom:20, 
 	backgroundColor: "#eee"
 }, 
-"#labelfield": {
-	top:10, 
+"#newlabelfield": {
+	top:5, 
 	left:10,
 	right:20,
 	bottom:7,
@@ -27,9 +22,9 @@
 	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE
 },
 "#saveButton": {
-	top:40,
+	top:20,
 	bottom: 7,
-	left:280,
+	left:180,
 	right:10,
 	color: Alloy.Globals.fieldsColor,
 	backgroundColor: 'white',
@@ -43,17 +38,13 @@
 		fontFamily: "HelveticaNeue"
 	}
 },
-"#fieldsView":{
-	layout: "horizontal",
-	height: Ti.UI.SIZE,
-	width: Ti.UI.FILL, 
+"#backgroundView":{
+	backgroundColor:'black',
+	opacity:0.5,
+	top:47
 },
-"#typestable":{
-	height: 90,
-	width: 140, 
-	left: 20, 
-	right: 10,
-	top: 10
+"#container2":{
+	layout:"vertical"
 },
 "#someLabel":{
 	left:15,
@@ -62,7 +53,7 @@
 	backgroundColor: '#eee',
 	top:10,
 	height: 50,
-	width:250,
+	width:300,
 	font: {
 		fontSize: 20,
 		fontWeight: 'bold',

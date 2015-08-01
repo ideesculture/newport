@@ -1,0 +1,49 @@
+"#field":{
+	layout:"vertical",
+	textAlign:"left",
+	height:Ti.UI.SIZE,
+	width:Ti.UI.FILL,
+	top:10,
+	bottom:20, 
+	backgroundColor: "#eee"
+},
+"#tablecontainerView":{
+	height: Ti.UI.SIZE, 
+	width: Ti.UI.FILL,
+	top: 10, 
+	bottom: 10, 
+	right: 10, 
+	left: 10, 
+},
+"#label": {
+	left:10,
+	bottom: 10,
+	color: 'black',
+	top:4,
+	height: 16,
+	font: {
+		fontSize: 13,
+		fontFamily: "HelveticaNeue"
+	}
+}, 
+"#container2":{
+	layout:"vertical", 
+	height: 520, 
+	width: 480, 
+	top: 10
+},
+"#value": {
+	color: 'black',
+	backgroundColor: 'white', 
+	borderColor:Alloy.Globals.fieldsColor,
+	borderWidth:1,
+	borderRadius:5,
+	height: 30,
+	width: 500,
+	left: 20,
+	font: {
+		fontSize: 18,
+		fontFamily: "HelveticaNeue"
+	}, 
+	visible: "false"
+}

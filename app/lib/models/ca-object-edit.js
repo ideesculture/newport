@@ -284,6 +284,16 @@ function Model() {
 		db.close();
 	}
 
+	this.saveSpecificChanges = function(attribut, valeur, is_modified, is_new, bundle_code, type_id) {
+		var db = Ti.Database.open(DBNAME);
+		db.execute("BEGIN TRANSACTION;");
+		var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_temp_insert (id, object_id, attribute, value, is_modified, is_new, bundle_code, type_id) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);";
+		db.execute(request, APP.CURRENT_ID, attribut, valeur, is_modified, is_new, bundle_code, type_id); 
+		db.execute("END TRANSACTION;");
+		db.close();
+		return true; 
+	}
+
 	this.saveChanges = function() {
 		APP.log("debug", "SAVE-CHANGES");
 		var attribut, valeur, result, is_modified, is_new, bundle_code, type_id;
@@ -417,37 +427,68 @@ function Model() {
 				id = fieldToSave.object_id;
 				attribut = fieldToSave.attribut;
 
-				if (attribut == "ca_entities"){
-					//needs a different json!!!
+				switch(attribut){
+					//relations:
 
-					if(fieldToSave.is_modified){
-						remove_relationships[0] = fieldToSave.bundle_code;
-						json.remove_relationships = remove_relationships;
-					}
-					tempobj ={}; attributes = {}; 
-					tempobj["entity_id"]= fieldToSave.valeur; 
-					//temporaire: type fixé à 79 = individu
-					tempobj["type_id"]= fieldToSave.type_id; 
-					temptab[0]= tempobj; 
-					attributes[fieldToSave.bundle_code] = temptab; 
-					json.related = attributes;
+					case "ca_entities":
+						if(fieldToSave.is_modified){
+							remove_relationships[0] = fieldToSave.bundle_code;
+							json.remove_relationships = remove_relationships;
+						}
+						tempobj ={}; attributes = {}; 
+						tempobj["entity_id"]= fieldToSave.valeur; 
+						tempobj["type_id"]= fieldToSave.type_id; 
+						temptab[0]= tempobj; 
+						attributes[fieldToSave.bundle_code] = temptab; 
+						json.related = attributes;
+						break;
+
+					case "ca_storage_locations":
+						if(fieldToSave.is_modified){
+							remove_relationships[0] = fieldToSave.bundle_code;
+							json.remove_relationships = remove_relationships;
+						}
+						tempobj ={}; attributes = {}; 
+						tempobj["location_id"]= fieldToSave.valeur; 
+						tempobj["type_id"]= fieldToSave.type_id; 
+						temptab[0]= tempobj; 
+						attributes[fieldToSave.bundle_code] = temptab; 
+						json.related = attributes;
+						break;
+
+					case "preferred_labels":
+
+						// add the 'remove_all_labels' option to the json
+						json.remove_all_labels = true;
+
+						//add the new value for preferred_labels
+						tempobj ={};
+						tempobj["locale"]= "en_US"; 
+						tempobj[fieldToSave.bundle_code]= fieldToSave.valeur; 
+						
+						temptab[0]= tempobj; 
+						json.preferred_labels = temptab;
+						break;
+
+					default:
+						//------------------------ATTRIBUTES
+						//builds the object to be sent:
+						//1) remove_attributes
+						if(fieldToSave.is_modified){
+							remove_attributes[0] = fieldToSave.bundle_code;
+							json.remove_attributes = remove_attributes;
+						}
+						//2) attributes
+						tempobj ={}; attributes = {}; 
+						tempobj["locale"]= "en_US"; 
+						tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
+						temptab[0]= tempobj; 
+						attributes[fieldToSave.bundle_code] = temptab; 
+						json.attributes = attributes; 
+						break;
 				}
-				else
-				{
-					//builds the object to be sent:
-					//1) remove_attributes
-					if(fieldToSave.is_modified){
-						remove_attributes[0] = fieldToSave.bundle_code;
-						json.remove_attributes = remove_attributes;
-					}
-					//2) attributes
-					tempobj ={}; attributes = {}; 
-					tempobj["locale"]= "en_US"; 
-					tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
-					temptab[0]= tempobj; 
-					attributes[fieldToSave.bundle_code] = temptab; 
-					json.attributes = attributes; 
-				}
+				//INTRINSIC FIELDS MISSING ! ! ! ! !
+				
 				APP.log("debug", JSON.stringify(json));
 				//alert(JSON.stringify(json)); 
 

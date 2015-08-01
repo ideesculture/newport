@@ -1,0 +1,15 @@
+<Alloy>
+	<View id="wrapperView">		
+		<View id="backgroundView" backgroundColor='#000' opacity='0.5' top='47'></View>
+		<View id="insideView">
+			<Label id="someLabel" text="New display label: "></Label>
+
+			<ScrollableView id="fieldcontainerView">	
+				<View id="container2">
+					<TextField id="newlabelfield" placeholder="new name"/>
+					<Button id="saveButton" title="Rename"/>
+				</View>
+			</ScrollableView>
+		</View>
+	</View>
+</Alloy>

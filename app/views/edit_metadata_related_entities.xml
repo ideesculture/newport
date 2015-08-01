@@ -2,10 +2,15 @@
 	<View id="field">
 		<Label id="label"/>s	
 		<View id="fieldWithoutIcon">
-			<TextField id="entityfield"/>
+			<TextField id="entityfield" placeholder="name"/>
+			<Button id="searchButton" title="Search"/>
 		</View>
-		<View id="entitiesResearchResults">		
-		</View>
+		<ScrollableView id="entitiesResearchResultsContainer">	
+			<View id="test">
+				<TableView id="entitiesResearchResults">		
+				</TableView>
+			</View>
+		</ScrollableView>
 		<Button id="moreResultsButton" title="+ see more results"/>
 		<Label id="notes"/>
 	</View>

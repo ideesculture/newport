@@ -16,21 +16,35 @@
 	borderColor:Alloy.Globals.fieldsColor,
 	borderWidth:1,
 	borderRadius:8,
-	backgroundColor:Alloy.Globals.fieldsColor
+	backgroundColor:Alloy.Globals.fieldsColor,
 },
-"#entitiesResearchResults":{
-	layout:"horizontal",	
+"#entitiesResearchResultsContainer":{
 	height:Ti.UI.SIZE,
 	width:Ti.UI.FILL,
-	backgroundColor:"white", 
+	backgroundColor: 'white',
+	color: 'black',
 	borderWidth:1,
 	borderRadius:8,
 	left: 10,
 	right: 10,
 	top: 10,
-	bottom: 10,
-}
-
+	bottom: 10
+},
+"#test":{
+	height:Ti.UI.SIZE,
+	width:Ti.UI.SIZE
+},
+"#entitiesResearchResults":{
+	layout:"horizontal",	
+	height:Ti.UI.SIZE,
+	width:Ti.UI.FILL,
+	backgroundColor:'white', 
+	color: 'black',
+	left: 10,
+	right: 10,
+	top: 5,
+	bottom: 5
+},
 "#icon": {
 	backgroundColor:Alloy.Globals.fieldsColor,
 	width:Ti.UI.SIZE
@@ -47,7 +61,7 @@
 	}
 },
 "#notes": {
-	left:10,
+	left:40,
 	color: 'black',
 	top:6,
 	height: 16,
@@ -73,13 +87,50 @@
 		fontFamily: "HelveticaNeue"
 	}
 },
-
+"#entityRow": {
+	height:Ti.UI.SIZE,
+	width:Ti.UI.SIZE,
+	top: 10,
+	bottom: 10, 
+	left: 5, 
+	right: 5,
+	backgroundColor: "#eee",
+	borderColor: "#000",
+	borderWidth: "1dp",
+	borderRadius:5,
+},
+"#entityRowContent": {
+	height:Ti.UI.SIZE,
+	layout:"vertical",
+	left:"10dp",
+	width:Ti.UI.SIZE,
+	right:"10dp",
+	top: 6, 
+	bottom: 6
+},
+"#searchButton": {
+	top:7,
+	bottom: 7,
+	left:30,
+	right:10,
+	color: 'black',
+	backgroundColor: 'white',
+	borderRadius:8,
+	borderWidth:3,
+	borderColor: 'black',
+	height: 40,
+	width: 100,
+	font: {
+		fontSize: 16,
+		fontFamily: "HelveticaNeue"
+	}
+},
 "#entityfield": {
-	top: 1, 
-	left:1,
-	right:1,
-	bottom:1,
-	width:300,
+	top:7, 
+	left:7,
+	right:20,
+	bottom:7,
+	width:350,
 	color: 'black',
 	height: 40,
 	backgroundColor: 'white',

@@ -1,0 +1,39 @@
+"#insideView":{
+	layout:"vertical",
+	textAlign:"left",
+	height:280,
+	width:320,
+	top:300,
+	bottom:20, 
+	backgroundColor: "#eee"
+}, 
+"#optionsTable":{	
+	layout:"horizontal",	
+	height:Ti.UI.SIZE,
+	width:300,
+	backgroundColor:'white', 
+	color: 'black',
+	left: 10,
+	right: 10,
+	top: 5,
+	bottom: 5
+},
+"#backgroundView":{
+	backgroundColor:'black',
+	opacity:0.5,
+	top:47
+},
+"#someLabel":{
+	left:10,
+	bottom: 2,
+	color: 'blue',
+	backgroundColor: 'white',
+	top:5,
+	height: 50,
+	width:300,
+	font: {
+		fontSize: 20,
+		fontWeight: 'bold',
+		fontFamily: "HelveticaNeue"
+	}
+}

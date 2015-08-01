@@ -295,6 +295,8 @@ $.uiHandleData = function(_data) {
 		//APP.log("debug", _data);
 		if (typeof _data.content != "undefined") {
 			//APP.log("debug", "not undefined!");
+			APP.log("debug", "$.RECORD.attributes: (looking for VALUES)");
+			APP.log("debug", $.RECORD.attributes); 
 			// If we have some content back
 			var screen_content = _data.content.screen_content;
 			for(var bundle in screen_content) {
@@ -314,8 +316,18 @@ $.uiHandleData = function(_data) {
 								}
 								else {
 									APP.log("debug", CONFIG.elements[CONFIG.elements.indexOf(attribute)]);
-									APP.log("debug", "attribute found");
+									APP.log("debug", "attribute found in config.elements");
 									var values = $.EMPTY_BUNDLE;
+									if($.RECORD.attributes){
+										APP.log("debug", "$.RECORD.attributes OK")
+										if($.RECORD.attributes[attribute]){
+												APP.log("debug", "attribute found in $.RECORD");
+												APP.log("debug",$.RECORD.attributes[attribute] );
+												values = $.RECORD.attributes[attribute];
+												
+										}
+									} 
+									APP.log("debug", values);
 
 									var element_data = MODEL_MODEL.getElementInfo("ca_objects", attribute);
 									//alert(element_data);
@@ -329,52 +341,69 @@ $.uiHandleData = function(_data) {
 									rows.push(row);
 								}
 							}
-							else
-							{
-								APP.log("debug", "CONFIG.elements is not an array !");
-							}
 						}
 					}
 					else {
-						if (bundle_code == "ca_object_representations") {
-							var obj_data = {};
-							obj_data.bundle_code = bundle_code ;
+						switch(bundle_code){
+							case "ca_object_representations":
+								var obj_data = {};
+								obj_data.bundle_code = bundle_code ;
 
-							if(CONFIG.obj_data.image_file){
-								obj_data.image_file = CONFIG.obj_data.image_file ;
-							}
-							var row = Alloy.createController("edit_media_photo", obj_data ).getView();
-							rows.push(row);
+								if(CONFIG.obj_data.image_file){
+									obj_data.image_file = CONFIG.obj_data.image_file ;
+								}
+								var row = Alloy.createController("edit_media_photo", obj_data ).getView();
+								rows.push(row);
+								break; 
 
-						}
-						if (bundle_code == "ca_entities") {
-							var values = $.EMPTY_BUNDLE;
-							var temp_objet = {};
-							temp_objet["datatype"] = "Entities";
-							temp_objet["display_label"] = "related entity";
-							temp_objet["element_code"] = bundle_code ;
-							var temp_objet2 = {};
-							temp_objet2[bundle_code] = temp_objet;
-							var element_data = { "elements_in_set" : temp_objet2 , "name" : "related entities" };
+							case "ca_entities":
+								var values = $.EMPTY_BUNDLE;
+								var temp_objet = {};
+								temp_objet["datatype"] = "Entities";
+								temp_objet["display_label"] = "related entity";
+								temp_objet["element_code"] = bundle_code ;
+								var temp_objet2 = {};
+								temp_objet2[bundle_code] = temp_objet;
+								var element_data = { "elements_in_set" : temp_objet2 , "name" : "related entities" };
 
+								var row = Alloy.createController("edit_metadata_bundle", {
+									bundle_code:bundle_code,
+									content:element_data,
+									values:values,
+									newport_id:{0:i}
+								}).getView();
+								rows.push(row);
+								break; 
 
-							var row = Alloy.createController("edit_metadata_bundle", {
-								bundle_code:bundle_code,
-								content:element_data,
-								values:values,
-								newport_id:{0:i}
-							}).getView();
-							rows.push(row);
-						}
-						else {
-							APP.log("debug", "NON SUPPORTE: ");
-							APP.log("debug", bundle_code);
-						}
-					}
-				};
+							case "ca_storage_locations":
+								var values = $.EMPTY_BUNDLE;
+								var temp_objet = {};
+								temp_objet["datatype"] = "StorageLocations";
+								temp_objet["display_label"] = "related storage location";
+								temp_objet["element_code"] = bundle_code ;
+								var temp_objet2 = {};
+								temp_objet2[bundle_code] = temp_objet;
+								var element_data = { "elements_in_set" : temp_objet2 , "name" : "related storage locations" };
+
+								var row = Alloy.createController("edit_metadata_bundle", {
+									bundle_code:bundle_code,
+									content:element_data,
+									values:values,
+									newport_id:{0:i}
+								}).getView();
+								rows.push(row);
+								break; 
+
+							default: 
+								APP.log("debug", "NON SUPPORTE: ");
+								APP.log("debug", bundle_code);
+								break; 
+						}//END SWITCH
+					}//END ELSE (if bundle_code.substring= attribute, else switch)
+				};//END IF i<50
 				i++;
-			};
-		}
+			};//END For bundles in screen content
+		}//END if typeof data != undefined
 		else {
 			APP.log("debug", "typeof _data.content = undefined");
 		}
@@ -560,12 +589,11 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 	APP.log("debug", "DEBUG Ti.App.addEventListener");
 	//APP.log("debug", e.config);
 	var attribute = e.config.bundle_code.replace(/^ca_attribute_/,"");
-	APP.log("debug", attribute);
-	APP.log("debug", typeof $.RECORD.attributes);
+
 	if (typeof $.RECORD.attributes[attribute] != "undefined") {
 	//if (typeof $.RECORD.attributes != "undefined") {
 		APP.log("debug","We have a previous value");
-		APP.log("debug","MERGING !");
+	//	APP.log("debug","MERGING !");
 		var origin_values = $.RECORD.attributes[attribute];
 		//APP.log("debug",origin_values);
 		var new_values = origin_values;
@@ -577,17 +605,22 @@ Ti.App.addEventListener('event_haschanged', function(e) {
 		APP.log("debug",new_values);
 		// Inserting into the temp table
 		OBJECT_EDIT.insertTempAddition(e.config.element, new_values);
+
 	} else {
 		APP.log("debug","No previous value");
 
+		//APP.log("debug",e); 
 		// Inserting into the temp table
 		var vals = {is_origin : 0, is_modified : 0, is_new : 1 };
-		APP.log("debug", e.config.element);
+
 		vals[e.config.element] = e.value;
 		vals.bundle = attribute;
 		//"related" entities/occus/places/... need a type id
 		if(e.config.content){
+			//APP.log("debug", "e.config.content");
+
 			if(e.config.content.type_id){
+				//APP.log("debug", "e.config.type_id!");
 				vals.type_id = e.config.content.type_id;
 			}
 		}
