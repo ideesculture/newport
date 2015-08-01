@@ -46,7 +46,7 @@
 	left: 10,
 	top: "0dp",
 	font: {
-		fontSize: 14,
+		fontSize: "18dp",
 		fontFamily: "HelveticaNeue"
 	},
 	color: "#000"
@@ -58,7 +58,7 @@
 	top: "0dp",
 	layout: "horizontal",
 	font: {
-		fontSize: 14,
+		fontSize: "18dp",
 		fontFamily: "HelveticaNeue"
 	}
 },
@@ -99,7 +99,7 @@
 	top: "0dp",
 	layout: "horizontal",
 	font: {
-		fontSize: 14,
+		fontSize: "18dp",
 		fontFamily: "HelveticaNeue"
 	}
 },
@@ -121,7 +121,7 @@
 },
 ".label": {
 	font: {
-		fontSize: 14,
+		fontSize: "18dp",
 		fontFamily: "HelveticaNeue"
 	},
 	color: "#000",
@@ -190,7 +190,7 @@
 	color:"white",
 	text:"i",
 	font: {
-		fontSize: 18,
+		fontSize: "18dp",
 		fontFamily: "TimesNewRomanPS-BoldMT"
 	},
 	textAlign:"center"
@@ -199,7 +199,7 @@
 	width:230,
 	backgroundColor:"black",
 	font: {
-		fontSize: 14,
+		fontSize: "18dp",
 		fontFamily: "AvenirNext-Medium"
 	},
 	showVerticalScrollIndicator:true
@@ -212,7 +212,7 @@
 },
 "#rightbarTitle":{
 	font: {
-		fontSize: 20,
+		fontSize: "18dp",
 		fontFamily: "AvenirNext-DemiBold"
 	},
 	left:0,
