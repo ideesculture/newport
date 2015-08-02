@@ -26,11 +26,8 @@ var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "
 //type id
 var type_id = CONFIG.obj_data.info1;
 
-// Initializes original values and target buffer where modified values will go
-//Ti.App.EDIT = {};
-//To do later: print object type
-//alert(CONFIG.obj_data);
-$.heading.text += " editing object #"+CONFIG.obj_data.object_id+" "+CONFIG.obj_data.display_label+" "+CONFIG.obj_data.idno;
+// Filling black inspector text with label & idno
+$.heading.text = CONFIG.obj_data.display_label+"\n"+CONFIG.obj_data.idno;
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
 //$.TABLE = CONFIG.type;
@@ -39,7 +36,6 @@ $.TABLE = "ca_objects";
 $.SCREENS = [];
 // Index of the screen we want to display, default -1 (first available)
 $.SCREEN = "";
-
 $.UI_CODE = "";
 
 // Global variable for this controller to store the object details
@@ -66,8 +62,6 @@ $.init = function() {
 	// Credentials are inside app.json file
 	APP.ca_login=APP.Settings.CollectiveAccess.login;
 	APP.ca_password=APP.Settings.CollectiveAccess.password;
-
-	$.heading.color = APP.Settings.colors.hsb.primary.b > 70 ? "#000" : APP.Settings.colors.primary;
 
 	// Defining global variables for styling
 	Alloy.Globals.primaryColor =  APP.Settings.colors.primary;
