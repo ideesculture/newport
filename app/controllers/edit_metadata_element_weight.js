@@ -1,6 +1,6 @@
 /**
  * Controller for weight metadata
- * 
+ *
  * @class Controllers.text
  * @uses core
  */
@@ -20,7 +20,8 @@ $.init = function() {
 	};
 
 	// Field title
-	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j; 
+	//$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j;
+	$.label.hide();
 	$.notes.text= " please don't forget to specify a weight unit after your value!"
 	$.weightfield.value = value;
 
@@ -61,5 +62,3 @@ $.weightfield.addEventListener('blur', function() {
 });
 
 $.init();
-
-

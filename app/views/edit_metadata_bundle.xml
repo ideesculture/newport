@@ -8,11 +8,12 @@
 				</View>
 			</View>
     		<View id="bundleItemElements">
+				<View id="bundleItemElementsTopBorder"></View>
     			<!-- Here come the fields -->
-			</View>	
+			</View>
 			<View id="addNewButtonView">
 				<Button id="addNewButton" title="+ add new ..."/>
-			</View>		
+			</View>
 		</View>
 	</View>
 </Alloy>

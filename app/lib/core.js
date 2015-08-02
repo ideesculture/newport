@@ -502,7 +502,7 @@ var APP = {
 		Ti.API.log("debug", "APP.rebuild");
 
 		APP.SlideMenu.clear();
-		APP.Tabs.clear();
+		//APP.Tabs.clear();
 
 		// Undo removal of TabGroup
 		//APP.GlobalWrapper.remove(APP.Tabs.Wrapper);

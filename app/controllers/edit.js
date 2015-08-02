@@ -360,6 +360,7 @@ $.uiHandleData = function(_data) {
 								var row = Alloy.createController("edit_media_photo", obj_data ).getView();
 								rows.push(row);
 								break;
+
 							case "ca_entities":
 								var values = $.EMPTY_BUNDLE;
 								var temp_objet = {};
@@ -369,10 +370,6 @@ $.uiHandleData = function(_data) {
 								var temp_objet2 = {};
 								temp_objet2[bundle_code] = temp_objet;
 								var element_data = { "elements_in_set" : temp_objet2 , "name" : "related entities" };
-								break;
-							case "ca_object_representations":
-								var obj_data = {};
-								obj_data.bundle_code = bundle_code ;
 
 								var row = Alloy.createController("edit_metadata_bundle", {
 									bundle_code:bundle_code,
@@ -382,16 +379,7 @@ $.uiHandleData = function(_data) {
 								}).getView();
 								rows.push(row);
 								break;
-							case "ca_entities":
-								var values = $.EMPTY_BUNDLE;
-								var temp_objet = {};
-								temp_objet["datatype"] = "Entities";
-								temp_objet["display_label"] = "related entity";
-								temp_objet["element_code"] = bundle_code ;
-								var temp_objet2 = {};
-								temp_objet2[bundle_code] = temp_objet;
-								var element_data = { "elements_in_set" : temp_objet2 , "name" : "related entities" };
-								break;
+
 							case "ca_storage_locations":
 								var values = $.EMPTY_BUNDLE;
 								var temp_objet = {};
@@ -401,20 +389,26 @@ $.uiHandleData = function(_data) {
 								var temp_objet2 = {};
 								temp_objet2[bundle_code] = temp_objet;
 								var element_data = { "elements_in_set" : temp_objet2 , "name" : "related storage locations" };
-								break;
-							case "ca_entities":
-								var values = $.EMPTY_BUNDLE;
-								var temp_objet = {};
-								temp_objet["datatype"] = "Entities";
-								temp_objet["display_label"] = "related entity";
-								temp_objet["element_code"] = bundle_code ;
-								var temp_objet2 = {};
-								temp_objet2[bundle_code] = temp_objet;
-								var element_data = { "elements_in_set" : temp_objet2 , "name" : "related entities" };
+
+								var row = Alloy.createController("edit_metadata_bundle", {
+									bundle_code:bundle_code,
+									content:element_data,
+									values:values,
+									newport_id:{0:i}
+								}).getView();
+								rows.push(row);
 								break;
 							default:
-								APP.log("debug", "NON SUPPORTE: ");
-								APP.log("debug", bundle_code);
+								var values = $.EMPTY_BUNDLE;
+								var temp_objet = {};
+								var row = Alloy.createController("edit_unsupported_bundle", {
+									bundle_code:bundle_code,
+									content:{},
+									values:values,
+									newport_id:{0:i}
+								}).getView();
+								rows.push(row);
+								//rows.push(notSupportedLabel);
 								break;
 						}//END SWITCH
 					}//END ELSE (if bundle_code.substring= attribute, else switch)

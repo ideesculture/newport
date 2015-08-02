@@ -1,6 +1,6 @@
 /**
  * Controller for the text screen
- * 
+ *
  * @class Controllers.text
  * @uses core
  */
@@ -23,7 +23,7 @@ $.init = function() {
 	var SETTINGS = CONFIG.content.settings;
 
 	// Field title
-	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j; 
+	$.label.text=CONFIG.content.display_label; //+" "+CONFIG.i+" "+CONFIG.j; 
 
 	if(SETTINGS.fieldHeight > 1) {
 		// we have a textarea

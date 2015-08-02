@@ -1,6 +1,6 @@
 /**
  * Controller for length metadata
- * 
+ *
  * @class Controllers.text
  * @uses core
  */
@@ -20,7 +20,8 @@ $.init = function() {
 	};
 
 	// Field title
-	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j; 
+	//$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j;
+	$.label.hide();
 	$.notes.text= " please don't forget to specify a length unit after your value!"
 	$.lengthfield.value = value;
 
@@ -62,5 +63,3 @@ $.lengthfield.addEventListener('blur', function() {
 });
 
 $.init();
-
-

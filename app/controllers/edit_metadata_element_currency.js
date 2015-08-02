@@ -1,6 +1,6 @@
 /**
  * Controller for currency metadata
- * 
+ *
  * @class Controllers.text
  * @uses core
  */
@@ -20,7 +20,10 @@ $.init = function() {
 	};
 
 	// Field title
-	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j; 
+
+	// Debug : uncomment next line
+	//$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j;
+	$.label.hide();
 	$.notes.text= " please don't forget to specify a currency unit after your value!"
 	$.currencyfield.value = value;
 
@@ -62,5 +65,3 @@ $.currencyfield.addEventListener('blur', function() {
 });
 
 $.init();
-
-

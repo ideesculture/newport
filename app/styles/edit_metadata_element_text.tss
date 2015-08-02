@@ -28,7 +28,10 @@
 	keyboardType: Titanium.UI.KEYBOARD_DEFAULT,
 	returnKeyType: Titanium.UI.RETURNKEY_DEFAULT,
 	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
-	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE
+	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
+	font: {
+		fontSize: 13
+	}
 },
 "#textarea": {
 	left:10,
@@ -41,5 +44,8 @@
 	keyboardType: Titanium.UI.KEYBOARD_DEFAULT,
 	returnKeyType: Titanium.UI.RETURNKEY_DEFAULT,
 	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
-	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE
+	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
+	font: {
+		fontSize: 13
+	}
 }

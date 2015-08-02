@@ -1,7 +1,9 @@
 <Alloy>
 	<View id="bundleRow">
 		<View id="bundleRowContent">
-		</View>		
-		<Label id="removeButton" text="x" />
+		</View>
+		<View id="removeButton">
+			<Require type="widget" src="ti.ux.iconfont" icon="fa-times-circle" size="22" color="#ccc" id="removeButtonIcon"/>
+		</View>
 	</View>
 </Alloy>

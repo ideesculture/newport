@@ -17,19 +17,19 @@ var DATATYPECONTROLLERS = {
 //APP.log("debug",CONFIG);
 
 $.init = function() {
-	
+
 
 	// adding metadata elements
 	var j = 0;
 	for(var element in CONFIG.elements_in_set) {
 		var content = CONFIG.elements_in_set[element];
-		
+
 
 		if(j<25) {
 			APP.log("debug","DEUXIEME BOUCLE "+CONFIG.i+" "+j);
 			// if element.datatype == "Text" => formulaire texte, else...
 			//APP.log("debug",element.datatype);
-			
+
 
 			if(content.datatype in DATATYPECONTROLLERS) {
 	    		// does exist
@@ -56,7 +56,7 @@ $.init = function() {
 				APP.log("debug","element "+element+" value "+value+" ("+ content.datatype+ ")");
 
 				var row = Alloy.createController(
-						DATATYPECONTROLLERS[content.datatype], 
+						DATATYPECONTROLLERS[content.datatype],
 						dataForDatatypeController
 					).getView();
 			} else {
@@ -71,7 +71,7 @@ $.init = function() {
 					} else if (typeof VALUES[element] != 'undefined') {
 						value = VALUES[element];
 					}
-					
+
 				};
 
 				APP.log("debug","value:");
@@ -86,16 +86,17 @@ $.init = function() {
 				}).getView();
 			}
 			$.bundleRowContent.add(row);
-			
+
 		}
 		j++;
 	};
 };
 
 $.removeButton.addEventListener("click", function(_event) {
-	CONFIG.parent.remove($.bundleRow);
-	$.destroy();
+	if((typeof CONFIG.parent) !== "undefined") {
+		CONFIG.parent.remove($.bundleRow);
+	}
+	//$.destroy();
 });
 
 $.init();
-	

@@ -1,18 +1,6 @@
 var APP = require("core");
 var CONFIG = arguments[0] || {};
 var VALUES = CONFIG.values || {};
-var DATATYPECONTROLLERS = {
-	"Text":"edit_metadata_element_text",
-	"Currency":"edit_metadata_element_currency",
-	"Numeric":"edit_metadata_element_numeric",
-	"Text":"edit_metadata_element_text",
-	"Url":"edit_metadata_element_url",
-	"Length":"edit_metadata_element_length",
-	"Weight":"edit_metadata_element_weight",
-	"Entities":"edit_metadata_related_entities",
-	"StorageLocations": "edit_metadata_related_storage_locations"
-};
-//APP.log("debug",CONFIG);
 
 $.init = function() {
 	$.bundleItemName.text = CONFIG.content.name;
@@ -38,7 +26,7 @@ $.init = function() {
 
 	if (VALUES.length > 1) {
 		numrows = VALUES.length
-	}; 
+	};
 
 	// looping through each row to display metadatas values
 	for (var i = 0; i < numrows; i++) {
@@ -55,15 +43,15 @@ $.init = function() {
 	}
 };
 
-/* 
+/*
  *  Handlers
  */
 
-// Folding bundle 
+// Folding bundle
 $.bundleItem.addEventListener("click", function(_event) {
 	APP.openLoading();
 	setTimeout(function() {
-		if ($.bundleItemElements.visible == true) {			
+		if ($.bundleItemElements.visible == true) {
 			$.bundleItemElements.visible = false;
 			$.bundleItemElements.height = 1;
 			$.addNewButtonView.visible = false;
@@ -78,7 +66,7 @@ $.bundleItem.addEventListener("click", function(_event) {
 		}
 	},300);
 	APP.closeLoading();
-	
+
 });
 
 // Add new bundle container (+)
@@ -92,4 +80,3 @@ $.addNewButton.addEventListener("click", function(_event) {
 });
 
 $.init();
-	

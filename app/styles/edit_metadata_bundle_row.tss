@@ -10,8 +10,8 @@
 	right:"10dp"
 },
 "#removeButton": {
-	color:"blue",
+	height:Ti.UI.SIZE,
+	width:Ti.UI.SIZE,
 	top:"0",
-	right:"20dp",
-	height:"20dp"
+	right:"20dp"
 }

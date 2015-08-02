@@ -1,6 +1,6 @@
 /**
  * Controller for DateRange metadata
- * 
+ *
  * @class Controllers.text
  * @uses core
  */
@@ -20,8 +20,8 @@ $.init = function() {
 	};
 
 	// Field title
-	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j; 
-
+	//$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j;
+	$.label.hide();
 	$.datefield.value = value;
 
 };
@@ -62,5 +62,3 @@ $.datefield.addEventListener('blur', function() {
 });
 
 $.init();
-
-
