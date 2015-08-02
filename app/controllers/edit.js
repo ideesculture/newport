@@ -32,7 +32,7 @@ $.heading.text = CONFIG.obj_data.display_label+"\n"+CONFIG.obj_data.idno;
 // Temporary fixing the table we"re editing, need to come through CONFIG after
 //$.TABLE = CONFIG.type;
 $.TABLE = "ca_objects";
-// List of all screen
+// List of all screens
 $.SCREENS = [];
 // Index of the screen we want to display, default -1 (first available)
 $.SCREEN = "";
@@ -94,8 +94,6 @@ $.init = function() {
 
 
 	// uiRetrieveData is called from objectRetrieveCallbackFunctions : we need to have the values available before displaying bundles
-	//$.uiRetrieveData();
-	//$.objectRetrieveData();
 
 	if(CONFIG.isChild === true) {
 		$.NavigationBar.showBack(function(_event) {
@@ -190,13 +188,21 @@ $.uiRetrieveCallbackFunctions = function() {
 	APP.log("debug", "uiRetrieveCallbackFunctions");
 	$.UI_CODE = UI_MODEL.getFirstAvailableUIForTable($.TABLE).code;
 	APP.log("debug", $.UI_CODE);
-	// Fetching defaulft (aka first) available screen for this UI
-	if($.SCREEN == "") {
-		$.uiHandleData(UI_MODEL.getFirstAvailableScreenWithContentForUI($.TABLE,$.UI_CODE));
+
+	// If the list of the screens is not initiated, populate it from the model
+	$.SCREENS = UI_MODEL.getAllScreensWithContentForUI($.TABLE,$.UI_CODE);
+	if ($.screenButtonsScrollView.children.length == 0) {
+		$.initializeScreenButtons();
+		$.SCREEN = $.getFirstScreenCode();
+		$.activateScreen($.getFirstScreenCode());
 	} else {
 		$.uiHandleData(UI_MODEL.getContentForScreen($.TABLE,$.UI_CODE,$.SCREEN));
 	}
 };
+
+$.getFirstScreenCode = function() {
+	return $.screenButtonsScrollView.children[0].children[0].code;
+}
 
 $.uiRetrieveData = function(_force, _callback) {
 
@@ -236,53 +242,51 @@ $.uiRetrieveData = function(_force, _callback) {
 	}
 };
 
-$.uiHandleData = function(_data) {
-	//APP.openLoading();
-
-	// If the list of the screens is not initiated, populate it from the model
-	//if($.SCREENS.length == 0) {
-	$.SCREENS = UI_MODEL.getAllScreensWithContentForUI($.TABLE,$.UI_CODE);
-	//}
-
-	// Create a label for each screen allowed for the object type and add it to $.screenButtonsScrollView
-	var labels= [];
-	if ($.screenButtonsScrollView.children.length == 0) {
-		for(var index in $.SCREENS) {
-			if(typeof ($.SCREENS[index].content!= "undefined")) {
-				if ((typeof $.SCREENS[index].content.typeRestrictions) != "undefined") {
-					var type_restrictions = $.SCREENS[index].content.typeRestrictions;
-					if(type_restrictions[type_id]!= null){
-						//alert(type_restrictions[type_id]);
-						var labelMargin = Ti.UI.createView();
-						$.addClass(labelMargin,"buttonMargin");
-						var label = Ti.UI.createLabel({
-						    color: '#000',
-						    text: $.SCREENS[index].preferred_labels,
-						    textAlign: 'center',
-						    code:$.SCREENS[index].code
-						});
-						$.addClass(label,"button");
-						labelMargin.add(label);
-						$.screenButtonsScrollView.add(labelMargin);
-					}
-				} else {
+$.initializeScreenButtons = function() {
+	for(var index in $.SCREENS) {
+		if(typeof ($.SCREENS[index].content!= "undefined")) {
+			if ((typeof $.SCREENS[index].content.typeRestrictions) != "undefined") {
+				var type_restrictions = $.SCREENS[index].content.typeRestrictions;
+				if(type_restrictions[type_id]!= null){
+					//alert(type_restrictions[type_id]);
 					var labelMargin = Ti.UI.createView();
 					$.addClass(labelMargin,"buttonMargin");
+					// mark first screen as valid
+					if(index == 0) {
+						labelMargin.setBackgroundColor(Alloy.Globals.primaryColor);
+					}
 					var label = Ti.UI.createLabel({
-					    color: '#000',
-					    text: $.SCREENS[index].preferred_labels,
-					    textAlign: 'center',
-					    code:$.SCREENS[index].code
+						color: '#000',
+						text: $.SCREENS[index].preferred_labels,
+						textAlign: 'center',
+						code:$.SCREENS[index].code
 					});
 					$.addClass(label,"button");
 					labelMargin.add(label);
 					$.screenButtonsScrollView.add(labelMargin);
 				}
-
+			} else {
+				var labelMargin = Ti.UI.createView();
+				$.addClass(labelMargin,"buttonMargin");
+				var label = Ti.UI.createLabel({
+					color: '#000',
+					text: $.SCREENS[index].preferred_labels,
+					textAlign: 'center',
+					code:$.SCREENS[index].code
+				});
+				$.addClass(label,"button");
+				labelMargin.add(label);
+				$.screenButtonsScrollView.add(labelMargin);
 			}
-
 		}
 	}
+}
+
+$.uiHandleData = function(_data) {
+	//APP.openLoading();
+
+	// Create a label for each screen allowed for the object type and add it to $.screenButtonsScrollView
+	var labels= [];
 	var rows=[];
 
 	var i = 0;
@@ -475,25 +479,29 @@ $.objectRetrieveData = function() {
 $.objectHandleData = function(_data) {
 }
 
-$.screenButtonsScrollView.addEventListener("click", function(_event) {
-	APP.log("debug", "screenButtonsScrollView");
-	// Getting screen code from the code parameter inside the label
+$.activateScreen = function(code) {
 	APP.openLoading();
-	$.SCREEN = _event.source.code;
-	//$.modelRetrieveData();
-
+	if ($.screenButtonsScrollView.children.length > 0) {
+		for(var child in $.screenButtonsScrollView.children) {
+			if ($.screenButtonsScrollView.children[child].children[0].code == code) {
+				// If grand-children code in screenButtonsScrollView == designated code, change background...
+				$.screenButtonsScrollView.children[child].setBackgroundColor(Alloy.Globals.primaryColor);
+			} else {
+				// ... else back to default bg color
+				$.screenButtonsScrollView.children[child].setBackgroundColor(Alloy.Globals.secondaryColor);
+			}
+		}
+	}
+	$.SCREEN = code;
 	setTimeout(function() {
-				$.uiRetrieveData();
-
-		   	},500);
-
-	//_event.source.code => ce qu'on veut
-});
+		$.uiRetrieveData();
+	},500);
+}
 
 /*
  * SAVE BUTTON
  */
- save = function () {
+$.save = function () {
  	if ($.hasChanged == true) {
 		APP.log("debug","------SAVE-----");
 
@@ -530,6 +538,7 @@ $.screenButtonsScrollView.addEventListener("click", function(_event) {
 		dialog.show();
 	}
  }
+
 $.updateRightButtonSave = function() {
 	if(!FLAG_SAVE){
 		FLAG_SAVE =true;
@@ -555,7 +564,7 @@ $.updateRightButtonSave = function() {
 
 					} else if (e.index == 0) {
 						// Save
-						save();
+						$.save();
 					}
 				});
 				dialog.show();
@@ -563,7 +572,6 @@ $.updateRightButtonSave = function() {
 		});
 	}
 }
-
 
 $.updateRightButtonRefresh = function() {
 	$.NavigationBar.showRight({
@@ -595,6 +603,17 @@ $.updateRightButtonRefresh = function() {
 	});
 }
 
+/*
+ * LISTENERS
+ */
+
+$.screenButtonsScrollView.addEventListener("click", function(_event) {
+	// Getting screen code from the code parameter inside the label, checking if there to avoid acting on a margin view click
+	if(typeof (_event.source.code)!= "undefined") {
+		APP.log("debug", "screenButtonsScrollView");
+		$.activateScreen(_event.source.code)
+	}
+});
 
 //UPDATES STORAGE FUNCTION
 //when the content of a field has changed, the new content is stored id _edit_updates
