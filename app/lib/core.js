@@ -323,8 +323,6 @@ var APP = {
 
 			db.execute("END TRANSACTION;");
 		}
-
-		data.close();
 		db.close();
 	},
 	/**
@@ -340,7 +338,8 @@ var APP = {
 	 * Loads in the appropriate controller and config data
 	 */
 	loadContent: function() {
-		APP.log("debug", "APP.loadContent");
+		Ti.API.log("debug","APP.loadContent");
+		//APP.log("debug", "APP.loadContent");
 
 		var contentFile = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, "app.json");
 
