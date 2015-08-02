@@ -3,6 +3,9 @@
 		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" />
 
     	<View id="container">
+            <View id="headingWrapper">
+	             <Label id="heading" text="Edit" />
+            </View>
 	  		<View id="bundleView">
 		        <ScrollView id="screenButtonsScrollView" platform="ios">
 		        </ScrollView>

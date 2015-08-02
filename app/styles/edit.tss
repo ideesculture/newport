@@ -7,17 +7,23 @@
 	layout: "vertical",
 	showVerticalScrollIndicator: true
 },
+"#headingWrapper": {
+	height: Ti.UI.SIZE,
+	width: Ti.UI.FILL,
+	backgroundColor:"black"
+}
 "#heading": {
 	top: "15dp",
 	left: "15dp",
 	right: "15dp",
+	bottom:"15dp",
 	height: Ti.UI.SIZE,
 	width: Ti.UI.FILL,
 	font: {
 		fontSize: "18dp",
 		fontFamily: "HelveticaNeue-Light"
 	},
-	color: "#000"
+	color: "white"
 },
 "#bundleView": {
 	height: Ti.UI.SIZE,
