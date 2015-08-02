@@ -1,6 +1,6 @@
 /**
  * Controller for an object block bottom of the screen
- * 
+ *
  * @class Controllers.text
  * @uses core
  */
@@ -18,8 +18,8 @@ $.init = function() {
 	$.objectName.text = CONFIG.obj_data.display_label;
 
 	// Loading URL for object details, replacing ID by the current object_id
-	CONFIG.url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.obj_data.object_id);
 	CONFIG.validity = APP.Settings.CollectiveAccess.urlForObjectDetails.cache;
+	CONFIG.url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForObjectDetails.url2.replace(/ID/g,CONFIG.obj_data.object_id);
 
 	OBJECT_DETAILS.init($.TABLE);
 	$.retrieveData();
@@ -82,8 +82,8 @@ $.handleData = function(_data) {
 		}
 
 		var modal_info = {
-			obj_data: CONFIG.obj_data,		
-			container: CONFIG.modal	
+			obj_data: CONFIG.obj_data,
+			container: CONFIG.modal
 		}
 		if (image_file) {
 			modal_info.image_file = image_file;
@@ -94,7 +94,7 @@ $.handleData = function(_data) {
 	    	animate : true
 		});
 	});
-	
+
 	$.cellimage.addEventListener('longpress',function(e) {
 		APP.log("debug","$.cellimage.addEventListener");
 		// if menu opened, close it
@@ -103,8 +103,8 @@ $.handleData = function(_data) {
 		}
 
 		var modal_info = {
-			obj_data: CONFIG.obj_data,		
-			container: CONFIG.modal	
+			obj_data: CONFIG.obj_data,
+			container: CONFIG.modal
 		}
 		if (image_file) {
 			modal_info.image_file = image_file;
@@ -125,8 +125,8 @@ $.handleData = function(_data) {
 		}
 
 		var modal_info_iicon = {
-			obj_data: CONFIG.obj_data,		
-			container: CONFIG.modal	
+			obj_data: CONFIG.obj_data,
+			container: CONFIG.modal
 		}
 		if (image_file) {
 			modal_info_iicon.image_file = image_file;
