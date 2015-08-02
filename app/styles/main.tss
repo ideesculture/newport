@@ -15,7 +15,6 @@
 	contentHeight: 'auto',
 	height: "100%"
 },
-
 "#breadcrumb": {
 	top: 15,
 	left: 15,
@@ -129,7 +128,7 @@
 },
 "#objectsView":{
 	layout: "horizontal",
-	top: 50,
+	top: 10,
 	left: 10,
 	right: 10,
 	contentWidth: "100%",
