@@ -25,7 +25,7 @@ $.TABLE = "ca_objects";
 // Logging controller start
 
 $.init = function() {
-
+	APP.openLoading();
 	//APP.dropDatabase();
 
 	// loading url & cache validity from settings
@@ -152,7 +152,7 @@ $.retrieveCallbackFunctions = function() {
 	// Handling right side last modified records
 	$.handleLastModifiedData(HIERARCHY_MODEL.getLastRecords($.TABLE));
 	$.updateRightButtonShowLast();
-
+	APP.closeLoading();
 }
 
 /**
