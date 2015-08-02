@@ -1,6 +1,6 @@
 <Alloy autoStyle="true">
     <View id="Wrapper" name="Text">
-		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
+		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Newport" />
 
     	<View id="container">
             <View id="headingWrapper">

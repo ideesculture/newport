@@ -136,7 +136,7 @@ $.init = function() {
 		});
 	}
 
-	$.NavigationBar.text = "Archivio Teatro Regio";
+	//$.NavigationBar.text = "Archivio Teatro Regio";
 
 	// Setting main view to full screen width
 	$.mainview.width = maxwidth;

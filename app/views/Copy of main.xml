@@ -1,27 +1,27 @@
 <Alloy>
     <View id="Wrapper" name="Text">
-		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
-    	
+		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Newport" />
+
     	<View id="container">
     		<View id="mainview" >
 				<Label id="heading" text="Home >" />
-		  		
+
 		  		<View id="foldersView">
 		  			<View class="foldersTop">
 		  				<View class="foldersTitle">
 	  						<Label class="label" text="Folders" />
 						</View>
-	  					
+
 		  				<View class="foldersButtons">
 		  					<Require type="widget" src="ti.ux.iconfont" icon="fa-th-large" left="12" size="36" color="#aaa" class="faIcon"/>
 		  					<Require type="widget" src="ti.ux.iconfont" icon="fa-align-justify" left="12" size="36" color="#000" class="faIcon"/>
 		  				</View>
 		  			</View>
-		  			
+
 		    		<ScrollView class="folderItems">
 		    			<View class="foldersItem">
 		    				<Label class="label foldersItemName" text="Item" />
-		    				
+
 		    				<View class="foldersItemRight">
 		    					<Label class="label foldersItemCount" text="(2)" />
 			  					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="0" size="20" color="#000" class="folderIcon"/>
@@ -29,7 +29,7 @@
 		    			</View>
 		    			<View class="foldersItem">
 		    				<Label class="label foldersItemName" text="Item" />
-		    				
+
 		    				<View class="foldersItemRight">
 		    					<Label class="label foldersItemCount" text="(34)" />
 			  					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="0" size="20" color="#000" class="folderIcon"/>
@@ -37,7 +37,7 @@
 		    			</View>
 		    			<View class="foldersItem">
 		    				<Label class="label foldersItemName" text="Item" />
-		    				
+
 		    				<View class="foldersItemRight">
 		    					<Label class="label foldersItemCount" text="(5)" />
 			  					<Require type="widget" src="ti.ux.iconfont" icon="fa-folder" left="0" size="20" color="#000" class="folderIcon"/>
@@ -45,25 +45,25 @@
 		    			</View>
 					</ScrollView>
 				</View>
-				
+
 				<ScrollView id="table">
 		  			<View class="foldersTop">
 		  				<View class="foldersTitle">
 	  						<Label class="label" text="Objects" />
 						</View>
-	  					
+
 		  				<View class="foldersButtons">
 		  					<Require type="widget" src="ti.ux.iconfont" icon="fa-th-large" left="12" size="36" color="#000" class="faIcon"/>
 		  					<Require type="widget" src="ti.ux.iconfont" icon="fa-align-justify" left="12" size="36" color="#aaa" class="faIcon"/>
 		  				</View>
 		  			</View>
-	
+
 					<View class="cell">
 						<ImageView id="firstImage" class="cellimage" image="/image/cadre-plus-ipad.png" />
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
-		    				
+
 		    				<View class="objectRow2Right">
 		    					<Label class="infoIcon" text="i" />
 		    				</View>
@@ -74,7 +74,7 @@
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
-		    				
+
 		    				<View class="objectRow2Right">
 		    					<Label class="infoIcon" text="i" />
 		    				</View>
@@ -85,7 +85,7 @@
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
-		    				
+
 		    				<View class="objectRow2Right">
 		    					<Label class="infoIcon" text="i" />
 		    				</View>
@@ -96,7 +96,7 @@
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
-		    				
+
 		    				<View class="objectRow2Right">
 		    					<Label class="infoIcon" text="i" />
 		    				</View>
@@ -107,7 +107,7 @@
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
-		    				
+
 		    				<View class="objectRow2Right">
 		    					<Label class="infoIcon" text="i" />
 		    				</View>
@@ -118,7 +118,7 @@
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
-		    				
+
 		    				<View class="objectRow2Right">
 		    					<Label class="infoIcon" text="i" />
 		    				</View>
@@ -129,7 +129,7 @@
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
-		    				
+
 		    				<View class="objectRow2Right">
 		    					<Label class="infoIcon" text="i" />
 		    				</View>
@@ -140,17 +140,17 @@
 						<Label class="objectName" text="Object 1" />
 		    			<View class="objectRow2">
 		    				<Label class="objectInfo" text="Item" />
-		    				
+
 		    				<View class="objectRow2Right">
 		    					<Label class="infoIcon" text="i" />
 		    				</View>
 		    			</View>
 					</View>
-	
-	
+
+
 		        </ScrollView>
 			</View>
-			
+
 	    	<View id="rightbar">
 	    		<View id="rightbarContainer">
 					<Label text="Last Modified" id="rightbarTitle"></Label>

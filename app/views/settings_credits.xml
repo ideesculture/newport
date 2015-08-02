@@ -1,9 +1,9 @@
 <Alloy>
 	<View id="Wrapper" name="Settings Credits">
-		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
-		
+		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Newport" />
+
 		<ScrollView id="container">
-			
+
 		</ScrollView>
 	</View>
 </Alloy>

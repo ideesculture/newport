@@ -68,7 +68,7 @@ $.init = function() {
 	APP.ca_password=APP.Settings.CollectiveAccess.password;
 
 	$.heading.color = APP.Settings.colors.hsb.primary.b > 70 ? "#000" : APP.Settings.colors.primary;
-	
+
 	// Defining global variables for styling
 	Alloy.Globals.primaryColor =  APP.Settings.colors.primary;
 	Alloy.Globals.secondaryColor = APP.Settings.colors.secondary;
@@ -119,7 +119,6 @@ $.init = function() {
 		}
 	}
 
-	$.NavigationBar.text = "Archivio Teatro Regio";
 	//$.NavigationBar.text = "Archivio Teatro Regio";
 	APP.log("debug","$.NavigationBar.text");
 	APP.log("debug",$.NavigationBar.text);
@@ -301,7 +300,7 @@ $.uiHandleData = function(_data) {
 		if (typeof _data.content != "undefined") {
 			//APP.log("debug", "not undefined!");
 			APP.log("debug", "$.RECORD.attributes: (looking for VALUES)");
-			APP.log("debug", $.RECORD.attributes); 
+			APP.log("debug", $.RECORD.attributes);
 			// If we have some content back
 			var screen_content = _data.content.screen_content;
 			for(var bundle in screen_content) {

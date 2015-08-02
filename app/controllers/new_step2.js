@@ -124,7 +124,7 @@ $.init = function() {
 		}
 	}
 
-	$.NavigationBar.text = "Archivio Teatro Regio";
+	//$.NavigationBar.text = "Archivio Teatro Regio";
 };
 
 $.retrieveData = function(_force, _callback){

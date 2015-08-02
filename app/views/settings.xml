@@ -1,8 +1,8 @@
 <Alloy>
 	<View id="Wrapper" name="Settings">
-		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
-		
-		<ScrollView id="container">			
+		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Newport" />
+
+		<ScrollView id="container">
 			<TableView id="logs_table" height="280dp">
 				<TableViewRow id="logs" title="Send Application Logs" hasChild="true" />
 				<TableViewRow id="flushlogs" title="Flush application logs" hasChild="true" />
@@ -11,7 +11,7 @@
 				<TableViewRow id="emptycache" title="Development : clear the local cache" hasChild="true" />
 				<TableViewRow id="send" title="Development : send modified data to the server" hasChild="true" />
 			</TableView>
-			
+
 			<Label id="copyright" />
 			<Label id="version" />
 		</ScrollView>

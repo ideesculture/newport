@@ -1,18 +1,17 @@
 <Alloy>
 	<View id="Wrapper" name="new">
-		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Archivio Teatro Regio" />
+		<Require type="widget" src="com.mcongrove.navigationBar" id="NavigationBar" text="Newport" />
 
-		<Label id="label_typechoice" text="What type of object do you want to create?"/>		
+		<Label id="label_typechoice" text="What type of object do you want to create?"/>
 		<ScrollView id="container">
-		
+
 			<TableView id="types_table">
 				<!-- this table is dynamically populated by new.js -->
-				
+
 			</TableView>
-			
+
 			<Label id="copyright" />
 			<Label id="version" />
 		</ScrollView>
 	</View>
 </Alloy>
-
