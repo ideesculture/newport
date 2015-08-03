@@ -360,7 +360,6 @@ $.uiHandleData = function(_data) {
 								var row = Alloy.createController("edit_media_photo", obj_data ).getView();
 								rows.push(row);
 								break;
-
 							case "ca_entities":
 								var values = $.EMPTY_BUNDLE;
 								var temp_objet = {};
@@ -397,6 +396,20 @@ $.uiHandleData = function(_data) {
 									newport_id:{0:i}
 								}).getView();
 								rows.push(row);
+								break;
+							case "access":
+								var values = $.EMPTY_BUNDLE;
+								var temp_objet = {};
+								Ti.API.log("debug","access");
+								Ti.API.log("debug",$.RECORD);
+								var row = Alloy.createController("edit_unsupported_bundle", {
+									bundle_code:bundle_code,
+									content:{},
+									values:values,
+									newport_id:{0:i}
+								}).getView();
+								rows.push(row);
+								//rows.push(notSupportedLabel);
 								break;
 							default:
 								var values = $.EMPTY_BUNDLE;
