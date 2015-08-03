@@ -77,8 +77,15 @@
 			"urlForStorageLocations":{
 				"url": "http://administrator:admin@127.0.0.1/gestion/service.php/find/ca_storage_locations?q=*&source={\"bundles\":{\"created\": {\"returnAsArray\":true},\"parent_id\":{},\"ca_storage_locations.type_id\":{}}}&pretty=1",
 				"cache":"86400"
+			},
+			"urlForLists":{
+				"url": "http://administrator:admin@127.0.0.1/gestion/service.php/find/ca_lists/?q=*&pretty=1",
+				"cache":"86400"
+			},
+			"urlForListItems":{
+				"url": "http://administrator:admin@127.0.0.1/gestion/service.php/find/ca_list_items/?q=ca_lists:LISTCODE",
+				"cache":"86400"
 			}
-
 		},
 		"defaultdisplay" : {
 			"topfolders":"main_folders_row",
