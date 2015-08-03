@@ -79,11 +79,11 @@
 				"cache":"86400"
 			},
 			"urlForLists":{
-				"url": "http://administrator:admin@127.0.0.1/gestion/service.php/find/ca_lists/?q=*&pretty=1",
+				"url": "find/ca_lists/?q=*&source={\"bundles\":{\"list_code\":{},\"default_sort\":{},\"is_hierarchical\":{},\"is_system_list\":{},\"use_as_vocabulary\":{}}}&pretty=1",
 				"cache":"86400"
 			},
 			"urlForListItems":{
-				"url": "http://administrator:admin@127.0.0.1/gestion/service.php/find/ca_list_items/?q=ca_lists:LISTCODE",
+				"url": "find/ca_list_items/?q=ca_lists:access_statuses&source={\"bundles\":{\"item_value\":{},\"is_enabled\":{},\"is_default\":{},\"rank\":{},\"parent_id\":{}}}&pretty=1",
 				"cache":"86400"
 			}
 		},

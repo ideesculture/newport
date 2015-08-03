@@ -297,6 +297,8 @@ $.uiHandleData = function(_data) {
 		//APP.log("debug", _data);
 		if (typeof _data.content != "undefined") {
 			//APP.log("debug", "not undefined!");
+			APP.log("debug", "$.RECORD intrinsic fields :");
+			APP.log("debug", $.RECORD.intrinsic_fields);
 			APP.log("debug", "$.RECORD.attributes: (looking for VALUES)");
 			APP.log("debug", $.RECORD.attributes);
 			// If we have some content back
@@ -398,18 +400,15 @@ $.uiHandleData = function(_data) {
 								rows.push(row);
 								break;
 							case "access":
-								var values = $.EMPTY_BUNDLE;
-								var temp_objet = {};
+								var values = $.RECORD.intrinsic_fields.access;
 								Ti.API.log("debug","access");
 								Ti.API.log("debug",$.RECORD);
-								var row = Alloy.createController("edit_unsupported_bundle", {
+								var row = Alloy.createController("edit_access_bundle", {
 									bundle_code:bundle_code,
 									content:{},
-									values:values,
-									newport_id:{0:i}
+									values:values
 								}).getView();
 								rows.push(row);
-								//rows.push(notSupportedLabel);
 								break;
 							default:
 								var values = $.EMPTY_BUNDLE;
@@ -421,7 +420,6 @@ $.uiHandleData = function(_data) {
 									newport_id:{0:i}
 								}).getView();
 								rows.push(row);
-								//rows.push(notSupportedLabel);
 								break;
 						}//END SWITCH
 					}//END ELSE (if bundle_code.substring= attribute, else switch)

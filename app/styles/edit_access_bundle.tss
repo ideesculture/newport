@@ -1,0 +1,65 @@
+"#bundleItemContainer": {
+	top:"0dp",
+	width: Ti.UI.FILL,
+	layout: "vertical",
+	height:Ti.UI.SIZE
+},
+"#bundleItemForm": {
+	top:"0dp",
+	height:Ti.UI.SIZE,
+	layout: "vertical"
+},
+"#bundleItem": {
+	top:"0dp",
+	height:"40dp",
+	left:"10dp",
+	right:"10dp",
+	width: Ti.UI.FILL,
+	layout: "absolute",
+	backgroundColor:"white"
+},
+"#bundleItemName": {
+	top:"0dp",
+	left: "10dp",
+	color: '#000',
+	width:"auto",
+	height:"40dp",
+	font: {
+		fontSize: "18dp",
+		fontFamily: "DINAlternate-Bold"
+	}
+},
+"#bundleItemRight": {
+	layout: "horizontal",
+	right: "10dp",
+	width: Ti.UI.SIZE,
+	font: {
+		fontSize: "14dp",
+		fontFamily: "HelveticaNeue"
+	}
+},
+"#arrowIcon":{
+	top:"10dp",
+	width: "20dp",
+	height: "20dp",
+	right:"10dp"
+},
+"#bundleItemElements": {
+	//height:"1dp",
+	height:Ti.UI.SIZE,
+	layout:"vertical",
+	left:"10dp",
+	right:"10dp",
+	bottom:"10dp",
+	backgroundColor:"white"
+},
+"#bundleItemElementsTopBorder": {
+	height:"1dp",
+	left:0,
+	right:0,
+	top:0,
+	backgroundColor:"#eee"
+},
+"#value": {
+	left:0
+}

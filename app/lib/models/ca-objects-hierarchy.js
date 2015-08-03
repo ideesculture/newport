@@ -1,6 +1,6 @@
 /**
  * Collectiveaccess user interface for object edition model
- * 
+ *
  * @class Models.ca-model
  * @uses core
  * @uses http
@@ -13,7 +13,7 @@ var DBNAME = "Newport";
 var table =  "ca_objects";
 var INFO1 = null;
 var INFO2 = null;
-	
+
 function Model() {
 	this.TABLE="";
 	this.INFO1="";
@@ -87,7 +87,7 @@ function Model() {
 			_params.callback();
 		}
 	};
-	
+
 	/**
 	 * Useful to only log the data return when debugging
 	 * @param {Object} _data The returned data
@@ -114,14 +114,14 @@ function Model() {
 			var db = Ti.Database.open(DBNAME);
 			//db.execute("DELETE FROM " + _ca_table + ";");
 			db.execute("BEGIN TRANSACTION;");
-			
+
 			APP.ca_modele_prop = new Array();
 			APP.ca_modele_values = {};
 			var _data2;
 			var last = 0;
 			var ca_table = "ca_objects";
 			var record_type;
-			
+
 			// Browsing data
 		    for (var prop in _data) {
 		    	var record_type = prop;
@@ -130,15 +130,15 @@ function Model() {
 		        	for (var prop2 in _data2) {
 						var record = _data2[prop2];
 		        		Ti.API.log("debug", record);
-		        		
+
 		        		var request = "INSERT INTO " + _ca_table + " (id, ca_table, object_id, parent_id, idno, display_label, created, info1, info2) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
 						db.execute(request, _ca_table, record["object_id"], record["parent_id"], record["idno"], record["display_label"], record["created"]["timestamp"], record[INFO1], record[INFO2]);
 
 						//Ti.API.log("debug","#tuguduuu : "+this);
-		
+
 
 		        		last = prop2;
-	        		} 
+	        		}
 		        }
 		    }
 		   // Ti.API.log("last");
@@ -172,7 +172,7 @@ function Model() {
 		var result = data.getRowCount();
 		data.close();
 		db.close();
-		
+
 		return result;
 	};
 
@@ -203,7 +203,7 @@ function Model() {
 		//APP.log("debug", "LAST RECORDS :::");
 		//APP.log("debug", temp);
 		return temp;
-		
+
 	}
 
 	this.getChildrenFoldersInside = function(_ca_table, id) {
@@ -261,14 +261,14 @@ function Model() {
 	}
 
 	///////////////////////////////////////////////////////////
-	//search locally 
+	//search locally
 	///////////////////////////////////////////////////////////
 	this.getSearchedRecordsLocally = function(_ca_table, _text) {
 
 	//	APP.log("debug", "CA-HIERARCHY.getSearchedRecords");
 
 		//if no connection is available, searches in the local DB
-		
+
 		var db = Ti.Database.open(DBNAME);
 
 		var request = "SELECT idno, object_id, display_label, info1, info2 FROM "+_ca_table+" WHERE display_label LIKE '"+_text+"%' ;";
@@ -293,11 +293,11 @@ function Model() {
 	};
 
 	///////////////////////////////////////////////////////////
-	//search remotely 
+	//search remotely
 	///////////////////////////////////////////////////////////
 
 	this.getSearchedRecords = function(_ca_table, _text, _url, _success_function) {
-		// do a search with the WS 
+		// do a search with the WS
 
 		var error = function() {
 			var dialog = Ti.UI.createAlertDialog({
@@ -311,8 +311,8 @@ function Model() {
 			APP.log("debug", "this.temp");
 			this.temp = _data["results"];
 			APP.log("debug", this.temp);
-			return this.temp; 
-		}			
+			return this.temp;
+		}
 */
 		HTTP.request({
 			timeout: 2000,
@@ -325,7 +325,7 @@ function Model() {
 			success: _success_function,
 			failure: error
 		});
-		
+
 	}
 
 }
