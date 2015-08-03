@@ -12,12 +12,12 @@ var CONFIG = arguments[0];
 var maxwidth = Ti.Platform.displayCaps.platformWidth;
 var maxheight = Ti.Platform.displayCaps.platformHeight;
 var HIERARCHY_MODEL = require("models/ca-objects-hierarchy")();
+var LIST_MODEL = require("models/ca-lists")();
 
 var 	myModal = Ti.UI.createWindow({
 	    title           : 'My Modal',
 	    backgroundColor : 'transparent'
 	});
-//$.NavigationBar.title.text = "loading...";
 
 // Temporary fixing the table we"re editing, need to come through CONFIG after
 $.TABLE = "ca_objects";
@@ -30,30 +30,26 @@ $.init = function() {
 
 	// loading url & cache validity from settings
 	CONFIG.url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForHierarchy.url;
-	//APP.log("debug", "### "+ APP.Settings.CollectiveAccess.urlForHierarchy.url);
-	//CONFIG.url = "http://nogent.idcultu.re/gestion/service.php/find/ca_objects?q=*&source={\"bundles\":{\"created\": {\"returnAsArray\":true},\"parent_id\":{},\"ca_objects.type_id\":{},\"ca_objects.dimensions_in_mm\":{}}}";
 	APP.log("debug", "###2 "+ CONFIG.url);
-	//alert("yo");
+
 	CONFIG.validity = APP.Settings.CollectiveAccess.urlForHierarchy.cache;
-	//DOESNT BRING THE RIGHT VALUE...
-	//CACHE ISSUE
+
 	var info1 = APP.Settings.CollectiveAccess.urlForHierarchy.info1;
 	info1= "ca_objects.type_id";
-	//APP.log("debug", "trululu info1");
-	//APP.log("debug", info1);
+
 	var info2 = APP.Settings.CollectiveAccess.urlForHierarchy.info2;
 
 	// Initiating CA db model class
 	HIERARCHY_MODEL.init($.TABLE, info1, info2);
 
+	// Initiating CA lists model class
+	LIST_MODEL.init();
+
 	// Saving current value of controller
 	if (APP.Settings.defaultdisplay.topfolders == "main_folder_block") {
 		$.toggleFoldersDisplay();
 	}
-
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
-
-
 
 	// Handling breadcrumb
 	if(CONFIG.id) {
@@ -196,6 +192,25 @@ $.retrieveData = function(_force, _callback) {
 		});
 	}
 
+	// Initializing lists model
+	var model_lists_url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForLists.url;
+	var model_lists_cache_validity = APP.Settings.CollectiveAccess.urlForLists.cache;
+	if(COMMONS.isCacheValid(model_lists_url,model_lists_cache_validity)) {
+		APP.log("debug", "cache valid for item lists model");
+	} else {
+		APP.log("debug", "Item lists model fetch");
+		LIST_MODEL.fetch({
+			url: model_lists_url,
+			authString: APP.authString,
+			cache: 0,
+			callback: function() {
+				Ti.API.log("debug","ca-lists.fetch callback");
+			},
+			error: function() {
+				Ti.API.log("debug","ca-lists.fetch error");
+			}
+		});
+	}
 };
 
 /**

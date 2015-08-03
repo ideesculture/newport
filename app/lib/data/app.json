@@ -23,14 +23,14 @@
 			"login":"administrator",
 			"pass":"admin",
 			"locale":"en_US",
-			"urlBase":"http://administrator:admin@aspi.idcultu.re/gestion/service.php",
+			"urlBase":"http://administrator:admin@127.0.0.1/gestion/service.php",
 			"urlForLogin": "http://aspi.idcultu.re/gestion/service.php/find/ca_objects?q=zzzzzzzz",
 			"urlForModel": {
 				"url":"model/ca_objects",
 				"cache":"86400"
 			},
 			"urlForUis" : {
-				"url":"http://administrator:admin@aspi.idcultu.re/gestion/service-uis.php/ca_objects",
+				"url":"http://administrator:admin@127.0.0.1/gestion/service-uis.php/ca_objects",
 				"cache":"86400"
 			},
 			"urlForHierarchy" : {
@@ -40,38 +40,38 @@
 				"info2":"ca_objects.dates_value"
 			},
 			"urlForObjectDetails" : {
-				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/item/ca_objects/id/ID",
+				"url" : "http://administrator:admin@127.0.0.1/gestion/service.php/item/ca_objects/id/ID",
 				"url2" : "item/ca_objects/id/ID",
 				"cache":"86400"
 			},
 			"urlForObjectEdit" : {
-				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/item/ca_objects/id/ID?pretty=1&format=edit",
+				"url" : "http://administrator:admin@127.0.0.1/gestion/service.php/item/ca_objects/id/ID?pretty=1&format=edit",
 				"cache":"86400"
 			},
 			"urlForObjectSave" : {
-				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/item/ca_objects/id/ID",
+				"url" : "http://administrator:admin@127.0.0.1/gestion/service.php/item/ca_objects/id/ID",
 				"cache":"86400"
 			},
 			"urlForObjectSearch" : {
-				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_objects?q=<your_query>*&source={\"bundles\":{\"ca_objects.type_id\":{},\"ca_objects.date.dates_value\":{},\"ca_objects.dimensions_in_mm\":{}}}",
+				"url" : "http://administrator:admin@127.0.0.1/gestion/service.php/find/ca_objects?q=<your_query>*&source={\"bundles\":{\"ca_objects.type_id\":{},\"ca_objects.date.dates_value\":{},\"ca_objects.dimensions_in_mm\":{}}}",
 				"cache":"86400",
 				"info1" : "ca_objects.type_id",
 				"info2":"ca_objects.dimensions_in_mm"
 			},
 			"urlForEntitySearch" : {
-				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_entities?q=<your_query>*&source={\"bundles\": { \"ca_entities.type_id\":{}}}",
+				"url" : "http://administrator:admin@127.0.0.1/gestion/service.php/find/ca_entities?q=<your_query>*&source={\"bundles\": { \"ca_entities.type_id\":{}}}",
 				"cache":"86400"
 			},
 			"urlForEntityInfos" : {
-				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_entities?q=*&source={\"bundles\": { \"created\": {\"returnAsArray\":true},\"ca_entities.type_id\":{}}}",
+				"url" : "http://administrator:admin@127.0.0.1/gestion/service.php/find/ca_entities?q=*&source={\"bundles\": { \"created\": {\"returnAsArray\":true},\"ca_entities.type_id\":{}}}",
 				"cache":"86400"
 			},
 			"urlForEntityModel" : {
-				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/model/ca_entities",
+				"url" : "http://administrator:admin@127.0.0.1/gestion/service.php/model/ca_entities",
 				"cache":"86400"
 			},
 			"urlForEntitySave" : {
-				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/item/ca_entities/id/ID",
+				"url" : "http://administrator:admin@127.0.0.1/gestion/service.php/item/ca_entities/id/ID",
 				"cache":"86400"
 			},
 			"urlForOccurrenceSearch" : {
@@ -83,15 +83,15 @@
 				"cache":"86400"
 			},
 			"urlForStorageLocations":{
-				"url": "http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_storage_locations?q=*&source={\"bundles\":{\"created\": {\"returnAsArray\":true},\"parent_id\":{},\"ca_storage_locations.type_id\":{}}}&pretty=1",
+				"url": "http://administrator:admin@127.0.0.1/gestion/service.php/find/ca_storage_locations?q=*&source={\"bundles\":{\"created\": {\"returnAsArray\":true},\"parent_id\":{},\"ca_storage_locations.type_id\":{}}}&pretty=1",
 				"cache":"86400"
 			},
 			"urlForLists":{
-				"url": "http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_lists/?q=*&pretty=1",
+				"url": "http://administrator:admin@127.0.0.1/gestion/service.php/find/ca_lists/?q=*&pretty=1",
 				"cache":"86400"
 			},
 			"urlForListItems":{
-				"url": "http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_list_items/?q=ca_lists:LISTCODE",
+				"url": "http://administrator:admin@127.0.0.1/gestion/service.php/find/ca_list_items/?q=ca_lists:LISTCODE",
 				"cache":"86400"
 			}
 		},

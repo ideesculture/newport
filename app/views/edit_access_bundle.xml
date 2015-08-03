@@ -1,0 +1,21 @@
+<Alloy>
+	<View id="bundleItemContainer">
+		<View id="bundleItemForm">
+			<View id="bundleItem">
+				<Label id="bundleItemName" text="Access" />
+				<View id="bundleItemRight">
+					<ImageView id="arrowIcon" image="/icons/black/ca_arrow_down.png"></ImageView>
+				</View>
+			</View>
+    		<View id="bundleItemElements">
+				<Label id="value" text="..." />
+				<ScrollableView id="accessContainerView">
+						<View id="container2">
+							<TableView id="accessTable">
+							</TableView>
+						</View>
+				</ScrollableView>
+			</View>
+		</View>
+	</View>
+</Alloy>

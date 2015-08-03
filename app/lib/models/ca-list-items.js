@@ -1,5 +1,5 @@
 /**
- * Collectiveaccess lists
+ * Collectiveaccess list-items
  *
  * @class Models.ca-model
  * @uses core
@@ -10,7 +10,7 @@ var APP = require("core");
 var HTTP = require("http");
 var UTIL = require("utilities");
 var DBNAME = "Newport";
-var TABLE = "ca_lists";
+var TABLE = "ca_list_items";
 
 function Model() {
 	this.temp = {};
@@ -19,12 +19,12 @@ function Model() {
 	 * Initializes the model
 	 */
 	this.init = function() {
-		Ti.API.log("debug", "ca-lists.init");
+		Ti.API.log("debug", "ca-list-items.init");
 		var db = Ti.Database.open(DBNAME);
 		Ti.API.log("debug","TABLE");
 		Ti.API.log("debug",TABLE);
 
-		var request = "CREATE TABLE IF NOT EXISTS " + TABLE + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, list_id INTEGER, list_item_id INTEGER, list_code TEXT, display_label TEXT, default_sort INTEGER, is_hierarchical INTEGER, is_system_list INTEGER, use_as_vocabulary INTEGER);";
+		var request = "CREATE TABLE IF NOT EXISTS " + TABLE + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, item_id INTEGER, idno TEXT, display_label TEXT, item_value INTEGER, is_default INTEGER, rank INTEGER, parent_id INTEGER);";
 		db.execute(request);
 		db.close();
 	};
@@ -46,7 +46,7 @@ function Model() {
 	 * @param {Number} _params.cache The length of time to consider cached data 'warm'
 	 */
 	this.fetch = function(_params) {
-		Ti.API.log("debug", "ca-lists.fetch");
+		Ti.API.log("debug", "ca-list-items.fetch");
 		//APP.log("trace", UTIL.jsonStringify(_params));
 
 		var isStale = UTIL.isStale(_params.url, _params.cache);
@@ -56,7 +56,7 @@ function Model() {
 			if(_params.cache !== 0 && isStale !== "new") {
 				_params.callback();
 			}
-			Ti.API.log("debug","ca-lists HTTP.request");
+			Ti.API.log("debug","ca-list-items HTTP.request");
 			HTTP.request({
 				timeout: 30000,
 				async:false,
@@ -69,7 +69,7 @@ function Model() {
 				//success: this.echoData,
 				failure: this.echoErrorData
 			});
-			Ti.API.log("debug","ca-lists HTTP.request end");
+			Ti.API.log("debug","ca-list-items HTTP.request end");
 		} else {
 			_params.callback();
 		}
@@ -100,6 +100,10 @@ function Model() {
 	 * @param {Function} _callback The function to run on data retrieval
 	 */
 	this.handleData = function(_data, _url, _callback) {
+		Ti.API.log("debug", "ca-list-items.handleData");
+		Ti.API.log("debug", _data.results);
+		Ti.API.log("debug", "ca-list-items.handleData");
+		Ti.API.log("debug", _data.results);
 		if(_data.ok == true) {
 
 			var db = Ti.Database.open(DBNAME);
@@ -108,8 +112,10 @@ function Model() {
 			// Browsing data
 		    for (var num in _data.results) {
 				var record = _data.results[num];
-        		var request = "INSERT INTO " + TABLE + " (id, ca_table, list_id, list_item_id, display_label, list_code, default_sort, is_hierarchical, is_system_list, use_as_vocabulary) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-				db.execute(request, TABLE, record["list_id"], record["id"], record["display_label"], record["list_code"], record["default_sort"], record["is_hierarchical"], record["is_system_list"], record["use_as_vocabulary"]);
+        		Ti.API.log("debug", record);
+
+        		var request = "INSERT INTO " + TABLE + " (id, ca_table, item_id, idno, display_label, item_value, is_default, rank, parent_id) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
+				db.execute(request, TABLE, record["item_id"], record["idno"], record["display_label"], record["item_value"], record["is_default"], record["rank"], record["parent_id"]);
 		    }
 			db.execute("INSERT OR REPLACE INTO updates (url, time) VALUES(" + UTIL.escapeString(_url) + ", " + new Date().getTime() + ");");
 			db.execute("END TRANSACTION;");
@@ -141,25 +147,6 @@ function Model() {
 		return temp;
 	}
 
-	this.getListIDFromListCode = function(listCode) {
-		var request = "select list_id as nb from "+TABLE+" where list_code like '"+listCode+"' group by 1";
-		return this.getDataFromDB(request);
-	}
-
-	this.getLabelFromListCode = function(listCode) {
-		var request = "select display_label as nb from "+TABLE+" where list_code like '"+listCode+"' group by 1";
-		return this.getDataFromDB(request);
-	}
-
-	this.getFromListCode = function(listCode) {
-		var request = "select * from "+TABLE+" where list_code like '"+listCode+"' group by 1";
-		return this.getDataFromDB(request);
-	}
-
-	this.getFromListID = function(listID) {
-		var request = "select * from "+TABLE+" where list_id='"+listID+"' group by 1";
-		return this.getDataFromDB(request);
-	}
 };
 
 module.exports = function() {

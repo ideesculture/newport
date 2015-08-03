@@ -294,9 +294,12 @@ $.uiHandleData = function(_data) {
 	// error handling if _data has not been rightly fetched back
 	if (typeof _data != "undefined") {
 		APP.log("debug", "UI HANDLE DATA");
-
 		if (typeof _data.content != "undefined") {
-
+			//APP.log("debug", "not undefined!");
+			APP.log("debug", "$.RECORD intrinsic fields :");
+			APP.log("debug", $.RECORD.intrinsic_fields);
+			APP.log("debug", "$.RECORD.attributes: (looking for VALUES)");
+			APP.log("debug", $.RECORD.attributes);
 			// If we have some content back
 			var screen_content = _data.content.screen_content;
 			for(var bundle in screen_content) {
@@ -437,18 +440,15 @@ $.uiHandleData = function(_data) {
 								break;
 
 							case "access":
-								var values = $.EMPTY_BUNDLE;
-								var temp_objet = {};
+								var values = $.RECORD.intrinsic_fields.access;
 								Ti.API.log("debug","access");
 								Ti.API.log("debug",$.RECORD);
-								var row = Alloy.createController("edit_unsupported_bundle", {
+								var row = Alloy.createController("edit_access_bundle", {
 									bundle_code:bundle_code,
 									content:{},
-									values:values,
-									newport_id:{0:i}
+									values:values
 								}).getView();
 								rows.push(row);
-								//rows.push(notSupportedLabel);
 								break;
 								
 							default:
@@ -461,7 +461,6 @@ $.uiHandleData = function(_data) {
 									newport_id:{0:i}
 								}).getView();
 								rows.push(row);
-								//rows.push(notSupportedLabel);
 								break;
 						}//END SWITCH
 					}//END ELSE (if bundle_code.substring= attribute, else switch)
