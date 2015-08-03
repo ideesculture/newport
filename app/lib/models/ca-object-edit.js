@@ -443,6 +443,19 @@ function Model() {
 						json.related = attributes;
 						break;
 
+					case "ca_objects":
+						if(fieldToSave.is_modified){
+							remove_relationships[0] = fieldToSave.bundle_code;
+							json.remove_relationships = remove_relationships;
+						}
+						tempobj ={}; attributes = {}; 
+						tempobj["object_id"]= fieldToSave.valeur; 
+						tempobj["type_id"]= fieldToSave.type_id; 
+						temptab[0]= tempobj; 
+						attributes[fieldToSave.bundle_code] = temptab; 
+						json.related = attributes;
+						break;
+
 					case "ca_storage_locations":
 						if(fieldToSave.is_modified){
 							remove_relationships[0] = fieldToSave.bundle_code;

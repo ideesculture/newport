@@ -12,6 +12,7 @@ var DATATYPECONTROLLERS = {
 	"Weight":"edit_metadata_element_weight",
 	"DateRange":"edit_metadata_element_daterange",
 	"Entities":"edit_metadata_related_entities",
+	"Objects":"edit_metadata_related_objects",
 	"StorageLocations": "edit_metadata_related_storage_locations"
 };
 //APP.log("debug",CONFIG);

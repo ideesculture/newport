@@ -294,11 +294,9 @@ $.uiHandleData = function(_data) {
 	// error handling if _data has not been rightly fetched back
 	if (typeof _data != "undefined") {
 		APP.log("debug", "UI HANDLE DATA");
-		//APP.log("debug", _data);
+
 		if (typeof _data.content != "undefined") {
-			//APP.log("debug", "not undefined!");
-			APP.log("debug", "$.RECORD.attributes: (looking for VALUES)");
-			APP.log("debug", $.RECORD.attributes);
+
 			// If we have some content back
 			var screen_content = _data.content.screen_content;
 			for(var bundle in screen_content) {
@@ -360,6 +358,7 @@ $.uiHandleData = function(_data) {
 								var row = Alloy.createController("edit_media_photo", obj_data ).getView();
 								rows.push(row);
 								break;
+
 							case "ca_entities":
 								var values = $.EMPTY_BUNDLE;
 								var temp_objet = {};
@@ -369,6 +368,25 @@ $.uiHandleData = function(_data) {
 								var temp_objet2 = {};
 								temp_objet2[bundle_code] = temp_objet;
 								var element_data = { "elements_in_set" : temp_objet2 , "name" : "related entities" };
+
+								var row = Alloy.createController("edit_metadata_bundle", {
+									bundle_code:bundle_code,
+									content:element_data,
+									values:values,
+									newport_id:{0:i}
+								}).getView();
+								rows.push(row);
+								break;
+
+							case "ca_objects":
+								var values = $.EMPTY_BUNDLE;
+								var temp_objet = {};
+								temp_objet["datatype"] = "Objects";
+								temp_objet["display_label"] = "related object";
+								temp_objet["element_code"] = bundle_code ;
+								var temp_objet2 = {};
+								temp_objet2[bundle_code] = temp_objet;
+								var element_data = { "elements_in_set" : temp_objet2 , "name" : "related objects" };
 
 								var row = Alloy.createController("edit_metadata_bundle", {
 									bundle_code:bundle_code,
@@ -397,6 +415,7 @@ $.uiHandleData = function(_data) {
 								}).getView();
 								rows.push(row);
 								break;
+
 							case "access":
 								var values = $.EMPTY_BUNDLE;
 								var temp_objet = {};
@@ -411,6 +430,7 @@ $.uiHandleData = function(_data) {
 								rows.push(row);
 								//rows.push(notSupportedLabel);
 								break;
+								
 							default:
 								var values = $.EMPTY_BUNDLE;
 								var temp_objet = {};

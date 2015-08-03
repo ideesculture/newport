@@ -1,0 +1,17 @@
+<Alloy>
+	<View id="field">
+		<Label id="label"/>s	
+		<View id="fieldWithoutIcon">
+			<TextField id="objectfield"/>
+			<Button id="searchButton" title="Search"/>
+		</View>
+		<ScrollableView id="objectsResearchResultsContainer">	
+			<View id="test">
+				<TableView id="objectsResearchResults">		
+				</TableView>
+			</View>
+		</ScrollableView>
+		<Button id="moreResultsButton" title="+ see more results"/>
+		<Label id="notes"/>
+	</View>
+</Alloy>

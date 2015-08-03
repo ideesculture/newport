@@ -1,0 +1,144 @@
+"#field":{
+	layout:"vertical",
+	textAlign:"left",
+	height:Ti.UI.SIZE,
+	width:Ti.UI.FILL,
+	top:10,
+	bottom:20, 
+	backgroundColor: "#eee"
+},
+"#fieldWithoutIcon":{
+	layout:"horizontal",	
+	height:Ti.UI.SIZE,
+	width:Ti.UI.SIZE,
+	left: 10,
+	right: 10,
+	borderColor:Alloy.Globals.fieldsColor,
+	borderWidth:1,
+	borderRadius:8,
+	backgroundColor:Alloy.Globals.fieldsColor,
+},
+"#objectsResearchResultsContainer":{
+	height:Ti.UI.SIZE,
+	width:Ti.UI.FILL,
+	backgroundColor: 'white',
+	color: 'black',
+	borderWidth:1,
+	borderRadius:8,
+	left: 10,
+	right: 10,
+	top: 10,
+	bottom: 10
+},
+"#test":{
+	height:Ti.UI.SIZE,
+	width:Ti.UI.SIZE
+},
+"#objectsResearchResults":{
+	layout:"horizontal",	
+	height:Ti.UI.SIZE,
+	width:Ti.UI.FILL,
+	backgroundColor:'white', 
+	color: 'black',
+	left: 10,
+	right: 10,
+	top: 5,
+	bottom: 5
+},
+"#icon": {
+	backgroundColor:Alloy.Globals.fieldsColor,
+	width:Ti.UI.SIZE
+},
+"#label": {
+	left:10,
+	bottom: 10,
+	color: 'black',
+	top:4,
+	height: 16,
+	font: {
+		fontSize: 13,
+		fontFamily: "HelveticaNeue"
+	}
+},
+"#notes": {
+	left:40,
+	color: 'black',
+	top:6,
+	height: 16,
+	bottom: 10,
+	font: {
+		fontSize: 15,
+		fontFamily: "HelveticaNeue"
+	}
+},
+"#moreResultsButton": {
+	left:10,
+	color: Alloy.Globals.fieldsColor,
+	backgroundColor: 'white',
+	borderRadius:8,
+	borderWidth:3,
+	borderColor: Alloy.Globals.fieldsColor,
+	top:5,
+	bottom: 10,
+	height: 40,
+	width: 150,
+	font: {
+		fontSize: 14,
+		fontFamily: "HelveticaNeue"
+	}
+},
+"#objectRow": {
+	height:Ti.UI.SIZE,
+	width:Ti.UI.SIZE,
+	top: 10,
+	bottom: 10, 
+	left: 5, 
+	right: 5,
+	backgroundColor: "#eee",
+	borderColor: "#000",
+	borderWidth: "1dp",
+	borderRadius:5,
+},
+"#objectRowContent": {
+	height:Ti.UI.SIZE,
+	layout:"vertical",
+	left:"10dp",
+	width:Ti.UI.SIZE,
+	right:"10dp",
+	top: 6, 
+	bottom: 6
+},
+"#searchButton": {
+	top:7,
+	bottom: 7,
+	left:30,
+	right:10,
+	color: 'black',
+	backgroundColor: 'white',
+	borderRadius:8,
+	borderWidth:3,
+	borderColor: 'black',
+	height: 40,
+	width: 100,
+	font: {
+		fontSize: 16,
+		fontFamily: "HelveticaNeue"
+	}
+},
+"#objectfield": {
+	top:7, 
+	left:7,
+	right:20,
+	bottom:7,
+	width:350,
+	color: 'black',
+	height: 40,
+	backgroundColor: 'white',
+	borderColor:Alloy.Globals.fieldsColor,
+	borderWidth:1,
+	borderRadius:8,
+	keyboardType: Titanium.UI.KEYBOARD_DEFAULT,
+	returnKeyType: Titanium.UI.RETURNKEY_DEFAULT,
+	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE
+}
