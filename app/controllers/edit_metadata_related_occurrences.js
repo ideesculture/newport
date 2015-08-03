@@ -1,5 +1,5 @@
 /**
- * Controller for entities
+ * Controller for occu
  * 
  * @class Controllers.text
  * @uses core
@@ -10,20 +10,20 @@ var DATE = require("alloy/moment");
 var BUFFER = require("ca-editbuffer");
 var HTTP = require("http");
 var HIERARCHY_MODEL = require("models/ca-objects-hierarchy")();
-var ENTITY_MODEL = require("models/ca-entities")();
+var OCCU_MODEL = require("models/ca-occurrences")();
 var COMMONS = require("ca-commons");
 
 var CONFIG = arguments[0];
 var value ="";
 var max_results = 3; 
 var clickWasOnceDone = false; 
-var newEntityEventId; 
+var newoccuEventId; 
 var 	myModal = Ti.UI.createWindow({
 	    title           : 'My Modal',
 	    backgroundColor : 'transparent'
 	});
 
-$.TABLE = "ca_entities";
+$.TABLE = "ca_occurrences";
 
 $.init = function() {
 	// Defining value, activating or disabling textarea depending of fieldHeight, must be done before init to be available for Handlers
@@ -33,30 +33,30 @@ $.init = function() {
 
 	// Initiating CA db model class
 
-	ENTITY_MODEL.init($.TABLE);
+	OCCU_MODEL.init($.TABLE);
 	$.moreResultsButton.hide(); 
-	$.entitiesResearchResultsContainer.hide(); 
+	$.occuResearchResultsContainer.hide(); 
 	// Field title
 	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j; 
-	$.entityfield.value = value;
+	$.occufield.value = value;
 	$.notes.text = "";
-	//$.entityfield.addEventListener('change', $.search);
+	//$.occufield.addEventListener('change', $.search);
 	max_results = 3; 
 
 	APP.ca_login="administrator";
 	APP.ca_password="admin";
 	APP.authString = 'Basic ' +Titanium.Utils.base64encode(APP.ca_login+':'+APP.ca_password);
-	CONFIG.url = APP.Settings.CollectiveAccess.urlForEntityInfos.url;
-	//ENTITY_MODEL.fetch();
+	CONFIG.url = APP.Settings.CollectiveAccess.urlForOccurrenceInfos.url;
+	//occu_MODEL.fetch();
 	if(!COMMONS.isCacheValid(CONFIG.url,CONFIG.validity)) {
-		ENTITY_MODEL.fetch({
+		OCCU_MODEL.fetch({
 			url: CONFIG.url,
 			authString: APP.authString,
 			cache: 0,
 			callback: null,
 			error: function() {
 				var dialog = Ti.UI.createAlertDialog({
-				    message: 'ERROR while updating entities list: Connexion failed. The list of entities may be outdated.',
+				    message: 'ERROR while updating occu list: Connexion failed. The list of occu may be outdated.',
 				    ok: 'OK',
 				    title: 'Error'
 				  }).show();
@@ -67,11 +67,11 @@ $.init = function() {
 };
 
 $.fire = function(_data) {
-	$.entitiesResearchResults.setData([]); 
-	$.entitiesResearchResultsContainer.hide(); 
+	$.occuResearchResults.setData([]); 
+	$.occuResearchResultsContainer.hide(); 
 	$.moreResultsButton.hide(); 
 	max_results = 3; 
-	//in value we want the id of the entity
+	//in value we want the id of the occu
 	/*APP.log("debug", "config.content:");
 	APP.log("debug", CONFIG.content);
 	APP.log("debug", "e.config:");
@@ -79,20 +79,21 @@ $.fire = function(_data) {
 	var laconfig = CONFIG; 
 
 	//problem with local search, field is called "type_id" 
-	if(_data["ca_entities.type_id"]){
-		_data.type_id = _data["ca_entities.type_id"];
+	if(_data["ca_occurrences.type_id"]){
+		_data.type_id = _data["ca_occurrences.type_id"];
 	}
 	laconfig.content = _data; 
-	APP.log("debug", "fire entity ! ! !");
+
+	//fills the field with selected occu's display label
+	$.occufield.value = _data.display_label;
+	APP.log("debug", "fire occu!!!");
 	APP.log("debug", laconfig);
-	//fills the field with selected entity's display label
-	$.entityfield.value = _data.display_label;
 	clickWasOnceDone = false; 
-	//HERE we have to save infos about the related entity
+	//HERE we have to save infos about the related occu
 	Ti.App.fireEvent('event_haschanged', {
 		name: 'bar',
 		config: laconfig,
-		value: _data.entity_id
+		value: _data.occurrence_id
 	});
 
 }
@@ -109,15 +110,15 @@ function createRow(data) {
     return tvr;
 }
 
-$.createNewEntity = function(){
+$.createNewoccu = function(){
 	$.notes.removeEventListener('click', $.listen);
 	//alert("hello"); 
 	var modal_info = {
-			display_label : $.entityfield.value,
+			display_label : $.occufield.value,
 			container: myModal, 
 			config: CONFIG
 	}
-	var modal_view = Alloy.createController('edit_modal_entities',modal_info);
+	var modal_view = Alloy.createController('edit_modal_occu',modal_info);
     myModal.add(modal_view.getView());
 	myModal.open({
     	animate : true, 
@@ -125,20 +126,21 @@ $.createNewEntity = function(){
 }
 
 $.listen = function(){
-	$.createNewEntity();
+	$.createNewoccu();
 }
 
 $.handleData = function(_data) {
 	//afficher une barre de chargement par dessus les résultats?? 
+	APP.log("debug", _data.results);
 	$.notes.text = "";
 	var table = [];
 	$.moreResultsButton.hide(); 
-	$.entitiesResearchResults.data = []; 
-	//$.entitiesResearchResults.removeAllChildren(); 
+	$.occuResearchResults.data = []; 
+	//$.occuResearchResults.removeAllChildren(); 
 	// If we have data to display...
 	if( typeof _data.results === 'object'){
 		//APP.log("debug", _data.results);
-		var max = 0, entity_nb;
+		var max = 0, occu_nb;
 		if(_data.results.length> max_results){
 			max = max_results;
 		}
@@ -146,13 +148,13 @@ $.handleData = function(_data) {
 			max = _data.results.length;
 		}
 		 
-		for (entity_nb = 0; entity_nb < max;  entity_nb ++ ) {
+		for (occu_nb = 0; occu_nb < max;  occu_nb ++ ) {
 			//APP.log("debug", "resultat "+ );
-			table.push(createRow(_data.results[entity_nb]));
+			table.push(createRow(_data.results[occu_nb]));
 		}
-		$.entitiesResearchResults.setData(table);
-		$.entitiesResearchResultsContainer.show();
-		$.entitiesResearchResults.show();
+		$.occuResearchResults.setData(table);
+		$.occuResearchResultsContainer.show();
+		$.occuResearchResults.show();
 
 		if( max < _data.results.length){
 			$.moreResultsButton.show();
@@ -168,9 +170,10 @@ $.handleData = function(_data) {
 	}
 	else 
 	{ 
-		$.entitiesResearchResultsContainer.hide(); 
-		$.notes.text = "no results. Create " + $.entityfield.value + " ? ";
-		newEntityEventId = $.notes.addEventListener("click", $.listen );
+		$.occuResearchResultsContainer.hide(); 
+		//$.notes.text = "no results. Create " + $.occufield.value + " ? ";
+		//newoccuEventId = $.notes.addEventListener("click", $.listen );
+		$.notes.text = "no results";
 	}
 	APP.closeLoading();
 }
@@ -183,13 +186,13 @@ $.handleLocalData = function(_data) {
 	$.notes.text = "";
 	var table = [];
 	$.moreResultsButton.hide(); 
-	$.entitiesResearchResults.data = []; 
-	//$.entitiesResearchResults.removeAllChildren(); 
+	$.occuResearchResults.data = []; 
+	//$.occuResearchResults.removeAllChildren(); 
 	// If we have data to display...
 	if( typeof _data == 'object'){
-		var max = 0, entity_nb = 0, i=0;
+		var max = 0, occu_nb = 0, i=0;
 
-		for(entity_nb in _data)	i++;
+		for(occu_nb in _data)	i++;
 		APP.log("debug", i + " lines ...");
 		if(i > max_results){
 			max = max_results;
@@ -197,16 +200,16 @@ $.handleLocalData = function(_data) {
 		else {
 			max = i;
 		}
-		entity_nb = 1;
-		for (entity_nb = 1; entity_nb <= max;  entity_nb ++ ) {
-		//for(entity_nb in _data){
-			APP.log("debug", "resultat "+ entity_nb);
-			//APP.log("debug", _data[entity_nb]);
-			table.push(createRow(_data[entity_nb]));
+		occu_nb = 1;
+		for (occu_nb = 1; occu_nb <= max;  occu_nb ++ ) {
+		//for(occu_nb in _data){
+			APP.log("debug", "resultat "+ occu_nb);
+			//APP.log("debug", _data[occu_nb]);
+			table.push(createRow(_data[occu_nb]));
 		}
-		$.entitiesResearchResults.setData(table);
-		$.entitiesResearchResultsContainer.show();
-		$.entitiesResearchResults.show();
+		$.occuResearchResults.setData(table);
+		$.occuResearchResultsContainer.show();
+		$.occuResearchResults.show();
 
 		if( max < i ){  // max = max_results < i
 			$.moreResultsButton.show();
@@ -222,9 +225,10 @@ $.handleLocalData = function(_data) {
 	}
 	else 
 	{ 
-		$.entitiesResearchResultsContainer.hide(); 
-		$.notes.text = "no results. Create " + $.entityfield.value + " ? ";
-		newEntityEventId = $.notes.addEventListener("click", $.listen );
+		$.occuResearchResultsContainer.hide(); 
+		//$.notes.text = "no results. Create " + $.occufield.value + " ? ";
+		//newoccuEventId = $.notes.addEventListener("click", $.listen );
+		$.notes.text = "no results";
 	}
 	APP.closeLoading();
 }
@@ -232,24 +236,24 @@ $.handleLocalData = function(_data) {
 
 $.search = function(e){
 	APP.openLoading();
-	$.entitiesResearchResultsContainer.hide(); 
-	var _url = APP.Settings.CollectiveAccess.urlForEntitySearch.url.replace(/<your_query>/g, $.entityfield.value);
+	$.occuResearchResultsContainer.hide(); 
+	var _url = APP.Settings.CollectiveAccess.urlForOccurrenceSearch.url.replace(/<your_query>/g, $.occufield.value);
 	max_results = 3; 
 	//if(e.value.length >= 3) {
 	if (Titanium.Network.networkType !== Titanium.Network.NETWORK_WIFI ) {
-		var result = ENTITY_MODEL.getSearchedRecordsLocally($.TABLE, $.entityfield.value, $.handleLocalData);
+		var result = OCCU_MODEL.getSearchedRecordsLocally($.TABLE, $.occufield.value, $.handleLocalData);
 
 	} else {
-		var result = ENTITY_MODEL.getSearchedRecords($.TABLE, e.value, _url, $.handleData);
+		var result = OCCU_MODEL.getSearchedRecords($.TABLE, e.value, _url, $.handleData);
 	}
 	return result; 
 
 
 };
 
-Ti.App.addEventListener('entityCreated', function(e) {
-	$.notes.text = "Entity created!";
-	$.entityfield.value = e.value; 
+Ti.App.addEventListener('occuCreated', function(e) {
+	$.notes.text = "occu created!";
+	$.occufield.value = e.value; 
 });
 
 

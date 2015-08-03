@@ -397,6 +397,26 @@ $.uiHandleData = function(_data) {
 								rows.push(row);
 								break;
 
+							case "ca_occurrences":
+								var values = $.EMPTY_BUNDLE;
+								var temp_objet = {};
+								temp_objet["datatype"] = "Occurrences";
+								temp_objet["display_label"] = "related occurrence";
+								temp_objet["element_code"] = bundle_code ;
+								var temp_objet2 = {};
+								temp_objet2[bundle_code] = temp_objet;
+								var element_data = { "elements_in_set" : temp_objet2 , "name" : "related occurrences" };
+
+								var row = Alloy.createController("edit_metadata_bundle", {
+									bundle_code:bundle_code,
+									content:element_data,
+									values:values,
+									newport_id:{0:i}
+								}).getView();
+								rows.push(row);
+								break;
+
+
 							case "ca_storage_locations":
 								var values = $.EMPTY_BUNDLE;
 								var temp_objet = {};

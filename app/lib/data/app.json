@@ -74,6 +74,14 @@
 				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/item/ca_entities/id/ID",
 				"cache":"86400"
 			},
+			"urlForOccurrenceSearch" : {
+				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_occurrences?q=<your_query>*&source={\"bundles\": {\"created\": {\"returnAsArray\":true},\"ca_occurrences.type_id\":{}}}",
+				"cache":"86400"
+			},
+			"urlForOccurrenceInfos" : {
+				"url" : "http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_occurrences?q=*&source={\"bundles\": { \"created\": {\"returnAsArray\":true},\"ca_occurrences.type_id\":{}}}",
+				"cache":"86400"
+			},
 			"urlForStorageLocations":{
 				"url": "http://administrator:admin@aspi.idcultu.re/gestion/service.php/find/ca_storage_locations?q=*&source={\"bundles\":{\"created\": {\"returnAsArray\":true},\"parent_id\":{},\"ca_storage_locations.type_id\":{}}}&pretty=1",
 				"cache":"86400"
