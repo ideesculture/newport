@@ -473,6 +473,25 @@ $.uiHandleData = function(_data) {
 								rows.push(row);
 								break;
 
+							case "preferred_labels":
+								var values = $.EMPTY_BUNDLE;
+								var temp_objet = {};
+								temp_objet["datatype"] = "Preferred_labels";
+								temp_objet["display_label"] = "Preferred label";
+								temp_objet["element_code"] = bundle_code ;
+								var temp_objet2 = {};
+								temp_objet2[bundle_code] = temp_objet;
+								var element_data = { "elements_in_set" : temp_objet2 , "name" : "Preferred labels" };
+
+								var row = Alloy.createController("edit_metadata_bundle", {
+									bundle_code:bundle_code,
+									content:element_data,
+									values:values,
+									newport_id:{0:i}
+								}).getView();
+								rows.push(row);
+								break;
+
 							case "access":
 								var values = $.RECORD.intrinsic_fields.access;
 								Ti.API.log("debug","access");
