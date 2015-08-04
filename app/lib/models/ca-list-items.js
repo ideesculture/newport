@@ -115,8 +115,8 @@ function Model() {
 		    for (var num in _data.results) {
 				var record = _data.results[num];
 
-        		var request = "INSERT INTO ca_list_items (id, listcode, item_id, idno, display_label, item_value, is_default, rank, parent_id) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
-				db.execute(request, record["ca_table"], record["item_id"], record["idno"], record["display_label"], record["item_value"], record["is_default"], record["rank"], record["parent_id"]);
+        		var request = "INSERT INTO ca_list_items (id, ca_table, item_id, idno, display_label, item_value, is_default, rank, parent_id) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
+				db.execute(request, "ca_list_items", record["item_id"], record["idno"], record["display_label"], record["item_value"], record["is_default"], record["rank"], record["parent_id"]);
 		    }
 			db.execute("INSERT OR REPLACE INTO updates (url, time) VALUES(" + UTIL.escapeString(_url) + ", " + new Date().getTime() + ");");
 			db.execute("END TRANSACTION;");
@@ -148,8 +148,8 @@ function Model() {
 		return temp;
 	}
 
-	this.getAllData = function(listcode) {
-		var request = "SELECT * FROM ca_list_items WHERE listcode =\""+listcode"\";";
+	this.getAllData = function() {
+		var request = "SELECT * FROM ca_list_items;";
 		return this.getDataFromDB(request);
 	}
 
