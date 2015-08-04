@@ -65,7 +65,7 @@ function Model() {
 				format: "JSON",
 				url: _params.url,
 				passthrough: _params.callback,
-				success: this.handleData,
+				success: this.echoData,
 				//success: this.echoData,
 				failure: this.echoErrorData
 			});
@@ -108,6 +108,8 @@ function Model() {
 			// Browsing data
 		    for (var num in _data.results) {
 				var record = _data.results[num];
+				Ti.API.log("debug","ca-lists model record");
+				Ti.API.log("debug",record);
         		var request = "INSERT INTO " + TABLE + " (id, ca_table, list_id, list_item_id, display_label, list_code, default_sort, is_hierarchical, is_system_list, use_as_vocabulary) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 				db.execute(request, TABLE, record["list_id"], record["id"], record["display_label"], record["list_code"], record["default_sort"], record["is_hierarchical"], record["is_system_list"], record["use_as_vocabulary"]);
 		    }

@@ -16,6 +16,9 @@ $.init = function() {
 
 	$.fetch();
 
+	Ti.API.log("LIST_ITEMS_MODEL.getAllData()");
+	Ti.API.log(LIST_ITEMS_MODEL.getAllData());
+
 	$.bundleItemElements.height = 1;
 	$.bundleItemElements.visible = false;
 	$.value.text = VALUES;
@@ -47,7 +50,7 @@ $.fetch = function() {
 		APP.log("debug", "cache valid for list items model");
 	} else {
 		APP.log("debug", "List items model fetch");
-		LISTS_MODEL.fetch({
+		LIST_ITEMS_MODEL.fetch({
 			url: model_list_items_url,
 			authString: APP.authString,
 			cache: 0,
@@ -60,7 +63,6 @@ $.fetch = function() {
 		});
 	}
 }
-
 
 /*
  *  Handlers

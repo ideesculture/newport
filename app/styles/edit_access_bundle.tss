@@ -65,9 +65,11 @@
 },
 "#accessTable": {
 	height:Ti.UI.SIZE,
+	left:"10dp",
+	right:"10dp",
 	top:"10dp",
 	bottom:"10dp"
 },
-".active": {
+".Active": {
 	backgroundColor:Alloy.Globals.primaryColor
 }

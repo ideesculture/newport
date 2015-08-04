@@ -12,6 +12,7 @@
 					<TableView id="accessTable">
 						<TableViewRow title="Apple"/>
 						<TableViewRow title="Bananas" class="Active"/>
+						<TableViewRow title="Cocoa"/>
 					</TableView>
 			</View>
 		</View>

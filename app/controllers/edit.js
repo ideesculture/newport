@@ -15,6 +15,7 @@ var MODEL_MODEL = require("models/ca-model")();
 var UI_MODEL = require("models/ca-ui")();
 var OBJECT_DETAILS = require("models/ca-object-details")();
 var OBJECT_EDIT = require("models/ca-object-edit")();
+var LIST_MODEL = require("models/ca-lists")();
 
 var CONFIG = arguments[0];
 
@@ -65,8 +66,9 @@ $.init = function() {
 	MODEL_MODEL.init($.TABLE);
 	// Initiating CA available UIs class
 	UI_MODEL.init();
+	// Initiating CA lists model class
+	LIST_MODEL.init();
 	// Initiating detail fetching for object
-
 	OBJECT_DETAILS.init($.TABLE);
 	// Initiating edit model for object
 	OBJECT_EDIT.init($.TABLE, CONFIG.obj_data.object_id);
@@ -172,6 +174,26 @@ $.modelRetrieveData = function(_force, _callback) {
 				}
 			}
 		});
+		
+		// Initializing lists model
+		var model_lists_url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForLists.url;
+		var model_lists_cache_validity = APP.Settings.CollectiveAccess.urlForLists.cache;
+		if(COMMONS.isCacheValid(model_lists_url,model_lists_cache_validity)) {
+			APP.log("debug", "cache valid for item lists model");
+		} else {
+			APP.log("debug", "Item lists model fetch");
+			LIST_MODEL.fetch({
+				url: model_lists_url,
+				authString: APP.authString,
+				cache: 0,
+				callback: function() {
+					Ti.API.log("debug","ca-lists.fetch callback");
+				},
+				error: function() {
+					Ti.API.log("debug","ca-lists.fetch error");
+				}
+			});
+		}
 
 };
 

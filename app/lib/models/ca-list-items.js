@@ -10,10 +10,11 @@ var APP = require("core");
 var HTTP = require("http");
 var UTIL = require("utilities");
 var DBNAME = "Newport";
-var TABLE = "ca_list_items";
+
 
 function Model() {
 	this.temp = {};
+	this.TABLE = "ca_list_items";
 
 	/**
 	 * Initializes the model
@@ -22,9 +23,9 @@ function Model() {
 		Ti.API.log("debug", "ca-list-items.init");
 		var db = Ti.Database.open(DBNAME);
 		Ti.API.log("debug","TABLE");
-		Ti.API.log("debug",TABLE);
+		Ti.API.log("debug",this.TABLE);
 
-		var request = "CREATE TABLE IF NOT EXISTS " + TABLE + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, item_id INTEGER, idno TEXT, display_label TEXT, item_value INTEGER, is_default INTEGER, rank INTEGER, parent_id INTEGER);";
+		var request = "CREATE TABLE IF NOT EXISTS " + this.TABLE + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, item_id INTEGER, idno TEXT, display_label TEXT, item_value INTEGER, is_default INTEGER, rank INTEGER, parent_id INTEGER);";
 		db.execute(request);
 		db.close();
 	};
@@ -32,7 +33,7 @@ function Model() {
 
 	this.clear = function() {
 		var db = Ti.Database.open(DBNAME);
-		var request = "DELETE FROM " + TABLE + ";";
+		var request = "DELETE FROM " + this.TABLE + ";";
 		db.execute(request);
 		db.close();
 	};
@@ -112,10 +113,10 @@ function Model() {
 			// Browsing data
 		    for (var num in _data.results) {
 				var record = _data.results[num];
-        		Ti.API.log("debug", record);
-
-        		var request = "INSERT INTO " + TABLE + " (id, ca_table, item_id, idno, display_label, item_value, is_default, rank, parent_id) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
-				db.execute(request, TABLE, record["item_id"], record["idno"], record["display_label"], record["item_value"], record["is_default"], record["rank"], record["parent_id"]);
+				Ti.API.log("debug","ca-lists model record");
+				Ti.API.log("debug",record);
+        		var request = "INSERT INTO " + this.TABLE + " (id, ca_table, item_id, idno, display_label, item_value, is_default, rank, parent_id) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
+				db.execute(request, this.TABLE, record["item_id"], record["idno"], record["display_label"], record["item_value"], record["is_default"], record["rank"], record["parent_id"]);
 		    }
 			db.execute("INSERT OR REPLACE INTO updates (url, time) VALUES(" + UTIL.escapeString(_url) + ", " + new Date().getTime() + ");");
 			db.execute("END TRANSACTION;");
@@ -145,6 +146,11 @@ function Model() {
 		data.close();
 		db.close();
 		return temp;
+	}
+
+	this.getAllData = function() {
+		var request = "SELECT * FROM "+ this.TABLE+";";
+		return this.getDataFromDB(request);
 	}
 
 };
