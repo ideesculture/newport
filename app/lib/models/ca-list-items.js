@@ -98,6 +98,12 @@ function Model() {
 	 * @param {Function} _callback The function to run on data retrieval
 	 */
 	this.handleData = function(_data, _url, _callback) {
+
+		var db = Ti.Database.open(DBNAME);
+		var request = "DELETE FROM ca_list_items;";
+		db.execute(request);
+		db.close();
+
 		Ti.API.log("debug", "ca-list-items.handleData");
 		Ti.API.log("debug", _data.results);
 		if(_data.ok == true) {
@@ -108,6 +114,7 @@ function Model() {
 			// Browsing data
 		    for (var num in _data.results) {
 				var record = _data.results[num];
+
         		var request = "INSERT INTO ca_list_items (id, ca_table, item_id, idno, display_label, item_value, is_default, rank, parent_id) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
 				db.execute(request, "ca_list_items", record["item_id"], record["idno"], record["display_label"], record["item_value"], record["is_default"], record["rank"], record["parent_id"]);
 		    }

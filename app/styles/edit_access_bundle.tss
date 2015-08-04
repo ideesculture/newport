@@ -60,9 +60,6 @@
 	top:0,
 	backgroundColor:"#eee"
 },
-"#value": {
-	left:0
-},
 "#accessTable": {
 	height:Ti.UI.SIZE,
 	left:"10dp",

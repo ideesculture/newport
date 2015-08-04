@@ -21,11 +21,26 @@ $.init = function() {
 
 	$.bundleItemElements.height = 1;
 	$.bundleItemElements.visible = false;
-	$.value.text = VALUES;
+	//$.value.text = VALUES;
 
 	var listValues = LIST_ITEMS_MODEL.getAllData();
 	Ti.API.log("debug","all list data");
 	Ti.API.log("debug",listValues);
+	accessTableData = [];
+	for (var num in listValues) {
+		var row = Ti.UI.createTableViewRow({
+			title:listValues[num].display_label
+		});
+		Ti.API.log("debug","searching for value "+VALUES);
+		Ti.API.log("debug",listValues[num].item_value);
+
+		if(listValues[num].item_value == VALUES) {
+			Ti.API.log("debug","current value for access is "+listValues[num].display_label);
+			row.setBackgroundColor(Alloy.Globals.primaryColor);
+		}
+		accessTableData.push(row);
+	}
+	$.accessTable.setData(accessTableData);
 };
 
 $.fetch = function() {
@@ -50,10 +65,11 @@ $.fetch = function() {
 	}
 	var model_list_items_url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForListItems.url.replace(/LISTCODE/g,"access_statuses");
 	var model_list_items_cache_validity = APP.Settings.CollectiveAccess.urlForListItems.cache;
-	if(COMMONS.isCacheValid(model_list_items_url,model_list_items_cache_validity)) {
+	/*if(COMMONS.isCacheValid(model_list_items_url,model_list_items_cache_validity)) {
 		APP.log("debug", "cache valid for list items model");
 	} else {
-		APP.log("debug", "List items model fetch");
+		APP.log("debug", "List items model fetch");*/
+		Ti.API.log("debug","LIST_ITEMS_MODEL.fetch");
 		LIST_ITEMS_MODEL.fetch({
 			url: model_list_items_url,
 			authString: APP.authString,
@@ -65,7 +81,7 @@ $.fetch = function() {
 				Ti.API.log("debug","ca-list-items.fetch error");
 			}
 		});
-	}
+	//}
 }
 
 /*

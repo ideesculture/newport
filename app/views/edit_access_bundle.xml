@@ -8,12 +8,11 @@
 				</View>
 			</View>
     		<View id="bundleItemElements">
-				<Label id="value" text="..." />
-					<TableView id="accessTable">
-						<TableViewRow title="Apple"/>
-						<TableViewRow title="Bananas" class="Active"/>
-						<TableViewRow title="Cocoa"/>
-					</TableView>
+				<TableView id="accessTable">
+					<TableViewRow title="Apple"/>
+					<TableViewRow title="Bananas" class="Active"/>
+					<TableViewRow title="Cocoa"/>
+				</TableView>
 			</View>
 		</View>
 	</View>

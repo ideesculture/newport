@@ -91,7 +91,7 @@
 				"cache":"86400"
 			},
 			"urlForListItems":{
-				"url": "find/ca_list_items/?q=ca_lists:LISTCODE",
+				"url": "find/ca_list_items/?q=ca_lists:LISTCODE&source={\"bundles\":{\"item_value\":{}, \"is_default\":{}, \"rank\":{}, \"parent_id\":{}}}",
 				"cache":"86400"
 			}
 		},
