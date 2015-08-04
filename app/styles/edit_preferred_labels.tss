@@ -1,0 +1,61 @@
+"#field":{
+	layout:"vertical",
+	textAlign:"left",
+	height: 100,
+	top:0,
+	bottom:2
+},
+"#fieldWithIcon":{
+	layout:"horizontal",
+	height:Ti.UI.SIZE,
+	width:Ti.UI.SIZE,
+	left:10,
+	borderColor:Alloy.Globals.fieldsColor,
+	borderWidth:1,
+	borderRadius:8,
+	backgroundColor:Alloy.Globals.fieldsColor
+},
+"#iconContainer": {
+	width:24,
+	left:10,
+	right:10,
+	height:Ti.UI.SIZE
+},
+"#icon": {
+	backgroundColor:Alloy.Globals.fieldsColor,
+	width:Ti.UI.SIZE
+},
+"#label": {
+	left:10,
+	color: 'black',
+	top:4,
+	height: 16,
+	font: {
+		fontSize: 13,
+		fontFamily: "HelveticaNeue"
+	}
+},
+"#notes": {
+	left:10,
+	color: 'black',
+	top:6,
+	height: 16,
+	font: {
+		fontSize: 15,
+		fontFamily: "HelveticaNeue"
+	}
+},
+"#preferredLabelfield": {
+	top:1,
+	left:1,
+	bottom:1,
+	width:150,
+	color: 'black',
+	height: 40,
+	borderColor:Alloy.Globals.fieldsColor,
+	borderWidth:1,
+	keyboardType: Titanium.UI.KEYBOARD_DEFAULT,
+	returnKeyType: Titanium.UI.RETURNKEY_DEFAULT,
+	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE
+}

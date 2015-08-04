@@ -450,7 +450,7 @@ function Model() {
 						}
 						tempobj ={}; attributes = {}; 
 						tempobj["occurrence_id"]= fieldToSave.valeur; 
-						tempobj["type_id"]= fieldToSave.type_id; 
+						tempobj["type_id"]= fieldToSave.type_id; //type of relation!!
 						temptab[0]= tempobj; 
 						attributes[fieldToSave.bundle_code] = temptab; 
 						json.related = attributes;
@@ -490,7 +490,7 @@ function Model() {
 						//add the new value for preferred_labels
 						tempobj ={};
 						tempobj["locale"]= "en_US"; 
-						tempobj[fieldToSave.bundle_code]= fieldToSave.valeur; 
+						tempobj["name"]= fieldToSave.valeur; 
 						
 						temptab[0]= tempobj; 
 						json.preferred_labels = temptab;
