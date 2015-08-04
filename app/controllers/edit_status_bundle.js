@@ -8,7 +8,9 @@ var LIST_ITEMS_MODEL = require("models/ca-list-items")();
 $.init = function() {
 	Ti.API.log("debug","edit_workflow_bundle CONFIG");
 	Ti.API.log("debug",CONFIG);
-	$.bundleItemName.text = CONFIG.bundle_code;
+
+	$.bundleItemName.text = CONFIG.display_label;
+
 	//APP.log("debug", CONFIG.content.elements_in_set);
 
 	LISTS_MODEL.init();
