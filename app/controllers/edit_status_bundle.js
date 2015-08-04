@@ -24,20 +24,24 @@ $.init = function() {
 	var listValues = LIST_ITEMS_MODEL.getAllDataFromList(list_id);
 
 	workflowTableData = [];
+	var selected = 0;
 	for (var num in listValues) {
 		var row = Ti.UI.createTableViewRow({
-			title:listValues[num].display_label
+			title:listValues[num].display_label,
+			backgroundSelectedColor:Alloy.Globals.primaryColor
 		});
 		Ti.API.log("debug","searching for status value "+VALUES);
 		Ti.API.log("debug",listValues[num].item_value);
 
 		if(listValues[num].item_value == VALUES) {
 			Ti.API.log("debug","current value for workflow is "+listValues[num].display_label);
-			row.setBackgroundColor(Alloy.Globals.primaryColor);
+			selected = num;
+			//row.setBackgroundColor(Alloy.Globals.primaryColor);
 		}
 		workflowTableData.push(row);
 	}
 	$.workflowTable.setData(workflowTableData);
+	$.workflowTable.selectRow(selected);
 };
 
 $.fetch = function() {

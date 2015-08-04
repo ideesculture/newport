@@ -8,10 +8,7 @@
 				</View>
 			</View>
     		<View id="bundleItemElements">
-				<TableView id="accessTable">
-					<TableViewRow title="Apple"/>
-					<TableViewRow title="Bananas" class="Active"/>
-					<TableViewRow title="Cocoa"/>
+				<TableView id="accessTable" allowsSelection="true">
 				</TableView>
 			</View>
 		</View>

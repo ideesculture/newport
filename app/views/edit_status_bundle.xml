@@ -8,7 +8,7 @@
 				</View>
 			</View>
     		<View id="bundleItemElements">
-				<TableView id="workflowTable">
+				<TableView id="workflowTable" allowsSelection="true">
 				</TableView>
 			</View>
 		</View>

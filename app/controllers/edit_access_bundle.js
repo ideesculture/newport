@@ -24,20 +24,25 @@ $.init = function() {
 	var listValues = LIST_ITEMS_MODEL.getAllDataFromList(list_id);
 
 	accessTableData = [];
+	var selected = 0;
 	for (var num in listValues) {
 		var row = Ti.UI.createTableViewRow({
-			title:listValues[num].display_label
+			title:listValues[num].display_label,
+			backgroundSelectedColor:Alloy.Globals.primaryColor
 		});
 		Ti.API.log("debug","searching for access value "+VALUES);
 		Ti.API.log("debug",listValues[num].item_value);
 
 		if(listValues[num].item_value == VALUES) {
 			Ti.API.log("debug","current value for access is "+listValues[num].display_label);
-			row.setBackgroundColor(Alloy.Globals.primaryColor);
+			//$.accessTable.selectRow(num);
+			selected = num;
+			//row.setBackgroundColor(Alloy.Globals.primaryColor);
 		}
 		accessTableData.push(row);
 	}
 	$.accessTable.setData(accessTableData);
+	$.accessTable.selectRow(selected);
 };
 
 $.fetch = function() {
