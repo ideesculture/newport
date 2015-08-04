@@ -23,12 +23,12 @@ exports.request = function(_params) {
 	Ti.API.debug("HTTP.request " + _params.url);
 
 	// Test if local URL to avoid online status check
-	Ti.API.debug("HTTP.request " + _params.url.indexOf("127.0.0.1"));
+	//Ti.API.debug("HTTP.request " + _params.url.indexOf("127.0.0.1"));
 	var isLocal = (_params.url.indexOf("127.0.0.1") > -1 ? true : false);
 
 	//if(Ti.Network.online || isLocal) {
 	if(Ti.Network.online) {
-		Ti.API.debug("lalala");
+		//Ti.API.debug("lalala");
 		var xhr = Ti.Network.createHTTPClient();
 
 		//xhr.timeout = _params.timeout ? _params.timeout : 10000;
