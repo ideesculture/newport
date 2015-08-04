@@ -67,4 +67,7 @@
 	height:Ti.UI.SIZE,
 	top:"10dp",
 	bottom:"10dp"
+},
+".active": {
+	backgroundColor:Alloy.Globals.primaryColor
 }
