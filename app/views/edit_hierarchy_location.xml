@@ -1,16 +1,15 @@
 <Alloy>
-	<View id="field">
-		<View id="bundleItem">
+	<View id="bundleItemContainer">
+		<View id="bundleItemForm">
+			<View id="bundleItem">
 				<Label id="bundleItemName" text="Item" />
 				<View id="bundleItemRight">
 					<ImageView id="arrowIcon" image="/icons/black/ca_arrow_down.png"></ImageView>
 				</View>
+			</View>
+    		<View id="bundleItemElements">
+				<TableView id="hierarchyTable"></TableView>
+			</View>
 		</View>
-		<ScrollableView id="tablecontainerView">	
-				<View id="container2">
-					<TableView id="hierarchyTable">
-					</TableView>
-				</View>
-		</ScrollableView>
 	</View>
 </Alloy>

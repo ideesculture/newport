@@ -1,11 +1,13 @@
-"#field":{
-	layout:"vertical",
-	textAlign:"left",
+"#bundleItemContainer": {
+	top:"0dp",
+	width: Ti.UI.FILL,
+	layout: "vertical",
+	height:Ti.UI.SIZE
+},
+"#bundleItemForm": {
+	top:"0dp",
 	height:Ti.UI.SIZE,
-	width:Ti.UI.FILL,
-	top:10,
-	bottom:20, 
-	backgroundColor: "#eee"
+	layout: "vertical"
 },
 "#bundleItem": {
 	top:"0dp",
@@ -42,43 +44,26 @@
 	height: "20dp",
 	right:"10dp"
 },
-"#tablecontainerView":{
-	height: Ti.UI.SIZE, 
-	width: Ti.UI.FILL,
-	top: 10, 
-	bottom: 10, 
-	right: 10, 
-	left: 10, 
+"#bundleItemElements": {
+	//height:"1dp",
+	height:Ti.UI.SIZE,
+	layout:"vertical",
+	left:"10dp",
+	right:"10dp",
+	bottom:"10dp",
+	backgroundColor:"white"
 },
-"#label": {
-	left:10,
-	bottom: 10,
-	color: 'black',
-	top:4,
-	height: 16,
-	font: {
-		fontSize: 13,
-		fontFamily: "HelveticaNeue"
-	}
-}, 
-"#container2":{
-	layout:"vertical", 
-	height: 200, 
-	width: 480, 
-	top: 10
+"#bundleItemElementsTopBorder": {
+	height:"1dp",
+	left:0,
+	right:0,
+	top:0,
+	backgroundColor:"#eee"
 },
-"#value": {
-	color: 'black',
-	backgroundColor: 'white', 
-	borderColor:Alloy.Globals.fieldsColor,
-	borderWidth:1,
-	borderRadius:5,
-	height: 30,
-	width: 500,
-	left: 20,
-	font: {
-		fontSize: 18,
-		fontFamily: "HelveticaNeue"
-	}, 
-	visible: "false"
+"#hierarchyTable":{
+	height:Ti.UI.SIZE,
+	left:"10dp",
+	right:"10dp",
+	top:"10dp",
+	bottom:"10dp"
 }

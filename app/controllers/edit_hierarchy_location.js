@@ -12,7 +12,7 @@ var value ="";
 $.TABLE = "ca_objects";
 
 $.createRow = function (margin, table, textLabel, asArrow){
-	var whitespace, row, label, arrow; 
+	var whitespace, row, label, arrow;
 	//1)creates the table row
 	row = Ti.UI.createTableViewRow({
 	        layout: 'horizontal'
@@ -28,7 +28,7 @@ $.createRow = function (margin, table, textLabel, asArrow){
 	if(asArrow){
 		arrow = Ti.UI.createImageView({
 			src : 'ti.ux.iconfont',
-			icon : 'fa-chevron-right', 
+			icon : 'fa-chevron-right',
 			size:'22' ,
 			color: '#ccc'
 		});
@@ -47,7 +47,7 @@ $.createRow = function (margin, table, textLabel, asArrow){
 		  height: Ti.UI.SIZE
 	});
 	row.add(label);
-	//4)adds the table row to the table 
+	//4)adds the table row to the table
 	table.push(row);
 }
 
@@ -55,36 +55,53 @@ $.init = function() {
 	$.bundleItemName.text = CONFIG.display_label;
 	var parentsAndSon = HIERARCHY_MODEL.getParentRecords($.TABLE,CONFIG.obj_data.object_id);
 
-	var margin = 0, table = [], whitespace, row, label, asArrow=false; 
+	var margin = 0, table = [], whitespace, row, label, asArrow=false;
 
 	//fills the parents table
 	if(parentsAndSon.id4 != null) { // grand-papi
 		//creates a row for grand-papi
-		$.createRow(margin, table, parentsAndSon.label4, asArrow);	
+		$.createRow(margin, table, parentsAndSon.label4, asArrow);
 		//increments the margin
 		margin+=30;
 		asArrow= true;
 	}
 	if(parentsAndSon.id3 != null) { // papi
 		//creates a row for papi
-		$.createRow(margin, table, parentsAndSon.label3, asArrow);	
+		$.createRow(margin, table, parentsAndSon.label3, asArrow);
 		//increments the margin
 		margin+=30;
 		asArrow= true;
 	}
 	if(parentsAndSon.id2 != null) { // daddy
 		//creates a row for daddy
-		$.createRow(margin, table, parentsAndSon.label2, asArrow);	
+		$.createRow(margin, table, parentsAndSon.label2, asArrow);
 		//increments the margin
 		margin+=30;
 		asArrow= true;
 	}
 	if(parentsAndSon.id1 != null) { // CANT BE NULL
 		//creates a row for current object
-		$.createRow(margin, table, parentsAndSon.label1, asArrow);	
+		$.createRow(margin, table, parentsAndSon.label1, asArrow);
 	}
 	$.hierarchyTable.setData(table);
 };
 
+// Folding bundle
+$.bundleItem.addEventListener("click", function(_event) {
+	APP.openLoading();
+	setTimeout(function() {
+		if ($.bundleItemElements.visible == true) {
+			$.bundleItemElements.visible = false;
+			$.bundleItemElements.height = 1;
+			$.arrowIcon.image = "/icons/black/ca_arrow_down.png";
+		} else {
+			$.bundleItemElements.visible = true;
+			$.bundleItemElements.height = Ti.UI.SIZE;
+			$.arrowIcon.image = "/icons/black/ca_arrow_up.png";
+		}
+	},300);
+	APP.closeLoading();
+
+});
 
 $.init();
