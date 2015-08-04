@@ -145,6 +145,14 @@
 			"downTab" : false
 		},
 		{
+			"title": "Settings",
+			"type": "edit",
+			"image": "settings_icon",
+			"icon":"gift",
+			"tabletSupport": false,
+			"downTab" : false
+		},
+		{
 			"title": "Login",
 			"type": "login",
 			"image": "museum_mode",
