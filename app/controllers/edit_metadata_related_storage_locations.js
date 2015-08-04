@@ -67,6 +67,7 @@ $.fireAnEvent = function(_data) {
 //this function is called after storage-location-model "fetch". It prints the hierarchy in a table and waits for a click.
 $.handleData = function () {
 
+	//searches all storage locations in the table
 	var _data = STORAGE_LOCATIONS_MODEL.getSearchedRecordsLocally($.TABLE , "");
 
 	var storage_loc_nb, margin, label1, tvr, table = [];
