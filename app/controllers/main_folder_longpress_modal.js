@@ -1,6 +1,6 @@
 /**
  * Controller for the options modal view (long press on folder)
- * 
+ *
  * @class Controllers.text
  * @uses core
  */
@@ -21,14 +21,14 @@ $.init = function() {
 
 
 	// Loading URL for object details, replacing ID by the current object_id
-	CONFIG.url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.obj_data.object_id);
+	CONFIG.url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.obj_data.object_id);
 	CONFIG.validity = APP.Settings.CollectiveAccess.urlForObjectDetails.cache;
 
 
-	CONFIG.obj_data.object_id = CONFIG.obj_data.id; 
+	CONFIG.obj_data.object_id = CONFIG.obj_data.id;
 
 	// Fetching details in order to update "Some info about the item" and "Even some more info"
-	//APP.log("debug",OBJECT_DETAILS.getDetails(CONFIG.obj_data.object_id));	
+	//APP.log("debug",OBJECT_DETAILS.getDetails(CONFIG.obj_data.object_id));
 
 	if(OS_IOS && APP.Device.versionMajor >= 7) {
 		Ti.API.log("debug","IOS 7 ou +");
@@ -50,7 +50,7 @@ $.init = function() {
 		}
 
 		var modal_info = {
-			obj_data: CONFIG.obj_data,		
+			obj_data: CONFIG.obj_data,
 			container: myModal
 		}
 
@@ -70,7 +70,7 @@ $.init = function() {
 		}
 
 		var modal_info = {
-			obj_data: CONFIG.obj_data,		
+			obj_data: CONFIG.obj_data,
 			container: myModal
 		}
 

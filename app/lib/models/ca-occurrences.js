@@ -1,6 +1,6 @@
 /**
  * Collectiveaccess user interface for object edition model
- * 
+ *
  * @class Models.ca-model
  * @uses core
  * @uses http
@@ -13,7 +13,7 @@ var DBNAME = "Newport";
 var table =  "ca_occurrences";
 var INFO1 = null;
 var INFO2 = null;
-	
+
 function Model() {
 	this.TABLE="";
 	this.INFO1="";
@@ -86,7 +86,7 @@ function Model() {
 			_params.callback();
 		}
 	};
-	
+
 	/**
 	 * Useful to only log the data return when debugging
 	 * @param {Object} _data The returned data
@@ -112,14 +112,14 @@ function Model() {
 			var db = Ti.Database.open(DBNAME);
 			//db.execute("DELETE FROM " + _ca_table + ";");
 			db.execute("BEGIN TRANSACTION;");
-			
+
 			//APP.ca_modele_prop = new Array();
 		//	APP.ca_modele_values = {};
 			var _data2;
 			var last = 0;
 			var ca_table = "ca_occurrences";
 			var record_type;
-			
+
 			// Browsing data
 		    for (var prop in _data) {
 		    	var record_type = prop;
@@ -128,7 +128,7 @@ function Model() {
 		        	for (var prop2 in _data2) {
 						var record = _data2[prop2];
 		        		//Ti.API.log("debug", record);
-		        		
+
 		        		var request = "INSERT INTO " + ca_table + " (id, ca_table, occurrence_id, idno, display_label, type_id) VALUES (NULL, ?, ?, ?, ?, ?);";
 						db.execute(request, ca_table, record["occurrence_id"], record["id"], record["display_label"], record["ca_occurrences.type_id"]);
 
@@ -138,10 +138,10 @@ function Model() {
 						//Ti.API.log("debug", record["display_label"]);
 						//Ti.API.log("debug", record["ca_occurrences.type_id"]);
 						//Ti.API.log("debug", record["created"]["timestamp"]);
-		
+
 
 		        		last = prop2;
-	        		} 
+	        		}
 		        }
 		    }
 		   // Ti.API.log("last");
@@ -171,7 +171,7 @@ function Model() {
 		var result = data.getRowCount();
 		data.close();
 		db.close();
-		
+
 		return result;
 	};
 
@@ -181,14 +181,14 @@ function Model() {
 	}
 
 	///////////////////////////////////////////////////////////
-	//search locally 
+	//search locally
 	///////////////////////////////////////////////////////////
 	this.getSearchedRecordsLocally = function(_ca_table, _text, _success_function) {
 
 		APP.log("debug", "CA-occurrences.getSearchedRecords");
 
 		//if no connection is available, searches in the local DB
-		
+
 		var db = Ti.Database.open(DBNAME);
 
 		var request = "SELECT idno, occurrence_id, display_label, type_id FROM "+_ca_table+" WHERE display_label LIKE '"+_text+"%' ;";
@@ -211,16 +211,16 @@ function Model() {
 		db.close();
 		//APP.log("debug", "resultat:");
 		//APP.log("debug", this.temp);
-		_success_function(this.temp); 
+		_success_function(this.temp);
 		return this.temp;
 	};
 
 	///////////////////////////////////////////////////////////
-	//search remotely 
+	//search remotely
 	///////////////////////////////////////////////////////////
 
 	this.getSearchedRecords = function(_ca_table, _text, _url, _success_function) {
-		// do a search with the WS 
+		// do a search with the WS
 
 		var error = function() {
 			var dialog = Ti.UI.createAlertDialog({
@@ -241,9 +241,9 @@ function Model() {
 			success: _success_function,
 			failure: error
 		});
-		
+
 	}
-	
+
 	//makes the request to get model information & calls handleTypesData
 	this.getoccurrenceTypes = function(_url, _success_function){
 
@@ -270,7 +270,7 @@ function Model() {
 	}
 
 	this.createsNewoccurrence = function(display_label, type_info, success_function ){
-		APP.log("debug", "newoccurrence ! ! !"); 
+		APP.log("debug", "newoccurrence ! ! !");
 
 		/******************************
 		sends the object's type and false id
@@ -280,29 +280,29 @@ function Model() {
 		var json = {}, tempobj = {}, templabel = {}, temptab = [];
 		var timestamp = new Date().getTime();
 		tempobj.idno = "new_"+timestamp;
-		tempobj.type_id= type_info; 
-		json.intrinsic_fields = tempobj; 
+		tempobj.type_id= type_info;
+		json.intrinsic_fields = tempobj;
 		//PREFERRED LABELS (locale, surname)
 		//To improve
 		templabel.locale = "en_US";
-		templabel.surname = display_label; 
+		templabel.surname = display_label;
 		temptab[0] = templabel;
-		json.preferred_labels = temptab; 
+		json.preferred_labels = temptab;
 
 		APP.log("debug", "json sent for occurrence creation:");
 		APP.log("debug", json);
-		
+
 		//2) sends the request
-		var ca_url = APP.Settings.CollectiveAccess.urlForoccurrenceSave.url.replace("/id/ID","");
+		var ca_url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForoccurrenceSave.url.replace("/id/ID","");
 		var errorNew = function() {
 			var dialog = Ti.UI.createAlertDialog({
 			    message: 'ERROR when creating the new object in DB',
 			    ok: 'OK',
 			    title: 'Error'
 			  }).show();
-			return false; 
+			return false;
 		}
-		
+
 		HTTP.request({
 			timeout: 2000,
 			async:false,

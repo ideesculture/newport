@@ -20,20 +20,20 @@ $.TABLE = "ca_storage_locations";
 //recursive function: parse unorganized data, gives back a table with info ready to be displayed
 $.recursive = function(originalTable, newTable, parent_id, currentKey, margin){
 	//APP.log("debug", "recursive");
-	var tempObj = {}; 
+	var tempObj = {};
 
 	for(var row in originalTable){
 		if(originalTable[row].parent_id == parent_id){
-			tempObj.display_label = originalTable[row].display_label; 
-			tempObj.margin = margin; 
-			tempObj.location_id = originalTable[row].location_id; 
+			tempObj.display_label = originalTable[row].display_label;
+			tempObj.margin = margin;
+			tempObj.location_id = originalTable[row].location_id;
 			tempObj.type_id = originalTable[row].type_id;
-			//newTable[currentKey] = tempObj; 
-			newTable.push(tempObj); 
-			tempObj = {}; 
-			currentKey ++; 
+			//newTable[currentKey] = tempObj;
+			newTable.push(tempObj);
+			tempObj = {};
+			currentKey ++;
 
-			//originalTable[row].parent_id = -1; 
+			//originalTable[row].parent_id = -1;
            // APP.log("debug",newTable);
 			$.recursive(originalTable, newTable, originalTable[row].location_id, currentKey, (margin+30));
 
@@ -44,12 +44,12 @@ $.recursive = function(originalTable, newTable, parent_id, currentKey, margin){
 $.ordersData = function(_data){
 	//APP.log("debug", "ordersData");
 	//APP.log("debug", _data);
-	var cleanTable = []; 
-	var currentKey = 0; 
-	var margin = 10; 
-	var parent_id = 1; 
+	var cleanTable = [];
+	var currentKey = 0;
+	var margin = 10;
+	var parent_id = 1;
 	$.recursive(_data, cleanTable, parent_id, currentKey, margin);
-	return cleanTable; 
+	return cleanTable;
 }
 $.moveObject = function(id, type_id){
 	APP.log("debug", "move");
@@ -71,7 +71,7 @@ $.moveObject = function(id, type_id){
 			});
 			dialog.show();
 		}
-		
+
 
 	} else alert ("echec");
 	CONFIG.container.close();
@@ -83,34 +83,34 @@ $.init = function() {
 	STORAGE_LOCATIONS_MODEL.init($.TABLE);
 	STORAGE_LOCATIONS_MODEL.clear($.TABLE);
 
-	//starting model for objects - for saving new relation. 
+	//starting model for objects - for saving new relation.
 	OBJECT_EDIT.init("ca_objects", CONFIG.obj_data.object_id);
 
 	//setting parameters for storage-location FETCH
 	APP.ca_login="administrator";
 	APP.ca_password="admin";
 	APP.authString = 'Basic ' +Titanium.Utils.base64encode(APP.ca_login+':'+APP.ca_password);
-	CONFIG.url = APP.Settings.CollectiveAccess.urlForStorageLocations.url;
+	CONFIG.url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForStorageLocations.url;
 
-	//this function is called after storage-location-model "fetch". It prints the hierarchy in a table and waits for a click. 
+	//this function is called after storage-location-model "fetch". It prints the hierarchy in a table and waits for a click.
 	var handleData = function () {
 
 		var _data = STORAGE_LOCATIONS_MODEL.getSearchedRecordsLocally($.TABLE , "");
 
-		var storage_loc_nb, margin, label1, tvr, table = []; 
+		var storage_loc_nb, margin, label1, tvr, table = [];
 
 		if( typeof _data == 'object'){
 
 			var tableToDisplay = $.ordersData(_data);
 			//APP.log("debug", "tableToDisplay: : :");
 			//APP.log("debug", tableToDisplay);
-			//var i = 10; 
+			//var i = 10;
 			for(storage_loc_nb in tableToDisplay){
 
 			    tvr = Ti.UI.createTableViewRow({
-			       // title : title, 
+			       // title : title,
 			        //backgroundColor: 'yellow',
-			        layout: 'horizontal', 
+			        layout: 'horizontal',
 			        location_id: tableToDisplay[storage_loc_nb].location_id,
 			        type_id: tableToDisplay[storage_loc_nb].type_id,
 			        display_label:tableToDisplay[storage_loc_nb].display_label
@@ -119,21 +119,21 @@ $.init = function() {
 
 			    margin = Titanium.UI.createView({
 			        width: tableToDisplay[storage_loc_nb].margin,
-			        height: 50,  
+			        height: 50,
 			        layout: 'vertical',
 			        //backgroundColor: "blue"
 			    });
-			    tvr.add(margin); 
+			    tvr.add(margin);
 
 			    label1 = Ti.UI.createLabel({
 				  color: 'black',
 				  backgroundColor: 'white',
 				  font: { fontSize: 18 },
-				  text: tableToDisplay[storage_loc_nb].display_label, 
+				  text: tableToDisplay[storage_loc_nb].display_label,
 				  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 				  top: 15,
-				  left: 5, 
-				  width: Ti.UI.SIZE, 
+				  left: 5,
+				  width: Ti.UI.SIZE,
 				  height: Ti.UI.SIZE
 				});
 				tvr.add(label1);
@@ -144,7 +144,7 @@ $.init = function() {
 					var dialog = Ti.UI.createAlertDialog({
 					    cancel: 1,
 					    buttonNames: ['Move', 'Cancel'],
-					    location_id: this.location_id, 
+					    location_id: this.location_id,
 					    type_id: this.type_id,
 					    message: 'Move object to storage location "' + this.display_label + '" ? ',
 					    title: 'Move object'
@@ -157,13 +157,13 @@ $.init = function() {
 							//alert("move object : " + tvr.location_id);
 							//problem HERE.
 							$.moveObject(this.location_id, this.type_id);
-						} 
+						}
 					});
 					dialog.show();
 
 				});
 
-				table.push(tvr); 
+				table.push(tvr);
 			}
 			$.storageLocationsTable.setData(table);
 		}

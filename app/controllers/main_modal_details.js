@@ -1,6 +1,6 @@
 /**
  * Controller for the details modal view
- * 
+ *
  * @class Controllers.text
  * @uses core
  */
@@ -24,19 +24,19 @@ $.init = function() {
 
 
 	// Loading URL for object details, replacing ID by the current object_id
-	CONFIG.url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.obj_data.object_id);
+	CONFIG.url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.obj_data.object_id);
 	CONFIG.validity = APP.Settings.CollectiveAccess.urlForObjectDetails.cache;
 	OBJECT_DETAILS.init($.TABLE);
 
 	// Fetching details in order to update "Some info about the item" and "Even some more info"
-	APP.log("debug",OBJECT_DETAILS.getDetails(CONFIG.obj_data.object_id));	
+	APP.log("debug",OBJECT_DETAILS.getDetails(CONFIG.obj_data.object_id));
 
 	if(OS_IOS && APP.Device.versionMajor >= 7) {
 		Ti.API.log("debug","IOS 7 ou +");
 		$.backgroundView.setTop('67');
 	}
 
-	$.topcontainerView.setTop($.backgroundView.top); 
+	$.topcontainerView.setTop($.backgroundView.top);
 	$.topcontainerView.setHeight(maxheight / 6);
 
 	$.label1.font={ fontSize:34 };
@@ -51,7 +51,7 @@ $.init = function() {
 	$.label2.text= "";
 	$.label3.text=CONFIG.obj_data.info2;
 	$.label3.font=$.label2.font
-	$.editButton.setBackgroundColor(APP.Settings.colors.primary); 
+	$.editButton.setBackgroundColor(APP.Settings.colors.primary);
 	//$.wrapperView.add(backgroundView);
 	//$.insideView.add(imagecontainerView);
 

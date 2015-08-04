@@ -9,13 +9,13 @@ var CONFIG = arguments[0];
 $.init = function() {
 	APP.log("debug", "settings.init");
 	APP.log("debug", APP.Settings);
-	
+
 	if (APP.logged == true) {
-		
+
 	}
-	
+
 	MODEL.init(CONFIG.index);
-	
+
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
 
 	if(APP.Settings.useSlideMenu) {
@@ -66,7 +66,7 @@ $.retrieveData = function(_force, _callback) {
 $.handleData = function(_data) {
 	APP.log("debug", "login.handleData");
 	APP.log("debug",_data);
-	
+
 	// If we are here, we are logged in
 	$.message.text = "You are connected.";
 	$.loginfield.hide();
@@ -84,14 +84,14 @@ $.loginbutton.addEventListener("click", function(_event) {
 
 	APP.log("debug","fields");
 	APP.log("debug",$.loginfield);
-	
+
 	if(APP.ca_logged != true) {
 		// Login form : password & login are defined
 		if($.loginfield.value && $.passwordfield.value) {
-			CONFIG.url = APP.Settings.CollectiveAccess.urlForLogin;
+			CONFIG.url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForLogin;
 			APP.authString = 'Basic ' +Titanium.Utils.base64encode($.loginfield.value+':'+$.passwordfield.value);
 			$.retrieveData();
-			//$.loginfield.value + ":" + $.passwordfield.value + "@" + 	
+			//$.loginfield.value + ":" + $.passwordfield.value + "@" +
 		} else {
 			var dialog = Ti.UI.createAlertDialog({
 		    	message: 'Please fill username & password',
@@ -102,7 +102,7 @@ $.loginbutton.addEventListener("click", function(_event) {
 	} else {
 		// Already logged in : logout action, reset form
 		$.message.text = "";
-		$.loginfield.value = "";	
+		$.loginfield.value = "";
 		$.passwordfield.value = "";
 		APP.logged = false;
 		$.loginfield.show();

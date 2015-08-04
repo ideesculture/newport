@@ -1,6 +1,6 @@
 /**
  * Controller for objects
- * 
+ *
  * @class Controllers.text
  * @uses core
  */
@@ -14,8 +14,8 @@ var COMMONS = require("ca-commons");
 
 var CONFIG = arguments[0];
 var value ="";
-var max_results = 3; 
-var clickWasOnceDone = false; 
+var max_results = 3;
+var clickWasOnceDone = false;
 $.TABLE = "ca_objects";
 
 $.init = function() {
@@ -26,14 +26,14 @@ $.init = function() {
 
 	// Initiating CA db model class
 
-	$.moreResultsButton.hide(); 
-	$.objectsResearchResultsContainer.hide(); 
+	$.moreResultsButton.hide();
+	$.objectsResearchResultsContainer.hide();
 	// Field title
-	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j; 
+	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j;
 	$.objectfield.value = value;
 	$.notes.text = "";
 	//$.objectfield.addEventListener('change', $.search);
-	max_results = 3; 
+	max_results = 3;
 
 	//APP.ca_login="administrator";
 	//APP.ca_password="admin";
@@ -44,30 +44,30 @@ $.init = function() {
 	//var info2 = APP.Settings.CollectiveAccess.urlForHierarchy.info2;
 	//HIERARCHY_MODEL.init($.TABLE, info1, info2); useless??
 
-	$.searchButton.addEventListener("click", $.search); 
+	$.searchButton.addEventListener("click", $.search);
 };
 
 $.fire = function(_data) {
-	$.objectsResearchResults.setData([]); 
-	$.objectsResearchResultsContainer.hide(); 
-	$.moreResultsButton.hide(); 
-	max_results = 3; 
+	$.objectsResearchResults.setData([]);
+	$.objectsResearchResultsContainer.hide();
+	$.moreResultsButton.hide();
+	max_results = 3;
 	//in value we want the id of the object
 	/*APP.log("debug", "config.content:");
 	APP.log("debug", CONFIG.content);
 	APP.log("debug", "e.config:");
 	APP.log("debug", e.config);*/
-	var laconfig = CONFIG; 
+	var laconfig = CONFIG;
 
-	//problem with local search, field is called "type_id" 
+	//problem with local search, field is called "type_id"
 	if(_data["ca_objects.type_id"]){
 		_data.type_id = _data["ca_objects.type_id"];
 	}
-	laconfig.content = _data; 
+	laconfig.content = _data;
 
 	//fills the field with selected object's display label
 	$.objectfield.value = _data.display_label;
-	clickWasOnceDone = false; 
+	clickWasOnceDone = false;
 	//HERE we have to save infos about the related object
 	Ti.App.fireEvent('event_haschanged', {
 		name: 'bar',
@@ -83,22 +83,22 @@ function createRow(data) {
     });
 
     tvr.addEventListener('click', function() {
-		$.fire(data); 
+		$.fire(data);
 	});
- 
+
     return tvr;
 }
 
 
 
 $.handleData = function(_data) {
-	//afficher une barre de chargement par dessus les résultats?? 
+	//afficher une barre de chargement par dessus les résultats??
 	APP.log("debug", _data.results);
 	$.notes.text = "";
 	var table = [];
-	$.moreResultsButton.hide(); 
-	$.objectsResearchResults.data = []; 
-	//$.objectsResearchResults.removeAllChildren(); 
+	$.moreResultsButton.hide();
+	$.objectsResearchResults.data = [];
+	//$.objectsResearchResults.removeAllChildren();
 	// If we have data to display...
 	if( typeof _data.results === 'object'){
 		//APP.log("debug", _data.results);
@@ -109,7 +109,7 @@ $.handleData = function(_data) {
 		else {
 			max = _data.results.length;
 		}
-		 
+
 		for (object_nb = 0; object_nb < max;  object_nb ++ ) {
 			//APP.log("debug", "resultat "+ );
 			table.push(createRow(_data.results[object_nb]));
@@ -122,32 +122,32 @@ $.handleData = function(_data) {
 			$.moreResultsButton.show();
 
 			if(!clickWasOnceDone){
-				clickwasOnceDone = true; 
+				clickwasOnceDone = true;
 				$.moreResultsButton.addEventListener("click", function(_event) {
-						max_results = _data.results.length; 
-						$.handleData(_data); 
+						max_results = _data.results.length;
+						$.handleData(_data);
 				});
 			}
 		}
 	}
-	else 
-	{ 
-		$.objectsResearchResultsContainer.hide(); 
+	else
+	{
+		$.objectsResearchResultsContainer.hide();
 		$.notes.text = "no results";
 	}
 	APP.closeLoading();
 }
 
 $.handleLocalData = function(_data) {
-	//afficher une barre de chargement par dessus les résultats?? 
+	//afficher une barre de chargement par dessus les résultats??
 	//APP.log("debug", _data);
 	APP.log("debug", typeof _data);
 	APP.log("debug", _data.length);
 	$.notes.text = "";
 	var table = [];
-	$.moreResultsButton.hide(); 
-	$.objectsResearchResults.data = []; 
-	//$.objectsResearchResults.removeAllChildren(); 
+	$.moreResultsButton.hide();
+	$.objectsResearchResults.data = [];
+	//$.objectsResearchResults.removeAllChildren();
 	// If we have data to display...
 	if( typeof _data == 'object'){
 		var max = 0, object_nb = 0, i=0;
@@ -175,17 +175,17 @@ $.handleLocalData = function(_data) {
 			$.moreResultsButton.show();
 
 			if(!clickWasOnceDone){
-				clickwasOnceDone = true; 
+				clickwasOnceDone = true;
 				$.moreResultsButton.addEventListener("click", function(_event) {
-						max_results = i; 
-						$.handleLocalData(_data); 
+						max_results = i;
+						$.handleLocalData(_data);
 				});
 			}
 		}
 	}
-	else 
-	{ 
-		$.objectsResearchResultsContainer.hide(); 
+	else
+	{
+		$.objectsResearchResultsContainer.hide();
 		$.notes.text = "no results";
 	}
 	APP.closeLoading();
@@ -194,17 +194,17 @@ $.handleLocalData = function(_data) {
 
 $.search = function(e){
 	APP.openLoading();
-	$.objectsResearchResultsContainer.hide(); 
-	var _url = APP.Settings.CollectiveAccess.urlForObjectSearch.url.replace(/<your_query>/g, $.objectfield.value);
-	max_results = 3; 
+	$.objectsResearchResultsContainer.hide();
+	var _url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForObjectSearch.url.replace(/<your_query>/g, $.objectfield.value);
+	max_results = 3;
 
 	if (Titanium.Network.networkType !== Titanium.Network.NETWORK_WIFI ) {
 			var result = HIERARCHY_MODEL.getSearchedRecordsLocally($.TABLE, e.value);
 	} else {
 		var result = HIERARCHY_MODEL.getSearchedRecords($.TABLE, e.value, _url, $.handleData);
 	}
-	
-	return result; 
+
+	return result;
 
 
 };
@@ -222,5 +222,3 @@ $.update = function () {
 
 
 $.init();
-
-

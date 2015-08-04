@@ -1,6 +1,6 @@
 /**
  * Collectiveaccess model for object edition ca-object-edit.js
- * 
+ *
  * @class Models.ca-model
  * @uses core
  * @uses http
@@ -11,7 +11,7 @@ var HTTP = require("http");
 var UTIL = require("utilities");
 var DBNAME = "Newport";
 //var table =  "ca_objects";
-	
+
 function Model() {
 	/**
 	 * Initializes the model
@@ -34,7 +34,7 @@ function Model() {
 		db.execute(request);
 		var request = "DROP TABLE IF EXISTS " + _ca_table + "_edit_temp_insert ;";
 		db.execute(request);
-		
+
 
 		var request = "CREATE TABLE IF NOT EXISTS " + _ca_table + "_edit_base (id INTEGER PRIMARY KEY AUTOINCREMENT, object_id TEXT, json TEXT);";
 		db.execute(request);
@@ -44,16 +44,16 @@ function Model() {
 		db.execute(request);
 
 		//cleans update table so that it exclusively contains the fresh new modifications
-		var request = "DELETE FROM " + _ca_table + "_edit_updates ;"; 
+		var request = "DELETE FROM " + _ca_table + "_edit_updates ;";
 		db.execute(request);
-		var request = "VACUUM;"; 
+		var request = "VACUUM;";
 		db.execute(request);
 
-		//ONLY FOR TESTING 
+		//ONLY FOR TESTING
 		//cleans the _edit_temp_insert table
-		/*var request = "DELETE FROM " + _ca_table + "_edit_temp_insert ;"; 
+		/*var request = "DELETE FROM " + _ca_table + "_edit_temp_insert ;";
 		db.execute(request);
-		var request = "VACUUM;"; 
+		var request = "VACUUM;";
 		db.execute(request); */
 
 		db.close();
@@ -92,7 +92,7 @@ function Model() {
 			_params.callback();
 		}
 	};
-	
+
 	/**
 	 * Useful to only log the data return when debugging
 	 * @param {Object} _data The returned data
@@ -116,7 +116,7 @@ function Model() {
 			APP.log("debug", "handleData:");
 			APP.log("debug", APP.CURRENT_ID);
 
-			
+
 			// expanding attribute informations for editing process tracking
 			for(var attribute in record.attributes) {
 				for(var value in attribute) {
@@ -124,7 +124,7 @@ function Model() {
 					if((typeof value_content != "undefined") && (value_content != "")) {
 						value_content.is_origin = 1;
 						value_content.is_modified = 0;
-						value_content.is_new = 0; 
+						value_content.is_new = 0;
 						value_content.is_saved_in_buffer = 0;
 						value_content.buffer_ref = 0;
 						record.attributes[attribute][value] = value_content;
@@ -135,7 +135,7 @@ function Model() {
 			var db = Ti.Database.open(DBNAME);
 			//db.execute("DELETE FROM " + _ca_table + "_edit_base;");
 			db.execute("BEGIN TRANSACTION;");
-			
+
 			APP.ca_modele_prop = new Array();
 			APP.ca_modele_values = {};
 			var ca_table = "ca_objects";
@@ -146,7 +146,7 @@ function Model() {
 			// main difference at this step with ca_object_details is that we don't need thumbnail here
 			var request = "DELETE FROM " + APP.CURRENT_TABLE + "_edit_base where object_id = ?;";
 			db.execute(request, APP.CURRENT_ID);
-			
+
 			var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_base (id, object_id, json) VALUES (NULL, ?, ?);";
 			db.execute(request, APP.CURRENT_ID, JSON.stringify(record));
 			db.execute("INSERT OR REPLACE INTO updates (url, time) VALUES(" + UTIL.escapeString(_url) + ", " + new Date().getTime() + ");");
@@ -180,7 +180,7 @@ function Model() {
 		var request = "select object_id, json from " + APP.CURRENT_TABLE + "_edit_base where object_id="+APP.CURRENT_ID+" order by id desc limit 1";
 		var data = db.execute(request);
 		var fieldnumber = 0;
-		
+
 		/*while (data.isValidRow()) {
 			while (fieldnumber < data.getFieldCount()) {
 				temp[data.fieldName(fieldnumber)] = data.field(fieldnumber);
@@ -210,7 +210,7 @@ function Model() {
 		value_content.is_modified = 0;
 		value_content.is_saved_in_buffer = 0;
 		value_content.buffer_ref = 0;
-		
+
 		return value_content;
 	}
 
@@ -222,7 +222,7 @@ function Model() {
 		var request = "DELETE FROM " + APP.CURRENT_TABLE + "_edit_updates WHERE object_id = ? AND attribute = ?;";
 		db.execute(request, APP.CURRENT_ID, attribute);
 
-		var json = JSON.stringify(value); 
+		var json = JSON.stringify(value);
 		//APP.log("debug",json);
 		//saves the new value
 		var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_updates (id, object_id, attribute, json) VALUES (NULL, ?, ?, ?);";
@@ -232,7 +232,7 @@ function Model() {
 		db.close();
 		APP.log("debug", "insertTempAddition OK");
 		APP.log("debug", APP.CURRENT_ID);
-		
+
 	}
 
 	//returns an array of objects, containing the name of the modified attribute and the json created in insertTempAddition
@@ -243,23 +243,23 @@ function Model() {
 		var request = "SELECT object_id, attribute, json FROM " + APP.CURRENT_TABLE + "_edit_updates WHERE object_id="+APP.CURRENT_ID+";";
 		var data = db.execute(request);
 		db.execute("END TRANSACTION;");
-		
-		var content = new Array() ; 
-		var valeur, attribut; 
-		if(data.getRowCount() > 0) { 
+
+		var content = new Array() ;
+		var valeur, attribut;
+		if(data.getRowCount() > 0) {
 			var i = 0;
 			while (data.isValidRow()) {
 				valeur = data.fieldByName("json");
 				attribut = data.fieldByName("attribute");
 				var otemp = {} ;
 				otemp.valeur = valeur;
-				otemp.attribut = attribut; 
-				content[i] = otemp; 
+				otemp.attribut = attribut;
+				content[i] = otemp;
 				data.next();
 				i++;
 			}
-			// Sending back unserialized content: array containing attribute & its json 
-			var result = content; 
+			// Sending back unserialized content: array containing attribute & its json
+			var result = content;
 		} else {
 			var result = false;
 		}
@@ -288,10 +288,10 @@ function Model() {
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
 		var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_temp_insert (id, object_id, attribute, value, is_modified, is_new, bundle_code, type_id) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);";
-		db.execute(request, APP.CURRENT_ID, attribut, valeur, is_modified, is_new, bundle_code, type_id); 
+		db.execute(request, APP.CURRENT_ID, attribut, valeur, is_modified, is_new, bundle_code, type_id);
 		db.execute("END TRANSACTION;");
 		db.close();
-		return true; 
+		return true;
 	}
 
 	this.saveChanges = function() {
@@ -299,12 +299,12 @@ function Model() {
 		var attribut, valeur, result, is_modified, is_new, bundle_code, type_id;
 		var db = Ti.Database.open(DBNAME);
 		db.execute("BEGIN TRANSACTION;");
-		
+
 		var request = "SELECT object_id, attribute, json FROM " + APP.CURRENT_TABLE + "_edit_updates WHERE object_id = '"+APP.CURRENT_ID+"' ;";
 		var data = db.execute(request);
 		db.execute("END TRANSACTION;");
 
-		if(data.getRowCount() > 0) { 
+		if(data.getRowCount() > 0) {
 			while (data.isValidRow()) {
 				//get attribute OKDONE
 				attribut = data.fieldByName("attribute");
@@ -312,32 +312,32 @@ function Model() {
 				//1)get json & parse it into an object
 				var otmp = JSON.parse(data.fieldByName("json"));
 				//2)get value, isnew and ismodified
-				valeur= otmp[0][attribut]; 	
+				valeur= otmp[0][attribut];
 				is_modified = otmp[0].is_modified;
-				is_new = otmp[0].is_new; 
+				is_new = otmp[0].is_new;
 				bundle_code = otmp[0].bundle;
 				if(otmp[0].type_id){
 					type_id = otmp[0].type_id;
 				}
-				else 
+				else
 				{
 					type_id="false";
 				}
 				//Send to db
 				db.execute("BEGIN TRANSACTION;");
 				var request = "INSERT INTO " + APP.CURRENT_TABLE + "_edit_temp_insert (id, object_id, attribute, value, is_modified, is_new, bundle_code, type_id) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);";
-				db.execute(request, APP.CURRENT_ID, attribut, valeur, is_modified, is_new, bundle_code, type_id); 
+				db.execute(request, APP.CURRENT_ID, attribut, valeur, is_modified, is_new, bundle_code, type_id);
 				db.execute("END TRANSACTION;");
 				data.next();
 			}
-			result = true; 
+			result = true;
 			this.cleanEditUpdatesTable();
 		} else {
 			result = false;
 		}
 		db.close();
 
-		return result; 
+		return result;
 
 	}
 
@@ -349,10 +349,10 @@ function Model() {
 		var request = "SELECT object_id, attribute, value, is_new, is_modified, bundle_code, type_id FROM ca_objects_edit_temp_insert ;";
 		var data = db.execute(request);
 		db.execute("END TRANSACTION;");
-		
-		var content = new Array() ; 
-		var valeur, attribut, object_id, is_new, is_modified, bundle_code, type_id; 
-		if(data.getRowCount() > 0) { 
+
+		var content = new Array() ;
+		var valeur, attribut, object_id, is_new, is_modified, bundle_code, type_id;
+		if(data.getRowCount() > 0) {
 			var i = 0;
 			while (data.isValidRow()) {
 				valeur = data.fieldByName("value");
@@ -363,21 +363,21 @@ function Model() {
 				bundle_code = data.fieldByName("bundle_code");
 				var otemp = {} ;
 				otemp.valeur = valeur;
-				otemp.attribut = attribut; 
-				otemp.is_new = is_new; 
-				otemp.is_modified = is_modified; 
-				otemp.bundle_code = bundle_code; 
-				otemp.object_id = object_id; 
+				otemp.attribut = attribut;
+				otemp.is_new = is_new;
+				otemp.is_modified = is_modified;
+				otemp.bundle_code = bundle_code;
+				otemp.object_id = object_id;
 				if(data.fieldByName("type_id")){
 					type_id=data.fieldByName("type_id");
-					otemp.type_id = type_id; 
+					otemp.type_id = type_id;
 				}
-				content[i] = otemp; 
+				content[i] = otemp;
 				data.next();
 				i++;
 			}
-			// Sending back unserialized content: array containing attribute & its json 
-			var result = content; 
+			// Sending back unserialized content: array containing attribute & its json
+			var result = content;
 		} else {
 			var result = false;
 		}
@@ -392,7 +392,7 @@ function Model() {
 	}
 
 	//apparement, fait tout crasher
-	
+
 	this.cleanTempInsertTable = function (_id, _attribute){
 		APP.log("debug", "cleanTempInsertTable");
 		var db = Ti.Database.open(DBNAME);
@@ -400,23 +400,23 @@ function Model() {
 		var request = "DELETE FROM ca_objects_edit_temp_insert WHERE object_id = ? AND attribute = ? ;";
 		db.execute(request, _id, _attribute);
 		db.execute("END TRANSACTION;");
-		db.close(); 
+		db.close();
 		//APP.log("debug", "ok fini");
 
 	}
 
 	this.sendDataToServer = function() {
-		var fieldToSave = {}; 
-		var remove_attributes = []; 
+		var fieldToSave = {};
+		var remove_attributes = [];
 		var remove_relationships = [];
-		var attributes = {}; 
-		var temptab = []; 
+		var attributes = {};
+		var temptab = [];
 		var tempobj = {};
-		var json = {}; 
+		var json = {};
 		var row;
 		var id ="";
-		var attribut = ""; 
-		var data = this.getSavedData(); 
+		var attribut = "";
+		var data = this.getSavedData();
 
 		if (data.length>0){
 			for(row in data){
@@ -435,11 +435,11 @@ function Model() {
 							remove_relationships[0] = fieldToSave.bundle_code;
 							json.remove_relationships = remove_relationships;
 						}
-						tempobj ={}; attributes = {}; 
-						tempobj["entity_id"]= fieldToSave.valeur; 
-						tempobj["type_id"]= fieldToSave.type_id; 
-						temptab[0]= tempobj; 
-						attributes[fieldToSave.bundle_code] = temptab; 
+						tempobj ={}; attributes = {};
+						tempobj["entity_id"]= fieldToSave.valeur;
+						tempobj["type_id"]= fieldToSave.type_id;
+						temptab[0]= tempobj;
+						attributes[fieldToSave.bundle_code] = temptab;
 						json.related = attributes;
 						break;
 
@@ -461,11 +461,11 @@ function Model() {
 							remove_relationships[0] = fieldToSave.bundle_code;
 							json.remove_relationships = remove_relationships;
 						}
-						tempobj ={}; attributes = {}; 
-						tempobj["object_id"]= fieldToSave.valeur; 
-						tempobj["type_id"]= fieldToSave.type_id; 
-						temptab[0]= tempobj; 
-						attributes[fieldToSave.bundle_code] = temptab; 
+						tempobj ={}; attributes = {};
+						tempobj["object_id"]= fieldToSave.valeur;
+						tempobj["type_id"]= fieldToSave.type_id;
+						temptab[0]= tempobj;
+						attributes[fieldToSave.bundle_code] = temptab;
 						json.related = attributes;
 						break;
 
@@ -474,11 +474,11 @@ function Model() {
 							remove_relationships[0] = fieldToSave.bundle_code;
 							json.remove_relationships = remove_relationships;
 						}
-						tempobj ={}; attributes = {}; 
-						tempobj["location_id"]= fieldToSave.valeur; 
-						tempobj["type_id"]= fieldToSave.type_id; 
-						temptab[0]= tempobj; 
-						attributes[fieldToSave.bundle_code] = temptab; 
+						tempobj ={}; attributes = {};
+						tempobj["location_id"]= fieldToSave.valeur;
+						tempobj["type_id"]= fieldToSave.type_id;
+						temptab[0]= tempobj;
+						attributes[fieldToSave.bundle_code] = temptab;
 						json.related = attributes;
 						break;
 
@@ -505,24 +505,24 @@ function Model() {
 							json.remove_attributes = remove_attributes;
 						}
 						//2) attributes
-						tempobj ={}; attributes = {}; 
-						tempobj["locale"]= "en_US"; 
-						tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
-						temptab[0]= tempobj; 
-						attributes[fieldToSave.bundle_code] = temptab; 
-						json.attributes = attributes; 
+						tempobj ={}; attributes = {};
+						tempobj["locale"]= "en_US";
+						tempobj[fieldToSave.attribut]= fieldToSave.valeur;
+						temptab[0]= tempobj;
+						attributes[fieldToSave.bundle_code] = temptab;
+						json.attributes = attributes;
 						break;
 				}
 				//INTRINSIC FIELDS MISSING ! ! ! ! !
-				
+
 				APP.log("debug", JSON.stringify(json));
-				//alert(JSON.stringify(json)); 
+				//alert(JSON.stringify(json));
 
 				/******************************
-				SENDS THE REQUEST 
+				SENDS THE REQUEST
 				*************************/
-				var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g,fieldToSave.object_id);
-				
+				var ca_url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g,fieldToSave.object_id);
+
 				var error = function() {
 					var dialog = Ti.UI.createAlertDialog({
 					    message: 'ERROR. Couldn\'t send data to the server',
@@ -539,7 +539,7 @@ function Model() {
 					var request = "DELETE FROM ca_objects_edit_temp_insert WHERE object_id = ? AND attribute = ? ;";
 					db.execute(request, o1, o2);
 					db.execute("END TRANSACTION;");
-					db.close(); 
+					db.close();
 				}
 
 				HTTP.request({
@@ -556,7 +556,7 @@ function Model() {
 				});
 
 			}
-			
+
 			var dialog = Ti.UI.createAlertDialog({
 				title: 'Save',
 			    message: 'Your modifications have been saved :)',
@@ -573,16 +573,16 @@ function Model() {
 	}
 
 	this.sendDataToServerForNewObject = function(CONFIG_NEW) {
-		APP.log("debug", "sendDataToServerForNewObject"); 
-		var fieldToSave = {}; 
-		var attributes = {}; 
-		var temptab = []; 
+		APP.log("debug", "sendDataToServerForNewObject");
+		var fieldToSave = {};
+		var attributes = {};
+		var temptab = [];
 		var tempobj = {};
-		var json = {}; 
+		var json = {};
 		var row;
 		var id ="";
-		var attribut = ""; 
-		var data = this.getSavedData(); 
+		var attribut = "";
+		var data = this.getSavedData();
 
 		if (data.length>0){
 
@@ -593,16 +593,16 @@ function Model() {
 			//1) builds the json
 			json = {};
 			//builds the object to be sent
-			tempobj ={}; attributes = {}; 
+			tempobj ={}; attributes = {};
 
-			tempobj.idno = CONFIG_NEW.obj_data.false_id; 	
-			tempobj.type_id= CONFIG_NEW.type_info.item_id; 
-			json.intrinsic_fields = tempobj; 
+			tempobj.idno = CONFIG_NEW.obj_data.false_id;
+			tempobj.type_id= CONFIG_NEW.type_info.item_id;
+			json.intrinsic_fields = tempobj;
 			APP.log("debug", "json sent for object creation:");
 			APP.log("debug", json);
-			
+
 			//2) sends the first request. In the "success" param, a loop sends the other requests to save attributes.
-			var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace("/id/ID","");
+			var ca_url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForObjectSave.url.replace("/id/ID","");
 
 			var errorNew = function() {
 				var dialog = Ti.UI.createAlertDialog({
@@ -610,7 +610,7 @@ function Model() {
 				    ok: 'OK',
 				    title: 'Error'
 				  }).show();
-				return false; 
+				return false;
 			}
 
 			var handleDataNew = function(_data){
@@ -618,12 +618,12 @@ function Model() {
 
 				//REQUESTS FOR OBJECT's ATTRIBUTES ARE SENT HERE
 				//APP.log("debug", _data);
-				CONFIG_NEW.obj_data.object_id = _data.object_id; 
-				CONFIG_NEW.obj_data.display_label = ""; 
+				CONFIG_NEW.obj_data.object_id = _data.object_id;
+				CONFIG_NEW.obj_data.display_label = "";
 				APP.log("debug", "object was created! new id: ");
 				APP.log("debug", CONFIG_NEW.obj_data.object_id);
 
-				for(row in data){		
+				for(row in data){
 					json = {};
 					fieldToSave = data[row];
 
@@ -632,19 +632,19 @@ function Model() {
 					attribut = fieldToSave.attribut;
 
 					//builds the object to be sent
-					tempobj ={}; attributes = {}; 
-					tempobj["locale"]= "en_US"; 
-					tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
-					temptab[0]= tempobj; 
-					attributes[fieldToSave.bundle_code] = temptab; 
-					json.attributes = attributes; 
+					tempobj ={}; attributes = {};
+					tempobj["locale"]= "en_US";
+					tempobj[fieldToSave.attribut]= fieldToSave.valeur;
+					temptab[0]= tempobj;
+					attributes[fieldToSave.bundle_code] = temptab;
+					json.attributes = attributes;
 
 
 					/******************************
-					SENDS THE REQUEST 
+					SENDS THE REQUEST
 					*************************/
-					var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g, CONFIG_NEW.obj_data.object_id);
-					
+					var ca_url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g, CONFIG_NEW.obj_data.object_id);
+
 					var error = function() {
 						var dialog = Ti.UI.createAlertDialog({
 						    message: 'ERROR. Couldn\'t send data to the server',
@@ -661,7 +661,7 @@ function Model() {
 						var request = "DELETE FROM ca_objects_edit_temp_insert WHERE object_id = ? AND attribute = ? ;";
 						db.execute(request, o1, o2);
 						db.execute("END TRANSACTION;");
-						db.close(); 
+						db.close();
 					}
 
 
@@ -695,11 +695,11 @@ function Model() {
 				failure: errorNew
 			});
 
-			return true; 
+			return true;
 		}
 		else
 		{
-			return false; 
+			return false;
 		}
 	}
 

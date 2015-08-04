@@ -1,6 +1,6 @@
 /**
  * Controller for entities
- * 
+ *
  * @class Controllers.text
  * @uses core
  */
@@ -15,9 +15,9 @@ var COMMONS = require("ca-commons");
 
 var CONFIG = arguments[0];
 var value ="";
-var max_results = 3; 
-var clickWasOnceDone = false; 
-var newEntityEventId; 
+var max_results = 3;
+var clickWasOnceDone = false;
+var newEntityEventId;
 var 	myModal = Ti.UI.createWindow({
 	    title           : 'My Modal',
 	    backgroundColor : 'transparent'
@@ -34,19 +34,19 @@ $.init = function() {
 	// Initiating CA db model class
 
 	ENTITY_MODEL.init($.TABLE);
-	$.moreResultsButton.hide(); 
-	$.entitiesResearchResultsContainer.hide(); 
+	$.moreResultsButton.hide();
+	$.entitiesResearchResultsContainer.hide();
 	// Field title
-	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j; 
+	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j;
 	$.entityfield.value = value;
 	$.notes.text = "";
 	//$.entityfield.addEventListener('change', $.search);
-	max_results = 3; 
+	max_results = 3;
 
 	APP.ca_login="administrator";
 	APP.ca_password="admin";
 	APP.authString = 'Basic ' +Titanium.Utils.base64encode(APP.ca_login+':'+APP.ca_password);
-	CONFIG.url = APP.Settings.CollectiveAccess.urlForEntityInfos.url;
+	CONFIG.url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForEntityInfos.url;
 	//ENTITY_MODEL.fetch();
 	if(!COMMONS.isCacheValid(CONFIG.url,CONFIG.validity)) {
 		ENTITY_MODEL.fetch({
@@ -63,31 +63,31 @@ $.init = function() {
 			}
 		});
 	}
-	$.searchButton.addEventListener("click", $.search); 
+	$.searchButton.addEventListener("click", $.search);
 };
 
 $.fire = function(_data) {
-	$.entitiesResearchResults.setData([]); 
-	$.entitiesResearchResultsContainer.hide(); 
-	$.moreResultsButton.hide(); 
-	max_results = 3; 
+	$.entitiesResearchResults.setData([]);
+	$.entitiesResearchResultsContainer.hide();
+	$.moreResultsButton.hide();
+	max_results = 3;
 	//in value we want the id of the entity
 	/*APP.log("debug", "config.content:");
 	APP.log("debug", CONFIG.content);
 	APP.log("debug", "e.config:");
 	APP.log("debug", e.config);*/
-	var laconfig = CONFIG; 
+	var laconfig = CONFIG;
 
-	//problem with local search, field is called "type_id" 
+	//problem with local search, field is called "type_id"
 	if(_data["ca_entities.type_id"]){
 		_data.type_id = _data["ca_entities.type_id"];
 	}
-	laconfig.content = _data; 
+	laconfig.content = _data;
 	APP.log("debug", "fire entity ! ! !");
 	APP.log("debug", laconfig);
 	//fills the field with selected entity's display label
 	$.entityfield.value = _data.display_label;
-	clickWasOnceDone = false; 
+	clickWasOnceDone = false;
 	//HERE we have to save infos about the related entity
 	Ti.App.fireEvent('event_haschanged', {
 		name: 'bar',
@@ -103,24 +103,24 @@ function createRow(data) {
     });
 
     tvr.addEventListener('click', function() {
-		$.fire(data); 
+		$.fire(data);
 	});
- 
+
     return tvr;
 }
 
 $.createNewEntity = function(){
 	$.notes.removeEventListener('click', $.listen);
-	//alert("hello"); 
+	//alert("hello");
 	var modal_info = {
 			display_label : $.entityfield.value,
-			container: myModal, 
+			container: myModal,
 			config: CONFIG
 	}
 	var modal_view = Alloy.createController('edit_modal_entities',modal_info);
     myModal.add(modal_view.getView());
 	myModal.open({
-    	animate : true, 
+    	animate : true,
 	});
 }
 
@@ -129,12 +129,12 @@ $.listen = function(){
 }
 
 $.handleData = function(_data) {
-	//afficher une barre de chargement par dessus les résultats?? 
+	//afficher une barre de chargement par dessus les résultats??
 	$.notes.text = "";
 	var table = [];
-	$.moreResultsButton.hide(); 
-	$.entitiesResearchResults.data = []; 
-	//$.entitiesResearchResults.removeAllChildren(); 
+	$.moreResultsButton.hide();
+	$.entitiesResearchResults.data = [];
+	//$.entitiesResearchResults.removeAllChildren();
 	// If we have data to display...
 	if( typeof _data.results === 'object'){
 		//APP.log("debug", _data.results);
@@ -145,7 +145,7 @@ $.handleData = function(_data) {
 		else {
 			max = _data.results.length;
 		}
-		 
+
 		for (entity_nb = 0; entity_nb < max;  entity_nb ++ ) {
 			//APP.log("debug", "resultat "+ );
 			table.push(createRow(_data.results[entity_nb]));
@@ -158,17 +158,17 @@ $.handleData = function(_data) {
 			$.moreResultsButton.show();
 
 			if(!clickWasOnceDone){
-				clickwasOnceDone = true; 
+				clickwasOnceDone = true;
 				$.moreResultsButton.addEventListener("click", function(_event) {
-						max_results = _data.results.length; 
-						$.handleData(_data); 
+						max_results = _data.results.length;
+						$.handleData(_data);
 				});
 			}
 		}
 	}
-	else 
-	{ 
-		$.entitiesResearchResultsContainer.hide(); 
+	else
+	{
+		$.entitiesResearchResultsContainer.hide();
 		$.notes.text = "no results. Create " + $.entityfield.value + " ? ";
 		newEntityEventId = $.notes.addEventListener("click", $.listen );
 	}
@@ -176,15 +176,15 @@ $.handleData = function(_data) {
 }
 
 $.handleLocalData = function(_data) {
-	//afficher une barre de chargement par dessus les résultats?? 
+	//afficher une barre de chargement par dessus les résultats??
 	//APP.log("debug", _data);
 	APP.log("debug", typeof _data);
 	APP.log("debug", _data.length);
 	$.notes.text = "";
 	var table = [];
-	$.moreResultsButton.hide(); 
-	$.entitiesResearchResults.data = []; 
-	//$.entitiesResearchResults.removeAllChildren(); 
+	$.moreResultsButton.hide();
+	$.entitiesResearchResults.data = [];
+	//$.entitiesResearchResults.removeAllChildren();
 	// If we have data to display...
 	if( typeof _data == 'object'){
 		var max = 0, entity_nb = 0, i=0;
@@ -212,17 +212,17 @@ $.handleLocalData = function(_data) {
 			$.moreResultsButton.show();
 
 			if(!clickWasOnceDone){
-				clickwasOnceDone = true; 
+				clickwasOnceDone = true;
 				$.moreResultsButton.addEventListener("click", function(_event) {
-						max_results = i; 
-						$.handleLocalData(_data); 
+						max_results = i;
+						$.handleLocalData(_data);
 				});
 			}
 		}
 	}
-	else 
-	{ 
-		$.entitiesResearchResultsContainer.hide(); 
+	else
+	{
+		$.entitiesResearchResultsContainer.hide();
 		$.notes.text = "no results. Create " + $.entityfield.value + " ? ";
 		newEntityEventId = $.notes.addEventListener("click", $.listen );
 	}
@@ -232,9 +232,9 @@ $.handleLocalData = function(_data) {
 
 $.search = function(e){
 	APP.openLoading();
-	$.entitiesResearchResultsContainer.hide(); 
+	$.entitiesResearchResultsContainer.hide();
 	var _url = APP.Settings.CollectiveAccess.urlForEntitySearch.url.replace(/<your_query>/g, $.entityfield.value);
-	max_results = 3; 
+	max_results = 3;
 	//if(e.value.length >= 3) {
 	if (Titanium.Network.networkType !== Titanium.Network.NETWORK_WIFI ) {
 		var result = ENTITY_MODEL.getSearchedRecordsLocally($.TABLE, $.entityfield.value, $.handleLocalData);
@@ -242,14 +242,14 @@ $.search = function(e){
 	} else {
 		var result = ENTITY_MODEL.getSearchedRecords($.TABLE, e.value, _url, $.handleData);
 	}
-	return result; 
+	return result;
 
 
 };
 
 Ti.App.addEventListener('entityCreated', function(e) {
 	$.notes.text = "Entity created!";
-	$.entityfield.value = e.value; 
+	$.entityfield.value = e.value;
 });
 
 
@@ -265,5 +265,3 @@ $.update = function () {
 
 
 $.init();
-
-

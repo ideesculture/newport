@@ -97,11 +97,11 @@ $.init = function() {
 	CONFIG.ui_url_validity = APP.Settings.CollectiveAccess.urlForUis.cache;
 	// Loading object details
 	// Loading URL for object details, replacing ID by the current object_id
-	CONFIG.object_url = APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.obj_data.object_id);
+	CONFIG.object_url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForObjectDetails.url.replace(/ID/g,CONFIG.obj_data.object_id);
 	CONFIG.object_url_validity = APP.Settings.CollectiveAccess.urlForObjectDetails.cache;
 
 	// Loading URL for base object edition data, replacing ID by the current object_id
-	CONFIG.base_edit_url = APP.Settings.CollectiveAccess.urlForObjectEdit.url.replace(/ID/g,CONFIG.obj_data.object_id);
+	CONFIG.base_edit_url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForObjectEdit.url.replace(/ID/g,CONFIG.obj_data.object_id);
 	CONFIG.base_edit_url_validity = APP.Settings.CollectiveAccess.urlForObjectEdit.cache;
 
 	$.retrieveData();
@@ -174,7 +174,7 @@ $.modelRetrieveData = function(_force, _callback) {
 				}
 			}
 		});
-		
+
 		// Initializing lists model
 		var model_lists_url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForLists.url;
 		var model_lists_cache_validity = APP.Settings.CollectiveAccess.urlForLists.cache;

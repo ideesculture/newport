@@ -1,6 +1,6 @@
 /**
  * Controller for occu
- * 
+ *
  * @class Controllers.text
  * @uses core
  */
@@ -15,9 +15,9 @@ var COMMONS = require("ca-commons");
 
 var CONFIG = arguments[0];
 var value ="";
-var max_results = 3; 
-var clickWasOnceDone = false; 
-var newoccuEventId; 
+var max_results = 3;
+var clickWasOnceDone = false;
+var newoccuEventId;
 var 	myModal = Ti.UI.createWindow({
 	    title           : 'My Modal',
 	    backgroundColor : 'transparent'
@@ -34,19 +34,19 @@ $.init = function() {
 	// Initiating CA db model class
 
 	OCCU_MODEL.init($.TABLE);
-	$.moreResultsButton.hide(); 
-	$.occuResearchResultsContainer.hide(); 
+	$.moreResultsButton.hide();
+	$.occuResearchResultsContainer.hide();
 	// Field title
-	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j; 
+	$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j;
 	$.occufield.value = value;
 	$.notes.text = "";
 	//$.occufield.addEventListener('change', $.search);
-	max_results = 3; 
+	max_results = 3;
 
 	APP.ca_login="administrator";
 	APP.ca_password="admin";
 	APP.authString = 'Basic ' +Titanium.Utils.base64encode(APP.ca_login+':'+APP.ca_password);
-	CONFIG.url = APP.Settings.CollectiveAccess.urlForOccurrenceInfos.url;
+	CONFIG.url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForOccurrenceInfos.url;
 	//occu_MODEL.fetch();
 	if(!COMMONS.isCacheValid(CONFIG.url,CONFIG.validity)) {
 		OCCU_MODEL.fetch({
@@ -63,32 +63,32 @@ $.init = function() {
 			}
 		});
 	}
-	$.searchButton.addEventListener("click", $.search); 
+	$.searchButton.addEventListener("click", $.search);
 };
 
 $.fire = function(_data) {
-	$.occuResearchResults.setData([]); 
-	$.occuResearchResultsContainer.hide(); 
-	$.moreResultsButton.hide(); 
-	max_results = 3; 
+	$.occuResearchResults.setData([]);
+	$.occuResearchResultsContainer.hide();
+	$.moreResultsButton.hide();
+	max_results = 3;
 	//in value we want the id of the occu
 	/*APP.log("debug", "config.content:");
 	APP.log("debug", CONFIG.content);
 	APP.log("debug", "e.config:");
 	APP.log("debug", e.config);*/
-	var laconfig = CONFIG; 
+	var laconfig = CONFIG;
 
-	//problem with local search, field is called "type_id" 
+	//problem with local search, field is called "type_id"
 	if(_data["ca_occurrences.type_id"]){
 		_data.type_id = _data["ca_occurrences.type_id"];
 	}
-	laconfig.content = _data; 
+	laconfig.content = _data;
 
 	//fills the field with selected occu's display label
 	$.occufield.value = _data.display_label;
 	APP.log("debug", "fire occu!!!");
 	APP.log("debug", laconfig);
-	clickWasOnceDone = false; 
+	clickWasOnceDone = false;
 	//HERE we have to save infos about the related occu
 	Ti.App.fireEvent('event_haschanged', {
 		name: 'bar',
@@ -104,24 +104,24 @@ function createRow(data) {
     });
 
     tvr.addEventListener('click', function() {
-		$.fire(data); 
+		$.fire(data);
 	});
- 
+
     return tvr;
 }
 
 $.createNewoccu = function(){
 	$.notes.removeEventListener('click', $.listen);
-	//alert("hello"); 
+	//alert("hello");
 	var modal_info = {
 			display_label : $.occufield.value,
-			container: myModal, 
+			container: myModal,
 			config: CONFIG
 	}
 	var modal_view = Alloy.createController('edit_modal_occu',modal_info);
     myModal.add(modal_view.getView());
 	myModal.open({
-    	animate : true, 
+    	animate : true,
 	});
 }
 
@@ -130,13 +130,13 @@ $.listen = function(){
 }
 
 $.handleData = function(_data) {
-	//afficher une barre de chargement par dessus les résultats?? 
+	//afficher une barre de chargement par dessus les résultats??
 	APP.log("debug", _data.results);
 	$.notes.text = "";
 	var table = [];
-	$.moreResultsButton.hide(); 
-	$.occuResearchResults.data = []; 
-	//$.occuResearchResults.removeAllChildren(); 
+	$.moreResultsButton.hide();
+	$.occuResearchResults.data = [];
+	//$.occuResearchResults.removeAllChildren();
 	// If we have data to display...
 	if( typeof _data.results === 'object'){
 		//APP.log("debug", _data.results);
@@ -147,7 +147,7 @@ $.handleData = function(_data) {
 		else {
 			max = _data.results.length;
 		}
-		 
+
 		for (occu_nb = 0; occu_nb < max;  occu_nb ++ ) {
 			//APP.log("debug", "resultat "+ );
 			table.push(createRow(_data.results[occu_nb]));
@@ -160,17 +160,17 @@ $.handleData = function(_data) {
 			$.moreResultsButton.show();
 
 			if(!clickWasOnceDone){
-				clickwasOnceDone = true; 
+				clickwasOnceDone = true;
 				$.moreResultsButton.addEventListener("click", function(_event) {
-						max_results = _data.results.length; 
-						$.handleData(_data); 
+						max_results = _data.results.length;
+						$.handleData(_data);
 				});
 			}
 		}
 	}
-	else 
-	{ 
-		$.occuResearchResultsContainer.hide(); 
+	else
+	{
+		$.occuResearchResultsContainer.hide();
 		//$.notes.text = "no results. Create " + $.occufield.value + " ? ";
 		//newoccuEventId = $.notes.addEventListener("click", $.listen );
 		$.notes.text = "no results";
@@ -179,15 +179,15 @@ $.handleData = function(_data) {
 }
 
 $.handleLocalData = function(_data) {
-	//afficher une barre de chargement par dessus les résultats?? 
+	//afficher une barre de chargement par dessus les résultats??
 	//APP.log("debug", _data);
 	APP.log("debug", typeof _data);
 	APP.log("debug", _data.length);
 	$.notes.text = "";
 	var table = [];
-	$.moreResultsButton.hide(); 
-	$.occuResearchResults.data = []; 
-	//$.occuResearchResults.removeAllChildren(); 
+	$.moreResultsButton.hide();
+	$.occuResearchResults.data = [];
+	//$.occuResearchResults.removeAllChildren();
 	// If we have data to display...
 	if( typeof _data == 'object'){
 		var max = 0, occu_nb = 0, i=0;
@@ -215,17 +215,17 @@ $.handleLocalData = function(_data) {
 			$.moreResultsButton.show();
 
 			if(!clickWasOnceDone){
-				clickwasOnceDone = true; 
+				clickwasOnceDone = true;
 				$.moreResultsButton.addEventListener("click", function(_event) {
-						max_results = i; 
-						$.handleLocalData(_data); 
+						max_results = i;
+						$.handleLocalData(_data);
 				});
 			}
 		}
 	}
-	else 
-	{ 
-		$.occuResearchResultsContainer.hide(); 
+	else
+	{
+		$.occuResearchResultsContainer.hide();
 		//$.notes.text = "no results. Create " + $.occufield.value + " ? ";
 		//newoccuEventId = $.notes.addEventListener("click", $.listen );
 		$.notes.text = "no results";
@@ -236,9 +236,9 @@ $.handleLocalData = function(_data) {
 
 $.search = function(e){
 	APP.openLoading();
-	$.occuResearchResultsContainer.hide(); 
-	var _url = APP.Settings.CollectiveAccess.urlForOccurrenceSearch.url.replace(/<your_query>/g, $.occufield.value);
-	max_results = 3; 
+	$.occuResearchResultsContainer.hide();
+	var _url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForOccurrenceSearch.url.replace(/<your_query>/g, $.occufield.value);
+	max_results = 3;
 	//if(e.value.length >= 3) {
 	if (Titanium.Network.networkType !== Titanium.Network.NETWORK_WIFI ) {
 		var result = OCCU_MODEL.getSearchedRecordsLocally($.TABLE, $.occufield.value, $.handleLocalData);
@@ -246,14 +246,14 @@ $.search = function(e){
 	} else {
 		var result = OCCU_MODEL.getSearchedRecords($.TABLE, e.value, _url, $.handleData);
 	}
-	return result; 
+	return result;
 
 
 };
 
 Ti.App.addEventListener('occuCreated', function(e) {
 	$.notes.text = "occu created!";
-	$.occufield.value = e.value; 
+	$.occufield.value = e.value;
 });
 
 
@@ -269,5 +269,3 @@ $.update = function () {
 
 
 $.init();
-
-

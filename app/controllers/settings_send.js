@@ -1,8 +1,8 @@
 /**
  * Controller for sending the data stored in "temp" table into the real distant db
  * settings_send.js
- * 
- * 
+ *
+ *
  * @uses core
  */
 var APP = require("core");
@@ -15,12 +15,12 @@ var maxwidth = Ti.Platform.displayCaps.platformWidth;
 var maxheight = Ti.Platform.displayCaps.platformHeight;
 var OBJECT_EDIT = require("models/ca-object-edit")();
 var id ="";
-var attribut = ""; 
+var attribut = "";
 
 
 
-			
-		
+
+
 /**
  * Initializes the controller
  */
@@ -37,15 +37,15 @@ $.init = function() {
 		});
 	}
 
-	var fieldToSave = {}; 
-	var remove_attributes = []; 
-	var attributes = {}; 
-	var temptab = []; 
+	var fieldToSave = {};
+	var remove_attributes = [];
+	var attributes = {};
+	var temptab = [];
 	var tempobj = {};
-	var json = {}; 
-	var data = OBJECT_EDIT.getSavedData(); 
+	var json = {};
+	var data = OBJECT_EDIT.getSavedData();
 	var row;
-	//$.label.text = data; 
+	//$.label.text = data;
 	if (data.length>0){
 		for(row in data){
 			json = {};
@@ -61,24 +61,24 @@ $.init = function() {
 				json.remove_attributes = remove_attributes;
 			}
 			//2) attributes
-			tempobj ={}; attributes = {}; 
-			tempobj["locale"]= "en_US"; 
-			tempobj[fieldToSave.attribut]= fieldToSave.valeur; 
-			temptab[0]= tempobj; 
-			attributes[fieldToSave.attribut] = temptab; 
-			json.attributes = attributes; 
+			tempobj ={}; attributes = {};
+			tempobj["locale"]= "en_US";
+			tempobj[fieldToSave.attribut]= fieldToSave.valeur;
+			temptab[0]= tempobj;
+			attributes[fieldToSave.attribut] = temptab;
+			json.attributes = attributes;
 
 
-			//alert(JSON.stringify(json)); 
+			//alert(JSON.stringify(json));
 
 			/******************************
-			SENDS THE REQUEST 
+			SENDS THE REQUEST
 			*************************/
-			var ca_url = APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g,fieldToSave.object_id);
-			$.label2.text = "Data export"; 
+			var ca_url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForObjectSave.url.replace(/ID/g,fieldToSave.object_id);
+			$.label2.text = "Data export";
 
 
-			
+
 			var error = function() {
 				var dialog = Ti.UI.createAlertDialog({
 				    message: 'Couldn\'t send data to the server',
@@ -114,16 +114,16 @@ $.init = function() {
 				success: handleData(id, attribut),
 				failure: error
 			});
-		
-		
+
+
 		}
 
 		$.label.text = "Data has been sent to the server successfully :)";
-		
+
 	}
 	else
 	{
-		$.label2.text = "Data export"; 
+		$.label2.text = "Data export";
 		$.label.text = "There are no modifications to send to the server";
 
 	}

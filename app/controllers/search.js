@@ -1,6 +1,6 @@
 /**
  * Controller for the "search" screen
- * 
+ *
  * @class Controllers.settings
  * @uses core
  */
@@ -16,7 +16,7 @@ $.TABLE = "ca_objects";
  */
 $.init = function() {
 	APP.log("debug", "search.init");
-	
+
 	//navigation bar
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
 	if(APP.Settings.useSlideMenu) {
@@ -55,7 +55,7 @@ $.handleData = function(_data) {
 			//otherwise it's too long and bad
 			//we have to find a way to make it better
 			var last_object_no = 0;
-			Object.keys(_data.results).length <= 20? last_object_no = Object.keys(_data.results).length : last_object_no = 20; 
+			Object.keys(_data.results).length <= 20? last_object_no = Object.keys(_data.results).length : last_object_no = 20;
 			var object_no =0;
 
 			for(var object in _data.results) {
@@ -70,8 +70,8 @@ $.handleData = function(_data) {
 	   					//$.NavigationBar.title.text = "loaded";
 					},500);
 				}
-			}	
-		} 
+			}
+		}
 	}
 	else {
 		APP.log("debug", "_data.results is not an object!!!");
@@ -81,7 +81,7 @@ $.handleData = function(_data) {
 };
 
 $.search = function(e){
-	var _url = APP.Settings.CollectiveAccess.urlForObjectSearch.url.replace(/<your_query>/g, e.value);
+	var _url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForObjectSearch.url.replace(/<your_query>/g, e.value);
 
 	if(e.value.length >= 3) {
 		if (Titanium.Network.networkType !== Titanium.Network.NETWORK_WIFI ) {
@@ -89,7 +89,7 @@ $.search = function(e){
 		} else {
 			var result = HIERARCHY_MODEL.getSearchedRecords($.TABLE, e.value, _url, $.handleData);
 		}
-		
+
 	}
 };
 
