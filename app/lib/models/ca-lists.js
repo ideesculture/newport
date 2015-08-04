@@ -65,7 +65,7 @@ function Model() {
 				format: "JSON",
 				url: _params.url,
 				passthrough: _params.callback,
-				success: this.echoData,
+				success: this.handleData,
 				//success: this.echoData,
 				failure: this.echoErrorData
 			});

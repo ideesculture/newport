@@ -22,6 +22,10 @@ $.init = function() {
 	$.bundleItemElements.height = 1;
 	$.bundleItemElements.visible = false;
 	$.value.text = VALUES;
+
+	var listValues = LIST_ITEMS_MODEL.getAllData();
+	Ti.API.log("debug","all list data");
+	Ti.API.log("debug",listValues);
 };
 
 $.fetch = function() {
