@@ -474,7 +474,13 @@ $.uiHandleData = function(_data) {
 								break;
 
 							case "preferred_labels":
-								var values = $.EMPTY_BUNDLE;
+								if($.RECORD.preferred_labels){
+									var values = $.RECORD.preferred_labels[0].name; // bof eh. should take ALL values. 
+								}
+								else{
+									var values = $.EMPTY_BUNDLE;
+								}
+								
 								var temp_objet = {};
 								temp_objet["datatype"] = "Preferred_labels";
 								temp_objet["display_label"] = "Preferred label";
@@ -488,6 +494,21 @@ $.uiHandleData = function(_data) {
 									content:element_data,
 									values:values,
 									newport_id:{0:i}
+								}).getView();
+								rows.push(row);
+								break;
+
+							case "hierarchy_location":
+								var values = $.EMPTY_BUNDLE;
+								if($.RECORD[bundle_code]){
+									APP.log($.RECORD[bundle_code]);
+								}
+								Ti.API.log("debug","hierarchy location");
+
+								var row = Alloy.createController("edit_hierarchy_location", {
+									bundle_code:bundle_code,
+									display_label: "Hierarchy location",
+									obj_data: CONFIG.obj_data,
 								}).getView();
 								rows.push(row);
 								break;

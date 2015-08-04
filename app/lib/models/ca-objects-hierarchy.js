@@ -206,6 +206,35 @@ function Model() {
 
 	}
 
+	//Function for "Hierarchy Location" bundle: brings back the 3 parents of current object
+	this.getParentRecords = function(_ca_table, object_id) {
+	//	APP.log("debug", "CA-HIERARCHY.getParentRecords");
+
+		var db = Ti.Database.open(DBNAME),
+			//request = "select ca_table, object_id, parent_id, idno, display_label, date, created from ca_models where ca_table like '"+_ca_table,
+			request = "select cao4.object_id as id4, cao4.display_label as label4, cao3.object_id as id3, cao3.display_label as label3, cao2.object_id as id2, cao2.display_label as label2, cao1.object_id as id1, cao1.display_label as label1 from "+_ca_table+" as cao1 left join "+_ca_table+" as cao2 on cao2.object_id=cao1.parent_id left join "+_ca_table+" as cao3 on cao3.object_id=cao2.parent_id left join "+_ca_table+" as cao4 on cao4.object_id=cao3.parent_id WHERE cao1.object_id="+object_id,
+			temp = {};
+		var data = db.execute(request);
+		var fieldnumber = 0;
+
+
+		while (data.isValidRow()) {	
+			while (fieldnumber < data.getFieldCount()) {
+				temp[data.fieldName(fieldnumber)] = data.field(fieldnumber);
+				fieldnumber++;
+			}
+			fieldnumber = 0;
+			data.next();
+		}
+
+		data.close();
+		db.close();
+		APP.log("debug", "PARENT RECORDS :::");
+		APP.log("debug", temp);
+		return temp;
+
+	}
+
 	this.getChildrenFoldersInside = function(_ca_table, id) {
 	//	APP.log("debug", "CA-HIERARCHY.getChildrenFoldersInside");
 		var db = Ti.Database.open(DBNAME), temp = {};
