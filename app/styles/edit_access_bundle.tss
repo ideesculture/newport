@@ -62,4 +62,9 @@
 },
 "#value": {
 	left:0
+},
+"#accessTable": {
+	height:Ti.UI.SIZE,
+	top:"10dp",
+	bottom:"10dp"
 }
