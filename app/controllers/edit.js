@@ -519,6 +519,7 @@ $.uiHandleData = function(_data) {
 								Ti.API.log("debug",$.RECORD);
 								var row = Alloy.createController("edit_access_bundle", {
 									bundle_code:bundle_code,
+									display_label: "Access control",
 									content:{},
 									values:values
 								}).getView();
@@ -531,6 +532,20 @@ $.uiHandleData = function(_data) {
 								Ti.API.log("debug",$.RECORD);
 								var row = Alloy.createController("edit_status_bundle", {
 									bundle_code:bundle_code,
+									display_label: "Workflow status",
+									content:{},
+									values:values
+								}).getView();
+								rows.push(row);
+								break;
+
+							case "idno":
+								var values = $.RECORD.intrinsic_fields.idno;
+								Ti.API.log("debug","status");
+								Ti.API.log("debug",$.RECORD);
+								var row = Alloy.createController("edit_idno_bundle", {
+									bundle_code:bundle_code,
+									display_label: "Identification number",
 									content:{},
 									values:values
 								}).getView();
