@@ -87,11 +87,11 @@
 				"cache":"86400"
 			},
 			"urlForLists":{
-				"url": "find/ca_lists/?q=*&pretty=1",
+				"url": "find/ca_lists/?q=*&?q=*&source={\"bundles\":{\"list_code\":{},\"default_sort\":{},\"is_hierarchical\":{},\"is_system_list\":{},\"use_as_vocabulary\":{}}}",
 				"cache":"86400"
 			},
 			"urlForListItems":{
-				"url": "find/ca_list_items/?q=ca_lists:LISTCODE&source={\"bundles\":{\"item_value\":{}, \"is_default\":{}, \"rank\":{}, \"parent_id\":{}}}",
+				"url": "find/ca_list_items/?q=ca_lists:LISTCODE&source={\"bundles\":{\"list_id\":{},\"item_value\":{}, \"is_default\":{}, \"rank\":{}, \"parent_id\":{}}}",
 				"cache":"86400"
 			}
 		},

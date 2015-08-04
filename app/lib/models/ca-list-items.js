@@ -11,7 +11,6 @@ var HTTP = require("http");
 var UTIL = require("utilities");
 var DBNAME = "Newport";
 
-
 function Model() {
 	this.temp = {};
 
@@ -22,7 +21,7 @@ function Model() {
 		Ti.API.log("debug", "ca-list-items.init");
 		var db = Ti.Database.open(DBNAME);
 
-		var request = "CREATE TABLE IF NOT EXISTS ca_list_items (id INTEGER PRIMARY KEY AUTOINCREMENT, ca_table TEXT, item_id INTEGER, idno TEXT, display_label TEXT, item_value INTEGER, is_default INTEGER, rank INTEGER, parent_id INTEGER);";
+		var request = "CREATE TABLE IF NOT EXISTS ca_list_items (id INTEGER PRIMARY KEY AUTOINCREMENT, list_id INTEGER, item_id INTEGER, idno TEXT, display_label TEXT, item_value INTEGER, is_default INTEGER, rank INTEGER, parent_id INTEGER);";
 		db.execute(request);
 		db.close();
 	};
@@ -44,8 +43,7 @@ function Model() {
 	 * @param {Number} _params.cache The length of time to consider cached data 'warm'
 	 */
 	this.fetch = function(_params) {
-		Ti.API.log("debug", "ca-list-items.fetch");
-		//APP.log("trace", UTIL.jsonStringify(_params));
+		Ti.API.log("debug", "ca-list-item fetch");
 
 		var isStale = UTIL.isStale(_params.url, _params.cache);
 		Ti.API.log("debug",_params);
@@ -100,9 +98,6 @@ function Model() {
 	this.handleData = function(_data, _url, _callback) {
 
 		var db = Ti.Database.open(DBNAME);
-		var request = "DELETE FROM ca_list_items;";
-		db.execute(request);
-		db.close();
 
 		Ti.API.log("debug", "ca-list-items.handleData");
 		Ti.API.log("debug", _data.results);
@@ -114,9 +109,13 @@ function Model() {
 			// Browsing data
 		    for (var num in _data.results) {
 				var record = _data.results[num];
+				if (num==0) {
+					var request = "DELETE FROM ca_list_items WHERE list_id="+record["list_id"];
+					db.execute(request);
+				}
 
-        		var request = "INSERT INTO ca_list_items (id, ca_table, item_id, idno, display_label, item_value, is_default, rank, parent_id) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
-				db.execute(request, "ca_list_items", record["item_id"], record["idno"], record["display_label"], record["item_value"], record["is_default"], record["rank"], record["parent_id"]);
+        		var request = "INSERT INTO ca_list_items (id, list_id, item_id, idno, display_label, item_value, is_default, rank, parent_id) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
+				db.execute(request, record["list_id"], record["item_id"], record["idno"], record["display_label"], record["item_value"], record["is_default"], record["rank"], record["parent_id"]);
 		    }
 			db.execute("INSERT OR REPLACE INTO updates (url, time) VALUES(" + UTIL.escapeString(_url) + ", " + new Date().getTime() + ");");
 			db.execute("END TRANSACTION;");
@@ -153,6 +152,10 @@ function Model() {
 		return this.getDataFromDB(request);
 	}
 
+	this.getAllDataFromList = function(list_id) {
+		var request = "SELECT * FROM ca_list_items where list_id = \""+list_id+"\";";
+		return this.getDataFromDB(request);
+	}
 };
 
 module.exports = function() {

@@ -112,6 +112,9 @@ function Model() {
 				Ti.API.log("debug",record);
         		var request = "INSERT INTO " + TABLE + " (id, ca_table, list_id, list_item_id, display_label, list_code, default_sort, is_hierarchical, is_system_list, use_as_vocabulary) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 				db.execute(request, TABLE, record["list_id"], record["id"], record["display_label"], record["list_code"], record["default_sort"], record["is_hierarchical"], record["is_system_list"], record["use_as_vocabulary"]);
+				Ti.API.log("debug","ca-lists model record");
+
+				//Ti.API.log("debug",TABLE+" "+record["list_id"]+" "+record["id"]+" "+record["display_label"]+" "+record["list_code"]+" "+record["default_sort"]+" "+record["is_hierarchical"]+" "+record["is_system_list"]+" "+record["use_as_vocabulary"]));
 		    }
 			db.execute("INSERT OR REPLACE INTO updates (url, time) VALUES(" + UTIL.escapeString(_url) + ", " + new Date().getTime() + ");");
 			db.execute("END TRANSACTION;");
@@ -125,7 +128,9 @@ function Model() {
 
 	this.getDataFromDB = function(request) {
 		var db = Ti.Database.open(DBNAME),
-			temp = [];
+			temp = [],
+			linenumber = 0,
+			fieldnumber = 0;
 		var data = db.execute(request);
 
 		while (data.isValidRow()) {
@@ -143,9 +148,15 @@ function Model() {
 		return temp;
 	}
 
+	this.getDataFirstLineFromDB = function(request) {
+		var temp=this.getDataFromDB(request);
+		return temp[0];
+	}
+
 	this.getListIDFromListCode = function(listCode) {
-		var request = "select list_id as nb from "+TABLE+" where list_code like '"+listCode+"' group by 1";
-		return this.getDataFromDB(request);
+		var request = "select list_id from "+TABLE+" where list_code like '"+listCode+"' group by 1";
+		temp = this.getDataFirstLineFromDB(request)
+		return temp.list_id;
 	}
 
 	this.getLabelFromListCode = function(listCode) {

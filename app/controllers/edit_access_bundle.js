@@ -16,22 +16,19 @@ $.init = function() {
 
 	$.fetch();
 
-	Ti.API.log("LIST_ITEMS_MODEL.getAllData()");
-	Ti.API.log(LIST_ITEMS_MODEL.getAllData());
-
 	$.bundleItemElements.height = 1;
 	$.bundleItemElements.visible = false;
 	//$.value.text = VALUES;
 
-	var listValues = LIST_ITEMS_MODEL.getAllData();
-	Ti.API.log("debug","all list data");
-	Ti.API.log("debug",listValues);
+	var list_id = LISTS_MODEL.getListIDFromListCode("access_statuses")
+	var listValues = LIST_ITEMS_MODEL.getAllDataFromList(list_id);
+
 	accessTableData = [];
 	for (var num in listValues) {
 		var row = Ti.UI.createTableViewRow({
 			title:listValues[num].display_label
 		});
-		Ti.API.log("debug","searching for value "+VALUES);
+		Ti.API.log("debug","searching for access value "+VALUES);
 		Ti.API.log("debug",listValues[num].item_value);
 
 		if(listValues[num].item_value == VALUES) {
@@ -73,6 +70,7 @@ $.fetch = function() {
 		LIST_ITEMS_MODEL.fetch({
 			url: model_list_items_url,
 			authString: APP.authString,
+			listcode:"access_statuses",
 			cache: 0,
 			callback: function() {
 				Ti.API.log("debug","ca-list-items.fetch callback");

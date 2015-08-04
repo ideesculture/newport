@@ -178,9 +178,9 @@ $.modelRetrieveData = function(_force, _callback) {
 		// Initializing lists model
 		var model_lists_url = APP.Settings.CollectiveAccess.urlBase+"/"+APP.Settings.CollectiveAccess.urlForLists.url;
 		var model_lists_cache_validity = APP.Settings.CollectiveAccess.urlForLists.cache;
-		if(COMMONS.isCacheValid(model_lists_url,model_lists_cache_validity)) {
+		/*if(COMMONS.isCacheValid(model_lists_url,model_lists_cache_validity)) {
 			APP.log("debug", "cache valid for item lists model");
-		} else {
+		} else {*/
 			APP.log("debug", "Item lists model fetch");
 			LIST_MODEL.fetch({
 				url: model_lists_url,
@@ -193,7 +193,7 @@ $.modelRetrieveData = function(_force, _callback) {
 					Ti.API.log("debug","ca-lists.fetch error");
 				}
 			});
-		}
+		//}
 
 };
 
@@ -475,12 +475,12 @@ $.uiHandleData = function(_data) {
 
 							case "preferred_labels":
 								if($.RECORD.preferred_labels){
-									var values = $.RECORD.preferred_labels[0].name; // bof eh. should take ALL values. 
+									var values = $.RECORD.preferred_labels[0].name; // bof eh. should take ALL values.
 								}
 								else{
 									var values = $.EMPTY_BUNDLE;
 								}
-								
+
 								var temp_objet = {};
 								temp_objet["datatype"] = "Preferred_labels";
 								temp_objet["display_label"] = "Preferred label";
@@ -518,6 +518,18 @@ $.uiHandleData = function(_data) {
 								Ti.API.log("debug","access");
 								Ti.API.log("debug",$.RECORD);
 								var row = Alloy.createController("edit_access_bundle", {
+									bundle_code:bundle_code,
+									content:{},
+									values:values
+								}).getView();
+								rows.push(row);
+							break;
+
+							case "status":
+								var values = $.RECORD.intrinsic_fields.status;
+								Ti.API.log("debug","status");
+								Ti.API.log("debug",$.RECORD);
+								var row = Alloy.createController("edit_status_bundle", {
 									bundle_code:bundle_code,
 									content:{},
 									values:values
