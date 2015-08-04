@@ -53,6 +53,10 @@ $.createRow = function (margin, table, textLabel, asArrow){
 
 $.init = function() {
 	$.bundleItemName.text = CONFIG.display_label;
+
+	$.bundleItemElements.height = 1;
+	$.bundleItemElements.visible = false;
+
 	var parentsAndSon = HIERARCHY_MODEL.getParentRecords($.TABLE,CONFIG.obj_data.object_id);
 
 	var margin = 0, table = [], whitespace, row, label, asArrow=false;
