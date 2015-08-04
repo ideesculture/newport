@@ -23,6 +23,18 @@ var FLAG_SAVE = false;
 // Pseudo constants
 var ca_main_tables = ["ca_entities", "ca_object_lots", "ca_storage_locations", "ca_places", "ca_collections", "ca_loans", "ca_movements"];
 
+// If no object informations, load a default testing object
+Ti.API.log("debug","(typeof CONFIG.obj_data.info1)");
+Ti.API.log("debug",(typeof CONFIG.obj_data));
+if ((typeof CONFIG.obj_data) === "undefined") {
+	CONFIG.obj_data = {};
+	CONFIG.obj_data.info1 = 195;
+	CONFIG.obj_data.object_id = 5866;
+	CONFIG.obj_data.display_label= "gluo";
+	CONFIG.obj_data.idno="new_1437484446553";
+	// 5866
+
+}
 //type id
 var type_id = CONFIG.obj_data.info1;
 
@@ -450,7 +462,7 @@ $.uiHandleData = function(_data) {
 								}).getView();
 								rows.push(row);
 								break;
-								
+
 							default:
 								var values = $.EMPTY_BUNDLE;
 								var temp_objet = {};
