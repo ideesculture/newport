@@ -9,12 +9,10 @@
 			</View>
     		<View id="bundleItemElements">
 				<Label id="value" text="..." />
-				<ScrollableView id="accessContainerView">
-						<View id="container2">
-							<TableView id="accessTable">
-							</TableView>
-						</View>
-				</ScrollableView>
+					<TableView id="accessTable">
+						<TableViewRow title="Apple"/>
+						<TableViewRow title="Bananas" class="Active"/>
+					</TableView>
 			</View>
 		</View>
 	</View>
