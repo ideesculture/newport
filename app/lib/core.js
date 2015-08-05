@@ -404,7 +404,7 @@ var APP = {
 	 * Builds out the tab group
 	 */
 	build: function() {
-		APP.log("debug", "APP.build");
+		Ti.API.log("debug", "APP.build");
 
 		var nodes = [];
 		var imageFolder = !APP.Settings.useSlideMenu && APP.Settings.colors.theme == "light" ? "/icons/black/" : "/icons/white/";
