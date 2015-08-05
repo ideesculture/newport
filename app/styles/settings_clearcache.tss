@@ -24,8 +24,6 @@
 },
 "#clearcache": {
 	top:"20dp",
-	left:"10dp",
-	border:"1dp",
-	borderColor:Alloy.Globals.primaryColor,
+	left:"20dp",
 	color:Alloy.Globals.primaryColor
 }
