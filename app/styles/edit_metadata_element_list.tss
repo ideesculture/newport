@@ -1,0 +1,34 @@
+"#field":{
+	layout:"vertical",
+	textAlign:"left",
+	height:Ti.UI.SIZE,
+	top:0,
+	bottom:2
+},
+"#label": {
+	left:10,
+	color: 'black',
+	top:4,
+	height: 16,
+	font: {
+		fontSize: 13,
+		fontFamily: "HelveticaNeue"
+	}
+},
+"#unsupported": {
+	left:10,
+	color: Alloy.Globals.fieldsColor,
+	top:2,
+	height: 12,
+	font: {
+		fontSize: 9,
+		fontFamily: "HelveticaNeue"
+	}
+},
+"#listTable": {
+	height:Ti.UI.SIZE,
+	left:"10dp",
+	right:"10dp",
+	top:"10dp",
+	bottom:"10dp"
+}

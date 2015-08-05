@@ -15,7 +15,8 @@ var DATATYPECONTROLLERS = {
 	"Objects":"edit_metadata_related_objects",
 	"Occurrences":"edit_metadata_related_occurrences",
 	"Preferred_labels": "edit_preferred_labels",
-	"StorageLocations": "edit_metadata_related_storage_locations"
+	"StorageLocations": "edit_metadata_related_storage_locations",
+	"List": "edit_metadata_element_list"
 };
 //APP.log("debug",CONFIG);
 

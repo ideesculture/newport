@@ -100,7 +100,7 @@ function Model() {
 		var db = Ti.Database.open(DBNAME);
 
 		Ti.API.log("debug", "ca-list-items.handleData");
-		Ti.API.log("debug", _data.results);
+		//Ti.API.log("debug", _data.results);
 		if(_data.ok == true) {
 
 			var db = Ti.Database.open(DBNAME);

@@ -159,6 +159,12 @@ function Model() {
 		return temp.list_id;
 	}
 
+	this.getListCodeFromListID = function(listID) {
+		var request = "select list_code from "+TABLE+" where list_id='"+listID+"' group by 1";
+		temp = this.getDataFirstLineFromDB(request)
+		return temp.list_code;
+	}
+
 	this.getLabelFromListCode = function(listCode) {
 		var request = "select display_label as nb from "+TABLE+" where list_code like '"+listCode+"' group by 1";
 		return this.getDataFromDB(request);
