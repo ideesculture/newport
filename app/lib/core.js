@@ -332,7 +332,11 @@ var APP = {
 		Ti.API.debug("APP.dropDatabase");
 
 		var db = Ti.Database.open("Newport");
-		db.remove();
+		setTimeout(function() {
+    		db.remove();
+		}, 1000);
+
+		db = null;
 	},
 	/**
 	 * Loads in the appropriate controller and config data
@@ -507,7 +511,7 @@ var APP = {
 		// Undo removal of TabGroup
 		//APP.GlobalWrapper.remove(APP.Tabs.Wrapper);
 		//APP.GlobalWrapper.add(APP.Tabs.Wrapper);
-		APP.ContentWrapper.bottom = "60dp";
+		//APP.ContentWrapper.bottom = "60dp";
 
 		APP.currentStack = -1;
 		APP.previousScreen = null;
@@ -522,10 +526,9 @@ var APP = {
 		APP.cancelLoading = false;
 		APP.loadingOpen = false;
 
-		APP.dropDatabase();
+		//APP.dropDatabase();
 
-		// NOTICE
-		// The following section is abstracted for PEEK
+		APP.dropDatabase();
 
 		APP.rebuildRestart();
 	},
@@ -533,12 +536,20 @@ var APP = {
 	 * Kicks off the newly re-built application
 	 */
 	rebuildRestart: function() {
-		Ti.API.debug("APP.rebuildRestart");
-
-		APP.dropDatabase();
+		Ti.API.log("debug","APP.rebuildRestart");
+		// Create a database
 		APP.setupDatabase();
+
+		// Reads in the JSON config file
 		APP.loadContent();
+
+		// Builds out the tab group
 		APP.build();
+
+		// Open the main window
+		APP.MainWindow.open();
+
+		// The initial screen to show
 		APP.handleNavigation(0);
 	},
 	/**
