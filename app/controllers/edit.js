@@ -30,7 +30,7 @@ Ti.API.log("debug",(typeof CONFIG.obj_data));
 if ((typeof CONFIG.obj_data) === "undefined") {
 	CONFIG.obj_data = {};
 	CONFIG.obj_data.info1 = 195;
-	CONFIG.obj_data.object_id = 5866;
+	CONFIG.obj_data.object_id = 5871;
 	CONFIG.obj_data.display_label= "gluo";
 	CONFIG.obj_data.idno="new_1437484446553";
 	// 5866
