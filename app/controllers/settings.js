@@ -1,6 +1,6 @@
 /**
  * Controller for the settings screen
- * 
+ *
  * @class Controllers.settings
  * @uses core
  */
@@ -17,7 +17,7 @@ $.init = function() {
 	}
 
 	$.copyright.text = APP.LEGAL.COPYRIGHT + " v" + APP.VERSION;
-	
+
 	$.NavigationBar.setBackgroundColor(APP.Settings.colors.primary);
 
 	if(APP.Settings.useSlideMenu) {
@@ -58,15 +58,15 @@ $.flushlogs.addEventListener("click", function(_event) {
 	APP.logFlush();
 });
 
-
 $.emptycache.addEventListener("click", function(_event) {
 	APP.log("debug", "settings @emptycache");
-	APP.addChild("settings_clearcache", {}, true);
+	APP.addChild("settings_clearcache", {}, false, true);
+
 });
 
 $.send.addEventListener("click", function(_event) {
 	APP.log("debug", "settings @send");
-	APP.addChild("settings_send", {}, true);
+	APP.addChild("settings_send", {}, false, true);
 });
 
 // Kick off the init

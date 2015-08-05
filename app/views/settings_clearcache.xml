@@ -4,6 +4,7 @@
 
 		<ScrollView id="container">
 			<Label id="label" text="..." />
+			<Button id="clearcache" title='CLEAR CACHE'></Button>
 		</ScrollView>
 	</View>
 </Alloy>

@@ -21,4 +21,11 @@
 },
 ".last": {
 	bottom: "15dp"
+},
+"#clearcache": {
+	top:"20dp",
+	left:"10dp",
+	border:"1dp",
+	borderColor:Alloy.Globals.primaryColor,
+	color:Alloy.Globals.primaryColor
 }
