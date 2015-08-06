@@ -109,10 +109,9 @@ var leavingFocus = function() {
 $.listTable.addEventListener('click', function(e) {
     Ti.API.log("debug","edit_metadata_element_list click, value : "+e.rowData.value);
     value = e.rowData.value;
-});
 
-$.listTable.addEventListener('blur', function() {
-	// leaving focus from area
+    // We fire the leavingFocus fn here instead of being on a blur event, cos blur is only for field poping kb on screen
+	// tableview don't popup the kb, so blur event is not available
 	leavingFocus();
 });
 
