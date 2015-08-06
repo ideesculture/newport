@@ -44,6 +44,7 @@ $.update = function () {
 
 var leavingFocus = function(_field) {
 	//if (_field.hasChanged == "true") return false;
+	if (_field.value != _field.valuebak) {
 		_field.backgroundColor = APP.Settings.colors.primary;
 		Ti.App.fireEvent('event_haschanged', {
     		name: 'bar',

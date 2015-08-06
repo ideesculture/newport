@@ -489,7 +489,7 @@ $.uiHandleData = function(_data) {
 								temp_objet2[bundle_code] = temp_objet;
 								var element_data = { "elements_in_set" : temp_objet2 , "name" : "Preferred labels" };
 
-								var row = Alloy.createController("edit_metadata_bundle", {
+								var row = Alloy.createController("edit_preferred_labels", {
 									bundle_code:bundle_code,
 									content:element_data,
 									values:values,
