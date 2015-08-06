@@ -474,13 +474,15 @@ $.uiHandleData = function(_data) {
 								break;
 
 							case "preferred_labels":
+								var values = [];
 								if($.RECORD.preferred_labels){
-									var values = $.RECORD.preferred_labels[0].name; // bof eh. should take ALL values.
+									values[0] = $.RECORD.preferred_labels[0]; // bof eh. should take ALL values.	
 								}
 								else{
-									var values = $.EMPTY_BUNDLE;
+									values[0] = $.EMPTY_BUNDLE;
 								}
-
+								APP.log("debug", "PREF LAB values.length:");
+								APP.log("debug", values.length);
 								var temp_objet = {};
 								temp_objet["datatype"] = "Preferred_labels";
 								temp_objet["display_label"] = "Preferred label";
@@ -489,10 +491,10 @@ $.uiHandleData = function(_data) {
 								temp_objet2[bundle_code] = temp_objet;
 								var element_data = { "elements_in_set" : temp_objet2 , "name" : "Preferred labels" };
 
-								var row = Alloy.createController("edit_preferred_labels", {
+								var row = Alloy.createController("edit_metadata_bundle", {
 									bundle_code:bundle_code,
 									content:element_data,
-									values:values,
+									values: values,
 									newport_id:{0:i}
 								}).getView();
 								rows.push(row);
