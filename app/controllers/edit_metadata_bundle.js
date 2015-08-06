@@ -27,7 +27,8 @@ $.init = function() {
 	if (VALUES.length > 1) {
 		numrows = VALUES.length
 	};
-
+	APP.log("debug", "VALUES :::");
+	APP.log("debug", VALUES);
 	// looping through each row to display metadatas values
 	for (var i = 0; i < numrows; i++) {
 		APP.log("debug","PREMIERE BOUCLE "+i);

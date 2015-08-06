@@ -19,6 +19,7 @@ $.init = function() {
 			value = CONFIG.value;
 	};
 
+
 	// Debug : uncomment next line
 	//$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j;
 	$.label.hide();
