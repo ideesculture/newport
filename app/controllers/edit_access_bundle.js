@@ -2,6 +2,7 @@ var APP = require("core");
 var COMMONS = require("ca-commons");
 var CONFIG = arguments[0] || {};
 var VALUES = CONFIG.values || {};
+var VALUESBAK = "";
 var LISTS_MODEL = require("models/ca-lists")();
 var LIST_ITEMS_MODEL = require("models/ca-list-items")();
 
@@ -24,12 +25,15 @@ $.init = function() {
 	var list_id = LISTS_MODEL.getListIDFromListCode("access_statuses")
 	var listValues = LIST_ITEMS_MODEL.getAllDataFromList(list_id);
 
+	VALUESBAK = VALUES;
+
 	accessTableData = [];
 	var selected = 0;
 	for (var num in listValues) {
 		var row = Ti.UI.createTableViewRow({
 			title:listValues[num].display_label,
-			backgroundSelectedColor:Alloy.Globals.primaryColor
+			backgroundSelectedColor:Alloy.Globals.primaryColor,
+			value:listValues[num].item_value
 		});
 		Ti.API.log("debug","searching for access value "+VALUES);
 		Ti.API.log("debug",listValues[num].item_value);
@@ -109,5 +113,30 @@ $.bundleItem.addEventListener("click", function(_event) {
 	APP.closeLoading();
 
 });
+
+var leavingFocus = function() {
+    Ti.API.log("debug","edit_access_bundle leavingFocus");
+    Ti.API.log("debug","VALUES "+VALUES);
+    Ti.API.log("debug","VALUESBAK "+VALUESBAK);
+	//if (_field.hasChanged == "true") return false;
+	if (VALUES != VALUESBAK) {
+		Ti.App.fireEvent('event_haschanged', {
+    		name: 'bar',
+    		config: CONFIG,
+    		value: VALUES
+		});
+	}
+};
+
+$.accessTable.addEventListener('click', function(e) {
+    Ti.API.log("debug","edit_access_bundle click, value : "+e.rowData.value);
+    value = e.rowData.value;
+});
+
+$.accessTable.addEventListener('blur', function() {
+	// leaving focus from area
+	leavingFocus();
+});
+
 
 $.init();
