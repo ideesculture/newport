@@ -26,12 +26,13 @@ $.createRow = function (margin, table, textLabel, asArrow){
     row.add(whitespace);
     //3)adds an arrow if needed
 	if(asArrow){
-		arrow = Ti.UI.createImageView({
-			src : 'ti.ux.iconfont',
-			icon : 'fa-chevron-right',
-			size:'22' ,
-			color: '#ccc'
-		});
+		arrow = Alloy.createWidget('ti.ux.iconfont','widget', {
+			icon : 'fa-chevron-right', 
+			size:'25',
+			color: '#000',
+			class:"faIcon",
+			idno: margin
+		}).getView();		
 		row.add(arrow);
 	}
     //4)adds a display label of the storage location
