@@ -20,8 +20,8 @@ $.init = function() {
 	$.bundleItemElements.visible = false;
 
 	// Defining value, activating or disabling textarea depending of fieldHeight, must be done before init to be available for Handlers
-	if (typeof CONFIG.value == "string") {
-			value = CONFIG.value;
+	if (typeof CONFIG.values == "string") {
+			value = CONFIG.values;
 	};
 
 	APP.log("debug","edit_metadata_bundle CONFIG.content.settings");

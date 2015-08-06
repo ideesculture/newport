@@ -516,7 +516,7 @@ $.uiHandleData = function(_data) {
 							case "access":
 								var values = $.RECORD.intrinsic_fields.access;
 								Ti.API.log("debug","access");
-								Ti.API.log("debug",$.RECORD);
+								//Ti.API.log("debug",$.RECORD);
 								var row = Alloy.createController("edit_access_bundle", {
 									bundle_code:bundle_code,
 									display_label: "Access control",
@@ -529,7 +529,7 @@ $.uiHandleData = function(_data) {
 							case "status":
 								var values = $.RECORD.intrinsic_fields.status;
 								Ti.API.log("debug","status");
-								Ti.API.log("debug",$.RECORD);
+								//Ti.API.log("debug",$.RECORD);
 								var row = Alloy.createController("edit_status_bundle", {
 									bundle_code:bundle_code,
 									display_label: "Workflow status",
@@ -541,8 +541,10 @@ $.uiHandleData = function(_data) {
 
 							case "idno":
 								var values = $.RECORD.intrinsic_fields.idno;
-								Ti.API.log("debug","status");
-								Ti.API.log("debug",$.RECORD);
+
+								Ti.API.log("debug","idno");
+								//Ti.API.log("debug",values);
+								//Ti.API.log("debug",$.RECORD);
 								var row = Alloy.createController("edit_idno_bundle", {
 									bundle_code:bundle_code,
 									display_label: "Identification number",
