@@ -27,12 +27,12 @@ $.createRow = function (margin, table, textLabel, asArrow){
     //3)adds an arrow if needed
 	if(asArrow){
 		arrow = Alloy.createWidget('ti.ux.iconfont','widget', {
-			icon : 'fa-chevron-right', 
-			size:'25',
+			icon : 'fa-chevron-right',
+			size:'14',
 			color: '#000',
 			class:"faIcon",
 			idno: margin
-		}).getView();		
+		}).getView();
 		row.add(arrow);
 	}
     //4)adds a display label of the storage location
