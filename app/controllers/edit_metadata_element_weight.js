@@ -24,7 +24,7 @@ $.init = function() {
 	$.label.hide();
 	$.notes.text= " please don't forget to specify a weight unit after your value!"
 	$.weightfield.value = value;
-
+	$.weightfield.valuebak = value;	
 };
 
 $.validate = function () {

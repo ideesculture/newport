@@ -26,7 +26,7 @@ $.init = function() {
 	$.label.hide();
 	$.notes.text= " please don't forget to specify a currency unit after your value!"
 	$.currencyfield.value = value;
-
+	$.currencyfield.valuebak = value;
 };
 
 $.validate = function () {
@@ -44,16 +44,16 @@ $.update = function () {
 
 var leavingFocus = function(_field) {
 	//if (_field.hasChanged == "true") return false;
-	if (_field.value != _field.valuebak) {
 		_field.backgroundColor = APP.Settings.colors.primary;
 		Ti.App.fireEvent('event_haschanged', {
     		name: 'bar',
     		config: CONFIG,
     		value: _field.value
 		});
-		//_field.valuebak = _field.value;
-		_field.backgroundColor = APP.Settings.colors.secondary;
+		APP.log("debug", "value has changed");
+		//_field.backgroundColor = APP.Settings.colors.secondary;
 	} else {
+		APP.log("debug", "new background color: whitey");
 		_field.backgroundColor = "white";
 	}
 
