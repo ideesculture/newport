@@ -476,10 +476,10 @@ $.uiHandleData = function(_data) {
 							case "preferred_labels":
 								var values = [];
 								if($.RECORD.preferred_labels){
-									values[0] = $.RECORD.preferred_labels[0]; // bof eh. should take ALL values.	
+									values[bundle_code] = $.RECORD.preferred_labels[0]; // bof eh. should take ALL values.	
 								}
 								else{
-									values[0] = $.EMPTY_BUNDLE;
+									values[bundle_code] = $.EMPTY_BUNDLE;
 								}
 								APP.log("debug", "PREF LAB values.length:");
 								APP.log("debug", values.length);

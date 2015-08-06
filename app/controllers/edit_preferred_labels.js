@@ -15,17 +15,17 @@ var value ="";
 
 $.init = function() {
 	// Defining value, activating or disabling textarea depending of fieldHeight, must be done before init to be available for Handlers
-	if (typeof CONFIG.value == "string") {
+	/*if (typeof CONFIG.value == "string") {
 			value = CONFIG.value;
-	};
+	};*/
 
-
+	APP.log("debug", CONFIG);
 	// Debug : uncomment next line
 	//$.label.text=CONFIG.content.display_label+" "+CONFIG.i+" "+CONFIG.j;
 	$.label.hide();
 	$.notes.text= ""
 	$.preferredLabelfield.value = value;
-
+	$.preferredLabelfield.valuebak = value;
 };
 
 $.validate = function () {
