@@ -24,7 +24,7 @@ $.init = function() {
 	$.label.hide();
 	$.notes.text= " please don't forget to specify a length unit after your value!"
 	$.lengthfield.value = value;
-
+	$.lengthfield.valuebak = value;
 };
 
 $.validate = function () {

@@ -29,7 +29,7 @@
 				"url":"model/ca_objects",
 				"cache":"86400"
 			},
-			"urlForUis" : {
+			"urlForUis" : {	
 				"url":"http://administrator:admin@aspi.idcultu.re/gestion/service-uis.php/ca_objects",
 				"cache":"86400"
 			},
