@@ -4,22 +4,23 @@
 	height:Ti.UI.SIZE,
 	width:Ti.UI.SIZE,
 	top:0,
-	bottom:2
+	bottom:2,
+	left:"10dp"
 },
 "#label": {
-	left:10,
+	left:"10dp",
 	color: 'black',
-	top:4,
-	height: 16,
+	top:"4dp",
+	height: "16dp",
 	width:Ti.UI.SIZE,
 	font: {
-		fontSize: 13,
+		fontSize: "13dp",
 		fontFamily: "HelveticaNeue"
 	}
 },
 "#textfield": {
 	left:10,
-	width:60,
+	width:"120dp",
 	color: 'black',
 	height: 40,
 	borderColor:Alloy.Globals.fieldsColor,
