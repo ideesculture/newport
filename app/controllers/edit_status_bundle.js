@@ -127,7 +127,7 @@ var leavingFocus = function() {
 	}
 };
 
-$.statusTable.addEventListener('click', function(e) {
+$.workflowTable.addEventListener('click', function(e) {
     Ti.API.log("debug","edit_status_bundle click, value : "+e.rowData.value);
     value = e.rowData.value;
 
