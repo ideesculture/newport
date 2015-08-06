@@ -29,10 +29,10 @@ Ti.API.log("debug","(typeof CONFIG.obj_data.info1)");
 Ti.API.log("debug",(typeof CONFIG.obj_data));
 if ((typeof CONFIG.obj_data) === "undefined") {
 	CONFIG.obj_data = {};
-	CONFIG.obj_data.info1 = 195;
-	CONFIG.obj_data.object_id = 5871;
-	CONFIG.obj_data.display_label= "banana";
-	CONFIG.obj_data.idno="newoakk";
+	CONFIG.obj_data.info1 = 199;
+	CONFIG.obj_data.object_id = 1203;
+	CONFIG.obj_data.display_label= "Bibliographical cards (miscellaneous)";
+	CONFIG.obj_data.idno="ARC_993";
 	// 5866
 
 }
