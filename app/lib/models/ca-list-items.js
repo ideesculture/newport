@@ -62,14 +62,13 @@ function Model() {
 				url: _params.url,
 				passthrough: _params.callback,
 				success: this.handleData,
-				//success: this.echoData,
 				failure: this.echoErrorData
 			});
 			Ti.API.log("debug","ca-list-items HTTP.request end");
 		} else {
 			_params.callback();
 		}
-	};
+	}
 
 	/**
 	 * Useful to only log the data return when debugging
@@ -109,6 +108,8 @@ function Model() {
 			// Browsing data
 		    for (var num in _data.results) {
 				var record = _data.results[num];
+				Ti.API.log("debug","record");
+				Ti.API.log("debug",record);
 				if (num==0) {
 					var request = "DELETE FROM ca_list_items WHERE list_id="+record["list_id"];
 					db.execute(request);

@@ -12,16 +12,17 @@ var LIST_ITEMS_MODEL = require("models/ca-list-items")();
 var BUFFER = require("ca-editbuffer");
 var CONFIG = arguments[0];
 var LISTCODE = "";
+var value = -1;
+var valuebak = "";
 
 $.init = function() {
     APP.log("debug","edit_metadata_element_list CONFIG");
     APP.log("debug",CONFIG);
 
-    var value=0;
-
     // Defining value, activating or disabling textarea depending of fieldHeight, must be done before init to be available for Handlers
 	if (typeof CONFIG.item_id != "undefined") {
 			value = CONFIG.item_id;
+            valuebak = value;
 	};
 
     var list_id = CONFIG.content.list_id;
@@ -45,7 +46,8 @@ $.init = function() {
     for (var num in listValues) {
         var row = Ti.UI.createTableViewRow({
             title:listValues[num].display_label,
-            backgroundSelectedColor:Alloy.Globals.primaryColor
+            backgroundSelectedColor:Alloy.Globals.primaryColor,
+            value:listValues[num].item_id
         });
         Ti.API.log("debug","searching for list value "+value);
         //Ti.API.log("debug",listValues[num].item_value);
@@ -89,5 +91,29 @@ $.fetch = function() {
 		});
 	//}
 }
+
+var leavingFocus = function() {
+    Ti.API.log("debug","edit_metadata_element_list leavingFocus");
+    Ti.API.log("debug","value "+value);
+    Ti.API.log("debug","valuebak "+valuebak);
+	//if (_field.hasChanged == "true") return false;
+	if (value != valuebak) {
+		Ti.App.fireEvent('event_haschanged', {
+    		name: 'bar',
+    		config: CONFIG,
+    		value: value
+		});
+	}
+};
+
+$.listTable.addEventListener('click', function(e) {
+    Ti.API.log("debug","edit_metadata_element_list click, value : "+e.rowData.value);
+    value = e.rowData.value;
+});
+
+$.listTable.addEventListener('blur', function() {
+	// leaving focus from area
+	leavingFocus();
+});
 
 $.init();

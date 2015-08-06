@@ -13,8 +13,6 @@ var DBNAME = "Newport";
 var TABLE = "ca_lists";
 
 function Model() {
-	this.temp = {};
-
 	/**
 	 * Initializes the model
 	 */
@@ -42,7 +40,6 @@ function Model() {
 	 * @param {Object} _params The request paramaters to send
 	 * @param {String} _params.url The URL to retrieve data from
 	 * @param {Function} _params.callback The function to run on data retrieval
-	 * @param {Function} _params.error The function to run on error
 	 * @param {Number} _params.cache The length of time to consider cached data 'warm'
 	 */
 	this.fetch = function(_params) {
@@ -67,7 +64,7 @@ function Model() {
 				passthrough: _params.callback,
 				success: this.handleData,
 				//success: this.echoData,
-				failure: this.echoErrorData
+				failure: this.echoErrData
 			});
 			Ti.API.log("debug","ca-lists HTTP.request end");
 		} else {
@@ -86,7 +83,7 @@ function Model() {
 		Ti.API.info(_data);
 	};
 
-	this.echoErrorData = function(_data, _url, _callback) {
+	this.echoErrData = function(_data, _url, _callback) {
 		Ti.API.info("Arg. Error.");
 		Ti.API.info(_data);
 	};
@@ -109,8 +106,14 @@ function Model() {
 		    for (var num in _data.results) {
 				var record = _data.results[num];
 				Ti.API.log("debug","ca-lists model record");
-				Ti.API.log("debug",record);
-        		var request = "INSERT INTO " + TABLE + " (id, ca_table, list_id, list_item_id, display_label, list_code, default_sort, is_hierarchical, is_system_list, use_as_vocabulary) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+				//Ti.API.log("debug",record);
+
+				// Removing old value
+				var request = "DELETE FROM " + TABLE + " WHERE list_id = "+record["list_id"]+";";
+				db.execute(request);
+
+        		// Inserting new value
+				var request = "INSERT INTO " + TABLE + " (id, ca_table, list_id, list_item_id, display_label, list_code, default_sort, is_hierarchical, is_system_list, use_as_vocabulary) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 				db.execute(request, TABLE, record["list_id"], record["id"], record["display_label"], record["list_code"], record["default_sort"], record["is_hierarchical"], record["is_system_list"], record["use_as_vocabulary"]);
 				Ti.API.log("debug","ca-lists model record");
 
