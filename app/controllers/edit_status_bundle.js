@@ -2,6 +2,7 @@ var APP = require("core");
 var COMMONS = require("ca-commons");
 var CONFIG = arguments[0] || {};
 var VALUES = CONFIG.values || {};
+var VALUEBAK = "";
 var LISTS_MODEL = require("models/ca-lists")();
 var LIST_ITEMS_MODEL = require("models/ca-list-items")();
 
@@ -15,6 +16,8 @@ $.init = function() {
 
 	LISTS_MODEL.init();
 	LIST_ITEMS_MODEL.init();
+
+	VALUESBAK = VALUES;
 
 	$.fetch();
 
@@ -108,6 +111,29 @@ $.bundleItem.addEventListener("click", function(_event) {
 	},300);
 	APP.closeLoading();
 
+});
+
+var leavingFocus = function() {
+    Ti.API.log("debug","edit_status_bundle leavingFocus");
+    Ti.API.log("debug","VALUES "+VALUES);
+    Ti.API.log("debug","VALUESBAK "+VALUESBAK);
+	//if (_field.hasChanged == "true") return false;
+	if (VALUES != VALUESBAK) {
+		Ti.App.fireEvent('event_haschanged', {
+    		name: 'bar',
+    		config: CONFIG,
+    		value: VALUES
+		});
+	}
+};
+
+$.statusTable.addEventListener('click', function(e) {
+    Ti.API.log("debug","edit_status_bundle click, value : "+e.rowData.value);
+    value = e.rowData.value;
+
+	// We fire the leavingFocus fn here instead of being on a blur event, cos blur is only for field poping kb on screen
+	// tableview don't popup the kb, so blur event is not available
+	leavingFocus();
 });
 
 $.init();
